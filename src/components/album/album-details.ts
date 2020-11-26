@@ -19,6 +19,10 @@ export class AlbumDetails extends LitElement {
   static get styles() {
     return css`
       ${container}
+      .dummy {
+        filter: blur(4px);
+        opacity: 0.8;
+      }
       ${buttons}
       .jumbotron {
         color: var(--text-color);
@@ -109,7 +113,14 @@ export class AlbumDetails extends LitElement {
     super();
     this.artist = '';
     this.album = '';
-    this.albumDetails = {};
+    this.albumDetails = {
+      dummy: true,
+      artist: { name: 'Dummy' },
+      name: 'Dummy',
+      year: 2000,
+      tracks: [],
+      type: 'dummy'
+    };
     this.shrunk = false;
   }
 
@@ -162,8 +173,8 @@ export class AlbumDetails extends LitElement {
   }
   render() {
     return html`
-      <div class="jumbotron ${this.shrunk ? 'shrunk' : ''}">
-        <div class="container">
+      <div class="jumbotron ${this.shrunk ? 'shrunk ' : ''}">
+        <div class="container ${this.albumDetails?.dummy ? 'dummy ' : ''}">
           <album-art
             artist="${this.albumDetails?.artist?.albumArtist ||
             this.albumDetails?.artist?.name}"

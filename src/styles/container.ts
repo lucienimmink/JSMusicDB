@@ -7,6 +7,7 @@ export default css`
     margin-left: auto;
     display: flex;
     color: var(--text-color);
+    transition: all 0.2s ease-in-out;
   }
   @media (min-width: 768px) {
     .container {
