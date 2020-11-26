@@ -27,6 +27,9 @@ export class Album extends LitElement {
         padding: 0;
         list-style: none;
       }
+      track-in-list {
+        cursor: pointer;
+      }
       @media (min-width: 768px) {
         .container {
           padding-top: 254px;

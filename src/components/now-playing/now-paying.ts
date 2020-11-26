@@ -229,6 +229,7 @@ export class NowPlaying extends LitElement {
       }
       .bottom lit-virtualizer track-in-list {
         width: 100%;
+        cursor: pointer;
       }
       @media (min-width: 576px) {
         .details-wrapper {

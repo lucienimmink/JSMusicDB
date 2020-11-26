@@ -103,6 +103,7 @@ export class LetterNav extends LitElement {
         transition: background 0.2s ease-in-out;
         min-height: 60px;
         width: 100%;
+        cursor: pointer;
       }
       .playlist li:hover {
         background: rgba(0, 0, 0, 0.1);

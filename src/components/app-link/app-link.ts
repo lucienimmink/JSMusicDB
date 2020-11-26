@@ -43,6 +43,7 @@ export default class Link extends LitElement {
       }
       .flex {
         display: flex;
+        width: 100%;
       }
       .flex span {
         display: flex;
