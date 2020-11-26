@@ -14,7 +14,7 @@ import { scrobbleCacheIcon } from '../icons/scrobble-cache.js';
 import { settingsIcon } from '../icons/settings.js';
 import { getScrobbleCache } from '../../utils/settings';
 
-import responsive from '../styles/responsive';
+import responsive from '../../styles/responsive';
 import { nothing } from 'lit-html';
 
 

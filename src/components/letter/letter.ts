@@ -1,8 +1,8 @@
 import { LitElement, customElement, html, css, property } from "lit-element";
 import './../app-link/app-link';
 import musicdb from '../../components/musicdb'
-import smallMuted from '../styles/small-muted'
-import panel from '../styles/panel'
+import smallMuted from '../../styles/small-muted'
+import panel from '../../styles/panel'
 
 @customElement('artists-in-letter')
 export class Letter extends LitElement {

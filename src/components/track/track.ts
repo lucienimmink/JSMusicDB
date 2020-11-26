@@ -3,7 +3,7 @@ import timeSpan from '../../utils/timespan';
 import { UPDATE_PLAYER } from '../../utils/player';
 import { playIcon } from '../icons/play';
 import { pauseIcon } from '../icons/pause';
-import smallMuted from '../styles/small-muted';
+import smallMuted from '../../styles/small-muted';
 import { nothing } from 'lit-html';
 
 @customElement('track-in-list')

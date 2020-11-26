@@ -3,8 +3,8 @@ import './album-details'
 import '../track/track'
 import musicdb from '../musicdb'
 import { setCurrentPlaylist, startPlaylist, setCurrentTime, UPDATE_PLAYER } from '../../utils/player'
-import headers from '../styles/headers';
-import container from '../styles/container'
+import headers from '../../styles/headers';
+import container from '../../styles/container'
 
 @customElement('tracks-in-album')
 export class Album extends LitElement {

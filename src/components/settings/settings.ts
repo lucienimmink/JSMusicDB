@@ -15,11 +15,11 @@ import {
   getServer,
   IS_RELOADING,
 } from '../../utils/node-mp3stream';
-import headers from '../styles/headers';
-import container from '../styles/container';
-import smallMuted from '../styles/small-muted';
-import responsive from '../styles/responsive';
-import buttons from '../styles/buttons';
+import headers from '../../styles/headers';
+import container from '../../styles/container';
+import smallMuted from '../../styles/small-muted';
+import responsive from '../../styles/responsive';
+import buttons from '../../styles/buttons';
 import { nothing } from 'lit-html';
 import { updateSunriseData } from '../../utils/colour';
 

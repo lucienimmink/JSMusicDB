@@ -19,10 +19,10 @@ import { playIcon } from '../icons/play';
 import { pauseIcon } from '../icons/pause';
 import musicdb from '../musicdb';
 import '../loading-indicator/loading-indicator';
-import headers from '../styles/headers';
-import container from '../styles/container';
-import smallMuted from '../styles/small-muted';
-import responsive from '../styles/responsive';
+import headers from '../../styles/headers';
+import container from '../../styles/container';
+import smallMuted from '../../styles/small-muted';
+import responsive from '../../styles/responsive';
 
 @customElement('playlists-nav')
 export class LetterNav extends LitElement {

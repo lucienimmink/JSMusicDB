@@ -2,7 +2,7 @@ import { LitElement, customElement, html, css, property } from 'lit-element';
 import './../app-link/app-link';
 import { barsIcon } from '../icons/bars';
 import musicdb from '../musicdb';
-import responsive from '../styles/responsive';
+import responsive from '../../styles/responsive';
 import { nothing } from 'lit-html';
 import { DONE_RELOADING, getJwt, getProgress, getServer, IS_RELOADING } from '../../utils/node-mp3stream';
 

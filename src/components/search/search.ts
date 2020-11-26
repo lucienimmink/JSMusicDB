@@ -4,10 +4,10 @@ import { navigator } from 'lit-element-router';
 
 import './../app-link/app-link';
 import musicdb from '../musicdb'
-import container from '../styles/container'
-import headers from '../styles/headers'
-import smallMuted from '../styles/small-muted'
-import warn from '../styles/warn';
+import container from '../../styles/container'
+import headers from '../../styles/headers'
+import smallMuted from '../../styles/small-muted'
+import warn from '../../styles/warn';
 import timeSpan from '../../utils/timespan';
 
 const MAX = 100;

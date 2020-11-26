@@ -1,7 +1,7 @@
 import { LitElement, customElement, html, css, property } from "lit-element";
 import './../app-link/app-link';
 import musicdb from '../musicdb'
-import jumplist from '../styles/jumplist'
+import jumplist from '../../styles/jumplist'
 
 @customElement('letters-nav')
 export class LetterNav extends LitElement {

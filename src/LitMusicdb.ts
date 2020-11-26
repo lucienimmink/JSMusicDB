@@ -48,7 +48,7 @@ import './components/search/search';
 import './components/loading-indicator/loading-indicator';
 import './components/loading-indicator/progress-spinner';
 
-import { light, dark } from './components/styles/themes';
+import { light, dark } from './styles/themes';
 import timeSpan from './utils/timespan';
 import { ACCENT_COLOR, getCurrentTheme, updateSunriseData } from './utils/colour';
 import { getSK } from './utils/lastfm';

@@ -3,8 +3,8 @@ import '../track/track';
 import musicdb from '../musicdb';
 import timeSpan from '../../utils/timespan';
 
-import container from '../styles/container';
-import buttons from '../styles/buttons';
+import container from '../../styles/container';
+import buttons from '../../styles/buttons';
 import { nothing } from 'lit-html';
 
 @customElement('album-details')

@@ -45,9 +45,9 @@ import { randomIcon } from '../icons/random';
 import { volumeIcon } from '../icons/volume';
 import { heartIcon } from '../icons/heart';
 
-import progress from '../styles/progress-bar';
-import controls from '../styles/controls';
-import responsive from '../styles/responsive';
+import progress from '../../styles/progress-bar';
+import controls from '../../styles/controls';
+import responsive from '../../styles/responsive';
 import { nothing } from 'lit-html';
 import {
   ACCENT_COLOR,

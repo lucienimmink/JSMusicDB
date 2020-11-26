@@ -2,10 +2,10 @@ import { LitElement, customElement, html, css } from 'lit-element';
 import { nothing } from 'lit-html';
 import { getRecentlyListened, getLastFMUserName } from '../../utils/lastfm';
 import musicdb from '../musicdb';
-import headers from '../styles/headers';
-import container from '../styles/container';
-import smallMuted from '../styles/small-muted';
-import panel from '../styles/panel';
+import headers from '../../styles/headers';
+import container from '../../styles/container';
+import smallMuted from '../../styles/small-muted';
+import panel from '../../styles/panel';
 
 import { cdIcon } from '../icons/cd';
 

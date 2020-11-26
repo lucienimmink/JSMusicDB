@@ -28,9 +28,9 @@ import { randomIcon } from '../icons/random';
 import { volumeIcon } from '../icons/volume';
 import { heartIcon } from '../icons/heart';
 
-import container from '../styles/container';
-import progress from '../styles/progress-bar';
-import controls from '../styles/controls';
+import container from '../../styles/container';
+import progress from '../../styles/progress-bar';
+import controls from '../../styles/controls';
 import { ACCENT_COLOR } from '../../utils/colour';
 import { chevronUpIcon } from '../icons/chevron-up';
 import { chevronDownIcon } from '../icons/chevron-down';

@@ -1,8 +1,8 @@
 import { LitElement, customElement, html, css } from "lit-element";
 import { nothing } from 'lit-html';
 import { authenticate, getSK, setSk, setLastFMUserName } from '../../utils/lastfm';
-import headers from '../styles/headers';
-import container from '../styles/container'
+import headers from '../../styles/headers';
+import container from '../../styles/container'
 
 @customElement('lastfm-login')
 export class LetterNav extends LitElement {

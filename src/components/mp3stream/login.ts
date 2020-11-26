@@ -2,8 +2,8 @@ import { LitElement, customElement, html, css } from "lit-element";
 import { nothing } from 'lit-html';
 
 import { canLogin, getPublicKey, authenticate, setJwt, getJwt, setServer } from '../../utils/node-mp3stream'
-import headers from '../styles/headers'
-import container from '../styles/container'
+import headers from '../../styles/headers'
+import container from '../../styles/container'
 @customElement('mp3stream-login')
 export class LetterNav extends LitElement {
   username: string
