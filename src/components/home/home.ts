@@ -59,6 +59,7 @@ export class HomeNav extends LitElement {
         height: 54px;
         border: 1px solid var(--background3, #f3f4f5);
         box-shadow: 0px 0px 1px var(--primary, #006ecd);
+        background: rgba(255,255,255,0.85);
       }
       li .details {
         flex-grow: 1;
