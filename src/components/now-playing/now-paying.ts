@@ -564,7 +564,7 @@ export class NowPlaying extends LitElement {
                       objectFit="contain"
                       transparent
                       .album=${this.track.album.name}
-                      .artist=${this.track.trackArtist}
+                      .artist=${this.track.album.artist.albumArtist || this.track.album.artist.name}
                     ></album-art>
                   </div>
                   <div class="floating-text-details">

@@ -571,7 +571,7 @@ export class Album extends LitElement {
                 <app-link href="/now-playing" class="art">
                   <album-art
                     @art=${(e: any) => this._setArt(e)}
-                    .artist=${this.track.trackArtist}
+                    .artist=${this.track.album.artist.albumArtist || this.track.album.artist.name}
                     .album=${this.track.album.name}
                   ></album-art>
                 </app-link>
@@ -584,7 +584,7 @@ export class Album extends LitElement {
                         .escapedLetter}/artist/${this.track.album.artist
                         .escapedName}"
                     >
-                      ${this.track.trackArtist}
+                      ${this.track.trackArtist }
                     </app-link>
                     &bull;
                     <app-link

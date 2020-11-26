@@ -2,8 +2,6 @@ import { LitElement, customElement, html, css } from "lit-element";
 import { Store, get, set } from "idb-keyval";
 import { fetchArtForArtist, fetchArtForAlbum } from "./fetchArt";
 import { defaultAlbum, defaultArtist, defaultPixel } from "./defaultart";
-import { nothing } from 'lit-html';
-
 @customElement('album-art')
 export class AlbumArt extends LitElement {
   art: any;
@@ -67,7 +65,7 @@ export class AlbumArt extends LitElement {
           e.target.classList.remove('loading') }
         }
         loading="lazy"
-        class="${this.transparent ? 'transparent ' : nothing }"
+        class="${this.transparent ? 'transparent ' : '' }"
       />
     `
   }
