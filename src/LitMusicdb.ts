@@ -597,8 +597,8 @@ export class LitMusicdb extends LitElement {
         ${!this.hasToken ? html`<mp3stream-login></mp3stream-login>` : nothing}
         ${this.loading
           ? html`<div class="loading-wrapper">
-              Loading ... <br />
-              <loading-indicator>loading ...</loading-indicator>
+              Loading
+              <loading-indicator></loading-indicator>
             </div>`
           : nothing}
       </main>
