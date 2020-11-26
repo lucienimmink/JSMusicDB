@@ -65,6 +65,7 @@ export class LitMusicdb extends LitElement {
   showPlayer: boolean;
   themeSwitchCycle: any;
   loading:boolean;
+  hasData: boolean;
   hasSK: boolean;
   hasToken: boolean;
   static get styles() {
@@ -159,6 +160,7 @@ export class LitMusicdb extends LitElement {
     this.showPlayer = false;
     this.themeSwitchCycle = null;
     this.loading = true;
+    this.hasData = false;
     this.hasSK = true;
     this.hasToken = true;
     this.addEventListener(
@@ -351,6 +353,8 @@ export class LitMusicdb extends LitElement {
             this._startCurrentPlaylist();
           }
         });
+        this.hasData = true;
+        this.requestUpdate();
         animateCSS(this.shadowRoot?.querySelector('.loading-wrapper'), 'fadeOut').then(() => {
           this.loading = false;
           this.requestUpdate();
@@ -389,18 +393,6 @@ export class LitMusicdb extends LitElement {
         this._getTheme();
       });
     });
-    /*
-    navigator.serviceWorker.addEventListener('message', event => {
-      const type = event?.data?.type;
-      const data = event?.data?.data;
-      if (type === 'refresh') {
-        console.log('collection refreshed as notified by SW')
-        refresh(data).then(() => {
-          this.requestUpdate();
-        });
-      }
-    });
-    */
   }
   _relay = (type: string, method = '') => {
     this.dispatchEvent(new CustomEvent(type, { detail: method }));
@@ -539,7 +531,7 @@ export class LitMusicdb extends LitElement {
   render() {
     return html`
       <main>
-        ${this.hasToken ? html`
+        ${this.hasToken && this.hasData ? html`
           <main-header
             artist="${this.params.artist}"
             album="${this.params.album}"
