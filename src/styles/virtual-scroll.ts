@@ -25,7 +25,7 @@ export default css`
   album-art {
     width: 50px;
     height: 50px;
-    margin-right: 1rem;
+    margin-right: 0.5rem;
     flex-grow: 0;
     border: 1px solid var(--background3, #f3f4f5);
     background: rgba(255, 255, 255, 0.85);

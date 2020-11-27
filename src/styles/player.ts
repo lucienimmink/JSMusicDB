@@ -30,7 +30,7 @@ export default css`
   .art {
     width: 75px;
     min-width: 75px;
-    margin-right: 0.75rem;
+    margin-right: 0.5rem;
     background: rgba(255, 255, 255, 0.85);
   }
   h4 {
