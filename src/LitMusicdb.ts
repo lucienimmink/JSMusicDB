@@ -50,7 +50,11 @@ import './components/loading-indicator/progress-spinner';
 
 import { light, dark } from './styles/themes';
 import timeSpan from './utils/timespan';
-import { ACCENT_COLOR, getCurrentTheme, updateSunriseData } from './utils/colour';
+import {
+  ACCENT_COLOR,
+  getCurrentTheme,
+  updateSunriseData,
+} from './utils/colour';
 import { getSK } from './utils/lastfm';
 import { DONE_RELOADING, getJwt, IS_RELOADING } from './utils/node-mp3stream';
 import { animationCSS, animateCSS } from './utils/animations';
@@ -64,81 +68,83 @@ export class LitMusicdb extends LitElement {
   letters: Array<any>;
   showPlayer: boolean;
   themeSwitchCycle: any;
-  loading:boolean;
+  loading: boolean;
   hasData: boolean;
   hasSK: boolean;
   hasToken: boolean;
   static get styles() {
-    return css`
-      ${animationCSS}
-      main-header {
-        height: 50px;
-        margin: 0;
-        padding: 0;
-        position: fixed;
-        top: 0;
-        right: 0;
-        left: 0;
-        background: var(--background, #f8f9fa);
-        z-index: 2;
-      }
-      letter-nav {
-        position: fixed;
-        left: 0;
-        right: 0;
-        top: 50px;
-        z-index: 2;
-        display: none;
-      }
-      side-nav {
-        display: none;
-      }
-      side-nav[full] {
-        display: block;
-      }
-      app-main {
-        margin-top: 50px;
-        display: block;
-      }
-      app-main.player {
-        padding-bottom: 90px;
-      }
-      lit-player {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 81px;
-        box-sizing: border-box;
-        z-index: 1;
-      }
-      .loading-wrapper {
-        background: var(--background);
-        color: var(--text-color);
-        z-index: 101;
-        position: fixed;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
-      @media (min-width: 768px) {
+    return [
+      animationCSS,
+      css`
+        main-header {
+          height: 50px;
+          margin: 0;
+          padding: 0;
+          position: fixed;
+          top: 0;
+          right: 0;
+          left: 0;
+          background: var(--background, #f8f9fa);
+          z-index: 2;
+        }
+        letter-nav {
+          position: fixed;
+          left: 0;
+          right: 0;
+          top: 50px;
+          z-index: 2;
+          display: none;
+        }
         side-nav {
+          display: none;
+        }
+        side-nav[full] {
           display: block;
         }
         app-main {
-          margin-top: 100px;
-          margin-left: 75px;
-        }
-        letter-nav {
+          margin-top: 50px;
           display: block;
         }
-      }
-    `;
+        app-main.player {
+          padding-bottom: 90px;
+        }
+        lit-player {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 81px;
+          box-sizing: border-box;
+          z-index: 1;
+        }
+        .loading-wrapper {
+          background: var(--background);
+          color: var(--text-color);
+          z-index: 101;
+          position: fixed;
+          left: 0;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+        @media (min-width: 768px) {
+          side-nav {
+            display: block;
+          }
+          app-main {
+            margin-top: 100px;
+            margin-left: 75px;
+          }
+          letter-nav {
+            display: block;
+          }
+        }
+      `,
+    ];
   }
   static get properties() {
     return {
@@ -331,21 +337,29 @@ export class LitMusicdb extends LitElement {
         passive: true,
       }
     );
-    this.addEventListener(IS_RELOADING, () => {
-      const settings = this.shadowRoot?.querySelector('settings-nav');
-      settings?.dispatchEvent(new CustomEvent(IS_RELOADING));
-    }, {
-      passive: true
-    });
-    this.addEventListener(DONE_RELOADING, () => {
-      const settings = this.shadowRoot?.querySelector('settings-nav');
-      settings?.dispatchEvent(new CustomEvent(DONE_RELOADING));
-      refresh().then(() => {
-        this.requestUpdate();
-      });
-    }, {
-      passive: true
-    });
+    this.addEventListener(
+      IS_RELOADING,
+      () => {
+        const settings = this.shadowRoot?.querySelector('settings-nav');
+        settings?.dispatchEvent(new CustomEvent(IS_RELOADING));
+      },
+      {
+        passive: true,
+      }
+    );
+    this.addEventListener(
+      DONE_RELOADING,
+      () => {
+        const settings = this.shadowRoot?.querySelector('settings-nav');
+        settings?.dispatchEvent(new CustomEvent(DONE_RELOADING));
+        refresh().then(() => {
+          this.requestUpdate();
+        });
+      },
+      {
+        passive: true,
+      }
+    );
     musicdb
       .then(() => {
         getSettingByName('playliststate').then((start: any) => {
@@ -355,7 +369,10 @@ export class LitMusicdb extends LitElement {
         });
         this.hasData = true;
         this.requestUpdate();
-        animateCSS(this.shadowRoot?.querySelector('.loading-wrapper'), 'fadeOut').then(() => {
+        animateCSS(
+          this.shadowRoot?.querySelector('.loading-wrapper'),
+          'fadeOut'
+        ).then(() => {
           this.loading = false;
           this.requestUpdate();
         });
@@ -364,30 +381,40 @@ export class LitMusicdb extends LitElement {
         console.log(error);
       });
     this._getTheme();
-    getSK().then((sk: unknown) => {
-      this.hasSK = !!sk;
-      if (!this.hasSK) {
-        animateCSS(this.shadowRoot?.querySelector('.loading-wrapper'), 'fadeOut').then(() => {
-          this.loading = false;
-          this.requestUpdate();
-        });
-      }
-      this.requestUpdate();
-    }).catch(() => {
-      this.hasSK = false;
-    })
-    getJwt().then((jwt: any) => {
-      this.hasToken = !!jwt;
-      if (!this.hasToken) {
-        animateCSS(this.shadowRoot?.querySelector('.loading-wrapper'), 'fadeOut').then(() => {
-          this.loading = false;
-          this.requestUpdate();
-        });
-      }
-      this.requestUpdate();
-    }).catch(() => {
-      this.hasToken = false;
-    })
+    getSK()
+      .then((sk: unknown) => {
+        this.hasSK = !!sk;
+        if (!this.hasSK) {
+          animateCSS(
+            this.shadowRoot?.querySelector('.loading-wrapper'),
+            'fadeOut'
+          ).then(() => {
+            this.loading = false;
+            this.requestUpdate();
+          });
+        }
+        this.requestUpdate();
+      })
+      .catch(() => {
+        this.hasSK = false;
+      });
+    getJwt()
+      .then((jwt: any) => {
+        this.hasToken = !!jwt;
+        if (!this.hasToken) {
+          animateCSS(
+            this.shadowRoot?.querySelector('.loading-wrapper'),
+            'fadeOut'
+          ).then(() => {
+            this.loading = false;
+            this.requestUpdate();
+          });
+        }
+        this.requestUpdate();
+      })
+      .catch(() => {
+        this.hasToken = false;
+      });
     getSettingByName('gps').then((useGPS: any) => {
       updateSunriseData(useGPS || false).then(() => {
         this._getTheme();
@@ -414,7 +441,7 @@ export class LitMusicdb extends LitElement {
     playlists?.dispatchEvent(new CustomEvent(UPDATE_PLAYER, { detail: track }));
     const nowPlaying = this.shadowRoot?.querySelector('now-playing');
     nowPlaying?.dispatchEvent(
-      new CustomEvent(UPDATE_PLAYER, { detail: { track, type }})
+      new CustomEvent(UPDATE_PLAYER, { detail: { track, type } })
     );
   }
   _updatePlaylist(state: number) {
@@ -423,9 +450,7 @@ export class LitMusicdb extends LitElement {
       new CustomEvent(state === 0 ? LOAD_PLAYLIST : LOADED_PLAYLIST)
     );
     const nowPlaying = this.shadowRoot?.querySelector('now-playing');
-    nowPlaying?.dispatchEvent(
-      new CustomEvent(LOADED_PLAYLIST)
-    );
+    nowPlaying?.dispatchEvent(new CustomEvent(LOADED_PLAYLIST));
   }
   _togglePlayPause() {
     const player = this.shadowRoot?.querySelector('lit-player');
@@ -465,10 +490,10 @@ export class LitMusicdb extends LitElement {
   }
   async _getTheme() {
     const theme = await getSettingByName('theme');
-    const cssMap:any = {
+    const cssMap: any = {
       light,
-      dark
-    }
+      dark,
+    };
     let css = null;
     switch (theme) {
       case 'dark':
@@ -496,7 +521,10 @@ export class LitMusicdb extends LitElement {
     document.getElementById('themed')?.innerHTML = css.cssText;
   }
   async _autoSwitchTheme() {
-    const { nextCycle, theme }: { nextCycle:number, theme:string} = await getCurrentTheme();
+    const {
+      nextCycle,
+      theme,
+    }: { nextCycle: number; theme: string } = await getCurrentTheme();
     if (nextCycle) {
       console.info(`Switching theme in ${timeSpan(nextCycle)}`);
       clearTimeout(this.themeSwitchCycle);
@@ -525,75 +553,82 @@ export class LitMusicdb extends LitElement {
       return;
     }
     document.querySelector('html')?.classList.remove('noscroll');
-    await animateCSS(this.shadowRoot?.querySelector('app-main'), 'slideInUp')
+    await animateCSS(this.shadowRoot?.querySelector('app-main'), 'slideInUp');
     // console.log(route, params, query);
   }
   render() {
     return html`
       <main>
-        ${this.hasToken && this.hasData ? html`
-          <main-header
-            artist="${this.params.artist}"
-            album="${this.params.album}"
-            @toggle-menu="${() => {
-              this._relay('toggle-menu');
-            }}"
-          ></main-header>
-          <letter-nav route="${this.params.letter}"></letter-nav>
-          <side-nav
-            route="${this.route}"
-            .hasVisiblePlayer=${this.showPlayer}
-          ></side-nav>
-          <app-main
-            active-route="${this.route}"
-            class="${this.showPlayer ? 'player' : ''}"
-          >
-            <div route="home">
-              <home-nav></home-nav>
-            </div>
-            <div route="letters">
-              <letters-nav></letters-nav>
-            </div>
-            <div route="letter">
-              <artists-in-letter
-                letter="${this.params.letter}"
-              ></artists-in-letter>
-            </div>
-            <div route="artists">
-              <artists-nav activeroute="${this.route}"></artists-nav>
-            </div>
-            <div route="albums">
-              <albums-nav activeroute="${this.route}"></albums-nav>
-            </div>
-            <div route="years">
-              <years-nav activeroute="${this.route}"></years-nav>
-            </div>
-            <div route="playlists">
-              <playlists-nav activeroute="${this.route}"></playlists-nav>
-            </div>
-            <div route="now-playing">
-              <now-playing activeroute="${this.route}"></now-playing>
-            </div>
-            <div route="artist">
-              <albums-in-artist artist="${this.params.artist}"></albums-in-artist>
-            </div>
-            <div route="album">
-              <tracks-in-album
+        ${this.hasToken && this.hasData
+          ? html`
+              <main-header
                 artist="${this.params.artist}"
                 album="${this.params.album}"
-              ></tracks-in-album>
-            </div>
-            <div route="settings">
-              <settings-nav activeroute="${this.route}"></settings-nav>
-            </div>
-            <div route="search">
-              <search-nav activeroute="${this.route}" query="${this.query?.q}"></search-nav>
-            </div>
-          </app-main>
-          ${this.showPlayer ? html` <lit-player></lit-player> ` : nothing}
-          <side-nav route="${this.route}" ?full=${true}></side-nav>
-        ` : nothing}
-        ${!this.hasSK ? html`<lastfm-login ></lastfm-login>` : nothing}
+                @toggle-menu="${() => {
+                  this._relay('toggle-menu');
+                }}"
+              ></main-header>
+              <letter-nav route="${this.params.letter}"></letter-nav>
+              <side-nav
+                route="${this.route}"
+                .hasVisiblePlayer=${this.showPlayer}
+              ></side-nav>
+              <app-main
+                active-route="${this.route}"
+                class="${this.showPlayer ? 'player' : ''}"
+              >
+                <div route="home">
+                  <home-nav></home-nav>
+                </div>
+                <div route="letters">
+                  <letters-nav></letters-nav>
+                </div>
+                <div route="letter">
+                  <artists-in-letter
+                    letter="${this.params.letter}"
+                  ></artists-in-letter>
+                </div>
+                <div route="artists">
+                  <artists-nav activeroute="${this.route}"></artists-nav>
+                </div>
+                <div route="albums">
+                  <albums-nav activeroute="${this.route}"></albums-nav>
+                </div>
+                <div route="years">
+                  <years-nav activeroute="${this.route}"></years-nav>
+                </div>
+                <div route="playlists">
+                  <playlists-nav activeroute="${this.route}"></playlists-nav>
+                </div>
+                <div route="now-playing">
+                  <now-playing activeroute="${this.route}"></now-playing>
+                </div>
+                <div route="artist">
+                  <albums-in-artist
+                    artist="${this.params.artist}"
+                  ></albums-in-artist>
+                </div>
+                <div route="album">
+                  <tracks-in-album
+                    artist="${this.params.artist}"
+                    album="${this.params.album}"
+                  ></tracks-in-album>
+                </div>
+                <div route="settings">
+                  <settings-nav activeroute="${this.route}"></settings-nav>
+                </div>
+                <div route="search">
+                  <search-nav
+                    activeroute="${this.route}"
+                    query="${this.query?.q}"
+                  ></search-nav>
+                </div>
+              </app-main>
+              ${this.showPlayer ? html` <lit-player></lit-player> ` : nothing}
+              <side-nav route="${this.route}" ?full=${true}></side-nav>
+            `
+          : nothing}
+        ${!this.hasSK ? html`<lastfm-login></lastfm-login>` : nothing}
         ${!this.hasToken ? html`<mp3stream-login></mp3stream-login>` : nothing}
         ${this.loading
           ? html`<div class="loading-wrapper">

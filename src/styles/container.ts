@@ -24,4 +24,4 @@ export default css`
       max-width: 1140px;
     }
   }
-`
+`;

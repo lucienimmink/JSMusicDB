@@ -41,4 +41,4 @@ export default css`
       width: 22px;
     }
   }
-`
+`;

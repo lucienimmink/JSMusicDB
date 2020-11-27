@@ -11,7 +11,7 @@ const fetchArt = async (artist: string) => {
       return artists[0].strArtistThumb || artists[0].strArtistFanart;
     }
   }
-  throw Error("no art found in provider audiodb");
+  throw Error('no art found in provider audiodb');
 };
 
 export { fetchArt };

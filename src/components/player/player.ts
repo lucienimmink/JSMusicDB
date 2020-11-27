@@ -74,82 +74,84 @@ export class Album extends LitElement {
   bgColor: string;
   useDynamicAccentColor: boolean;
   static get styles() {
-    return css`
-      ${animationCSS}
-      :host {
-        background: var(--background3, #e9ecef);
-        box-shadow: 0 7px 11px var(--text-color);
-      }
-      audio {
-        display: none;
-      }
-      ${progress}
-      .row {
-        display: flex;
-        flex-direction: row;
-      }
-      ${controls}
-      ${responsive}
+    return [
+      animationCSS,
+      css`
+        :host {
+          background: var(--background3, #e9ecef);
+          box-shadow: 0 7px 11px var(--text-color);
+        }
+        audio {
+          display: none;
+        }
+        ${progress}
+        .row {
+          display: flex;
+          flex-direction: row;
+        }
+        ${controls}
+        ${responsive}
       .details {
-        color: var(--text-color);
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        flex-grow: 1;
-        flex-shrink: 0;
-        width: calc(100% - 75px - 145px);
-        max-width: calc(100% - 75px - 145px);
-        overflow: hidden;
-      }
-      .details app-link {
-        color: var(--primary, #006ecd);
-        transition: color 0.2s ease-in-out;
-      }
-      .art {
-        width: 75px;
-        min-width: 75px;
-        margin-right: 0.75rem;
-        background: rgba(255, 255, 255, 0.85);
-      }
-      h4 {
-        font-weight: 400;
-        font-size: 1.3rem;
-        margin: 8px 0px 0px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-      }
-      h5 {
-        font-weight: 400;
-        font-size: 1.1rem;
-        margin: 0;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-      }
-      @media (min-width: 576px) {
-        album-art {
-          margin-right: 1rem;
+          color: var(--text-color);
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          flex-grow: 1;
+          flex-shrink: 0;
+          width: calc(100% - 75px - 145px);
+          max-width: calc(100% - 75px - 145px);
+          overflow: hidden;
+        }
+        .details app-link {
+          color: var(--primary, #006ecd);
+          transition: color 0.2s ease-in-out;
+        }
+        .art {
+          width: 75px;
+          min-width: 75px;
+          margin-right: 0.75rem;
+          background: rgba(255, 255, 255, 0.85);
         }
         h4 {
           font-weight: 400;
-          font-size: 1.5rem;
-          margin: 4px 0 0;
+          font-size: 1.3rem;
+          margin: 8px 0px 0px;
           white-space: nowrap;
           text-overflow: ellipsis;
+          overflow: hidden;
         }
         h5 {
           font-weight: 400;
-          font-size: 1.2rem;
+          font-size: 1.1rem;
           margin: 0;
           white-space: nowrap;
           text-overflow: ellipsis;
+          overflow: hidden;
         }
-        .details {
-          width: calc(100% - 400px);
+        @media (min-width: 576px) {
+          album-art {
+            margin-right: 1rem;
+          }
+          h4 {
+            font-weight: 400;
+            font-size: 1.5rem;
+            margin: 4px 0 0;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+          h5 {
+            font-weight: 400;
+            font-size: 1.2rem;
+            margin: 0;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+          .details {
+            width: calc(100% - 400px);
+          }
         }
-      }
-    `;
+      `,
+    ];
   }
   constructor() {
     super();
@@ -270,7 +272,11 @@ export class Album extends LitElement {
     this.track = track || this.playlist?.tracks[this.playlist.index || 0];
     if (this.isShuffled) {
       this._shuffleCollection();
-      this.track = track || this.playlist?.tracks[this.playlist.shuffledIndices[this.playlist.index] || 0];
+      this.track =
+        track ||
+        this.playlist?.tracks[
+          this.playlist.shuffledIndices[this.playlist.index] || 0
+        ];
     }
     const server = await getServer();
     const jwt = await getJwt();
@@ -358,12 +364,14 @@ export class Album extends LitElement {
     announceNowPlaying(this.track);
     document
       .querySelector('lit-musicdb')
-      ?.dispatchEvent(new CustomEvent(PLAY_PLAYER_START, { detail: this.track }));
+      ?.dispatchEvent(
+        new CustomEvent(PLAY_PLAYER_START, { detail: this.track })
+      );
     if ('mediaSession' in navigator) {
       (navigator as any).mediaSession.playbackState = 'playing';
     }
-    document.title = `${this.track.title} by ${this.track.trackArtist} - JSMusicDB`
-    animateCSS(this.shadowRoot?.querySelectorAll('h4,h5'), 'slideInUp')
+    document.title = `${this.track.title} by ${this.track.trackArtist} - JSMusicDB`;
+    animateCSS(this.shadowRoot?.querySelectorAll('h4,h5'), 'slideInUp');
     this.requestUpdate();
   }
   _onpause() {
@@ -376,7 +384,7 @@ export class Album extends LitElement {
     if ('mediaSession' in navigator) {
       (navigator as any).mediaSession.playbackState = 'paused';
     }
-    document.title = `JSMusicDB`
+    document.title = `JSMusicDB`;
     this.requestUpdate();
   }
   _onprogress() {
@@ -422,7 +430,7 @@ export class Album extends LitElement {
         this.playlist.shuffledIndices[this.playlist.index]
       ];
     }
-    animateCSS(this.shadowRoot?.querySelectorAll('h4, h5'), 'slideInDown')
+    animateCSS(this.shadowRoot?.querySelectorAll('h4, h5'), 'slideInDown');
     track.isPlaying = false;
     this._play(0, track);
   }
@@ -449,7 +457,7 @@ export class Album extends LitElement {
         this.requestUpdate();
         return;
       }
-      document.title = `JSMusicDB`
+      document.title = `JSMusicDB`;
       this._stop();
       return;
     }
@@ -464,7 +472,7 @@ export class Album extends LitElement {
     if (track) {
       track.isPlaying = false;
     }
-    animateCSS(this.shadowRoot?.querySelectorAll('h4, h5'), 'slideInUp')
+    animateCSS(this.shadowRoot?.querySelectorAll('h4, h5'), 'slideInUp');
     this._play(0, track);
   }
   _stop() {
@@ -571,7 +579,8 @@ export class Album extends LitElement {
                 <app-link href="/now-playing" class="art">
                   <album-art
                     @art=${(e: any) => this._setArt(e)}
-                    .artist=${this.track.album.artist.albumArtist || this.track.album.artist.name}
+                    .artist=${this.track.album.artist.albumArtist ||
+                    this.track.album.artist.name}
                     .album=${this.track.album.name}
                   ></album-art>
                 </app-link>
@@ -584,7 +593,7 @@ export class Album extends LitElement {
                         .escapedLetter}/artist/${this.track.album.artist
                         .escapedName}"
                     >
-                      ${this.track.trackArtist }
+                      ${this.track.trackArtist}
                     </app-link>
                     &bull;
                     <app-link

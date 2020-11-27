@@ -1,12 +1,11 @@
-
 export class Encryption {
   private hexcase = 0;
   public hex_md5(s: string) {
     return this.rstr2hex(this.rstr_md5(this.str2rstr_utf8(s)));
   }
   private rstr2hex(input: string) {
-    const hex_tab = this.hexcase ? "0123456789ABCDEF" : "0123456789abcdef";
-    let output = "";
+    const hex_tab = this.hexcase ? '0123456789ABCDEF' : '0123456789abcdef';
+    let output = '';
     let x: number;
     for (let i = 0; i < input.length; i++) {
       x = input.charCodeAt(i);
@@ -19,7 +18,7 @@ export class Encryption {
     return this.binl2rstr(this.binl_md5(this.rstr2binl(s), s.length * 8));
   }
   private str2rstr_utf8(input: string) {
-    let output = "";
+    let output = '';
     let i = -1;
     let x: number;
     let y: number;
@@ -39,19 +38,31 @@ export class Encryption {
         output += String.fromCharCode(x);
       } else if (x <= 0x7ff) {
         // tslint:disable-next-line:no-bitwise
-        output += String.fromCharCode(0xc0 | ((x >>> 6) & 0x1f), 0x80 | (x & 0x3f));
+        output += String.fromCharCode(
+          0xc0 | ((x >>> 6) & 0x1f),
+          0x80 | (x & 0x3f)
+        );
       } else if (x <= 0xffff) {
         // tslint:disable-next-line:no-bitwise
-        output += String.fromCharCode(0xe0 | ((x >>> 12) & 0x0f), 0x80 | ((x >>> 6) & 0x3f), 0x80 | (x & 0x3f));
+        output += String.fromCharCode(
+          0xe0 | ((x >>> 12) & 0x0f),
+          0x80 | ((x >>> 6) & 0x3f),
+          0x80 | (x & 0x3f)
+        );
       } else if (x <= 0x1fffff) {
         // tslint:disable-next-line:no-bitwise
-        output += String.fromCharCode(0xf0 | ((x >>> 18) & 0x07), 0x80 | ((x >>> 12) & 0x3f), 0x80 | ((x >>> 6) & 0x3f), 0x80 | (x & 0x3f));
+        output += String.fromCharCode(
+          0xf0 | ((x >>> 18) & 0x07),
+          0x80 | ((x >>> 12) & 0x3f),
+          0x80 | ((x >>> 6) & 0x3f),
+          0x80 | (x & 0x3f)
+        );
       }
     }
     return output;
   }
   private binl2rstr(input: any) {
-    let output = "";
+    let output = '';
     for (let i = 0; i < input.length * 32; i += 8) {
       // tslint:disable-next-line:no-bitwise
       output += String.fromCharCode((input[i >> 5] >>> i % 32) & 0xff);
@@ -165,7 +176,10 @@ export class Encryption {
   }
 
   private md5_cmn(q: any, a: any, b: any, x: any, s: any, t: any) {
-    return this.safe_add(this.bit_rol(this.safe_add(this.safe_add(a, q), this.safe_add(x, t)), s), b);
+    return this.safe_add(
+      this.bit_rol(this.safe_add(this.safe_add(a, q), this.safe_add(x, t)), s),
+      b
+    );
   }
   private md5_ff(a: any, b: any, c: any, d: any, x: any, s: any, t: any) {
     // tslint:disable-next-line:no-bitwise

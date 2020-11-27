@@ -1,8 +1,8 @@
 function leftPad0(n: number) {
   if (n === 0) {
-    return "00";
+    return '00';
   }
-  return (n < 10 ? "0" : "") + n;
+  return (n < 10 ? '0' : '') + n;
 }
 
 export default function timeSpan(mseconds: number) {
@@ -12,14 +12,14 @@ export default function timeSpan(mseconds: number) {
   const minutes = Math.floor((seconds % 3600) / 60);
   const value = [];
   if (hours) {
-    value.push(leftPad0(hours))
+    value.push(leftPad0(hours));
   }
   //if (minutes) {
-    value.push(leftPad0(minutes))
+  value.push(leftPad0(minutes));
   //}
-  value.push(leftPad0(Math.round(seconds % 60)))
+  value.push(leftPad0(Math.round(seconds % 60)));
   if (days) {
-    return `${days} day${days > 1 ? 's' : ''}, ` + value.join(":");
+    return `${days} day${days > 1 ? 's' : ''}, ` + value.join(':');
   }
-  return value.join(":");
+  return value.join(':');
 }

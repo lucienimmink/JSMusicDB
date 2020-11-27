@@ -31,4 +31,4 @@ export default css`
       font-size: 1rem;
     }
   }
-`
+`;

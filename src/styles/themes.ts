@@ -1,4 +1,4 @@
-import { css } from 'lit-element'
+import { css } from 'lit-element';
 
 export const light = css`
   :root {
@@ -20,12 +20,12 @@ export const light = css`
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-      background-color: var(--progress-background, #F3F4F5);
+    background-color: var(--progress-background, #f3f4f5);
   }
   ::-webkit-scrollbar-thumb {
-      background-color: var(--progress, #006ecd);
+    background-color: var(--progress, #006ecd);
   }
-`
+`;
 
 export const dark = css`
   :root {
@@ -40,18 +40,18 @@ export const dark = css`
     --text-dark: rgba(0, 130, 225, 1);
     --text-color: #fff;
     --letter-color: #000;
-    --background: #1E1E1E;
+    --background: #1e1e1e;
     --background2: #252526;
-    --background3: #3C3C3C;
+    --background3: #3c3c3c;
   }
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-      background-color: var(--progress-background, #F3F4F5);
+    background-color: var(--progress-background, #f3f4f5);
   }
   ::-webkit-scrollbar-thumb {
-      background-color: var(--progress, #006ecd);
+    background-color: var(--progress, #006ecd);
   }
-`
+`;

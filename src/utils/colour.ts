@@ -112,7 +112,9 @@ export function addCustomCss(colors: any): void {
       }`;
   removeCustomCss();
   document.querySelector('body')?.appendChild(accentCSSOverrideNode);
-  document.querySelector('[name="theme-color"]')?.setAttribute('content', `rgb(${darken.r}, ${darken.g}, ${darken.b})`);
+  document
+    .querySelector('[name="theme-color"]')
+    ?.setAttribute('content', `rgb(${darken.r}, ${darken.g}, ${darken.b})`);
 }
 export function removeCustomCss(): void {
   if (document.querySelector('#custom-css-node')) {
@@ -150,13 +152,13 @@ const _getNewStartAndStop = async () => {
   stop.setMinutes(0);
   stop.setHours(9);
   return { start, stop };
-}
+};
 const _setSunrise = async (start: any, stop: any) => {
   await setSetting('start', start);
   await setSetting('stop', stop);
   return;
-}
-export const getCurrentTheme = async() => {
+};
+export const getCurrentTheme = async () => {
   const now: any = new Date();
   let stop: any = await getSettingByName('stop');
   let start: any = await getSettingByName('start');
@@ -168,38 +170,41 @@ export const getCurrentTheme = async() => {
   }
   const theme = {
     theme: 'light',
-    nextCycle: 0
-  }
+    nextCycle: 0,
+  };
   if (now > start && now < stop) {
     theme.nextCycle = stop - now;
-    theme.theme = 'dark'
+    theme.theme = 'dark';
   }
   if (now < start) {
     theme.nextCycle = start - now;
   }
   return theme;
-}
+};
 export const updateSunriseData = async (useGPS = true) => {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve: any) => {
-      if (useGPS) {
-        return navigator.geolocation.getCurrentPosition(async ({ coords }) => {
-          const lat = coords.latitude;
-          const lng = coords.longitude;
-          const response = await fetch(
-            `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`
-          );
-          const { results } = await response.json();
-          const start = new Date(results.sunset);
-          const stop: Date = new Date(results.sunrise);
-          const nextDayStop: Date = new Date(stop.setDate(stop.getDate() + 1));
-          return resolve(await _setSunrise(start, nextDayStop));
-        });
-      }
-      const { start, stop }: { start: Date; stop: Date; } = await _getNewStartAndStop();
-      return resolve(await _setSunrise(start, stop));
-    })
-}
+    if (useGPS) {
+      return navigator.geolocation.getCurrentPosition(async ({ coords }) => {
+        const lat = coords.latitude;
+        const lng = coords.longitude;
+        const response = await fetch(
+          `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`
+        );
+        const { results } = await response.json();
+        const start = new Date(results.sunset);
+        const stop: Date = new Date(results.sunrise);
+        const nextDayStop: Date = new Date(stop.setDate(stop.getDate() + 1));
+        return resolve(await _setSunrise(start, nextDayStop));
+      });
+    }
+    const {
+      start,
+      stop,
+    }: { start: Date; stop: Date } = await _getNewStartAndStop();
+    return resolve(await _setSunrise(start, stop));
+  });
+};
 export const currentBgColor = async () => {
   const theme = await getSettingByName('theme');
   const currentIfAuto: any = await _getCurrentColour();

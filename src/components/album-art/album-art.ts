@@ -1,7 +1,7 @@
-import { LitElement, customElement, html, css } from "lit-element";
-import { Store, get, set } from "idb-keyval";
-import { fetchArtForArtist, fetchArtForAlbum } from "./fetchArt";
-import { defaultAlbum, defaultArtist, defaultPixel } from "./defaultart";
+import { LitElement, customElement, html, css } from 'lit-element';
+import { Store, get, set } from 'idb-keyval';
+import { fetchArtForArtist, fetchArtForAlbum } from './fetchArt';
+import { defaultAlbum, defaultArtist, defaultPixel } from './defaultart';
 @customElement('album-art')
 export class AlbumArt extends LitElement {
   art: any;
@@ -11,7 +11,7 @@ export class AlbumArt extends LitElement {
   album: any;
   artist: any;
   cache: boolean;
-  transparent: boolean
+  transparent: boolean;
 
   static get properties() {
     return {
@@ -22,7 +22,7 @@ export class AlbumArt extends LitElement {
       customStore: { type: Object },
       _cache: { type: Object },
       objectFit: { type: String },
-      transparent: { type: Boolean }
+      transparent: { type: Boolean },
     };
   }
   static get styles() {
@@ -31,7 +31,7 @@ export class AlbumArt extends LitElement {
         width: 100%;
         height: 100%;
         transition: all 0.2s ease-in-out;
-        background: rgba(255,255,255,0.85);
+        background: rgba(255, 255, 255, 0.85);
       }
       p {
         margin: 0;
@@ -49,8 +49,8 @@ export class AlbumArt extends LitElement {
     super();
     this.art = defaultPixel;
     this._cache = {};
-    this.customStore = new Store("album-art-db", "album-art-store");
-    this.objectFit = "cover";
+    this.customStore = new Store('album-art-db', 'album-art-store');
+    this.objectFit = 'cover';
     this.cache = false;
     this.transparent = false;
   }
@@ -58,16 +58,16 @@ export class AlbumArt extends LitElement {
     return html`
       <img
         src="${this.art}"
-        alt="${this.artist}${this.album? ` - ${this.album}` : ''}"
+        alt="${this.artist}${this.album ? ` - ${this.album}` : ''}"
         style="object-fit: ${this.objectFit}"
         @load=${(e: Event) => {
           // @ts-ignore
-          e.target.classList.remove('loading') }
-        }
+          e.target.classList.remove('loading');
+        }}
         loading="lazy"
-        class="${this.transparent ? 'transparent ' : '' }"
+        class="${this.transparent ? 'transparent ' : ''}"
       />
-    `
+    `;
   }
   async connectedCallback() {
     super.connectedCallback();
@@ -81,7 +81,7 @@ export class AlbumArt extends LitElement {
       return;
     }
     const cache = await this.getArt(key);
-    this.cache = !(this.getAttribute("cache") === "false");
+    this.cache = !(this.getAttribute('cache') === 'false');
     if (this.cache && cache) {
       this.art = cache;
       this.dispatch();
@@ -90,35 +90,37 @@ export class AlbumArt extends LitElement {
     }
   }
   dispatch() {
-    const evt = new CustomEvent("art", {
+    const evt = new CustomEvent('art', {
       detail: { art: this.art },
       bubbles: true,
-      composed: true
+      composed: true,
     });
     this.dispatchEvent(evt);
   }
   updated(changedProperties: Map<string | number | symbol, unknown>) {
-    changedProperties.forEach(async (oldValue: any, propName: string | number | symbol) => {
-      this.cache = !(this.getAttribute("cache") === "false");
-      if (propName === "artist" || propName === 'album') {
-        this.art = defaultPixel;
-        this.shadowRoot?.querySelector("img")?.classList.add('loading');
-        if (this._cache[`${this.artist}-${this.album}`]) {
-          this.art = this._cache[`${this.artist}-${this.album}`];
-          this.dispatch();
-          return;
-        } else {
-          const key = { artist: this.artist, album: this.album };
-          const cache = await this.getArt(key);
-          if (this.cache && cache) {
-            this.art = cache;
+    changedProperties.forEach(
+      async (oldValue: any, propName: string | number | symbol) => {
+        this.cache = !(this.getAttribute('cache') === 'false');
+        if (propName === 'artist' || propName === 'album') {
+          this.art = defaultPixel;
+          this.shadowRoot?.querySelector('img')?.classList.add('loading');
+          if (this._cache[`${this.artist}-${this.album}`]) {
+            this.art = this._cache[`${this.artist}-${this.album}`];
             this.dispatch();
+            return;
           } else {
-            this.updateArt(key);
+            const key = { artist: this.artist, album: this.album };
+            const cache = await this.getArt(key);
+            if (this.cache && cache) {
+              this.art = cache;
+              this.dispatch();
+            } else {
+              this.updateArt(key);
+            }
           }
         }
       }
-    });
+    );
   }
   isEmptyArt(art: string) {
     const base = `https://res.cloudinary.com/jsmusicdb-com/image/fetch/`;
@@ -127,13 +129,13 @@ export class AlbumArt extends LitElement {
     }
     return false;
   }
-  async getArt({ artist, album }: { artist: string, album: string }) {
+  async getArt({ artist, album }: { artist: string; album: string }) {
     if (!album) {
       return await get(`${artist}`, this.customStore);
     }
     return await get(`${artist}-${album}`, this.customStore);
   }
-  async updateArt({ artist, album }: { artist: string, album: string }) {
+  async updateArt({ artist, album }: { artist: string; album: string }) {
     let art = `https://res.cloudinary.com/jsmusicdb-com/image/fetch/`;
     if (!album) {
       try {

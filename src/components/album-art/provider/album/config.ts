@@ -1,9 +1,9 @@
-import { fetchArt as lastfm } from "./lastfm";
+import { fetchArt as lastfm } from './lastfm';
 
 const config = [
   {
-    provider: lastfm
-  }
+    provider: lastfm,
+  },
 ];
 
 export { config };

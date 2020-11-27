@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 function reverse(promise: Promise<unknown[]>) {
   return new Promise((resolve, reject) =>

@@ -1,15 +1,15 @@
-import { fetchArt as fanart } from "./fanart";
-import { fetchArt as audiodb } from "./audiodb";
+import { fetchArt as fanart } from './fanart';
+import { fetchArt as audiodb } from './audiodb';
 
 const config = [
   {
     provider: fanart,
-    key: "mbid"
+    key: 'mbid',
   },
   {
     provider: audiodb,
-    key: "artist"
-  }
+    key: 'artist',
+  },
 ];
 
 export { config };
