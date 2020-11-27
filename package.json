@@ -57,7 +57,7 @@
     ]
   },
   "name": "lit-musicdb",
-  "version": "3.0.1-rc.0",
+  "version": "3.0.0-rc.1",
   "description": "Webcomponent lit-musicdb following open-wc recommendations",
   "author": "lit-musicdb",
   "license": "MIT",
