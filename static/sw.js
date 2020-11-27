@@ -1,27 +1,23 @@
-self.addEventListener("install", e => {
-  // init
-});
-
-self.addEventListener("activate", event => {
+self.addEventListener('activate', event => {
   event.waitUntil(self.clients.claim());
 });
 
-const CACHE_NAME = "v1";
+const CACHE_NAME = 'v1';
 
-self.addEventListener("fetch", function(event) {
+self.addEventListener('fetch', function (event) {
   // SKIP cachecheck if it's the streaming path
   if (
-    event.request.url.indexOf("/listen") !== -1 ||
-    event.request.url.indexOf("file://") !== -1
+    event.request.url.indexOf('/listen') !== -1 ||
+    event.request.url.indexOf('file://') !== -1
   ) {
     // nothing to see here, carry on
-  } else if (event.request.url.indexOf("music.json") !== -1) {
+  } else if (event.request.url.indexOf('music.json') !== -1) {
     // send back from the cache but always update the cache with the networks version.
     event.respondWith(fromCache(event.request));
     event.waitUntil(update(event.request).then(refresh));
   } else {
     event.respondWith(
-      caches.match(event.request).then(function(response) {
+      caches.match(event.request).then(function (response) {
         // Cache hit - return response
         if (response) {
           return response;
@@ -32,17 +28,20 @@ self.addEventListener("fetch", function(event) {
         // once by cache and once by the browser for fetch, we need
         // to clone the response.
         var fetchRequest = event.request.clone();
-        if (fetchRequest.cache === 'only-if-cached' && fetchRequest.mode !== 'same-origin') {
+        if (
+          fetchRequest.cache === 'only-if-cached' &&
+          fetchRequest.mode !== 'same-origin'
+        ) {
           return;
         }
-        return fetch(fetchRequest).then(function(response) {
+        return fetch(fetchRequest).then(function (response) {
           // Check if we received a valid response
           if (!response) {
             return response;
           }
           if (
-            fetchRequest.url.indexOf("/data/") === -1 &&
-            fetchRequest.url.indexOf("lastfm-img2") === -1
+            fetchRequest.url.indexOf('/data/') === -1 &&
+            fetchRequest.url.indexOf('lastfm-img2') === -1
           ) {
             return response;
           }
@@ -53,7 +52,7 @@ self.addEventListener("fetch", function(event) {
           // to clone it so we have two streams.
           var responseToCache = response.clone();
 
-          caches.open(CACHE_NAME).then(function(cache) {
+          caches.open(CACHE_NAME).then(function (cache) {
             cache.put(event.request, responseToCache);
           });
 
@@ -65,15 +64,15 @@ self.addEventListener("fetch", function(event) {
 });
 
 function fromCache(request) {
-  return caches.open(CACHE_NAME).then(function(cache) {
+  return caches.open(CACHE_NAME).then(function (cache) {
     return cache.match(request);
   });
 }
 
 function update(request) {
-  return caches.open(CACHE_NAME).then(function(cache) {
-    return fetch(request).then(function(response) {
-      return cache.put(request, response.clone()).then(function() {
+  return caches.open(CACHE_NAME).then(function (cache) {
+    return fetch(request).then(function (response) {
+      return cache.put(request, response.clone()).then(function () {
         return response;
       });
     });
@@ -81,11 +80,11 @@ function update(request) {
 }
 
 function refresh(response) {
-  return self.clients.matchAll().then(function(clients) {
-    clients.forEach(function(client) {
+  return self.clients.matchAll().then(function (clients) {
+    clients.forEach(function (client) {
       var message = {
-        type: "refresh",
-        url: response.url
+        type: 'refresh',
+        url: response.url,
       };
       client.postMessage(message);
     });
