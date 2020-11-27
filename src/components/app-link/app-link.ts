@@ -1,69 +1,26 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, property, customElement } from 'lit-element';
 import { navigator } from 'lit-element-router';
+import appLink from '../../styles/app-link';
 
+@customElement('app-link')
 @navigator
 export default class Link extends LitElement {
+  @property()
   href: string;
+  @property()
   title: string;
+  @property({ type: Boolean })
   inline: boolean;
+  @property({ type: Boolean })
   flex: boolean;
+  @property({ type: Boolean })
   letter: boolean;
+  @property({ type: Boolean })
   menu: boolean;
+  @property({ type: Boolean })
   text: boolean;
-  static get properties() {
-    return {
-      href: { type: String },
-      title: { type: String },
-      inline: { type: Boolean },
-      flex: { type: Boolean },
-      letter: { type: Boolean },
-      menu: { type: Boolean },
-      text: { type: Boolean },
-    };
-  }
   static get styles() {
-    return css`
-      a {
-        display: flex;
-        align-items: center;
-        align-content: center;
-        height: 100%;
-        color: var(--primary, default);
-        text-decoration: none;
-      }
-      span {
-        width: 100%;
-        display: block;
-      }
-      .inline {
-        display: inline;
-      }
-      .inline span {
-        display: inline;
-      }
-      .flex {
-        display: flex;
-        width: 100%;
-      }
-      .flex span {
-        display: flex;
-      }
-      .letter {
-        color: var(--letter-color, default);
-      }
-      .text {
-        color: var(--text-color, default);
-      }
-      .menu {
-        padding: 15px;
-        color: var(--text-color, default);
-      }
-      @media (min-width: 576px) {
-        .menu {
-          padding: 25px;
-        }
-      }
-    `;
+    return [appLink];
   }
   constructor() {
     super();
@@ -100,5 +57,3 @@ export default class Link extends LitElement {
     throw new Error(`Method not implemented. ${href}`);
   }
 }
-
-customElements.define('app-link', Link);

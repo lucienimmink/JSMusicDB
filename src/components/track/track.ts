@@ -1,10 +1,11 @@
-import { LitElement, customElement, html, css, property } from 'lit-element';
+import { LitElement, customElement, html, property } from 'lit-element';
 import timeSpan from '../../utils/timespan';
 import { UPDATE_PLAYER } from '../../utils/player';
 import { playIcon } from '../icons/play';
 import { pauseIcon } from '../icons/pause';
 import smallMuted from '../../styles/small-muted';
 import { nothing } from 'lit-html';
+import trackNav from '../../styles/track-nav';
 
 @customElement('track-in-list')
 export class track extends LitElement {
@@ -14,54 +15,7 @@ export class track extends LitElement {
   type: string;
 
   static get styles() {
-    return [
-      smallMuted,
-      css`
-        ${smallMuted}
-        li {
-          display: flex;
-          flex-direction: row;
-          box-sizing: border-box;
-          border-top: 1px solid var(--background3);
-          padding: 0.5rem 1rem;
-          transition: background 0.2s ease-in-out;
-          min-height: 60px;
-        }
-        li:hover {
-          background: rgba(0, 0, 0, 0.1);
-        }
-        li.active {
-          background: var(--primary, #006ecd);
-          color: var(--letter-color);
-          transition: color 0.2s ease-in-out;
-        }
-        .num {
-          flex-grow: 0;
-          width: 35px;
-          min-width: 35px;
-        }
-        .title {
-          flex-grow: 1;
-        }
-        .time {
-          flex-grow: 0;
-          text-align: end;
-          width: 65px;
-          min-width: 65px;
-        }
-        .if-active {
-          display: none;
-        }
-        svg {
-          width: 15px;
-          display: block;
-          margin-top: 6px;
-        }
-        .active .if-active {
-          display: inline;
-        }
-      `,
-    ];
+    return [smallMuted, trackNav];
   }
   constructor() {
     super();

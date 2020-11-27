@@ -1,9 +1,10 @@
-import { LitElement, customElement, html, css, property } from 'lit-element';
+import { LitElement, customElement, html, property } from 'lit-element';
 import '../app-link/app-link';
 import musicdb from '../../components/musicdb';
 import smallMuted from '../../styles/small-muted';
 import panel from '../../styles/panel';
 import { nothing } from 'lit-html';
+import artist from '../../styles/artist';
 
 @customElement('albums-in-artist')
 export class Artist extends LitElement {
@@ -11,28 +12,7 @@ export class Artist extends LitElement {
   artist: string;
   albums: Array<any>;
   static get styles() {
-    return [
-      smallMuted,
-      panel,
-      css`
-        :host {
-          display: block;
-          flex-direction: row;
-          flex-wrap: wrap;
-          justify-content: center;
-          align-content: flex-start;
-          align-items: stretch;
-          display: flex;
-          padding: 25px 0 0;
-        }
-        @media (min-width: 768px) {
-          :host {
-            margin-left: 100px;
-            width: calc(100% - 150px);
-          }
-        }
-      `,
-    ];
+    return [smallMuted, panel, artist];
   }
   constructor() {
     super();

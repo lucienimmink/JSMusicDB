@@ -56,10 +56,10 @@
       "git add"
     ]
   },
-  "name": "lit-musicdb",
+  "name": "jsmusicdb",
   "version": "3.0.0-rc.1",
-  "description": "Webcomponent lit-musicdb following open-wc recommendations",
-  "author": "lit-musicdb",
+  "description": "Web standards music database and player",
+  "author": "Lucien Immink",
   "license": "MIT",
   "dependencies": {
     "@thebespokepixel/es-tinycolor": "^2.1.1",

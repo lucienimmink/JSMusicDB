@@ -1,4 +1,4 @@
-import { LitElement, customElement, html, css, property } from 'lit-element';
+import { LitElement, customElement, html, property } from 'lit-element';
 import 'lit-virtualizer';
 import '../app-link/app-link';
 import musicdb from '../musicdb';
@@ -7,6 +7,7 @@ import container from '../../styles/container';
 import jumplist from '../../styles/jumplist';
 import smallMuted from '../../styles/small-muted';
 import virtualScroll from '../../styles/virtual-scroll';
+import years from '../../styles/years';
 @customElement('years-nav')
 export class LetterNav extends LitElement {
   years: Array<any>;
@@ -15,23 +16,7 @@ export class LetterNav extends LitElement {
   @property()
   activeroute: string;
   static get styles() {
-    return [
-      headers,
-      container,
-      jumplist,
-      smallMuted,
-      virtualScroll,
-      css`
-        .jumplist a {
-          padding: 12px;
-        }
-        @media (min-width: 768px) {
-          .jumplist a {
-            padding: 20px;
-          }
-        }
-      `,
-    ];
+    return [headers, container, jumplist, smallMuted, virtualScroll, years];
   }
   _handleJump = (e: any, y: string) => {
     e.preventDefault();

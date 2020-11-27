@@ -1,4 +1,4 @@
-import { LitElement, customElement, html, css, property } from 'lit-element';
+import { LitElement, customElement, html, property } from 'lit-element';
 import './album-details';
 import '../track/track';
 import musicdb from '../musicdb';
@@ -10,6 +10,7 @@ import {
 } from '../../utils/player';
 import headers from '../../styles/headers';
 import container from '../../styles/container';
+import album from '../../styles/album';
 
 @customElement('tracks-in-album')
 export class Album extends LitElement {
@@ -21,33 +22,7 @@ export class Album extends LitElement {
   sortedDiscs: Array<any>;
 
   static get styles() {
-    return [
-      container,
-      headers,
-      css`
-        .container {
-          display: block;
-        }
-        ol {
-          margin: 0;
-          padding: 0;
-          list-style: none;
-        }
-        track-in-list {
-          cursor: pointer;
-        }
-        @media (min-width: 768px) {
-          .container {
-            padding-top: 254px;
-          }
-          album-details {
-            position: fixed;
-            width: 100vw;
-            z-index: 10;
-          }
-        }
-      `,
-    ];
+    return [container, headers, album];
   }
   constructor() {
     super();
