@@ -34,7 +34,7 @@ export default css`
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
   }
   li .time {
     flex-grow: 0;
@@ -44,6 +44,7 @@ export default css`
     width: 70px;
     min-width: 70px;
     white-space: nowrap;
+    justify-content: center;
   }
   li .playing {
     color: var(--primary, #006ecd);
