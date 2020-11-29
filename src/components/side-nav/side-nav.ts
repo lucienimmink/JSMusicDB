@@ -143,55 +143,59 @@ export class SideNav extends LitElement {
               `
             : nothing}
           <li class="${this.route === 'home' ? 'active' : ''}">
-            <app-link href="/" title="Home" menu
+            <app-link href="/" title="Home" menu flex
               >${homeIcon} <span>Home</span></app-link
             >
           </li>
           ${this.full
             ? html`
                 <li class="sm-only ${this.route === 'letters' ? 'active' : ''}">
-                  <app-link href="/letters" title="Letters" menu
+                  <app-link href="/letters" title="Letters" menu flex
                     >${lettersIcon} <span>Letters</span></app-link
                   >
                 </li>
               `
             : nothing}
           <li class="${this.route === 'artists' ? 'active' : ''}">
-            <app-link href="/artists" title="Artists" menu
+            <app-link href="/artists" title="Artists" menu flex
               >${artistsIcon} <span>Artists</span></app-link
             >
           </li>
           <li class="${this.route === 'albums' ? 'active' : ''}">
-            <app-link href="/albums" title="Albums" menu
+            <app-link href="/albums" title="Albums" menu flex
               >${albumsIcon} <span>Albums</span></app-link
             >
           </li>
           <li class="${this.route === 'years' ? 'active' : ''}">
-            <app-link href="/years" title="Years" menu
+            <app-link href="/years" title="Years" menu flex
               >${yearsIcon} <span>Years</span></app-link
             >
           </li>
           <li class="${this.route === 'playlists' ? 'active' : ''}">
-            <app-link href="/playlists" title="Playlists" menu
+            <app-link href="/playlists" title="Playlists" menu flex
               >${playlistsIcon} <span>Playlists</span></app-link
             >
           </li>
           <li class="${this.route === 'now-playing' ? 'active' : ''}">
-            <app-link href="/now-playing" title="Now playing" menu
+            <app-link href="/now-playing" title="Now playing" menu flex
               >${nowPlayingIcon} <span>Now playing</span></app-link
             >
           </li>
           ${this.hasScrobbleCache
             ? html`
                 <li class="${this.route === 'scrobble-cache' ? 'active' : ''}">
-                  <app-link href="/scrobble-cache" title="Scrobble cache" menu
+                  <app-link
+                    href="/scrobble-cache"
+                    title="Scrobble cache"
+                    menu
+                    flex
                     >${scrobbleCacheIcon} <span>Scrobble cache</span></app-link
                   >
                 </li>
               `
             : nothing}
           <li class="${this.route === 'settings' ? 'active' : ''}">
-            <app-link href="/settings" title="Settings" menu
+            <app-link href="/settings" title="Settings" menu flex
               >${settingsIcon} <span>Settings</span></app-link
             >
           </li>

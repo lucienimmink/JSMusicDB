@@ -86,7 +86,7 @@ export default css`
   }
   .full li span {
     display: inline-block;
-    margin-left: 10px;
+    margin-left: 0.75rem;
   }
   h1 {
     margin: 0 0 0 10px;
