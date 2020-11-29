@@ -95,6 +95,7 @@ export class LetterNav extends LitElement {
     e.preventDefault();
     this.loading = true;
     this.playlist = null;
+    this.showStartArtistSelection = false;
     this.requestUpdate();
     getNewPlaylistForLovedTracks({
       username: this.lastFMUserName,
@@ -108,8 +109,8 @@ export class LetterNav extends LitElement {
     e.preventDefault();
     this.loading = true;
     this.playlist = null;
-    this.requestUpdate();
     this.showStartArtistSelection = false;
+    this.requestUpdate();
     getNewPlaylistForRandom({
       max: this.max,
     }).then((playlist: any) => {
@@ -121,6 +122,7 @@ export class LetterNav extends LitElement {
   _generateRandomByPreference = (e: Event) => {
     e.preventDefault();
     this.loading = true;
+    this.showStartArtistSelection = false;
     this.playlist = null;
     this.requestUpdate();
     // getTopArtists
@@ -186,15 +188,19 @@ export class LetterNav extends LitElement {
     const switchTo = e?.target?.value;
     switch (switchTo) {
       case 'current':
+        this.showStartArtistSelection = false;
         this._setActivePlaylist('current', e);
         break;
       case 'loved':
+        this.showStartArtistSelection = false;
         this._getLovedTracks(e);
         break;
       case 'random':
+        this.showStartArtistSelection = false;
         this._generateRandom(e);
         break;
       case 'random-pref':
+        this.showStartArtistSelection = false;
         this._generateRandomByPreference(e);
         break;
       case 'radio':
