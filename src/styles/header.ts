@@ -19,7 +19,7 @@ export default css`
     overflow: hidden;
     display: block;
     height: 50px;
-    font-weight: lighter;
+    font-weight: 300;
     padding-left: 10px;
   }
   app-link {

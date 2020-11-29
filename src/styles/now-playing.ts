@@ -89,7 +89,7 @@ export default css`
     margin: 0 0.5rem;
   }
   h4 {
-    font-weight: 400;
+    font-weight: 300;
     font-size: 1.3rem;
     margin: 0;
     white-space: nowrap;
@@ -97,7 +97,7 @@ export default css`
     overflow: hidden;
   }
   h5 {
-    font-weight: 400;
+    font-weight: 300;
     font-size: 1.1rem;
     margin: 0;
     white-space: nowrap;
@@ -160,7 +160,7 @@ export default css`
   }
   .floating-text-details h5 {
     font-size: 2rem;
-    font-weight: 400;
+    font-weight: 300;
   }
   .floating-text-details app-link {
     text-shadow: 0px 0px 1px var(--primary, #006ecd);
@@ -235,7 +235,7 @@ export default css`
   /* notihng is playing */
   h3 {
     padding-top: 1.5rem;
-    font-weight: normal;
+    font-weight: 300;
   }
   app-link {
     color: var(--primary, #006ecd);

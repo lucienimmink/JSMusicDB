@@ -46,7 +46,7 @@ export default css`
     height: calc(1.5em + 0.75rem + 2px);
     padding: 0.375rem 0.75rem;
     font-size: 1rem;
-    font-weight: 400;
+    font-weight: 300;
     line-height: 1.5;
     color: #495057;
     background-color: #fff;
@@ -57,7 +57,7 @@ export default css`
   }
   .btn {
     display: inline-block;
-    font-weight: 400;
+    font-weight: 300;
     color: #212529;
     text-align: center;
     vertical-align: middle;

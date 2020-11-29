@@ -91,7 +91,7 @@ export default css`
   h1 {
     margin: 0 0 0 10px;
     padding: 0;
-    font-weight: lighter;
+    font-weight: 300;
     height: 50px;
   }
   h1 a {

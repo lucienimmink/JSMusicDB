@@ -28,7 +28,7 @@ export default css`
     padding: 20px;
     font-size: 1.3rem;
     line-height: 1.3;
-    font-weight: 400;
+    font-weight: 300;
     color: var(--primary, #006ecd);
     transition: color 0.2s ease-in-out;
     text-decoration: none;
