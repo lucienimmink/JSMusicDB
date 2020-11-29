@@ -42,7 +42,6 @@ export default css`
   }
   .active app-link {
     color: black;
-    background: rgba(0, 0, 0, 0.03);
     border-left-color: var(--primary);
     transition: border-left-color 0.2s ease-in-out;
     opacity: 1;
