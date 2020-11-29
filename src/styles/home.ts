@@ -21,7 +21,7 @@ export default css`
     transition: all 0.2s ease-in-out;
   }
   li .album-art {
-    margin-right: 0.5rem;
+    margin-right: 0.75rem;
     flex-grow: 0;
     width: 54px;
     min-width: 54px;

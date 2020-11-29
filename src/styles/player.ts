@@ -30,7 +30,7 @@ export default css`
   .art {
     width: 75px;
     min-width: 75px;
-    margin-right: 0.5rem;
+    margin-right: 0.75rem;
     background: rgba(255, 255, 255, 0.85);
   }
   h4 {
@@ -56,7 +56,6 @@ export default css`
     h4 {
       font-weight: 400;
       font-size: 1.5rem;
-      margin: 4px 0 0;
       white-space: nowrap;
       text-overflow: ellipsis;
     }

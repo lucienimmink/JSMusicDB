@@ -78,7 +78,7 @@ export default css`
     content: '•';
     text-indent: 0;
     line-height: 6px;
-    padding-top: 2px;
-    font-size: 45px;
+    padding-top: 9px;
+    font-size: 64px;
   }
 `;
