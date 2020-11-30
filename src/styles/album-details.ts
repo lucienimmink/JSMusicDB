@@ -10,6 +10,7 @@ export default css`
     background: var(--background2, #f2f4f7);
     padding: 1rem;
     overflow: hidden;
+    transition: all 0.1s ease-in-out;
   }
   album-art {
     flex: 0 0 125px;
@@ -20,6 +21,7 @@ export default css`
     margin-right: 1rem;
     border: 1px solid var(--background, #f3f4f5);
     box-shadow: 0px 0px 1px var(--primary, #006ecd);
+    transition: all 0.1s ease-in-out;
   }
   .details {
     display: flex;
@@ -73,9 +75,17 @@ export default css`
     h3,
     h4 {
       font-size: 1.5rem;
+      overflow: hidden;
+      transition: all 0.1s ease-in-out;
+      height: 3rem;
     }
     .shrunk h4 {
-      display: none;
+      height: 0;
+      opacity: 0;
+    }
+    .shrunk {
+      background-color: var(--background2-seethrough, var(--background2));
+      padding: 1rem 2rem;
     }
   }
   @media (min-width: 992px) {
