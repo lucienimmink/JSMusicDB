@@ -35,7 +35,7 @@ export default css`
   }
   .playlist li.header {
     display: block;
-    padding-top: 1.5rem;
+    padding-top: 1.3rem;
     border-top: 0;
     height: auto;
   }
@@ -68,7 +68,7 @@ export default css`
   }
   .playlist li.header:hover,
   .playlist li.no-hover:hover {
-    background: inherit;
+    background: var(--background-seethrough, rgba(248, 249, 250, 0.85));
   }
   .playlist li.active {
     background: var(--primary, #006ecd);

@@ -12,6 +12,7 @@ export const light = css`
     --text-color: #000;
     --letter-color: #fff;
     --background: #f8f9fa;
+    --background-seethrough: rgba(249, 249, 250, 0.9);
     --background2: #f2f4f7;
     --background2-seethrough: rgba(242, 244, 247, 0.9);
     --background3: #e9ecef;
@@ -42,6 +43,7 @@ export const dark = css`
     --text-color: #fff;
     --letter-color: #000;
     --background: #1e1e1e;
+    --background-seethrough: rgba(30, 30, 30, 0.9);
     --background2: #252526;
     --background2-seethrough: rgba(37, 37, 38, 0.9);
     --background3: #3c3c3c;

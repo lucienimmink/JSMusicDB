@@ -8,10 +8,17 @@ export default css`
     display: flex;
     color: var(--text-color);
     transition: all 0.2s ease-in-out;
+    box-sizing: border-box;
+  }
+  .p-1 {
+    padding: 1rem;
   }
   @media (min-width: 768px) {
     .container {
       max-width: 720px;
+    }
+    .p-1 {
+      padding: 0;
     }
   }
   @media (min-width: 992px) {

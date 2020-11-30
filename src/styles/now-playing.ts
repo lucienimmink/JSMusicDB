@@ -241,6 +241,13 @@ export default css`
     color: var(--primary, #006ecd);
     transition: color 0.2s ease-in-out;
   }
+  app-link .icon {
+    width: 20px;
+    margin: 0 0.25rem;
+    display: inline-block;
+    top: 5px;
+    position: relative;
+  }
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;

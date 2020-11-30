@@ -36,6 +36,9 @@ import { chevronUpIcon } from '../icons/chevron-up';
 import { chevronDownIcon } from '../icons/chevron-down';
 import { animationCSS, animateCSS } from '../../utils/animations';
 import nowPlaying from '../../styles/now-playing';
+import { artistsIcon } from '../icons/artists';
+import { albumsIcon } from '../icons/albums';
+import { playlistsIcon } from '../icons/playlists';
 
 @customElement('now-playing')
 export class NowPlaying extends LitElement {
@@ -455,17 +458,24 @@ export class NowPlaying extends LitElement {
             </div>
           `
         : html`
-            <div class="container">
+            <div class="container p-1">
               <h3>Nothing is playing</h3>
               <p>
                 This is where you'll see the song you're playing and songs that
                 are coming up.
               </p>
               <p>
-                Find an <app-link href="/artists" inline>artist</app-link> or
-                <app-link href="/albums" inline>album</app-link>that you want to
-                play; or setup a
-                <app-link href="/playlists" inline>playlist</app-link>
+                Find an
+                <app-link href="/artists" inline
+                  ><span class="icon">${artistsIcon}</span> artist</app-link
+                >
+                or
+                <app-link href="/albums" inline
+                  ><span class="icon">${albumsIcon}</span>album</app-link
+                >that you want to play; or setup a
+                <app-link href="/playlists" inline
+                  ><span class="icon">${playlistsIcon}</span>playlist</app-link
+                >
               </p>
             </div>
           `}
