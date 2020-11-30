@@ -581,7 +581,9 @@ export class LitMusicdb extends LitElement {
                   <home-nav></home-nav>
                 </div>
                 <div route="letters">
-                  <letters-nav></letters-nav>
+                  <letters-nav
+                    .hasVisiblePlayer=${this.showPlayer}
+                  ></letters-nav>
                 </div>
                 <div route="letter">
                   <artists-in-letter
@@ -589,13 +591,22 @@ export class LitMusicdb extends LitElement {
                   ></artists-in-letter>
                 </div>
                 <div route="artists">
-                  <artists-nav activeroute="${this.route}"></artists-nav>
+                  <artists-nav
+                    activeroute="${this.route}"
+                    .hasVisiblePlayer=${this.showPlayer}
+                  ></artists-nav>
                 </div>
                 <div route="albums">
-                  <albums-nav activeroute="${this.route}"></albums-nav>
+                  <albums-nav
+                    activeroute="${this.route}"
+                    .hasVisiblePlayer=${this.showPlayer}
+                  ></albums-nav>
                 </div>
                 <div route="years">
-                  <years-nav activeroute="${this.route}"></years-nav>
+                  <years-nav
+                    activeroute="${this.route}"
+                    .hasVisiblePlayer=${this.showPlayer}
+                  ></years-nav>
                 </div>
                 <div route="playlists">
                   <playlists-nav activeroute="${this.route}"></playlists-nav>

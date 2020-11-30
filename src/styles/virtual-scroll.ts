@@ -20,7 +20,7 @@ export default css`
     transition: background 0.2s ease-in-out;
   }
   ol app-link:hover {
-    background: rgba(0, 0, 0, 0.1);
+    background: var(--background3);
   }
   album-art {
     width: 50px;

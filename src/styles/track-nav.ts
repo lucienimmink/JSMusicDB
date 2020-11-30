@@ -11,7 +11,7 @@ export default css`
     min-height: 60px;
   }
   li:hover {
-    background: rgba(0, 0, 0, 0.1);
+    background: var(--background3);
   }
   li.active {
     background: var(--primary, #006ecd);

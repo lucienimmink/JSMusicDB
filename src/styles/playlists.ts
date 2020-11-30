@@ -50,7 +50,7 @@ export default css`
     padding-left: 1rem;
   }
   .playlists li a:hover {
-    background: rgba(0, 0, 0, 0.1);
+    background: var(--background3);
   }
   .playlist li {
     display: flex;
@@ -64,7 +64,7 @@ export default css`
     cursor: pointer;
   }
   .playlist li:hover {
-    background: rgba(0, 0, 0, 0.1);
+    background: var(--background3);
   }
   .playlist li.header:hover,
   .playlist li.no-hover:hover {

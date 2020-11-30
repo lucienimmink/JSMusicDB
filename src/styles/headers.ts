@@ -9,7 +9,7 @@ export default css`
     transition: border-bottom-color 0.2s ease-in-out;
     padding: 1.5rem 1rem 0;
     position: sticky;
-    z-index: 2;
+    z-index: 1;
     margin-bottom: -1px;
     top: 50px;
     font-size: 1.3rem;

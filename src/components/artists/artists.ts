@@ -14,6 +14,8 @@ export class LetterNav extends LitElement {
   showJumpList: boolean;
   @property()
   activeroute: string;
+  @property({ type: Boolean })
+  hasVisiblePlayer: boolean;
   static get styles() {
     return [container, headers, jumplist, smallMuted, virtualScroll];
   }
@@ -63,10 +65,16 @@ export class LetterNav extends LitElement {
     this.artists = [];
     this.activeroute = '';
     this.showJumpList = false;
+    this.hasVisiblePlayer = false;
   }
   render() {
     return html`
-      <ul class="jumplist ${this.showJumpList ? 'show' : ''}">
+      <ul
+        class="jumplist ${this.showJumpList ? 'show ' : ''} ${this
+          .hasVisiblePlayer
+          ? 'player'
+          : ''}"
+      >
         ${this.letters.map(
           (letter: any) => html`
             <li>

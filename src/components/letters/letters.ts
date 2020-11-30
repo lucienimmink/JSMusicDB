@@ -7,6 +7,8 @@ import jumplist from '../../styles/jumplist';
 export class LetterNav extends LitElement {
   @property()
   route: string;
+  @property({ type: Boolean })
+  hasVisiblePlayer: boolean;
   letters: Array<any>;
   static get styles() {
     return [jumplist];
@@ -15,6 +17,7 @@ export class LetterNav extends LitElement {
     super();
     this.route = '';
     this.letters = [];
+    this.hasVisiblePlayer = false;
     musicdb
       .then((mdb: any) => {
         this.letters = mdb.sortedLetters;
@@ -26,7 +29,7 @@ export class LetterNav extends LitElement {
   }
   render() {
     return html`
-      <ul class="jumplist show">
+      <ul class="jumplist show ${this.hasVisiblePlayer ? 'player' : ''}">
         ${this.letters.map(
           (letter: any) => html`
             <li class="${letter.escapedLetter === this.route ? 'active' : ''}">
