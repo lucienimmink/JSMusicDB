@@ -71,6 +71,7 @@ export default css`
     }
     h2 {
       font-size: 2.5rem;
+      transition: all 0.1s ease-in-out;
     }
     h3,
     h4 {
@@ -78,6 +79,12 @@ export default css`
       overflow: hidden;
       transition: all 0.1s ease-in-out;
       height: 3rem;
+    }
+    .shrunk h2 {
+      font-size: 2rem;
+    }
+    .shrunk h3 {
+      font-size: 1.2rem;
     }
     .shrunk h4 {
       height: 0;
