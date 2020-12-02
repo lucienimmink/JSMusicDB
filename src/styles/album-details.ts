@@ -71,6 +71,7 @@ export default css`
     }
     h2 {
       font-size: 2.5rem;
+      margin-top: 3px;
       transition: all 0.1s ease-in-out;
     }
     h3,

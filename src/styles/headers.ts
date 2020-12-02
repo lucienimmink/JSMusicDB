@@ -12,7 +12,7 @@ export default css`
     z-index: 1;
     margin-bottom: -1px;
     top: 50px;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 300;
   }
   .virtual-scroll .header {
@@ -28,7 +28,7 @@ export default css`
       top: 0;
     }
     .album-details .header {
-      top: 227px;
+      top: 224px;
     }
   }
 `;
