@@ -12,6 +12,7 @@ export default css`
     height: 6px;
     transition: width 0.1s linear;
     position: absolute;
+    pointer-events: none;
   }
   .progress-buffered-bar {
     opacity: 0.3;
