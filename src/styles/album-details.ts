@@ -43,9 +43,11 @@ export default css`
     font-size: 1.5rem;
     line-height: 1.3;
   }
-  h3,
-  h4 {
+  h3 {
     font-size: 1.2rem;
+  }
+  h4 {
+    font-size: 1rem;
   }
   h3 {
     flex-grow: 1;
@@ -79,7 +81,9 @@ export default css`
       font-size: 1.5rem;
       overflow: hidden;
       transition: all 0.1s ease-in-out;
-      height: 3rem;
+    }
+    h4 {
+      font-size: 1.1rem;
     }
     .shrunk h2 {
       font-size: 2rem;
