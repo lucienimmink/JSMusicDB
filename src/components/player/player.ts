@@ -55,6 +55,7 @@ import {
   currentBgColor,
   getColorsFromRGBWithBGColor,
   getDominantColorByURL,
+  LIGHT,
 } from '../../utils/colour';
 import { animationCSS, animateCSS } from '../../utils/animations';
 import player from '../../styles/player';
@@ -87,7 +88,7 @@ export class Album extends LitElement {
     this.art = '';
     this.isShuffled = false;
     this.useDynamicAccentColor = false;
-    this.bgColor = '#fff';
+    this.bgColor = LIGHT;
     getCurrentPlaylist().then((playlist: any) => {
       this.playlist = playlist;
       getCurrentTime().then((time: any) => {

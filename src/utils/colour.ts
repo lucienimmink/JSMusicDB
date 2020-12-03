@@ -7,6 +7,8 @@ import FastAverageColor from 'fast-average-color/dist/index.es6';
 import { getSettingByName, setSetting } from './settings';
 
 export const ACCENT_COLOR = 'accent-color';
+export const LIGHT = '#e9ecef';
+export const DARK = '#3c3c3c';
 
 const convertToStrict = (color: any): any => {
   color.r = Math.floor(color.r);
@@ -17,21 +19,21 @@ const convertToStrict = (color: any): any => {
   return color;
 };
 
-const getReadableColor = (rgba: any, bgcolor = '#fff'): any => {
+const getReadableColor = (rgba: any, bgcolor = LIGHT): any => {
   if (!tinycolor.isReadable(rgba, bgcolor)) {
-    if (bgcolor === '#000') {
-      return getReadableColor(new tinycolor(rgba).lighten(5), bgcolor);
+    if (bgcolor === DARK) {
+      return getReadableColor(new tinycolor(rgba).lighten(2), bgcolor);
     }
-    return getReadableColor(new tinycolor(rgba).darken(5), bgcolor);
+    return getReadableColor(new tinycolor(rgba).darken(2), bgcolor);
   }
   return convertToStrict(new tinycolor(rgba).toRgb());
 };
 
 const getHighestContrast = (color: any): any => {
-  return tinycolor.readability('#000', color) >
-    tinycolor.readability('#fff', color)
-    ? '#000'
-    : '#fff';
+  return tinycolor.readability(DARK, color) >
+    tinycolor.readability(LIGHT, color)
+    ? DARK
+    : LIGHT;
 };
 export function getDominantColor(img: any, cb: any, override: any): any {
   getDominantColorByURL(img.src, cb, override);
@@ -132,9 +134,9 @@ const _getCurrentColour = async () => {
     stop = (await _getNewStartAndStop()).stop;
   }
   if (now > start && now < stop) {
-    return '#000';
+    return DARK;
   }
-  return '#fff';
+  return LIGHT;
 };
 const _getNewStartAndStop = async () => {
   const now: Date = new Date();
@@ -210,9 +212,9 @@ export const currentBgColor = async () => {
   const currentIfAuto: any = await _getCurrentColour();
   switch (theme) {
     case 'light':
-      return '#fff';
+      return LIGHT;
     case 'dark':
-      return '#000';
+      return DARK;
     case 'auto':
       return currentIfAuto;
   }
