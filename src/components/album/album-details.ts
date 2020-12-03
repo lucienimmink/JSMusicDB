@@ -7,6 +7,7 @@ import container from '../../styles/container';
 import buttons from '../../styles/buttons';
 import { nothing } from 'lit-html';
 import albumDetails from '../../styles/album-details';
+import smallMuted from '../../styles/small-muted';
 
 @customElement('album-details')
 export class AlbumDetails extends LitElement {
@@ -18,7 +19,7 @@ export class AlbumDetails extends LitElement {
   shrunk: boolean;
 
   static get styles() {
-    return [container, buttons, albumDetails];
+    return [container, buttons, albumDetails, smallMuted];
   }
 
   constructor() {
@@ -75,7 +76,7 @@ export class AlbumDetails extends LitElement {
       tracks.forEach(track => {
         duration += track.duration;
       });
-      return timeSpan(duration);
+      return timeSpan(duration, true);
     }
     return 0;
   }
@@ -102,9 +103,10 @@ export class AlbumDetails extends LitElement {
               ${this.albumDetails?.year
                 ? html`${this.albumDetails?.year} •`
                 : nothing}
-              songs: ${this.albumDetails?.tracks?.length} •
-              ${this.calculateLength(this.albumDetails?.tracks)} •
-              ${this.albumDetails?.type}
+              ${this.albumDetails?.tracks?.length}
+              song${this.albumDetails?.tracks?.length === '1' ? '' : 's'} •
+              ${this.calculateLength(this.albumDetails?.tracks)}
+              <span class="small muted"> • ${this.albumDetails?.type}</span>
             </h4>
             <h4>
               <button

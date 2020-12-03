@@ -49,7 +49,7 @@ export class LetterNav extends LitElement {
         this.stats.albums = mdb.totals.albums;
         this.stats.artists = mdb.totals.artists;
         this.stats.tracks = mdb.totals.tracks;
-        this.stats.time = timeSpan(mdb.totals.playingTime);
+        this.stats.time = timeSpan(mdb.totals.playingTime, true);
         getLastParsed().then((date: any) => {
           const formatter = new Intl.DateTimeFormat('en-GB', {
             // @ts-ignore
