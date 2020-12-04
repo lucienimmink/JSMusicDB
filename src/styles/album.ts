@@ -11,6 +11,10 @@ export default css`
   }
   track-in-list {
     cursor: pointer;
+    display: block;
+  }
+  ol > track-in-list:first-child {
+    margin-top: 1px;
   }
   @media (min-width: 768px) {
     .container {
