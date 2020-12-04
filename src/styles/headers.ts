@@ -28,7 +28,7 @@ export default css`
       top: 0;
     }
     .album-details .header {
-      top: 224px;
+      top: 209px;
     }
   }
 `;
