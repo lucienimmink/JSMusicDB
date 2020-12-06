@@ -13,27 +13,29 @@ const baseConfig = createSpaConfig({
 export default merge(baseConfig, {
   input: './index.html',
   plugins: [
-    versionInjector(),
+    versionInjector({
+      logLevel: 'warn',
+    }),
     copy({
-      targets: [
-        { src: 'static/**/*', dest: 'dist' },
-      ],
+      targets: [{ src: 'static/**/*', dest: 'dist' }],
       // set flatten to false to preserve folder structure
       flatten: false,
     }),
     filesize(),
   ],
-  manualChunks: (moduleID) => {
+  manualChunks: moduleID => {
     if (moduleID.includes('node_modules')) {
       return 'vendor';
     } else {
       return 'main';
     }
   },
-  output: [{
-    dir: 'dist',
-    format: 'esm',
-    entryFileNames: '[name]-[hash].js',
-    chunkFileNames: '[name]-[hash].js'
-  }]
+  output: [
+    {
+      dir: 'dist',
+      format: 'esm',
+      entryFileNames: '[name]-[hash].js',
+      chunkFileNames: '[name]-[hash].js',
+    },
+  ],
 });
