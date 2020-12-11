@@ -76,7 +76,6 @@ export class LetterNav extends LitElement {
     this.addEventListener(
       REFRESH,
       () => {
-        console.log('refresh years');
         this._getAlbums();
       },
       { passive: true }

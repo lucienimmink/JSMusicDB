@@ -11,9 +11,12 @@ const musicdb = new Promise((resolve, reject) => {
       fetch(`${server}/data/node-music.json`)
         .then((response: Response) => response.json())
         .then((data: unknown) => {
-          mdb.parseSourceJson(data, true);
-          setLastParsed(new Date());
-          resolve(mdb);
+          if (data) {
+            mdb.parseSourceJson(data, true);
+            setLastParsed(new Date());
+            resolve(mdb);
+          }
+          reject('music data file is empty');
         });
     } else {
       reject('no base-server given, cannot get collection');
@@ -30,8 +33,10 @@ export const refresh = async () => {
 
 export const update = async () => {
   const musicdb = await getMusicDB();
-  mdb.parseSourceJson(musicdb, true);
-  await setLastParsed(new Date());
+  if (musicdb) {
+    mdb.parseSourceJson(musicdb, true);
+    await setLastParsed(new Date());
+  }
 };
 
 export default musicdb;
