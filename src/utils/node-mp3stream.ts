@@ -5,6 +5,7 @@ const SERVER = 'server';
 
 export const IS_RELOADING = 'is-reloading';
 export const DONE_RELOADING = 'done-reloading';
+export const POLL_INTERVALL = 5000;
 
 export const canLogin = async (server: string) => {
   const serverVersion = await _versionCheck(server);

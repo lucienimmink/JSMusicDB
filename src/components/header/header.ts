@@ -10,6 +10,7 @@ import {
   getProgress,
   getServer,
   IS_RELOADING,
+  POLL_INTERVALL,
 } from '../../utils/node-mp3stream';
 import header from '../../styles/header';
 
@@ -70,7 +71,7 @@ export class Header extends LitElement {
         }
         setTimeout(() => {
           this._poll({ server, jwt });
-        }, 500);
+        }, POLL_INTERVALL);
       }
     );
   };
