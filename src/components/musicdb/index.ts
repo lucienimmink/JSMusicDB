@@ -1,4 +1,5 @@
 import { musicdbcore } from 'musicdbcore';
+import { getMusicDB } from '../../utils/musicdb';
 import { getServer } from '../../utils/node-mp3stream';
 import { setLastParsed } from '../../utils/settings';
 
@@ -20,19 +21,17 @@ const musicdb = new Promise((resolve, reject) => {
   });
 });
 
-export const refresh = async (data: any = null) => {
-  if (data) {
-    console.log('received data', data.length);
-    mdb.parseSourceJson(data, true);
-    await setLastParsed(new Date());
-  }
+export const refresh = async () => {
   const server: any = await getServer();
   if (server) {
-    const response: any = await fetch(`${server}/data/node-music.json?fresh`);
-    const data: any = await response.json();
-    mdb.parseSourceJson(data, true);
-    await setLastParsed(new Date());
+    await fetch(`${server}/data/node-music.json`);
   }
+};
+
+export const update = async () => {
+  const musicdb = await getMusicDB();
+  mdb.parseSourceJson(musicdb, true);
+  await setLastParsed(new Date());
 };
 
 export default musicdb;

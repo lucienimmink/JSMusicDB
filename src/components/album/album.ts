@@ -11,6 +11,7 @@ import {
 import headers from '../../styles/headers';
 import container from '../../styles/container';
 import album from '../../styles/album';
+import { REFRESH } from '../../utils/musicdb';
 
 @customElement('tracks-in-album')
 export class Album extends LitElement {
@@ -38,6 +39,13 @@ export class Album extends LitElement {
       {
         passive: true,
       }
+    );
+    this.addEventListener(
+      REFRESH,
+      () => {
+        this._getTracks();
+      },
+      { passive: true }
     );
   }
   attributeChangedCallback(name: any, oldval: any, newval: any) {

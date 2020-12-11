@@ -70,7 +70,7 @@ export class Header extends LitElement {
         }
         setTimeout(() => {
           this._poll({ server, jwt });
-        }, 5000);
+        }, 500);
       }
     );
   };

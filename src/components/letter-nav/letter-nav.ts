@@ -2,6 +2,7 @@ import { LitElement, customElement, html, property } from 'lit-element';
 import './../app-link/app-link';
 import musicdb from '../musicdb';
 import letterNav from '../../styles/letter-nav';
+import { REFRESH } from '../../utils/musicdb';
 
 @customElement('letter-nav')
 export class LetterNav extends LitElement {
@@ -15,6 +16,16 @@ export class LetterNav extends LitElement {
     super();
     this.route = '';
     this.letters = [];
+    this._init();
+    this.addEventListener(
+      REFRESH,
+      () => {
+        this._init();
+      },
+      { passive: true }
+    );
+  }
+  private _init() {
     musicdb
       .then((mdb: any) => {
         this.letters = mdb.sortedLetters;
@@ -24,6 +35,7 @@ export class LetterNav extends LitElement {
         console.log(error);
       });
   }
+
   render() {
     return html`
       <ul>

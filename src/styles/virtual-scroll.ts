@@ -7,6 +7,9 @@ export default css`
     padding: 0;
     width: 100%;
   }
+  lit-virtualizer {
+    overflow: hidden;
+  }
   ol li {
     display: block;
     height: 70px;

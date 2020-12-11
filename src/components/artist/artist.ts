@@ -5,6 +5,7 @@ import smallMuted from '../../styles/small-muted';
 import panel from '../../styles/panel';
 import { nothing } from 'lit-html';
 import artist from '../../styles/artist';
+import { REFRESH } from '../../utils/musicdb';
 
 @customElement('albums-in-artist')
 export class Artist extends LitElement {
@@ -18,14 +19,21 @@ export class Artist extends LitElement {
     super();
     this.artist = '';
     this.albums = [];
+    this.addEventListener(
+      REFRESH,
+      () => {
+        this._getAlbums();
+      },
+      { passive: true }
+    );
   }
   attributeChangedCallback(name: any, oldval: any, newval: any) {
     if (name === 'artist') {
-      this.getAlbums(newval);
+      this._getAlbums(newval);
     }
     super.attributeChangedCallback(name, oldval, newval);
   }
-  getAlbums(artist = this.artist) {
+  _getAlbums(artist = this.artist) {
     musicdb
       .then((mdb: any) => {
         this.albums =

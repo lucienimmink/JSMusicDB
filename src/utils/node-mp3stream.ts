@@ -34,8 +34,9 @@ export const authenticate = async (server: string, payload: ArrayBuffer) => {
 };
 
 export const getRescan = async (server: string, jwt: string) => {
-  const response = await fetch(`${server}/rescan?jwt=${jwt}`);
-  return await response.json();
+  const ts = new Date().getTime();
+  const response = await fetch(`${server}/rescan?jwt=${jwt}&ts=${ts}`);
+  return await response.text();
 };
 
 export const getProgress = async (server: string, jwt: string) => {

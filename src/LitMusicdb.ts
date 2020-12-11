@@ -1,4 +1,4 @@
-import { LitElement, customElement, html, css } from 'lit-element';
+import { LitElement, customElement, html } from 'lit-element';
 import { nothing } from 'lit-html';
 import { router } from 'lit-element-router';
 
@@ -22,7 +22,7 @@ import {
   PLAY_PLAYER_START,
 } from './utils/player';
 import { getSettingByName, TOGGLE_SETTING } from './utils/settings';
-import musicdb, { refresh } from './components/musicdb';
+import musicdb, { refresh, update } from './components/musicdb';
 
 import './components/app-link/app-link';
 import './components/app-main/app-main';
@@ -59,6 +59,7 @@ import { getSK } from './utils/lastfm';
 import { DONE_RELOADING, getJwt, IS_RELOADING } from './utils/node-mp3stream';
 import { animationCSS, animateCSS } from './utils/animations';
 import litMusicdb from './styles/lit-musicdb';
+import { REFRESH } from './utils/musicdb';
 
 @customElement('lit-musicdb')
 @router
@@ -288,6 +289,32 @@ export class LitMusicdb extends LitElement {
       },
       {
         passive: true,
+      }
+    );
+    navigator.serviceWorker.addEventListener(
+      'message',
+      async (e: MessageEvent) => {
+        const { type } = e.data;
+        if (type === 'refresh') {
+          await update();
+
+          // update all views
+          const views = this.shadowRoot?.querySelectorAll(
+            `letter-nav,
+              home-nav,
+              letters-nav,
+              artists-nav,
+              albums-nav,
+              years-nav,
+              albums-in-artist,
+              tracks-in-album,
+              settings-nav,
+              search-nav`
+          );
+          views?.forEach((view: any) => {
+            view?.dispatchEvent(new Event(REFRESH));
+          });
+        }
       }
     );
     musicdb

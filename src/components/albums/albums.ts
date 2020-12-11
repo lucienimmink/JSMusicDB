@@ -7,6 +7,7 @@ import container from '../../styles/container';
 import jumplist from '../../styles/jumplist';
 import smallMuted from '../../styles/small-muted';
 import virtualScroll from '../../styles/virtual-scroll';
+import { REFRESH } from '../../utils/musicdb';
 
 @customElement('albums-nav')
 export class LetterNav extends LitElement {
@@ -70,6 +71,13 @@ export class LetterNav extends LitElement {
     this.showJumpList = false;
     this.activeroute = '';
     this.hasVisiblePlayer = false;
+    this.addEventListener(
+      REFRESH,
+      () => {
+        this._getAlbums();
+      },
+      { passive: true }
+    );
   }
   render() {
     return html`

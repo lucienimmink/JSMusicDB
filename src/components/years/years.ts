@@ -8,6 +8,7 @@ import jumplist from '../../styles/jumplist';
 import smallMuted from '../../styles/small-muted';
 import virtualScroll from '../../styles/virtual-scroll';
 import years from '../../styles/years';
+import { REFRESH } from '../../utils/musicdb';
 @customElement('years-nav')
 export class LetterNav extends LitElement {
   years: Array<any>;
@@ -39,6 +40,8 @@ export class LetterNav extends LitElement {
   }
   _getAlbums = () => {
     musicdb.then((mdb: any) => {
+      this.years = [];
+      this.albums = [];
       const sortedYears = Object.keys(mdb.years).sort(
         (a: string, b: string) => {
           return parseInt(a, 10) < parseInt(b, 10) ? 1 : -1;
@@ -70,6 +73,14 @@ export class LetterNav extends LitElement {
     this.activeroute = '';
     this.showJumpList = false;
     this.hasVisiblePlayer = false;
+    this.addEventListener(
+      REFRESH,
+      () => {
+        console.log('refresh years');
+        this._getAlbums();
+      },
+      { passive: true }
+    );
   }
   render() {
     return html`

@@ -23,6 +23,7 @@ import buttons from '../../styles/buttons';
 import { nothing } from 'lit-html';
 import { updateSunriseData } from '../../utils/colour';
 import settings from '../../styles/settings';
+import { REFRESH } from '../../utils/musicdb';
 
 @customElement('settings-nav')
 export class LetterNav extends LitElement {
@@ -43,27 +44,14 @@ export class LetterNav extends LitElement {
     this.mp3stream = '';
     this.isReloading = false;
     this.showVersion = true;
-
-    musicdb
-      .then((mdb: any) => {
-        this.stats.albums = mdb.totals.albums;
-        this.stats.artists = mdb.totals.artists;
-        this.stats.tracks = mdb.totals.tracks;
-        this.stats.time = timeSpan(mdb.totals.playingTime, true);
-        getLastParsed().then((date: any) => {
-          const formatter = new Intl.DateTimeFormat('en-GB', {
-            // @ts-ignore
-            dateStyle: 'full',
-            timeStyle: 'medium',
-          });
-          this.stats.parsed = formatter.format(date);
-          this.requestUpdate();
-        });
-        this.requestUpdate();
-      })
-      .catch((error: any) => {
-        console.log(error);
-      });
+    this._init();
+    this.addEventListener(
+      REFRESH,
+      () => {
+        this._init();
+      },
+      { passive: true }
+    );
     getSettings().then(async (settings: any) => {
       this.settings = settings;
       if (!this.settings) {
@@ -98,6 +86,29 @@ export class LetterNav extends LitElement {
       }
     );
   }
+  private _init() {
+    musicdb
+      .then((mdb: any) => {
+        this.stats.albums = mdb.totals.albums;
+        this.stats.artists = mdb.totals.artists;
+        this.stats.tracks = mdb.totals.tracks;
+        this.stats.time = timeSpan(mdb.totals.playingTime, true);
+        getLastParsed().then((date: any) => {
+          const formatter = new Intl.DateTimeFormat('en-GB', {
+            // @ts-ignore
+            dateStyle: 'full',
+            timeStyle: 'medium',
+          });
+          this.stats.parsed = formatter.format(date);
+          this.requestUpdate();
+        });
+        this.requestUpdate();
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+  }
+
   _formatDate(date: any, fallback: string) {
     if (!date) {
       return fallback;

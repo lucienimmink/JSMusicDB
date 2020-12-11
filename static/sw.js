@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 self.addEventListener('activate', event => {
   event.waitUntil(self.clients.claim());
 });
@@ -8,6 +9,7 @@ self.addEventListener('fetch', function (event) {
   // SKIP cachecheck if it's the streaming path
   if (
     event.request.url.indexOf('/listen') !== -1 ||
+    event.request.url.indexOf('/rescan') !== -1 ||
     event.request.url.indexOf('file://') !== -1
   ) {
     // nothing to see here, carry on
@@ -79,6 +81,36 @@ function update(request) {
   });
 }
 
+let db;
+
+function getDB() {
+  if (!db) {
+    db = new Promise((resolve, reject) => {
+      const openreq = indexedDB.open('keyval-store', 1);
+      openreq.onerror = () => {
+        reject(openreq.error);
+      };
+      openreq.onupgradeneeded = () => {
+        // First time setup: create an empty object store
+        openreq.result.createObjectStore('keyval');
+      };
+      openreq.onsuccess = () => {
+        resolve(openreq.result);
+      };
+    });
+  }
+  return db;
+}
+
+async function withStore(type, callback) {
+  const db = await getDB();
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction('keyval', type);
+    transaction.oncomplete = () => resolve();
+    transaction.onerror = () => reject(transaction.error);
+    callback(transaction.objectStore('keyval'));
+  });
+}
 function refresh(response) {
   return self.clients.matchAll().then(function (clients) {
     clients.forEach(function (client) {
@@ -86,7 +118,13 @@ function refresh(response) {
         type: 'refresh',
         url: response.url,
       };
-      client.postMessage(message);
+      // once updated let the client know it's updated
+      response.json().then(async musicdb => {
+        withStore('readwrite', store => {
+          store.put(musicdb, 'musicdb');
+        });
+        client.postMessage(message);
+      });
     });
   });
 }

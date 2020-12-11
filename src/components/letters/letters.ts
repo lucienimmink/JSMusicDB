@@ -2,6 +2,7 @@ import { LitElement, customElement, html, property } from 'lit-element';
 import './../app-link/app-link';
 import musicdb from '../musicdb';
 import jumplist from '../../styles/jumplist';
+import { REFRESH } from '../../utils/musicdb';
 
 @customElement('letters-nav')
 export class LetterNav extends LitElement {
@@ -18,6 +19,16 @@ export class LetterNav extends LitElement {
     this.route = '';
     this.letters = [];
     this.hasVisiblePlayer = false;
+    this._init();
+    this.addEventListener(
+      REFRESH,
+      () => {
+        this._init();
+      },
+      { passive: true }
+    );
+  }
+  private _init() {
     musicdb
       .then((mdb: any) => {
         this.letters = mdb.sortedLetters;
@@ -27,6 +38,7 @@ export class LetterNav extends LitElement {
         console.log(error);
       });
   }
+
   render() {
     return html`
       <ul class="jumplist show ${this.hasVisiblePlayer ? 'player' : ''}">

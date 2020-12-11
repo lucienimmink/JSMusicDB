@@ -9,7 +9,7 @@ import panel from '../../styles/panel';
 
 import { cdIcon } from '../icons/cd';
 import home from '../../styles/home';
-import { DUMMY_TRACK } from '../../utils/musicdb';
+import { DUMMY_TRACK, REFRESH } from '../../utils/musicdb';
 
 const INTERVAL = 1000 * 30;
 const LATEST_ADDITIONS = 14;
@@ -33,6 +33,16 @@ export class HomeNav extends LitElement {
         this._poll(name);
       }
     });
+    this._init();
+    this.addEventListener(
+      REFRESH,
+      () => {
+        this._init();
+      },
+      { passive: true }
+    );
+  }
+  _init() {
     musicdb
       .then((mdb: any) => {
         this.recentAdded = mdb.getLatestAdditions(LATEST_ADDITIONS);
@@ -88,7 +98,7 @@ export class HomeNav extends LitElement {
   }
   render() {
     return html`
-      ${this.recenttracks.length > 0
+      ${this.recenttracks?.length > 0
         ? html`
             <div class="container">
               <h2 class="header">Recently listened</h2>

@@ -10,6 +10,7 @@ import smallMuted from '../../styles/small-muted';
 import warn from '../../styles/warn';
 import timeSpan from '../../utils/timespan';
 import search from '../../styles/search';
+import { REFRESH } from '../../utils/musicdb';
 
 const MAX = 100;
 
@@ -31,6 +32,13 @@ export class SearchNav extends LitElement {
     this.activeroute = '';
     this.query = '';
     this._doSearch();
+    this.addEventListener(
+      REFRESH,
+      () => {
+        this._doSearch();
+      },
+      { passive: true }
+    );
   }
   attributeChangedCallback(name: any, oldval: any, newval: any) {
     if (name === 'query') {
