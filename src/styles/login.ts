@@ -55,43 +55,6 @@ export default css`
     border-radius: 0;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   }
-  .btn {
-    display: inline-block;
-    font-weight: 300;
-    color: #212529;
-    text-align: center;
-    vertical-align: middle;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    background-color: transparent;
-    border: 1px solid transparent;
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    border-radius: 0;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-      border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  }
-  .btn-primary {
-    border-color: var(--primary, #006ecd);
-    background-color: var(--primary, #006ecd);
-    color: var(--letter-color, #fff);
-  }
-  .btn-primary:hover {
-    border-color: var(--primary, #006ecd);
-    background-color: var(--primary, #006ecd);
-    color: var(--letter-color, #fff);
-  }
-  .btn-primary:active {
-    border-color: var(--primary, #0053a2);
-    background-color: var(--primary, #0053a2);
-    color: var(--letter-color, #fff);
-  }
-  .btn + .btn {
-    margin-left: 1rem;
-  }
   @media (min-width: 768px) {
     .container {
       max-width: 500px;
