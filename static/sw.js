@@ -118,8 +118,9 @@ function refresh(response) {
         type: 'refresh',
         url: response.url,
       };
+      var responseToCache = response.clone();
       // once updated let the client know it's updated
-      response.json().then(async musicdb => {
+      responseToCache.json().then(async musicdb => {
         withStore('readwrite', store => {
           store.put(musicdb, 'musicdb');
         });
