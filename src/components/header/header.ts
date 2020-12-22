@@ -13,6 +13,7 @@ import {
   POLL_INTERVALL,
 } from '../../utils/node-mp3stream';
 import header from '../../styles/header';
+import { global as EventBus } from '../../utils/EventBus';
 
 @customElement('main-header')
 export class Header extends LitElement {
@@ -48,7 +49,7 @@ export class Header extends LitElement {
   }
   _toggleMenu = (e: Event) => {
     e.preventDefault();
-    this.dispatchEvent(new Event('toggle-menu'));
+    EventBus.emit('toggle-menu', this);
   };
   _poll = ({ server, jwt }: { server: any; jwt: any }) => {
     getProgress(server, jwt).then(

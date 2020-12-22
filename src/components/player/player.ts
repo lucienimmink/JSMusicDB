@@ -91,6 +91,7 @@ export class Album extends LitElement {
     this.isShuffled = false;
     this.useDynamicAccentColor = false;
     this.bgColor = LIGHT;
+    this._listen();
     getCurrentPlaylist().then((playlist: any) => {
       this.playlist = playlist;
       getCurrentTime().then((time: any) => {
@@ -98,86 +99,6 @@ export class Album extends LitElement {
         this.requestUpdate();
       });
     });
-    /*
-    this.addEventListener(
-      START_CURRENT_PLAYLIST,
-      (e: any) => {
-        const startPosition = e?.detail || 0;
-        getCurrentPlaylist().then((playlist: any) => {
-          this.playlist = playlist;
-          this._play(startPosition);
-          this.requestUpdate();
-        });
-      },
-      {
-        passive: true,
-      }
-    );
-    */
-    this.addEventListener(
-      TOGGLE_PLAY_PAUSE_PLAYER,
-      () => {
-        this._togglePlayPause();
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      TOGGLE_LOVED,
-      () => {
-        this._toggleLoved();
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      PREVIOUS_TRACK,
-      () => {
-        this._previous();
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      NEXT_TRACK,
-      () => {
-        this._next();
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      SET_POSITION,
-      (e: any) => {
-        this._play(e.detail);
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      TOGGLE_SHUFFLE,
-      () => {
-        this._toggleShuffled();
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      TOGGLE_SETTING,
-      (e: any) => {
-        this._toggleSetting(e.detail);
-      },
-      {
-        passive: true,
-      }
-    );
-    this._listen();
 
     getSettingByName('dynamicTheme').then(async (dynamicTheme: any) => {
       this.useDynamicAccentColor = !!dynamicTheme;
@@ -209,6 +130,55 @@ export class Album extends LitElement {
           this._play(startPosition);
           this.requestUpdate();
         });
+      },
+      this
+    );
+    EventBus.on(
+      TOGGLE_PLAY_PAUSE_PLAYER,
+      () => {
+        this._togglePlayPause();
+      },
+      this
+    );
+    EventBus.on(
+      TOGGLE_LOVED,
+      () => {
+        this._toggleLoved();
+      },
+      this
+    );
+    EventBus.on(
+      PREVIOUS_TRACK,
+      () => {
+        this._previous();
+      },
+      this
+    );
+    EventBus.on(
+      NEXT_TRACK,
+      () => {
+        this._next();
+      },
+      this
+    );
+    EventBus.on(
+      SET_POSITION,
+      (target: any, position: any) => {
+        this._play(position);
+      },
+      this
+    );
+    EventBus.on(
+      TOGGLE_SHUFFLE,
+      () => {
+        this._toggleShuffled();
+      },
+      this
+    );
+    EventBus.on(
+      TOGGLE_SETTING,
+      (tartget: any, setting: any) => {
+        this._toggleSetting(setting);
       },
       this
     );
@@ -433,11 +403,6 @@ export class Album extends LitElement {
       player.pause();
     }
     EventBus.emit(STOP_PLAYER, this);
-    /*
-    document
-      .querySelector('lit-musicdb')
-      ?.dispatchEvent(new CustomEvent(STOP_PLAYER));
-    */
     this.requestUpdate();
   }
   _setPosition(e: any) {
@@ -451,26 +416,12 @@ export class Album extends LitElement {
     this.isLoved = !this.isLoved;
     toggleLoved(this.track, this.isLoved).then(() => {
       this.track.isLoved = this.isLoved;
-      /*
-      document
-        .querySelector('lit-musicdb')
-        ?.dispatchEvent(
-          new CustomEvent(TOGGLE_LOVED_UPDATED, { detail: this.isLoved })
-        );
-      */
       EventBus.emit(TOGGLE_LOVED_UPDATED, this, this.isLoved);
       this.requestUpdate();
     });
   }
   _toggleShuffled() {
     this.isShuffled = !this.isShuffled;
-    /*
-    document
-      .querySelector('lit-musicdb')
-      ?.dispatchEvent(
-        new CustomEvent(TOGGLE_SHUFFLE_UPDATED, { detail: this.isShuffled })
-      );
-    */
     EventBus.emit(TOGGLE_SHUFFLE_UPDATED, this, this.isShuffled);
     setIsShuffled(this.isShuffled);
     this.requestUpdate();
@@ -484,13 +435,6 @@ export class Album extends LitElement {
   _setDynamicAccentColor() {
     getDominantColorByURL(this.art, (rgba: any) => {
       const colours = getColorsFromRGBWithBGColor(rgba, this.bgColor);
-      /*
-      document
-        .querySelector('lit-musicdb')
-        ?.dispatchEvent(
-          new CustomEvent(ACCENT_COLOR, { detail: colours.text })
-        );
-      */
       EventBus.emit(ACCENT_COLOR, this, colours.text);
       addCustomCss(colours);
     });

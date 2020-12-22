@@ -99,114 +99,7 @@ export class LitMusicdb extends LitElement {
     this.hasToken = true;
 
     this._listen();
-    this.addEventListener(
-      STOP_PLAYER,
-      () => {
-        this._stopPlayer();
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      LOAD_PLAYLIST,
-      () => {
-        this._updatePlaylist(0);
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      LOADED_PLAYLIST,
-      () => {
-        this._updatePlaylist(1);
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      TOGGLE_PLAY_PAUSE_PLAYER,
-      () => {
-        this._togglePlayPause();
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      TOGGLE_LOVED,
-      () => {
-        this._toggleLoved();
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      TOGGLE_LOVED_UPDATED,
-      (e: any) => {
-        this._toggleLovedUpdated(e.detail);
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      PREVIOUS_TRACK,
-      () => {
-        this._previousTrack();
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      NEXT_TRACK,
-      () => {
-        this._nextTrack();
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      SET_POSITION,
-      (e: any) => {
-        this._setPosition(e.detail);
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      TOGGLE_SHUFFLE,
-      () => {
-        this._toggleShuffle();
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      TOGGLE_SHUFFLE_UPDATED,
-      (e: any) => {
-        this._toggleShuffleUpdated(e.detail);
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      TOGGLE_SETTING,
-      (e: any) => {
-        this._toggleSetting(e.detail);
-      },
-      {
-        passive: true,
-      }
-    );
+
     this.addEventListener(
       '_player',
       (e: any) => {
@@ -342,13 +235,8 @@ export class LitMusicdb extends LitElement {
     });
   }
   _listen() {
-    EventBus.on(
-      START_CURRENT_PLAYLIST,
-      () => {
-        this._startCurrentPlaylist();
-      },
-      this
-    );
+    EventBus.on(START_CURRENT_PLAYLIST, this._startCurrentPlaylist, this);
+    EventBus.on(STOP_PLAYER, this._stopPlayer, this);
   }
   _relay = (type: string, method = '') => {
     this.dispatchEvent(new CustomEvent(type, { detail: method }));
@@ -356,56 +244,10 @@ export class LitMusicdb extends LitElement {
   _startCurrentPlaylist = () => {
     this.showPlayer = true;
     this.requestUpdate();
-    // const player = this.shadowRoot?.querySelector('lit-player');
-    // player?.dispatchEvent(new CustomEvent(START_CURRENT_PLAYLIST));
   };
   _stopPlayer() {
     this.showPlayer = false;
     this.requestUpdate();
-  }
-  _updatePlaylist(state: number) {
-    const playlists = this.shadowRoot?.querySelector('playlists-nav');
-    playlists?.dispatchEvent(
-      new CustomEvent(state === 0 ? LOAD_PLAYLIST : LOADED_PLAYLIST)
-    );
-    const nowPlaying = this.shadowRoot?.querySelector('now-playing');
-    nowPlaying?.dispatchEvent(new CustomEvent(LOADED_PLAYLIST));
-  }
-  _togglePlayPause() {
-    const player = this.shadowRoot?.querySelector('lit-player');
-    player?.dispatchEvent(new CustomEvent(TOGGLE_PLAY_PAUSE_PLAYER));
-  }
-  _toggleLoved() {
-    const player = this.shadowRoot?.querySelector('lit-player');
-    player?.dispatchEvent(new CustomEvent(TOGGLE_LOVED));
-  }
-  _toggleLovedUpdated(newValue: any) {
-    const nowPlaying = this.shadowRoot?.querySelector('now-playing');
-    nowPlaying?.dispatchEvent(
-      new CustomEvent(TOGGLE_LOVED_UPDATED, { detail: newValue })
-    );
-  }
-  _previousTrack() {
-    const player = this.shadowRoot?.querySelector('lit-player');
-    player?.dispatchEvent(new CustomEvent(PREVIOUS_TRACK));
-  }
-  _nextTrack() {
-    const player = this.shadowRoot?.querySelector('lit-player');
-    player?.dispatchEvent(new CustomEvent(NEXT_TRACK));
-  }
-  _setPosition(pos: any) {
-    const player = this.shadowRoot?.querySelector('lit-player');
-    player?.dispatchEvent(new CustomEvent(SET_POSITION, { detail: pos }));
-  }
-  _toggleShuffle() {
-    const player = this.shadowRoot?.querySelector('lit-player');
-    player?.dispatchEvent(new CustomEvent(TOGGLE_SHUFFLE));
-  }
-  _toggleShuffleUpdated(newValue: any) {
-    const nowPlaying = this.shadowRoot?.querySelector('now-playing');
-    nowPlaying?.dispatchEvent(
-      new CustomEvent(TOGGLE_SHUFFLE_UPDATED, { detail: newValue })
-    );
   }
   async _getTheme() {
     const theme = await getSettingByName('theme');
@@ -427,15 +269,10 @@ export class LitMusicdb extends LitElement {
         clearTimeout(this.themeSwitchCycle);
         css = cssMap.light;
     }
-    const player = this.shadowRoot?.querySelector('lit-player');
-    player?.dispatchEvent(
-      new CustomEvent(TOGGLE_SETTING, {
-        detail: {
-          setting: 'theme',
-          value: css,
-        },
-      })
-    );
+    EventBus.emit(TOGGLE_SETTING, this, {
+      setting: 'theme',
+      value: css,
+    });
     // @ts-ignore
     document.getElementById('themed')?.innerHTML = css.cssText;
   }
@@ -466,7 +303,7 @@ export class LitMusicdb extends LitElement {
     this.params = params;
     this.query = query;
     window.scrollTo(0, 0);
-    this._relay('toggle-menu', 'close');
+    EventBus.emit('toggle-menu', this, 'close');
     if (route === 'now-playing') {
       document.querySelector('html')?.classList.add('noscroll');
       return;
@@ -483,9 +320,6 @@ export class LitMusicdb extends LitElement {
               <main-header
                 artist="${this.params.artist}"
                 album="${this.params.album}"
-                @toggle-menu="${() => {
-                  this._relay('toggle-menu');
-                }}"
               ></main-header>
               <letter-nav route="${this.params.letter}"></letter-nav>
               <side-nav

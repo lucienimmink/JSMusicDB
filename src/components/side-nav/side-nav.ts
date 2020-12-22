@@ -17,6 +17,7 @@ import { getScrobbleCache } from '../../utils/settings';
 import responsive from '../../styles/responsive';
 import { nothing } from 'lit-html';
 import sideNav from '../../styles/side-nav';
+import { global as EventBus } from '../../utils/EventBus';
 
 @customElement('side-nav')
 @navigator
@@ -43,15 +44,16 @@ export class SideNav extends LitElement {
     this.hasScrobbleCache = false;
     this.hasVisiblePlayer = false;
     this.query = '';
+    this._listen();
   }
-  connectedCallback() {
-    super.connectedCallback();
-    const main = document.querySelector('lit-musicdb');
-    main?.addEventListener('toggle-menu', this._handleEvent);
-  }
-  disconnectedCallback() {
-    window.removeEventListener('toggle-menu', this._handleEvent);
-    super.disconnectedCallback();
+  _listen() {
+    EventBus.on(
+      'toggle-menu',
+      (target: any, state: string) => {
+        this._handleEvent(state);
+      },
+      this
+    );
   }
   _getScrobbleCache = () => {
     getScrobbleCache().then((cachedTracks: any) => {
@@ -59,11 +61,11 @@ export class SideNav extends LitElement {
       this.requestUpdate();
     });
   };
-  _handleEvent = (e: any) => {
+  _handleEvent = (state: string) => {
     if (this.full) {
-      if (e.detail === 'close') {
+      if (state === 'close') {
         this.open = false;
-      } else if (e.detail === 'open') {
+      } else if (state === 'open') {
         this.open = true;
       } else {
         this.open = !this.open;

@@ -24,6 +24,7 @@ import { nothing } from 'lit-html';
 import { updateSunriseData } from '../../utils/colour';
 import settings from '../../styles/settings';
 import { REFRESH } from '../../utils/musicdb';
+import { global as EventBus } from '../../utils/EventBus';
 
 @customElement('settings-nav')
 export class LetterNav extends LitElement {
@@ -45,13 +46,7 @@ export class LetterNav extends LitElement {
     this.isReloading = false;
     this.showVersion = true;
     this._init();
-    this.addEventListener(
-      REFRESH,
-      () => {
-        this._init();
-      },
-      { passive: true }
-    );
+    this._listen();
     getSettings().then(async (settings: any) => {
       this.settings = settings;
       if (!this.settings) {
@@ -65,25 +60,24 @@ export class LetterNav extends LitElement {
       this.mp3stream = await getServer();
       this.requestUpdate();
     });
-    this.addEventListener(
+  }
+  _listen() {
+    EventBus.on(REFRESH, this._init, this);
+    EventBus.on(
       IS_RELOADING,
       () => {
         this.isReloading = true;
         this.requestUpdate();
       },
-      {
-        passive: true,
-      }
+      this
     );
-    this.addEventListener(
+    EventBus.on(
       DONE_RELOADING,
       () => {
         this.isReloading = false;
         this.requestUpdate();
       },
-      {
-        passive: true,
-      }
+      this
     );
   }
   private _init() {

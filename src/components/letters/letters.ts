@@ -3,6 +3,7 @@ import './../app-link/app-link';
 import musicdb from '../musicdb';
 import jumplist from '../../styles/jumplist';
 import { REFRESH } from '../../utils/musicdb';
+import { global as EventBus } from '../../utils/EventBus';
 
 @customElement('letters-nav')
 export class LetterNav extends LitElement {
@@ -20,12 +21,15 @@ export class LetterNav extends LitElement {
     this.letters = [];
     this.hasVisiblePlayer = false;
     this._init();
-    this.addEventListener(
+    this._listen();
+  }
+  _listen() {
+    EventBus.on(
       REFRESH,
       () => {
         this._init();
       },
-      { passive: true }
+      this
     );
   }
   private _init() {

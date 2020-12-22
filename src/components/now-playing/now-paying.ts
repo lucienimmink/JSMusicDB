@@ -71,36 +71,6 @@ export class NowPlaying extends LitElement {
     this.accentColor = '';
     this.playlist = null;
     this._listen();
-    /*
-    this.addEventListener(
-      UPDATE_PLAYER,
-      (e: any) => {
-        this._update(e.detail);
-      },
-      {
-        passive: true,
-      }
-    );
-    */
-    this.addEventListener(
-      TOGGLE_LOVED_UPDATED,
-      (e: any) => {
-        this._update({ ...this.track, isLoved: e.detail });
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      TOGGLE_SHUFFLE_UPDATED,
-      (e: any) => {
-        this.isShuffled = e.detail;
-        this.requestUpdate();
-      },
-      {
-        passive: true,
-      }
-    );
     this.addEventListener(
       '_player',
       (e: any) => {
@@ -112,9 +82,6 @@ export class NowPlaying extends LitElement {
         once: true,
       }
     );
-    this.addEventListener(ACCENT_COLOR, (e: any) => {
-      this.accentColor = e.detail;
-    });
     getSettingByName('visual').then((hasVisual: any) => {
       this.hasCanvas = !!hasVisual;
       this.requestUpdate();
@@ -129,6 +96,28 @@ export class NowPlaying extends LitElement {
       UPDATE_PLAYER,
       (target: any, data: any) => {
         this._update(data);
+      },
+      this
+    );
+    EventBus.on(
+      TOGGLE_LOVED_UPDATED,
+      (target: any, isLoved: boolean) => {
+        this._update({ ...this.track, isLoved });
+      },
+      this
+    );
+    EventBus.on(
+      TOGGLE_SHUFFLE_UPDATED,
+      (target: any, isShuffled: boolean) => {
+        this.isShuffled = isShuffled;
+        this.requestUpdate();
+      },
+      this
+    );
+    EventBus.on(
+      ACCENT_COLOR,
+      (target: any, accentColor: string) => {
+        this.accentColor = accentColor;
       },
       this
     );

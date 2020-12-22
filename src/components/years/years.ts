@@ -9,6 +9,7 @@ import smallMuted from '../../styles/small-muted';
 import virtualScroll from '../../styles/virtual-scroll';
 import years from '../../styles/years';
 import { REFRESH } from '../../utils/musicdb';
+import { global as EventBus } from '../../utils/EventBus';
 @customElement('years-nav')
 export class LetterNav extends LitElement {
   years: Array<any>;
@@ -73,13 +74,10 @@ export class LetterNav extends LitElement {
     this.activeroute = '';
     this.showJumpList = false;
     this.hasVisiblePlayer = false;
-    this.addEventListener(
-      REFRESH,
-      () => {
-        this._getAlbums();
-      },
-      { passive: true }
-    );
+    this._listen();
+  }
+  _listen() {
+    EventBus.on(REFRESH, this._getAlbums, this);
   }
   render() {
     return html`

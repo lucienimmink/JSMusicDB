@@ -6,6 +6,7 @@ import panel from '../../styles/panel';
 import { nothing } from 'lit-html';
 import artist from '../../styles/artist';
 import { REFRESH } from '../../utils/musicdb';
+import { global as EventBus } from '../../utils/EventBus';
 
 @customElement('albums-in-artist')
 export class Artist extends LitElement {
@@ -19,12 +20,15 @@ export class Artist extends LitElement {
     super();
     this.artist = '';
     this.albums = [];
-    this.addEventListener(
+    this._listen();
+  }
+  _listen() {
+    EventBus.on(
       REFRESH,
       () => {
         this._getAlbums();
       },
-      { passive: true }
+      this
     );
   }
   attributeChangedCallback(name: any, oldval: any, newval: any) {

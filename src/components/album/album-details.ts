@@ -84,7 +84,6 @@ export class AlbumDetails extends LitElement {
   _playAlbum(e: Event) {
     e.preventDefault();
     this.dispatchEvent(new Event('play'));
-    // TODO: rewrite to EventBus
   }
   render() {
     return html`

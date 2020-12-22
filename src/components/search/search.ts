@@ -11,6 +11,7 @@ import warn from '../../styles/warn';
 import timeSpan from '../../utils/timespan';
 import search from '../../styles/search';
 import { REFRESH } from '../../utils/musicdb';
+import { global as EventBus } from '../../utils/EventBus';
 
 const MAX = 100;
 
@@ -32,13 +33,7 @@ export class SearchNav extends LitElement {
     this.activeroute = '';
     this.query = '';
     this._doSearch();
-    this.addEventListener(
-      REFRESH,
-      () => {
-        this._doSearch();
-      },
-      { passive: true }
-    );
+    this._listen();
   }
   attributeChangedCallback(name: any, oldval: any, newval: any) {
     if (name === 'query') {
@@ -51,6 +46,15 @@ export class SearchNav extends LitElement {
     }
     this.requestUpdate();
     super.attributeChangedCallback(name, oldval, newval);
+  }
+  _listen() {
+    EventBus.on(
+      REFRESH,
+      () => {
+        this._doSearch();
+      },
+      this
+    );
   }
   _doSearch() {
     musicdb

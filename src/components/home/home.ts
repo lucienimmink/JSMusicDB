@@ -10,6 +10,7 @@ import panel from '../../styles/panel';
 import { cdIcon } from '../icons/cd';
 import home from '../../styles/home';
 import { DUMMY_TRACK, REFRESH } from '../../utils/musicdb';
+import { global as EventBus } from '../../utils/EventBus';
 
 const INTERVAL = 1000 * 30;
 const LATEST_ADDITIONS = 14;
@@ -34,12 +35,15 @@ export class HomeNav extends LitElement {
       }
     });
     this._init();
-    this.addEventListener(
+    this._listen();
+  }
+  _listen() {
+    EventBus.on(
       REFRESH,
       () => {
         this._init();
       },
-      { passive: true }
+      this
     );
   }
   _init() {
