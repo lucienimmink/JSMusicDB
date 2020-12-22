@@ -112,64 +112,13 @@ export class LitMusicdb extends LitElement {
         passive: true,
       }
     );
-    this.addEventListener(
-      ACCENT_COLOR,
-      (e: any) => {
-        const nowPlaying = this.shadowRoot?.querySelector('now-playing');
-        nowPlaying?.dispatchEvent(
-          new CustomEvent(ACCENT_COLOR, { detail: e.detail })
-        );
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      IS_RELOADING,
-      () => {
-        const settings = this.shadowRoot?.querySelector('settings-nav');
-        settings?.dispatchEvent(new CustomEvent(IS_RELOADING));
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      DONE_RELOADING,
-      () => {
-        const settings = this.shadowRoot?.querySelector('settings-nav');
-        settings?.dispatchEvent(new CustomEvent(DONE_RELOADING));
-        refresh().then(() => {
-          this.requestUpdate();
-        });
-      },
-      {
-        passive: true,
-      }
-    );
     navigator.serviceWorker.addEventListener(
       'message',
       async (e: MessageEvent) => {
         const { type } = e.data;
         if (type === 'refresh') {
           await update();
-
-          // update all views
-          const views = this.shadowRoot?.querySelectorAll(
-            `letter-nav,
-              home-nav,
-              letters-nav,
-              artists-nav,
-              albums-nav,
-              years-nav,
-              albums-in-artist,
-              tracks-in-album,
-              settings-nav,
-              search-nav`
-          );
-          views?.forEach((view: any) => {
-            view?.dispatchEvent(new Event(REFRESH));
-          });
+          EventBus.emit(REFRESH, this);
         }
       }
     );
@@ -237,6 +186,15 @@ export class LitMusicdb extends LitElement {
   _listen() {
     EventBus.on(START_CURRENT_PLAYLIST, this._startCurrentPlaylist, this);
     EventBus.on(STOP_PLAYER, this._stopPlayer, this);
+    EventBus.on(
+      DONE_RELOADING,
+      () => {
+        refresh().then(() => {
+          this.requestUpdate();
+        });
+      },
+      this
+    );
   }
   _relay = (type: string, method = '') => {
     this.dispatchEvent(new CustomEvent(type, { detail: method }));
