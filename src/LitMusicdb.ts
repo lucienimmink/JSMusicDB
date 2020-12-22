@@ -4,20 +4,7 @@ import { router } from 'lit-element-router';
 
 import routes from './routes';
 import { global as EventBus } from './utils/EventBus';
-import {
-  START_CURRENT_PLAYLIST,
-  STOP_PLAYER,
-  LOAD_PLAYLIST,
-  LOADED_PLAYLIST,
-  TOGGLE_PLAY_PAUSE_PLAYER,
-  TOGGLE_LOVED,
-  TOGGLE_LOVED_UPDATED,
-  PREVIOUS_TRACK,
-  NEXT_TRACK,
-  SET_POSITION,
-  TOGGLE_SHUFFLE_UPDATED,
-  TOGGLE_SHUFFLE,
-} from './utils/player';
+import { START_CURRENT_PLAYLIST, STOP_PLAYER } from './utils/player';
 import { getSettingByName, TOGGLE_SETTING } from './utils/settings';
 import musicdb, { refresh, update } from './components/musicdb';
 
@@ -47,13 +34,9 @@ import './components/loading-indicator/progress-spinner';
 
 import { light, dark } from './styles/themes';
 import timeSpan from './utils/timespan';
-import {
-  ACCENT_COLOR,
-  getCurrentTheme,
-  updateSunriseData,
-} from './utils/colour';
+import { getCurrentTheme, updateSunriseData } from './utils/colour';
 import { getSK } from './utils/lastfm';
-import { DONE_RELOADING, getJwt, IS_RELOADING } from './utils/node-mp3stream';
+import { DONE_RELOADING, getJwt } from './utils/node-mp3stream';
 import { animationCSS, animateCSS } from './utils/animations';
 import litMusicdb from './styles/lit-musicdb';
 import { REFRESH } from './utils/musicdb';
