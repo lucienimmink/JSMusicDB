@@ -30,13 +30,13 @@ export const setCurrentPlaylist = (playlist: any) => {
   return set(CURRENT_PLAYLIST, playlist);
 };
 
-export const startPlaylist = () => {
+export const startPlaylist = (target: any) => {
   /*
   document
     .querySelector('lit-musicdb')
     ?.dispatchEvent(new CustomEvent(START_CURRENT_PLAYLIST));
   */
-  EventBus.emit(START_CURRENT_PLAYLIST, {});
+  EventBus.emit(START_CURRENT_PLAYLIST, target);
 };
 export const getNextPlaylist = (playlist: any) => {
   switch (playlist.type) {

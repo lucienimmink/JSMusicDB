@@ -24,6 +24,7 @@ import container from '../../styles/container';
 import smallMuted from '../../styles/small-muted';
 import responsive from '../../styles/responsive';
 import playlists from '../../styles/playlists';
+import { global as EventBus } from '../../utils/EventBus';
 
 @customElement('playlists-nav')
 export class LetterNav extends LitElement {
@@ -79,7 +80,7 @@ export class LetterNav extends LitElement {
       this.current = this.playlist;
       this.requestUpdate();
     });
-    startPlaylist();
+    startPlaylist(this);
   };
   _setActivePlaylist = (name = 'current', e: Event) => {
     e.preventDefault();
@@ -210,6 +211,35 @@ export class LetterNav extends LitElement {
         this._setActivePlaylist('current', e);
     }
   }
+  _listen() {
+    EventBus.on(
+      UPDATE_PLAYER,
+      (target: any, { current }: { current: any }) => {
+        this._update(current);
+      },
+      this
+    );
+    EventBus.on(
+      LOAD_PLAYLIST,
+      () => {
+        this.loading = true;
+        this.playlist = null;
+        this.requestUpdate();
+      },
+      this
+    );
+    EventBus.on(
+      LOADED_PLAYLIST,
+      async () => {
+        this.loading = false;
+        this.playlist = await getCurrentPlaylist();
+        // @ts-ignore
+        this.shadowRoot.querySelector('#playlist-selector').value = 'current';
+        this.requestUpdate();
+      },
+      this
+    );
+  }
   constructor() {
     super();
     this.activeroute = '';
@@ -220,39 +250,7 @@ export class LetterNav extends LitElement {
     this.artists = [];
     this.loading = false;
     this.max = 100;
-    this.addEventListener(
-      UPDATE_PLAYER,
-      (e: any) => {
-        this._update(e.detail);
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      LOAD_PLAYLIST,
-      () => {
-        this.loading = true;
-        this.playlist = null;
-        this.requestUpdate();
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      LOADED_PLAYLIST,
-      async () => {
-        this.loading = false;
-        this.playlist = await getCurrentPlaylist();
-        // @ts-ignore
-        this.shadowRoot.querySelector('#playlist-selector').value = 'current';
-        this.requestUpdate();
-      },
-      {
-        passive: true,
-      }
-    );
+    this._listen();
   }
   render() {
     return html`

@@ -6,12 +6,12 @@ import {
   setCurrentPlaylist,
   startPlaylist,
   setCurrentTime,
-  UPDATE_PLAYER,
 } from '../../utils/player';
 import headers from '../../styles/headers';
 import container from '../../styles/container';
 import album from '../../styles/album';
 import { REFRESH } from '../../utils/musicdb';
+import { global as EventBus } from '../../utils/EventBus';
 
 @customElement('tracks-in-album')
 export class Album extends LitElement {
@@ -31,21 +31,15 @@ export class Album extends LitElement {
     this.album = '';
     this.albumDetails = {};
     this.sortedDiscs = [];
-    this.addEventListener(
-      UPDATE_PLAYER,
-      (e: any) => {
-        this._update(e.detail);
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
+    this._listen();
+  }
+  _listen() {
+    EventBus.on(
       REFRESH,
       () => {
         this._getTracks();
       },
-      { passive: true }
+      this
     );
   }
   attributeChangedCallback(name: any, oldval: any, newval: any) {
@@ -53,12 +47,6 @@ export class Album extends LitElement {
       this._getTracks(this.artist, newval);
     }
     super.attributeChangedCallback(name, oldval, newval);
-  }
-  _update(current: any) {
-    const tracks = this.shadowRoot?.querySelectorAll('track-in-list');
-    tracks?.forEach((track: any) => {
-      track.dispatchEvent(new CustomEvent(UPDATE_PLAYER, { detail: current }));
-    });
   }
   _getTracks(artist = this.artist, album = this.album) {
     this.sortedDiscs = [];
@@ -109,7 +97,7 @@ export class Album extends LitElement {
       album: this.albumDetails,
     });
     await setCurrentTime(0);
-    startPlaylist();
+    startPlaylist(this);
   }
   render() {
     return html`

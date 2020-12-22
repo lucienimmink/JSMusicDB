@@ -7,9 +7,6 @@ import { global as EventBus } from './utils/EventBus';
 import {
   START_CURRENT_PLAYLIST,
   STOP_PLAYER,
-  PLAY_PLAYER,
-  PAUSE_PLAYER,
-  UPDATE_PLAYER,
   LOAD_PLAYLIST,
   LOADED_PLAYLIST,
   TOGGLE_PLAY_PAUSE_PLAYER,
@@ -20,7 +17,6 @@ import {
   SET_POSITION,
   TOGGLE_SHUFFLE_UPDATED,
   TOGGLE_SHUFFLE,
-  PLAY_PLAYER_START,
 } from './utils/player';
 import { getSettingByName, TOGGLE_SETTING } from './utils/settings';
 import musicdb, { refresh, update } from './components/musicdb';
@@ -101,48 +97,12 @@ export class LitMusicdb extends LitElement {
     this.hasData = false;
     this.hasSK = true;
     this.hasToken = true;
-    /*
-    this.addEventListener(
-      START_CURRENT_PLAYLIST,
-      () => {
-        this._startCurrentPlaylist();
-      },
-      {
-        passive: true,
-      }
-    );
-    */
+
+    this._listen();
     this.addEventListener(
       STOP_PLAYER,
       () => {
         this._stopPlayer();
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      PLAY_PLAYER,
-      (e: any) => {
-        this._update(e.detail);
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      PLAY_PLAYER_START,
-      (e: any) => {
-        this._update(e.detail, PLAY_PLAYER_START);
-      },
-      {
-        passive: true,
-      }
-    );
-    this.addEventListener(
-      PAUSE_PLAYER,
-      (e: any) => {
-        this._update(e.detail, PAUSE_PLAYER);
       },
       {
         passive: true,
@@ -402,16 +362,6 @@ export class LitMusicdb extends LitElement {
   _stopPlayer() {
     this.showPlayer = false;
     this.requestUpdate();
-  }
-  _update(track: any, type = '') {
-    const album = this.shadowRoot?.querySelector('tracks-in-album');
-    album?.dispatchEvent(new CustomEvent(UPDATE_PLAYER, { detail: track }));
-    const playlists = this.shadowRoot?.querySelector('playlists-nav');
-    playlists?.dispatchEvent(new CustomEvent(UPDATE_PLAYER, { detail: track }));
-    const nowPlaying = this.shadowRoot?.querySelector('now-playing');
-    nowPlaying?.dispatchEvent(
-      new CustomEvent(UPDATE_PLAYER, { detail: { track, type } })
-    );
   }
   _updatePlaylist(state: number) {
     const playlists = this.shadowRoot?.querySelector('playlists-nav');

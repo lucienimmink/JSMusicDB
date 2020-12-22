@@ -12,21 +12,22 @@ import {
   shuffle,
   START_CURRENT_PLAYLIST,
   STOP_PLAYER,
-  PLAY_PLAYER,
   LOAD_PLAYLIST,
   LOADED_PLAYLIST,
   TOGGLE_PLAY_PAUSE_PLAYER,
   TOGGLE_LOVED,
-  PAUSE_PLAYER,
   TOGGLE_LOVED_UPDATED,
   PREVIOUS_TRACK,
   NEXT_TRACK,
   SET_POSITION,
   TOGGLE_SHUFFLE_UPDATED,
   TOGGLE_SHUFFLE,
-  PLAY_PLAYER_START,
   getIsShuffled,
   setIsShuffled,
+  UPDATE_PLAYER,
+  PLAY_PLAYER_START,
+  PLAY_PLAYER,
+  PAUSE_PLAYER,
 } from '../../utils/player';
 import {
   announceNowPlaying,
@@ -177,6 +178,7 @@ export class Album extends LitElement {
       }
     );
     this._listen();
+
     getSettingByName('dynamicTheme').then(async (dynamicTheme: any) => {
       this.useDynamicAccentColor = !!dynamicTheme;
       if (this.useDynamicAccentColor) {
@@ -201,7 +203,7 @@ export class Album extends LitElement {
     EventBus.on(
       START_CURRENT_PLAYLIST,
       (target: any, data: any) => {
-        const startPosition = data.startPosition || 0;
+        const startPosition = data?.startPosition || 0;
         getCurrentPlaylist().then((playlist: any) => {
           this.playlist = playlist;
           this._play(startPosition);
@@ -281,9 +283,10 @@ export class Album extends LitElement {
     if (player) {
       this.track.position = player.currentTime * 1000;
       setCurrentTime(player.currentTime);
-      document
-        .querySelector('lit-musicdb')
-        ?.dispatchEvent(new CustomEvent(PLAY_PLAYER, { detail: this.track }));
+      EventBus.emit(UPDATE_PLAYER, this, {
+        current: this.track,
+        type: PLAY_PLAYER,
+      });
       this.timePlayed = Math.floor(performance.now());
       if (!this.hasScrobbled && this.timePlayed > ONEMINUTE) {
         this._scrobble();
@@ -305,11 +308,10 @@ export class Album extends LitElement {
     this.track.isPlaying = true;
     this.track.isPaused = false;
     announceNowPlaying(this.track);
-    document
-      .querySelector('lit-musicdb')
-      ?.dispatchEvent(
-        new CustomEvent(PLAY_PLAYER_START, { detail: this.track })
-      );
+    EventBus.emit(UPDATE_PLAYER, this, {
+      current: this.track,
+      type: PLAY_PLAYER_START,
+    });
     if ('mediaSession' in navigator) {
       (navigator as any).mediaSession.playbackState = 'playing';
     }
@@ -321,9 +323,10 @@ export class Album extends LitElement {
     this.isPlaying = false;
     this.track.isPlaying = false;
     this.track.isPaused = true;
-    document
-      .querySelector('lit-musicdb')
-      ?.dispatchEvent(new CustomEvent(PAUSE_PLAYER, { detail: this.track }));
+    EventBus.emit(UPDATE_PLAYER, this, {
+      current: this.track,
+      type: PAUSE_PLAYER,
+    });
     if ('mediaSession' in navigator) {
       (navigator as any).mediaSession.playbackState = 'paused';
     }
@@ -340,9 +343,7 @@ export class Album extends LitElement {
           1000;
         this.track.buffered.end =
           buffered.end(buffered.length !== 0 ? buffered.length - 1 : 0) * 1000;
-        document
-          .querySelector('lit-musicdb')
-          ?.dispatchEvent(new CustomEvent(PLAY_PLAYER, { detail: this.track }));
+        EventBus.emit(UPDATE_PLAYER, this, { current: this.track });
       }
     }
   }
@@ -388,14 +389,20 @@ export class Album extends LitElement {
     if (index >= this.playlist.tracks.length - 1) {
       const continuesPlay: boolean = await getSettingByName('continues');
       if (continuesPlay) {
+        /*
         document
           .querySelector('lit-musicdb')
           ?.dispatchEvent(new CustomEvent(LOAD_PLAYLIST));
+        */
+        EventBus.emit(LOAD_PLAYLIST, this);
         this.playlist = await getNextPlaylist(this.playlist);
         await setCurrentPlaylist(this.playlist);
+        EventBus.emit(LOADED_PLAYLIST, this);
+        /*
         document
           .querySelector('lit-musicdb')
           ?.dispatchEvent(new CustomEvent(LOADED_PLAYLIST));
+        */
         this._play();
         this.requestUpdate();
         return;
@@ -425,9 +432,12 @@ export class Album extends LitElement {
     if (player) {
       player.pause();
     }
+    EventBus.emit(STOP_PLAYER, this);
+    /*
     document
       .querySelector('lit-musicdb')
       ?.dispatchEvent(new CustomEvent(STOP_PLAYER));
+    */
     this.requestUpdate();
   }
   _setPosition(e: any) {
@@ -441,21 +451,27 @@ export class Album extends LitElement {
     this.isLoved = !this.isLoved;
     toggleLoved(this.track, this.isLoved).then(() => {
       this.track.isLoved = this.isLoved;
+      /*
       document
         .querySelector('lit-musicdb')
         ?.dispatchEvent(
           new CustomEvent(TOGGLE_LOVED_UPDATED, { detail: this.isLoved })
         );
+      */
+      EventBus.emit(TOGGLE_LOVED_UPDATED, this, this.isLoved);
       this.requestUpdate();
     });
   }
   _toggleShuffled() {
     this.isShuffled = !this.isShuffled;
+    /*
     document
       .querySelector('lit-musicdb')
       ?.dispatchEvent(
         new CustomEvent(TOGGLE_SHUFFLE_UPDATED, { detail: this.isShuffled })
       );
+    */
+    EventBus.emit(TOGGLE_SHUFFLE_UPDATED, this, this.isShuffled);
     setIsShuffled(this.isShuffled);
     this.requestUpdate();
   }
@@ -468,11 +484,14 @@ export class Album extends LitElement {
   _setDynamicAccentColor() {
     getDominantColorByURL(this.art, (rgba: any) => {
       const colours = getColorsFromRGBWithBGColor(rgba, this.bgColor);
+      /*
       document
         .querySelector('lit-musicdb')
         ?.dispatchEvent(
           new CustomEvent(ACCENT_COLOR, { detail: colours.text })
         );
+      */
+      EventBus.emit(ACCENT_COLOR, this, colours.text);
       addCustomCss(colours);
     });
   }

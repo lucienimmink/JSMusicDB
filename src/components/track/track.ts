@@ -6,6 +6,7 @@ import { pauseIcon } from '../icons/pause';
 import smallMuted from '../../styles/small-muted';
 import { nothing } from 'lit-html';
 import trackNav from '../../styles/track-nav';
+import { global as EventBus } from '../../utils/EventBus';
 
 @customElement('track-in-list')
 export class track extends LitElement {
@@ -21,14 +22,15 @@ export class track extends LitElement {
     super();
     this.track = null;
     this.type = 'album';
-    this.addEventListener(
+    this._listen();
+  }
+  _listen() {
+    EventBus.on(
       UPDATE_PLAYER,
-      (e: any) => {
-        this._update(e.detail);
+      (target: any, { current }: { current: any }) => {
+        this._update(current);
       },
-      {
-        passive: true,
-      }
+      this
     );
   }
   _update(track: any) {

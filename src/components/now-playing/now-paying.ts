@@ -39,6 +39,7 @@ import nowPlaying from '../../styles/now-playing';
 import { artistsIcon } from '../icons/artists';
 import { albumsIcon } from '../icons/albums';
 import { playlistsIcon } from '../icons/playlists';
+import { global as EventBus } from '../../utils/EventBus';
 
 @customElement('now-playing')
 export class NowPlaying extends LitElement {
@@ -69,6 +70,8 @@ export class NowPlaying extends LitElement {
     this.isBottomShown = false;
     this.accentColor = '';
     this.playlist = null;
+    this._listen();
+    /*
     this.addEventListener(
       UPDATE_PLAYER,
       (e: any) => {
@@ -78,6 +81,7 @@ export class NowPlaying extends LitElement {
         passive: true,
       }
     );
+    */
     this.addEventListener(
       TOGGLE_LOVED_UPDATED,
       (e: any) => {
@@ -119,6 +123,15 @@ export class NowPlaying extends LitElement {
       this.smallArt = !!smallArt;
       this.requestUpdate();
     });
+  }
+  _listen() {
+    EventBus.on(
+      UPDATE_PLAYER,
+      (target: any, data: any) => {
+        this._update(data);
+      },
+      this
+    );
   }
   _visualize() {
     if (this.hasCanvas && navigator.userAgent.indexOf('Mobi') === -1) {
@@ -209,13 +222,13 @@ export class NowPlaying extends LitElement {
       }
     }
   }
-  async _update({ track, type }: { track: any; type: string }) {
-    this.track = track;
+  async _update({ current, type }: { current: any; type: string }) {
+    this.track = current;
     if (type === PLAY_PLAYER_START || type === PAUSE_PLAYER) {
       const playlist: any = await getCurrentPlaylist();
       const tracks = playlist?.tracks.map((t: any) => {
-        if (t.id === track.id) {
-          return track;
+        if (t.id === current.id) {
+          return current;
         }
         return this._resetTrack(t);
       });
