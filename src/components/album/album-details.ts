@@ -1,4 +1,5 @@
 import { LitElement, customElement, html, property } from 'lit-element';
+// import { global as EventBus } from '../../utils/EventBus';
 import '../track/track';
 import musicdb from '../musicdb';
 import timeSpan from '../../utils/timespan';
@@ -83,6 +84,7 @@ export class AlbumDetails extends LitElement {
   _playAlbum(e: Event) {
     e.preventDefault();
     this.dispatchEvent(new Event('play'));
+    // TODO: rewrite to EventBus
   }
   render() {
     return html`

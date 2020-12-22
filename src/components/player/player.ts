@@ -1,6 +1,7 @@
 declare const MediaMetadata: any;
 
 import { LitElement, customElement, html } from 'lit-element';
+import { global as EventBus } from '../../utils/EventBus';
 import { styleMap } from 'lit-html/directives/style-map';
 import {
   getCurrentPlaylist,
@@ -96,6 +97,7 @@ export class Album extends LitElement {
         this.requestUpdate();
       });
     });
+    /*
     this.addEventListener(
       START_CURRENT_PLAYLIST,
       (e: any) => {
@@ -110,6 +112,7 @@ export class Album extends LitElement {
         passive: true,
       }
     );
+    */
     this.addEventListener(
       TOGGLE_PLAY_PAUSE_PLAYER,
       () => {
@@ -173,6 +176,7 @@ export class Album extends LitElement {
         passive: true,
       }
     );
+    this._listen();
     getSettingByName('dynamicTheme').then(async (dynamicTheme: any) => {
       this.useDynamicAccentColor = !!dynamicTheme;
       if (this.useDynamicAccentColor) {
@@ -192,6 +196,20 @@ export class Album extends LitElement {
       );
       this.playlist.shuffledIndices = shuffle(availableIndices);
     }
+  }
+  _listen() {
+    EventBus.on(
+      START_CURRENT_PLAYLIST,
+      (target: any, data: any) => {
+        const startPosition = data.startPosition || 0;
+        getCurrentPlaylist().then((playlist: any) => {
+          this.playlist = playlist;
+          this._play(startPosition);
+          this.requestUpdate();
+        });
+      },
+      this
+    );
   }
   async _play(startPosition = 0, track: any = null) {
     this.track = track || this.playlist?.tracks[this.playlist.index || 0];

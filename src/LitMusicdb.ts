@@ -3,6 +3,7 @@ import { nothing } from 'lit-html';
 import { router } from 'lit-element-router';
 
 import routes from './routes';
+import { global as EventBus } from './utils/EventBus';
 import {
   START_CURRENT_PLAYLIST,
   STOP_PLAYER,
@@ -100,6 +101,7 @@ export class LitMusicdb extends LitElement {
     this.hasData = false;
     this.hasSK = true;
     this.hasToken = true;
+    /*
     this.addEventListener(
       START_CURRENT_PLAYLIST,
       () => {
@@ -109,6 +111,7 @@ export class LitMusicdb extends LitElement {
         passive: true,
       }
     );
+    */
     this.addEventListener(
       STOP_PLAYER,
       () => {
@@ -378,14 +381,23 @@ export class LitMusicdb extends LitElement {
       });
     });
   }
+  _listen() {
+    EventBus.on(
+      START_CURRENT_PLAYLIST,
+      () => {
+        this._startCurrentPlaylist();
+      },
+      this
+    );
+  }
   _relay = (type: string, method = '') => {
     this.dispatchEvent(new CustomEvent(type, { detail: method }));
   };
   _startCurrentPlaylist = () => {
     this.showPlayer = true;
     this.requestUpdate();
-    const player = this.shadowRoot?.querySelector('lit-player');
-    player?.dispatchEvent(new CustomEvent(START_CURRENT_PLAYLIST));
+    // const player = this.shadowRoot?.querySelector('lit-player');
+    // player?.dispatchEvent(new CustomEvent(START_CURRENT_PLAYLIST));
   };
   _stopPlayer() {
     this.showPlayer = false;

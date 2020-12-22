@@ -1,4 +1,5 @@
 import { set, get } from 'idb-keyval';
+import { global as EventBus } from './EventBus';
 import musicdb from '../components/musicdb';
 import { getTopArtists, getSimilairArtists, getLovedTracks } from './lastfm';
 
@@ -30,9 +31,12 @@ export const setCurrentPlaylist = (playlist: any) => {
 };
 
 export const startPlaylist = () => {
+  /*
   document
     .querySelector('lit-musicdb')
     ?.dispatchEvent(new CustomEvent(START_CURRENT_PLAYLIST));
+  */
+  EventBus.emit(START_CURRENT_PLAYLIST, {});
 };
 export const getNextPlaylist = (playlist: any) => {
   switch (playlist.type) {
