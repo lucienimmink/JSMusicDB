@@ -359,20 +359,10 @@ export class Album extends LitElement {
     if (index >= this.playlist.tracks.length - 1) {
       const continuesPlay: boolean = await getSettingByName('continues');
       if (continuesPlay) {
-        /*
-        document
-          .querySelector('lit-musicdb')
-          ?.dispatchEvent(new CustomEvent(LOAD_PLAYLIST));
-        */
         EventBus.emit(LOAD_PLAYLIST, this);
         this.playlist = await getNextPlaylist(this.playlist);
         await setCurrentPlaylist(this.playlist);
         EventBus.emit(LOADED_PLAYLIST, this);
-        /*
-        document
-          .querySelector('lit-musicdb')
-          ?.dispatchEvent(new CustomEvent(LOADED_PLAYLIST));
-        */
         this._play();
         this.requestUpdate();
         return;
