@@ -20,7 +20,7 @@ export default css`
   ol app-link {
     display: flex;
     padding: 10px 1rem;
-    transition: background 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
   }
   ol app-link:hover {
     background: var(--background3);

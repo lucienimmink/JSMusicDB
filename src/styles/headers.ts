@@ -6,7 +6,7 @@ export default css`
     box-sizing: border-box;
     height: 60px;
     border-bottom: 1px solid var(--primary, #006ecd);
-    transition: border-bottom-color 0.2s ease-in-out;
+    transition: all 0.5s ease-in-out;
     padding: 1.5rem 1rem 0;
     position: sticky;
     z-index: 1;

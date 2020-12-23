@@ -27,7 +27,7 @@ export default css`
     background-color: transparent;
     border: 2px solid var(--text-color);
     margin-left: 0.5rem;
-    transition: color 0.2s ease-in-out;
+    transition: background-color 0.5s ease-in-out color 0.5s ease-in-out;
   }
   .switch:before {
     content: '';
@@ -39,6 +39,7 @@ export default css`
     border-radius: 5px;
     transition: left 0.1s;
     background-color: var(--text-color);
+    transition: background-color 0.2s ease-in-out color 0.2se ease-in-out;
   }
   .switch.on {
     background-color: var(--primary, #006ecd);

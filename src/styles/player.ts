@@ -4,6 +4,7 @@ export default css`
   :host {
     background: var(--background3, #e9ecef);
     box-shadow: 0 7px 11px var(--text-color);
+    transition: background-color 0.5s ease-in-out;
   }
   audio {
     display: none;
@@ -22,6 +23,7 @@ export default css`
     width: calc(100% - 75px - 145px);
     max-width: calc(100% - 75px - 145px);
     overflow: hidden;
+    transition: color 0.5s ease-in-out;
   }
   .details app-link {
     color: var(--primary, #006ecd);

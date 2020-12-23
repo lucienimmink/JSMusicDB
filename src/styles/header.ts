@@ -21,6 +21,7 @@ export default css`
     height: 50px;
     font-weight: 300;
     padding-left: 10px;
+    transition: color 0.5s ease-in-out, background-color 0.5s ease-in-out;
   }
   app-link {
     color: var(--primary, #006ecd);

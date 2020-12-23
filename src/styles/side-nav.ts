@@ -24,6 +24,7 @@ export default css`
     margin: 0;
     padding: 0;
     height: calc(100vh - 100px);
+    transition: color 0.5s ease-in-out, background-color 0.5s ease-in-out;
   }
   .player ul {
     height: calc(100vh - 100px - 81px);
@@ -33,6 +34,8 @@ export default css`
     color: var(--text-color);
     border-left: 3px solid transparent;
     opacity: 0.5;
+    transition: color 0.5s ease-in-out, background-color 0.5s ease-in-out,
+      opacity 0.2s ease-in-out;
   }
   app-link:hover {
     opacity: 1;

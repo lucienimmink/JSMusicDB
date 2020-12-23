@@ -6,7 +6,6 @@ export default css`
     height: 44vw;
     cursor: pointer;
     background-size: contain;
-    border: 1px solid transparent;
     margin: 0 1vw 1vw 0;
     position: relative;
     border: 1px solid var(--background3, #f3f4f5);

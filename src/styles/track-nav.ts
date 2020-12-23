@@ -7,7 +7,7 @@ export default css`
     box-sizing: border-box;
     border-top: 1px solid var(--background3);
     padding: 0.5rem 1rem;
-    transition: background 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
     min-height: 60px;
   }
   li:hover {

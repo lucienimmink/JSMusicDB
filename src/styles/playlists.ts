@@ -29,7 +29,7 @@ export default css`
     display: flex;
     flex-direction: row;
     box-sizing: border-box;
-    transition: background 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
     min-height: 60px;
     align-items: center;
   }
@@ -58,7 +58,7 @@ export default css`
     box-sizing: border-box;
     border-top: 1px solid var(--background3);
     padding: 0.5rem 1rem;
-    transition: background 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
     min-height: 60px;
     width: 100%;
     cursor: pointer;
@@ -73,7 +73,7 @@ export default css`
   .playlist li.active {
     background: var(--primary, #006ecd);
     color: var(--letter-color);
-    transition: background 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
   }
   .playlist svg {
     width: 10px;

@@ -7,8 +7,8 @@ export default css`
     margin-left: auto;
     display: flex;
     color: var(--text-color);
-    transition: all 0.2s ease-in-out;
     box-sizing: border-box;
+    transition: color 0.05s ease-in-out, background-color 0.5s ease-in-out;
   }
   .p-1 {
     padding: 1rem;

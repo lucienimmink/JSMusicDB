@@ -10,7 +10,7 @@ export default css`
     margin-top: 0;
     margin-bottom: 0;
     list-style: none;
-    transition: background 0.2s ease-in-out;
+    transition: background-color 0.5s ease-in-out;
   }
   li {
     text-align: center;
@@ -23,7 +23,7 @@ export default css`
     cursor: pointer;
     display: block;
     height: 100%;
-    transition: background 0.2s ease-in;
+    transition: background-color 0.5s ease-in-out;
   }
   app-link:hover {
     background-color: rgba(0, 0, 0, 0.1);

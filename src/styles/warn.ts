@@ -9,5 +9,6 @@ export default css`
     padding: 0.75rem 1.25rem;
     margin-bottom: 1rem;
     border: 1px solid #bee5eb;
+    transition: background-color 0.5s ease-in-out color 0.5s ease-in-out;
   }
 `;
