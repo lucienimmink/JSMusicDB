@@ -18,9 +18,12 @@ export const getSimilairArtists = (artist: any) => {
   params.set('autocorrect', '1');
   params.set('method', 'artist.getSimilar');
   params.set('artist', artist);
-  return fetch(
-    `https://ws.audioscrobbler.com/2.0/?${params.toString()}`
-  ).then(response => response.json());
+  return fetch(`https://ws.audioscrobbler.com/2.0/?${params.toString()}`).then(
+    response =>
+      response.json().catch(() => {
+        return {};
+      })
+  );
 };
 
 export const getLovedTracks = (user: string) => {
@@ -30,9 +33,12 @@ export const getLovedTracks = (user: string) => {
   params.set('limit', '1000');
   params.set('method', 'user.getlovedtracks');
   params.set('user', user);
-  return fetch(
-    `https://ws.audioscrobbler.com/2.0/?${params.toString()}`
-  ).then(response => response.json());
+  return fetch(`https://ws.audioscrobbler.com/2.0/?${params.toString()}`).then(
+    response =>
+      response.json().catch(() => {
+        return {};
+      })
+  );
 };
 
 export const getTrackInfo = (track: any, user: string) => {
@@ -47,9 +53,12 @@ export const getTrackInfo = (track: any, user: string) => {
   params.set('api_key', APIKEY);
   params.set('format', 'json');
   params.set('user', user);
-  return fetch(
-    `https://ws.audioscrobbler.com/2.0/?${params.toString()}`
-  ).then(response => response.json());
+  return fetch(`https://ws.audioscrobbler.com/2.0/?${params.toString()}`).then(
+    response =>
+      response.json().catch(() => {
+        return {};
+      })
+  );
 };
 
 export const getTopArtists = (user: string) => {
@@ -60,9 +69,12 @@ export const getTopArtists = (user: string) => {
   params.set('method', 'user.gettopartists');
   params.set('period', '1month');
   params.set('user', user);
-  return fetch(
-    `https://ws.audioscrobbler.com/2.0/?${params.toString()}`
-  ).then(response => response.json());
+  return fetch(`https://ws.audioscrobbler.com/2.0/?${params.toString()}`).then(
+    response =>
+      response.json().catch(() => {
+        return {};
+      })
+  );
 };
 export const getRecentlyListened = (user: string) => {
   const params = new URLSearchParams();
@@ -71,9 +83,12 @@ export const getRecentlyListened = (user: string) => {
   params.set('limit', '6');
   params.set('method', 'user.getrecenttracks');
   params.set('user', user);
-  return fetch(
-    `https://ws.audioscrobbler.com/2.0/?${params.toString()}`
-  ).then(response => response.json());
+  return fetch(`https://ws.audioscrobbler.com/2.0/?${params.toString()}`).then(
+    response =>
+      response.json().catch(() => {
+        return {};
+      })
+  );
 };
 export const getSK = () => {
   return get(SK);
