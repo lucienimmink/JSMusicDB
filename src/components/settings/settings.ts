@@ -123,14 +123,7 @@ export class LetterNav extends LitElement {
       await updateSunriseData(value);
     }
     await setSetting(prop, value);
-    document.querySelector('lit-musicdb')?.dispatchEvent(
-      new CustomEvent(TOGGLE_SETTING, {
-        detail: {
-          setting: prop,
-          value,
-        },
-      })
-    );
+    EventBus.emit(TOGGLE_SETTING, this, { setting: prop, value });
     this.settings = await getSettings();
     this.requestUpdate();
   }

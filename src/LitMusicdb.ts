@@ -178,6 +178,13 @@ export class LitMusicdb extends LitElement {
       },
       this
     );
+    EventBus.on(
+      TOGGLE_SETTING,
+      (target: any, setting: any) => {
+        this._toggleSetting(setting);
+      },
+      this
+    );
   }
   _relay = (type: string, method = '') => {
     this.dispatchEvent(new CustomEvent(type, { detail: method }));
