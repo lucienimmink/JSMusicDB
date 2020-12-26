@@ -244,29 +244,22 @@ export class NowPlaying extends LitElement {
         // @ts-ignore
         this.shadowRoot?.querySelector('.progress')?.clientWidth || 0;
     const pos = Math.abs((this.track.duration / 1000) * perc);
-    document
-      .querySelector('lit-musicdb')
-      ?.dispatchEvent(new CustomEvent(SET_POSITION, { detail: pos }));
+    EventBus.emit(SET_POSITION, this, { pos });
+    // TODO: check if pos works
   }
   _previous() {
     animateCSS(this.shadowRoot?.querySelectorAll('h4, h5'), 'slideInDown');
-    document
-      .querySelector('lit-musicdb')
-      ?.dispatchEvent(new CustomEvent(PREVIOUS_TRACK));
+    EventBus.emit(PREVIOUS_TRACK, this);
   }
   _togglePlayPause() {
     if (this.track.isPaused) {
       animateCSS(this.shadowRoot?.querySelectorAll('h4, h5'), 'slideInUp');
     }
-    document
-      .querySelector('lit-musicdb')
-      ?.dispatchEvent(new CustomEvent(TOGGLE_PLAY_PAUSE_PLAYER));
+    EventBus.emit(TOGGLE_PLAY_PAUSE_PLAYER, this);
   }
   _next() {
     animateCSS(this.shadowRoot?.querySelectorAll('h4, h5'), 'slideInUp');
-    document
-      .querySelector('lit-musicdb')
-      ?.dispatchEvent(new CustomEvent(NEXT_TRACK));
+    EventBus.emit(NEXT_TRACK, this);
   }
   async _setPlaylist(track: any) {
     let startIndex = 0;
@@ -281,19 +274,13 @@ export class NowPlaying extends LitElement {
     this.playlist.index = startIndex;
     await setCurrentPlaylist(this.playlist);
     this.requestUpdate();
-    document
-      .querySelector('lit-musicdb')
-      ?.dispatchEvent(new CustomEvent(START_CURRENT_PLAYLIST));
+    EventBus.emit(START_CURRENT_PLAYLIST, this);
   }
   _toggleLoved() {
-    document
-      .querySelector('lit-musicdb')
-      ?.dispatchEvent(new CustomEvent(TOGGLE_LOVED));
+    EventBus.emit(TOGGLE_LOVED, this);
   }
   _toggleShuffle() {
-    document
-      .querySelector('lit-musicdb')
-      ?.dispatchEvent(new CustomEvent(TOGGLE_SHUFFLE));
+    EventBus.emit(TOGGLE_SHUFFLE, this);
   }
   _toggleView() {
     this.isBottomShown = !this.isBottomShown;
