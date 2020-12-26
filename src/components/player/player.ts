@@ -406,7 +406,10 @@ export class Album extends LitElement {
     this.isLoved = !this.isLoved;
     toggleLoved(this.track, this.isLoved).then(() => {
       this.track.isLoved = this.isLoved;
-      EventBus.emit(TOGGLE_LOVED_UPDATED, this, this.isLoved);
+      EventBus.emit(TOGGLE_LOVED_UPDATED, this, {
+        current: this.track,
+        type: TOGGLE_LOVED_UPDATED,
+      });
       this.requestUpdate();
     });
   }
