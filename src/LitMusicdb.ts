@@ -181,7 +181,7 @@ export class LitMusicdb extends LitElement {
     EventBus.on(
       TOGGLE_SETTING,
       (target: any, setting: any) => {
-        this._toggleSetting(setting);
+        if (target.target !== this) this._toggleSetting(setting);
       },
       this
     );

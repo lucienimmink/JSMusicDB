@@ -244,7 +244,7 @@ export class NowPlaying extends LitElement {
         // @ts-ignore
         this.shadowRoot?.querySelector('.progress')?.clientWidth || 0;
     const pos = Math.abs((this.track.duration / 1000) * perc);
-    EventBus.emit(SET_POSITION, this, { pos });
+    EventBus.emit(SET_POSITION, this, pos);
     // TODO: check if pos works
   }
   _previous() {

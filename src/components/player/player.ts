@@ -177,7 +177,7 @@ export class Album extends LitElement {
     );
     EventBus.on(
       TOGGLE_SETTING,
-      (tartget: any, setting: any) => {
+      (target: any, setting: any) => {
         this._toggleSetting(setting);
       },
       this
