@@ -18,6 +18,6 @@ module.exports = {
     '@typescript-eslint/ban-ts-comment': 'off',
     'import/named': 'off',
     'import/no-unresolved': 'off',
-    'import/extentions': 'off'
+    'import/extentions': 'off',
   },
 };
