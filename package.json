@@ -12,8 +12,9 @@
     "tsc:watch": "tsc --watch",
     "version": "npm run build",
     "postversion": "git push && git push --tags && rimraf dist",
-    "docker:build": "npm run --silent build && docker build -t jsmusicdb:latest .",
-    "docker:start": "npm run --silent docker:build && docker run --rm -d -p 3000:80/tcp jsmusicdb:latest"
+    "docker:build": "npm run --silent build && docker build -t jsmusicdb/jsmusicdb:latest .",
+    "docker:start": "npm run --silent docker:build && docker run --rm -d -p 3000:80/tcp jsmusicdb/jsmusicdb:latest",
+    "docker:push": "docker push jsmusicdb/jsmusicdb:latest"
   },
   "devDependencies": {
     "@open-wc/building-rollup": "^1.9.4",
