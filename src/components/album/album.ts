@@ -87,6 +87,8 @@ export class Album extends LitElement {
         }
       });
     }
+    // sort before
+    this._sort(this.albumDetails);
     await setCurrentPlaylist({
       name: `${
         this.albumDetails.artist.albumArtist || this.albumDetails.artist.name
@@ -98,6 +100,21 @@ export class Album extends LitElement {
     });
     await setCurrentTime(0);
     startPlaylist(this);
+  }
+  _sort(album: any) {
+    album.tracks.sort((a: any, b: any): number => {
+      if (a.disc < b.disc) {
+        return -1;
+      }
+      if (a.disc === b.disc) {
+        if (a.number < b.number) {
+          return -1;
+        } else {
+          return 1;
+        }
+      }
+      return 1;
+    });
   }
   render() {
     return html`

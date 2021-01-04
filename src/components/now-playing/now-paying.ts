@@ -212,7 +212,6 @@ export class NowPlaying extends LitElement {
     }
   }
   async _update({ current, type }: { current: any; type: string }) {
-    console.log('update', current, type);
     this.track = current;
     if (type === PLAY_PLAYER_START || type === PAUSE_PLAYER) {
       const playlist: any = await getCurrentPlaylist();
