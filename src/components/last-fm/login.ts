@@ -95,6 +95,7 @@ export class LetterNav extends LitElement {
                   Login to last.fm
                   <button
                     class="btn btn-transparent btn-icon"
+                    aria-label="toggle information"
                     @click=${this._toggleInfo}
                   >
                     ${infoIcon}
@@ -153,6 +154,7 @@ export class LetterNav extends LitElement {
                 <h2 class="header">What is this?</h2>
                 <button
                   class="btn btn-transparent btn-icon"
+                  aria-label="toggle information"
                   @click=${this._toggleInfo}
                 >
                   ${timesIcon}
