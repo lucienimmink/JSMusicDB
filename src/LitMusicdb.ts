@@ -95,16 +95,18 @@ export class LitMusicdb extends LitElement {
         passive: true,
       }
     );
-    navigator.serviceWorker.addEventListener(
-      'message',
-      async (e: MessageEvent) => {
-        const { type } = e.data;
-        if (type === 'refresh') {
-          await update();
-          EventBus.emit(REFRESH, this);
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.addEventListener(
+        'message',
+        async (e: MessageEvent) => {
+          const { type } = e.data;
+          if (type === 'refresh') {
+            await update();
+            EventBus.emit(REFRESH, this);
+          }
         }
-      }
-    );
+      );
+    }
     musicdb
       .then(() => {
         getSettingByName('playliststate').then((start: any) => {
