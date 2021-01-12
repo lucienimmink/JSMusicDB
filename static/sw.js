@@ -123,12 +123,14 @@ function refresh(response) {
       };
       var responseToCache = response.clone();
       // once updated let the client know it's updated
-      responseToCache.json().then(async musicdb => {
-        withStore('readwrite', store => {
-          store.put(musicdb, 'musicdb');
+      try {
+        responseToCache.json().then(async musicdb => {
+          withStore('readwrite', store => {
+            store.put(musicdb, 'musicdb');
+          });
+          client.postMessage(message);
         });
-        client.postMessage(message);
-      });
+      } catch (e) {}
     });
   });
 }

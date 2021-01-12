@@ -17,6 +17,9 @@ const musicdb = new Promise((resolve, reject) => {
             resolve(mdb);
           }
           reject('music data file is empty');
+        })
+        .catch(() => {
+          reject('music data file not found');
         });
     } else {
       reject('no base-server given, cannot get collection');
