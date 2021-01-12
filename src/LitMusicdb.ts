@@ -126,6 +126,9 @@ export class LitMusicdb extends LitElement {
       })
       .catch((error: any) => {
         console.log(error);
+        this.hasData = true;
+        this.loading = false;
+        this.requestUpdate();
       });
     this._getTheme();
     getSK()

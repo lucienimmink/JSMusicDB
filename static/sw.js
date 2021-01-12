@@ -123,14 +123,17 @@ function refresh(response) {
       };
       var responseToCache = response.clone();
       // once updated let the client know it's updated
-      try {
-        responseToCache.json().then(async musicdb => {
+      responseToCache
+        .json()
+        .then(async musicdb => {
           withStore('readwrite', store => {
             store.put(musicdb, 'musicdb');
           });
           client.postMessage(message);
+        })
+        .catch(() => {
+          console.log('error parsing response');
         });
-      } catch (e) {}
     });
   });
 }
