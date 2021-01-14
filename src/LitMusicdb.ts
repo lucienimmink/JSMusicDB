@@ -126,6 +126,7 @@ export class LitMusicdb extends LitElement {
       })
       .catch((error: any) => {
         console.log(error);
+        // TODO: initiate data rescan
         this.hasData = true;
         this.loading = false;
         this.requestUpdate();

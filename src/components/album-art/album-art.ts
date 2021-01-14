@@ -1,12 +1,12 @@
 import { LitElement, customElement, html, css } from 'lit-element';
-import { Store, get, set } from 'idb-keyval';
+import { createStore, get, set } from 'idb-keyval';
 import { fetchArtForArtist, fetchArtForAlbum } from './fetchArt';
 import { defaultAlbum, defaultArtist, defaultPixel } from './defaultart';
 @customElement('album-art')
 export class AlbumArt extends LitElement {
   art: any;
   _cache: any;
-  customStore: Store;
+  customStore: any;
   objectFit: string;
   album: any;
   artist: any;
@@ -49,7 +49,7 @@ export class AlbumArt extends LitElement {
     super();
     this.art = defaultPixel;
     this._cache = {};
-    this.customStore = new Store('album-art-db', 'album-art-store');
+    this.customStore = createStore('album-art-db', 'album-art-store');
     this.objectFit = 'cover';
     this.cache = false;
     this.transparent = false;

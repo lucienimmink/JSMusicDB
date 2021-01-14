@@ -105,7 +105,7 @@ export const setLastFMUserName = (username: string) => {
 
 // protected method
 export const toggleLoved = async (track: any, isLoved = true) => {
-  const sk: string = await get(SK);
+  const sk: any = await get(SK);
   if (!sk) {
     throw Error('No sign key');
   }
@@ -164,7 +164,7 @@ export const authenticate = async ({
   ).then(response => response.json());
 };
 export const announceNowPlaying = async (track: any) => {
-  const username: string = await get(USERNAME);
+  const username: any = await get(USERNAME);
   if (!username || username === 'mdb-skipped') {
     return;
   }
@@ -178,7 +178,7 @@ export const announceNowPlaying = async (track: any) => {
       now.getMinutes() + now.getTimezoneOffset(),
       now.getSeconds()
     ) / 1000;
-  const sk: string = await get(SK);
+  const sk: any = await get(SK);
   if (!sk) {
     throw Error('No sign key');
   }
@@ -210,7 +210,7 @@ export const announceNowPlaying = async (track: any) => {
   });
 };
 export const scrobbleTrack = async (track: any) => {
-  const username: string = await get(USERNAME);
+  const username: any = await get(USERNAME);
   if (!username || username === 'mdb-skipped') {
     return;
   }
@@ -243,7 +243,7 @@ export const scrobbleTrack = async (track: any) => {
     return await setScrobbleCache(scrobbleList);
   }
   // online
-  const sk: string = await get(SK);
+  const sk: any = await get(SK);
   if (!sk) {
     throw Error('No sign key');
   }
