@@ -1,4 +1,4 @@
-import { get, set } from 'idb-keyval';
+import { get, set, del } from 'idb-keyval';
 const MINIMALSTREAMVERSION = '4.0.0';
 const JWT = 'jwt';
 const SERVER = 'server';
@@ -6,6 +6,7 @@ const SERVER = 'server';
 export const IS_RELOADING = 'is-reloading';
 export const DONE_RELOADING = 'done-reloading';
 export const POLL_INTERVALL = 5000;
+export const RESET_SERVER = 'reset-server';
 
 export const canLogin = async (server: string) => {
   const serverVersion = await _versionCheck(server);
@@ -58,6 +59,10 @@ export const getServer = async () => {
 };
 export const setServer = async (server: string) => {
   return await set(SERVER, server);
+};
+export const resetServer = async () => {
+  await del(SERVER);
+  return await del(JWT);
 };
 
 const _versionCheck = async (server: string) => {

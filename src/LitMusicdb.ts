@@ -36,7 +36,7 @@ import { light, dark } from './styles/themes';
 import timeSpan from './utils/timespan';
 import { getCurrentTheme, updateSunriseData } from './utils/colour';
 import { getSK } from './utils/lastfm';
-import { DONE_RELOADING, getJwt } from './utils/node-mp3stream';
+import { DONE_RELOADING, getJwt, RESET_SERVER } from './utils/node-mp3stream';
 import { animationCSS, animateCSS } from './utils/animations';
 import litMusicdb from './styles/lit-musicdb';
 import { REFRESH } from './utils/musicdb';
@@ -191,6 +191,7 @@ export class LitMusicdb extends LitElement {
       },
       this
     );
+    EventBus.on(RESET_SERVER, this._resetServer, this);
   }
   _relay = (type: string, method = '') => {
     this.dispatchEvent(new CustomEvent(type, { detail: method }));
@@ -265,6 +266,10 @@ export class LitMusicdb extends LitElement {
     document.querySelector('html')?.classList.remove('noscroll');
     await animateCSS(this.shadowRoot?.querySelector('app-main'), 'slideInUp');
     // console.log(route, params, query);
+  }
+  _resetServer() {
+    this.hasToken = false;
+    this.requestUpdate();
   }
   render() {
     return html`

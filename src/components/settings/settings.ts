@@ -14,6 +14,8 @@ import {
   getRescan,
   getServer,
   IS_RELOADING,
+  resetServer,
+  RESET_SERVER,
 } from '../../utils/node-mp3stream';
 import headers from '../../styles/headers';
 import container from '../../styles/container';
@@ -25,6 +27,8 @@ import { updateSunriseData } from '../../utils/colour';
 import settings from '../../styles/settings';
 import { REFRESH } from '../../utils/musicdb';
 import { global as EventBus } from '../../utils/EventBus';
+import { timesIcon } from '../icons/times';
+import { trashIcon } from '../icons/trash';
 
 @customElement('settings-nav')
 export class LetterNav extends LitElement {
@@ -136,6 +140,12 @@ export class LetterNav extends LitElement {
       this.requestUpdate();
     }
   }
+  async _resetmp3Stream() {
+    await resetServer();
+    this.mp3stream = null;
+    EventBus.emit(RESET_SERVER, this);
+    this.requestUpdate();
+  }
   render() {
     return html`
       <div class="container">
@@ -151,6 +161,14 @@ export class LetterNav extends LitElement {
         <p>
           Connected to Node-mp3stream:
           ${this.mp3stream ? this.mp3stream : 'false'}
+          ${this.mp3stream
+            ? html`<button
+                class="btn btn-transparent btn-small"
+                @click=${this._resetmp3Stream}
+              >
+                <span class="icon">${trashIcon}</span> disconnect
+              </button>`
+            : nothing}
         </p>
         ${!this.isReloading
           ? html`

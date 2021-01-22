@@ -47,4 +47,12 @@ export default css`
   .btn + .btn {
     margin-left: 1rem;
   }
+  .btn .icon {
+    display: inline-block;
+    vertical-align: top;
+  }
+  .btn .icon svg {
+    display: block;
+    height: 1rem;
+  }
 `;
