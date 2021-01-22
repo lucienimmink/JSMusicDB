@@ -29,6 +29,21 @@ export default css`
     border-color: var(--darken30);
     background-color: var(--darken);
   }
+  .btn-secondary {
+    border: 2px solid var(--background2);
+    background-color: var(--background3);
+    color: var(--text-color);
+  }
+  .btn-secondary:hover,
+  .btn-secondary:focus {
+    border-color: var(--primary);
+    outline: none;
+  }
+  .btn-secondary:active {
+    border-color: var(--darken30);
+    background-color: var(--darken);
+    color: var(--letter-color);
+  }
   .btn-transparent {
     color: var(--primary);
     padding: 0;

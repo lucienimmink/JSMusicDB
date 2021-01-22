@@ -27,8 +27,8 @@ import { updateSunriseData } from '../../utils/colour';
 import settings from '../../styles/settings';
 import { REFRESH } from '../../utils/musicdb';
 import { global as EventBus } from '../../utils/EventBus';
-import { timesIcon } from '../icons/times';
 import { trashIcon } from '../icons/trash';
+import { syncIcon } from '../icons/sync';
 
 @customElement('settings-nav')
 export class LetterNav extends LitElement {
@@ -163,7 +163,7 @@ export class LetterNav extends LitElement {
           ${this.mp3stream ? this.mp3stream : 'false'}
           ${this.mp3stream
             ? html`<button
-                class="btn btn-transparent btn-small"
+                class="btn btn-secondary btn-small"
                 @click=${this._resetmp3Stream}
               >
                 <span class="icon">${trashIcon}</span> disconnect
@@ -180,7 +180,7 @@ export class LetterNav extends LitElement {
                     this._reloadCollection();
                   }}
                 >
-                  Reload now
+                  <span class="icon">${syncIcon}</span> Reload now
                 </button>
               </p>
             `
