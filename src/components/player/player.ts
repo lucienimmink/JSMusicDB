@@ -91,6 +91,7 @@ export class Album extends LitElement {
     this.isShuffled = false;
     this.useDynamicAccentColor = false;
     this.bgColor = LIGHT;
+    this._updateBgColorIfSystemTheme();
     this._listen();
     getCurrentPlaylist().then((playlist: any) => {
       this.playlist = playlist;
@@ -439,6 +440,20 @@ export class Album extends LitElement {
         this._setDynamicAccentColor();
       }
     }
+  }
+  _updateBgColorIfSystemTheme() {
+    const darkModeMediaQuery = window.matchMedia(
+      '(prefers-color-scheme: dark)'
+    );
+    darkModeMediaQuery.addListener(async () => {
+      const theme = await getSettingByName('theme');
+      if (theme === 'system') {
+        this.bgColor = await currentBgColor();
+        if (this.useDynamicAccentColor) {
+          this._setDynamicAccentColor();
+        }
+      }
+    });
   }
   render() {
     return html`

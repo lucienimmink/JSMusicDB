@@ -240,6 +240,14 @@ export class LetterNav extends LitElement {
           <br />
           <label
             ><button
+              @click="${(e: Event) => this._toggle('theme', e, 'system')}"
+              class="radio ${this.settings?.theme === 'system' ? 'on' : 'off'}"
+            ></button>
+            <span>System theme</span>
+          </label>
+          <br />
+          <label
+            ><button
               @click="${(e: Event) => this._toggle('theme', e, 'auto')}"
               class="radio ${this.settings?.theme === 'auto' ? 'on' : 'off'}"
             ></button>

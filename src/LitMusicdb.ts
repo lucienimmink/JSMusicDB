@@ -32,7 +32,7 @@ import './components/search/search';
 import './components/loading-indicator/loading-indicator';
 import './components/loading-indicator/progress-spinner';
 
-import { light, dark } from './styles/themes';
+import { light, dark, system } from './styles/themes';
 import timeSpan from './utils/timespan';
 import { getCurrentTheme, updateSunriseData } from './utils/colour';
 import { getSK } from './utils/lastfm';
@@ -209,11 +209,16 @@ export class LitMusicdb extends LitElement {
     const cssMap: any = {
       light,
       dark,
+      system,
     };
     let css = null;
     switch (theme) {
       case 'dark':
         css = cssMap.dark;
+        clearTimeout(this.themeSwitchCycle);
+        break;
+      case 'system':
+        css = cssMap.system;
         clearTimeout(this.themeSwitchCycle);
         break;
       case 'auto': {

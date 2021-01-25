@@ -18,6 +18,7 @@ export default css`
   .virtual-scroll .header {
     top: 0;
     color: var(--primary, #006ecd);
+    transition: none;
     cursor: pointer;
   }
   @media (min-width: 768px) {
