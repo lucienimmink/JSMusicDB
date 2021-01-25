@@ -40,6 +40,7 @@ import { DONE_RELOADING, getJwt, RESET_SERVER } from './utils/node-mp3stream';
 import { animationCSS, animateCSS } from './utils/animations';
 import litMusicdb from './styles/lit-musicdb';
 import { REFRESH } from './utils/musicdb';
+import scrollbar from './styles/scrollbar';
 
 @customElement('lit-musicdb')
 @router
@@ -55,7 +56,7 @@ export class LitMusicdb extends LitElement {
   hasSK: boolean;
   hasToken: boolean;
   static get styles() {
-    return [animationCSS, litMusicdb];
+    return [animationCSS, litMusicdb, scrollbar];
   }
   static get properties() {
     return {
