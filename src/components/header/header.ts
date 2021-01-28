@@ -107,24 +107,26 @@ export class Header extends LitElement {
   render() {
     return html`<h1>
       <a href="#" @click=${this._toggleMenu} title="open menu">${barsIcon}</a>
-      ${this.alb
-        ? html`
-            <span class="md-up">
-              <app-link
-                inline
-                href="/letter/${this.alb.artist.letter
-                  .escapedLetter}/artist/${this.alb.artist.escapedName}"
-                >${this.alb.artist.albumArtist ||
-                this.alb.artist.name}</app-link
-              >
-              <span>• </span></span
-            >${this.alb.name}
-          `
-        : nothing}
-      ${this.art && !this.alb
-        ? html`${this.art.albumArtist || this.art.name}`
-        : nothing}
-      ${!this.alb && !this.art ? html`JSMusicDB` : nothing}
+      <div>
+        ${this.alb
+          ? html`
+              <span class="md-up">
+                <app-link
+                  inline
+                  href="/letter/${this.alb.artist.letter
+                    .escapedLetter}/artist/${this.alb.artist.escapedName}"
+                  >${this.alb.artist.albumArtist ||
+                  this.alb.artist.name}</app-link
+                >
+                <span>• </span></span
+              >${this.alb.name}
+            `
+          : nothing}
+        ${this.art && !this.alb
+          ? html`${this.art.albumArtist || this.art.name}`
+          : nothing}
+        ${!this.alb && !this.art ? html`JSMusicDB` : nothing}
+      </div>
       ${this.isReloading
         ? html`<progress-spinner>${this.progress}</progress-spinner>`
         : nothing}

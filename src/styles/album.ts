@@ -23,7 +23,7 @@ export default css`
     album-details {
       position: fixed;
       width: 100vw;
-      z-index: 10;
+      z-index: 2;
     }
   }
 `;

@@ -5,6 +5,8 @@ export default css`
     color: var(--primary);
     text-decoration: none;
     transition: color 0.2s ease-in-out;
+    flex-grow: 0;
+    margin-right: 1rem;
   }
   svg {
     width: 20px;
@@ -17,7 +19,7 @@ export default css`
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    display: block;
+    display: flex;
     height: 50px;
     font-weight: 300;
     padding-left: 10px;
@@ -27,10 +29,17 @@ export default css`
     color: var(--primary, #006ecd);
     transition: color 0.2s ease-in-out;
   }
+  div {
+    flex-grow: 1;
+    white-space: nowrap;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   progress-spinner {
-    position: absolute;
-    right: -10px;
-    top: -14px;
+    display: inline-block;
+    flex-grow: 0;
+    margin: -14px -10px 0 0;
     font-size: 0.8rem;
   }
   @media (min-width: 576px) {

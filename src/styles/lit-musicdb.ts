@@ -42,7 +42,7 @@ export default css`
     right: 0;
     height: 81px;
     box-sizing: border-box;
-    z-index: 1;
+    z-index: 2;
   }
   .loading-wrapper {
     background: var(--background);
