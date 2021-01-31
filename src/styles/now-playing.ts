@@ -9,7 +9,7 @@ export default css`
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 2;
+    z-index: 3;
     overflow: hidden;
   }
   .top {
