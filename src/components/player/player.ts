@@ -58,6 +58,7 @@ import {
   getColorsFromRGBWithBGColor,
   getDominantColorByURL,
   LIGHT,
+  removeCustomCss,
 } from '../../utils/colour';
 import { animationCSS, animateCSS } from '../../utils/animations';
 import player from '../../styles/player';
@@ -433,11 +434,26 @@ export class Album extends LitElement {
       addCustomCss(colours);
     });
   }
-  async _toggleSetting({ setting }: { setting: string }) {
+  async _toggleSetting({
+    setting,
+    value,
+  }: {
+    setting: string;
+    value: boolean;
+  }) {
     if (setting === 'theme') {
       this.bgColor = await currentBgColor();
       if (this.useDynamicAccentColor) {
         this._setDynamicAccentColor();
+      }
+    }
+    if (setting === 'dynamicTheme') {
+      this.useDynamicAccentColor = value;
+      if (this.useDynamicAccentColor) {
+        this._setDynamicAccentColor();
+        this.bgColor = await currentBgColor();
+      } else {
+        removeCustomCss();
       }
     }
   }
