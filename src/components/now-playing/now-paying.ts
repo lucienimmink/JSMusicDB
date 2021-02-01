@@ -18,7 +18,7 @@ import {
   UPDATE_PLAYER,
 } from '../../utils/player';
 import timeSpan from '../../utils/timespan';
-import { getSettingByName } from '../../utils/settings';
+import { getSettingByName, TOGGLE_SETTING } from '../../utils/settings';
 
 import { nextIcon } from '../icons/next';
 import { pauseIcon } from '../icons/pause';
@@ -118,6 +118,23 @@ export class NowPlaying extends LitElement {
       ACCENT_COLOR,
       (target: any, accentColor: string) => {
         this.accentColor = accentColor;
+      },
+      this
+    );
+    EventBus.on(
+      TOGGLE_SETTING,
+      (target: any, setting: any) => {
+        if (setting.setting === 'smallArt') {
+          this.smallArt = setting.value;
+          this.requestUpdate();
+        }
+        if (setting.setting === 'visual') {
+          this.hasCanvas = setting.value;
+          if (this.hasCanvas && !this._analyzer) {
+            this._visualize();
+          }
+          this.requestUpdate();
+        }
       },
       this
     );

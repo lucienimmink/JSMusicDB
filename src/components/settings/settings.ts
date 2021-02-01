@@ -126,6 +126,13 @@ export class LetterNav extends LitElement {
     if (prop === 'gps') {
       await updateSunriseData(value);
     }
+    if (prop === 'visual' && value === false) {
+      await setSetting('smallArt', false);
+      EventBus.emit(TOGGLE_SETTING, this, {
+        setting: 'smallArt',
+        value: false,
+      });
+    }
     await setSetting(prop, value);
     EventBus.emit(TOGGLE_SETTING, this, { setting: prop, value });
     this.settings = await getSettings();
