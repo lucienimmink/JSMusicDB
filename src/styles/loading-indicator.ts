@@ -136,9 +136,9 @@ export const progressSpinner = css`
     left: 12px;
   }
   .text {
-    position: absolute;
-    top: 29px;
-    left: 30px;
+    position: relative;
+    top: -55px;
+    left: 29px;
     width: 24px;
     text-align: center;
   }
