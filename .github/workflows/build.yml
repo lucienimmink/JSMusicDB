@@ -14,10 +14,6 @@ jobs:
         uses: jaid/action-npm-install@v1.2.1
       - name: NPM build
         run: npm run build
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.1
         with:
