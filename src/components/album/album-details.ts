@@ -9,6 +9,7 @@ import buttons from '../../styles/buttons';
 import { nothing } from 'lit-html';
 import albumDetails from '../../styles/album-details';
 import smallMuted from '../../styles/small-muted';
+import { hqIcon } from '../icons/hq';
 
 @customElement('album-details')
 export class AlbumDetails extends LitElement {
@@ -99,6 +100,10 @@ export class AlbumDetails extends LitElement {
             <h3>
               ${this.albumDetails?.artist?.albumArtist ||
               this.albumDetails?.artist?.name}
+              ${this.albumDetails?.type === 'mp4' ||
+              this.albumDetails?.type === 'flac'
+                ? html`<span class="small muted">${hqIcon}</span>`
+                : nothing}
             </h3>
             <h4>
               ${this.albumDetails?.year
@@ -107,7 +112,13 @@ export class AlbumDetails extends LitElement {
               ${this.albumDetails?.tracks?.length}
               song${this.albumDetails?.tracks?.length === '1' ? '' : 's'} •
               ${this.calculateLength(this.albumDetails?.tracks)}
-              <span class="small muted"> • ${this.albumDetails?.type}</span>
+              <span class="small muted">
+                • ${this.albumDetails?.type}
+                ${this.albumDetails?.type === 'mp4' ||
+                this.albumDetails?.type === 'flac'
+                  ? hqIcon
+                  : nothing}
+              </span>
             </h4>
             <h4>
               <button

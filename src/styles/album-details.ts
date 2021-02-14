@@ -52,6 +52,16 @@ export default css`
   h3 {
     flex-grow: 1;
   }
+  h3 .muted svg,
+  h4 .muted svg {
+    width: 1rem;
+    position: relative;
+    top: 3px;
+    transition: all 0.1s ease-in-out;
+  }
+  h3 .muted svg {
+    top: 2px;
+  }
   @media (min-width: 768px) {
     .jumbotron {
       padding: 2rem;
@@ -70,6 +80,9 @@ export default css`
       width: 75px;
       height: 75px;
       max-height: 75px;
+    }
+    h3 .muted {
+      opacity: 0;
     }
     h2 {
       font-size: 2.5rem;
@@ -90,6 +103,9 @@ export default css`
     }
     .shrunk h3 {
       font-size: 1.2rem;
+    }
+    .shrunk h3 .muted {
+      opacity: 0.6;
     }
     .shrunk h4 {
       height: 0;
