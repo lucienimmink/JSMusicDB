@@ -26,9 +26,9 @@ export default css`
     transition: background-color 0.5s ease-in-out;
   }
   app-link:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: var(--letter-background-hover);
   }
   .active app-link {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: var(--letter-background-active);
   }
 `;

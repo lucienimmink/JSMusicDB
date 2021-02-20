@@ -9,6 +9,8 @@ export const light = css`
     --lighten30: rgb(61, 139, 204);
     --progress: var(--lighten);
     --progress-background: var(--lighten30);
+    --letter-background-hover: var(--darken);
+    --letter-background-active: var(--darken30);
     --text-color: black;
     --letter-color: white;
     --background: rgb(249, 249, 249);
@@ -28,6 +30,8 @@ export const dark = css`
     --lighten30: rgb(76, 177, 255);
     --progress: var(--darken);
     --progress-background: var(--darken30);
+    --letter-background-hover: var(--lighten);
+    --letter-background-active: var(--lighten30);
     --text-light: rgba(0, 130, 225, 1);
     --text-dark: rgba(0, 130, 225, 1);
     --text-color: white;
@@ -50,6 +54,8 @@ export const system = css`
       --lighten30: rgb(61, 139, 204);
       --progress: var(--lighten);
       --progress-background: var(--lighten30);
+      --letter-background-hover: var(--darken);
+      --letter-background-active: var(--darken30);
       --text-color: black;
       --letter-color: white;
       --background: rgb(249, 249, 249);
@@ -68,6 +74,8 @@ export const system = css`
       --lighten30: rgb(76, 177, 255);
       --progress: var(--darken);
       --progress-background: var(--darken30);
+      --letter-background-hover: var(--lighten);
+      --letter-background-active: var(--lighten30);
       --text-light: rgba(0, 130, 225, 1);
       --text-dark: rgba(0, 130, 225, 1);
       --text-color: white;
