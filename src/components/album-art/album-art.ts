@@ -12,6 +12,7 @@ export class AlbumArt extends LitElement {
   artist: any;
   cache: boolean;
   transparent: boolean;
+  ARTBASE = `https://res.cloudinary.com/jsmusicdb-com/image/fetch/f_auto/`;
 
   static get properties() {
     return {
@@ -123,7 +124,7 @@ export class AlbumArt extends LitElement {
     );
   }
   isEmptyArt(art: string) {
-    const base = `https://res.cloudinary.com/jsmusicdb-com/image/fetch/`;
+    const base = this.ARTBASE;
     if (art === base || art === `${base}null`) {
       return true;
     }
@@ -136,7 +137,7 @@ export class AlbumArt extends LitElement {
     return await get(`${artist}-${album}`, this.customStore);
   }
   async updateArt({ artist, album }: { artist: string; album: string }) {
-    let art = `https://res.cloudinary.com/jsmusicdb-com/image/fetch/`;
+    let art = this.ARTBASE;
     if (!album) {
       try {
         art += await fetchArtForArtist(this.artist);
