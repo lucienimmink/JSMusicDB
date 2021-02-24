@@ -144,7 +144,7 @@ export class AlbumArt extends LitElement {
   }
   isEmptyArt(art: string) {
     const base = this.ARTBASE;
-    if (art === base || art === `${base}null`) {
+    if (art === base || art.includes(`fill/null`)) {
       return true;
     }
     return false;
