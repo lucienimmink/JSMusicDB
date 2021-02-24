@@ -29,6 +29,7 @@ import { REFRESH } from '../../utils/musicdb';
 import { global as EventBus } from '../../utils/EventBus';
 import { trashIcon } from '../icons/trash';
 import { syncIcon } from '../icons/sync';
+import { clear, createStore } from 'idb-keyval';
 
 @customElement('settings-nav')
 export class LetterNav extends LitElement {
@@ -153,6 +154,9 @@ export class LetterNav extends LitElement {
     EventBus.emit(RESET_SERVER, this);
     this.requestUpdate();
   }
+  _clearImageCache() {
+    clear(createStore('album-art-db', 'album-art-store'));
+  }
   render() {
     return html`
       <div class="container">
@@ -192,6 +196,15 @@ export class LetterNav extends LitElement {
               </p>
             `
           : nothing}
+        <p>
+          Purge image cache:
+          <button
+            class="btn btn-secondary btn-small"
+            @click=${this._clearImageCache}
+          >
+            <span class="icon">${trashIcon}</span> clear
+          </button>
+        </p>
       </div>
 
       <div class="container">
