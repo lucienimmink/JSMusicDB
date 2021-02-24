@@ -408,21 +408,31 @@ export class NowPlaying extends LitElement {
                       </h5>
                     </div>
                     <div class="controls">
-                      <button class="btn" @click=${() => this._previous()}>
+                      <button
+                        class="btn"
+                        @click=${() => this._previous()}
+                        aria-label="previous track"
+                      >
                         ${previousIcon}
                       </button>
                       <button
                         class="btn"
                         @click=${() => this._togglePlayPause()}
+                        aria-label="play or pause"
                       >
                         ${this.track.isPlaying ? pauseIcon : playIcon}
                       </button>
-                      <button class="btn" @click=${() => this._next()}>
+                      <button
+                        class="btn"
+                        @click=${() => this._next()}
+                        aria-label="next track"
+                      >
                         ${nextIcon}
                       </button>
                       <button
                         class="btn btn-toggle"
                         @click=${() => this._toggleView()}
+                        aria-label="show or hide playlist"
                       >
                         ${this.isBottomShown ? chevronDownIcon : chevronUpIcon}
                       </button>
@@ -434,12 +444,14 @@ export class NowPlaying extends LitElement {
                       <button
                         class="btn ${this.track.isLoved ? 'active' : ''}"
                         @click=${() => this._toggleLoved()}
+                        aria-label="love or unlove track"
                       >
                         ${heartIcon}
                       </button>
                       <button
                         class="btn ${this.isShuffled ? 'active' : ''}"
                         @click=${() => this._toggleShuffle()}
+                        aria-label="shuffle or unshuffle playlist"
                       >
                         ${randomIcon}
                       </button>

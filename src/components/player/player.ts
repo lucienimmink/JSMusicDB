@@ -537,13 +537,25 @@ export class Album extends LitElement {
                   </h5>
                 </div>
                 <div class="controls">
-                  <button class="btn" @click=${() => this._previous()}>
+                  <button
+                    class="btn"
+                    @click=${() => this._previous()}
+                    aria-label="previous track"
+                  >
                     ${previousIcon}
                   </button>
-                  <button class="btn" @click=${() => this._togglePlayPause()}>
+                  <button
+                    class="btn"
+                    @click=${() => this._togglePlayPause()}
+                    aria-label="play or pause"
+                  >
                     ${this.isPlaying ? pauseIcon : playIcon}
                   </button>
-                  <button class="btn" @click=${() => this._next()}>
+                  <button
+                    class="btn"
+                    @click=${() => this._next()}
+                    aria-label="next track"
+                  >
                     ${nextIcon}
                   </button>
                   <button class="btn" style="display:none">
@@ -552,12 +564,14 @@ export class Album extends LitElement {
                   <button
                     class="btn md-up ${this.isLoved ? 'active' : ''}"
                     @click=${() => this._toggleLoved()}
+                    aria-label="love or unlove track"
                   >
                     ${heartIcon}
                   </button>
                   <button
                     class="btn md-up ${this.isShuffled ? 'active' : ''}"
                     @click=${() => this._toggleShuffled()}
+                    aria-label="shuffle or unshuffle playlist"
                   >
                     ${randomIcon}
                   </button>
