@@ -10,6 +10,7 @@ import { nothing } from 'lit-html';
 import albumDetails from '../../styles/album-details';
 import smallMuted from '../../styles/small-muted';
 import { hqIcon } from '../icons/hq';
+import responsive from '../../styles/responsive';
 
 @customElement('album-details')
 export class AlbumDetails extends LitElement {
@@ -21,7 +22,7 @@ export class AlbumDetails extends LitElement {
   shrunk: boolean;
 
   static get styles() {
-    return [container, buttons, albumDetails, smallMuted];
+    return [container, buttons, albumDetails, smallMuted, responsive];
   }
 
   constructor() {
@@ -112,7 +113,7 @@ export class AlbumDetails extends LitElement {
               ${this.albumDetails?.tracks?.length}
               song${this.albumDetails?.tracks?.length === '1' ? '' : 's'} •
               ${this.calculateLength(this.albumDetails?.tracks)}
-              <span class="small muted">
+              <span class="small muted md-up-inline">
                 • ${this.albumDetails?.type}
                 ${this.albumDetails?.type === 'mp4' ||
                 this.albumDetails?.type === 'flac'

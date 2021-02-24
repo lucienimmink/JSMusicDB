@@ -1,7 +1,8 @@
 import { css } from 'lit-element';
 
 export default css`
-  .md-up {
+  .md-up,
+  .md-up-inline {
     display: none;
   }
   .sr-only {
@@ -17,6 +18,9 @@ export default css`
   @media (min-width: 576px) {
     .md-up {
       display: block;
+    }
+    .md-up-inline {
+      display: inline;
     }
     .sm-only {
       display: none;
