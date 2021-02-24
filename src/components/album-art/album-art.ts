@@ -12,7 +12,8 @@ export class AlbumArt extends LitElement {
   artist: any;
   cache: boolean;
   transparent: boolean;
-  ARTBASE = `https://res.cloudinary.com/jsmusicdb-com/image/fetch/f_auto/`;
+  dimension: number;
+  ARTBASE = `https://res.cloudinary.com/jsmusicdb-com/image/fetch/f_auto`;
 
   static get properties() {
     return {
@@ -54,6 +55,14 @@ export class AlbumArt extends LitElement {
     this.objectFit = 'cover';
     this.cache = false;
     this.transparent = false;
+    this.dimension = 300;
+  }
+  private getDimensions() {
+    const {
+      width,
+      height,
+    }: { width: number; height: number } = this.getBoundingClientRect();
+    this.dimension = Math.round(Math.max(width, height) || 300);
   }
   render() {
     return html`
@@ -89,6 +98,7 @@ export class AlbumArt extends LitElement {
     } else {
       this.updateArt(key);
     }
+    this.getDimensions();
   }
   dispatch() {
     const evt = new CustomEvent('art', {
@@ -138,6 +148,7 @@ export class AlbumArt extends LitElement {
   }
   async updateArt({ artist, album }: { artist: string; album: string }) {
     let art = this.ARTBASE;
+    art += `,w_${this.dimension},h_${this.dimension},c_fill/`;
     if (!album) {
       try {
         art += await fetchArtForArtist(this.artist);
