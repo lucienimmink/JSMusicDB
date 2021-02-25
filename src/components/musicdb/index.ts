@@ -51,7 +51,6 @@ export const updateAndRefresh = async () => {
         if (data) {
           mdb.parseSourceJson(data, true);
           setLastParsed(new Date());
-          console.log(mdb.totals);
         }
       });
   }

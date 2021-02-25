@@ -70,7 +70,8 @@ export default css`
     display: block;
     height: 1rem;
   }
-  .btn.disabled {
+  .btn.disabled,
+  .btn[disabled] {
     pointer-events: none;
     opacity: 0.5;
     filter: blur(1px);

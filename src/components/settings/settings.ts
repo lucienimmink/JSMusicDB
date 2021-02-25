@@ -195,9 +195,8 @@ export class LetterNav extends LitElement {
         <p>
           Collection:
           <button
-            class="btn btn-secondary btn-small ${this.stats?.parsingTime
-              ? ''
-              : 'disabled'}"
+            class="btn btn-secondary btn-small"
+            ?disabled="${!this.stats?.parsingTime}"
             @click=${() => {
               this._refreshCollection();
             }}
@@ -205,9 +204,8 @@ export class LetterNav extends LitElement {
             <span class="icon">${syncIcon}</span> Refresh now
           </button>
           <button
-            class="btn btn-primary btn-small ${this.isReloading
-              ? 'disabled'
-              : ''}"
+            class="btn btn-primary btn-small"
+            ?disabled="${this.isReloading}"
             @click=${() => {
               this._reloadCollection();
             }}
