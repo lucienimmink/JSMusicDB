@@ -42,4 +42,19 @@ export const update = async () => {
   }
 };
 
+export const updateAndRefresh = async () => {
+  const server: any = await getServer();
+  if (server) {
+    await fetch(`${server}/data/node-music.json?ts=${new Date().getTime()}`)
+      .then((response: Response) => response.json())
+      .then((data: unknown) => {
+        if (data) {
+          mdb.parseSourceJson(data, true);
+          setLastParsed(new Date());
+          console.log(mdb.totals);
+        }
+      });
+  }
+};
+
 export default musicdb;

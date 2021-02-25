@@ -1,5 +1,5 @@
 import { LitElement, customElement, html } from 'lit-element';
-import musicdb from '../musicdb';
+import musicdb, { updateAndRefresh } from '../musicdb';
 import timeSpan from '../../utils/timespan';
 import {
   getLastParsed,
@@ -30,6 +30,7 @@ import { global as EventBus } from '../../utils/EventBus';
 import { trashIcon } from '../icons/trash';
 import { syncIcon } from '../icons/sync';
 import { clear, createStore } from 'idb-keyval';
+import { cloudDownloadIcon } from '../icons/cloudDownload';
 
 @customElement('settings-nav')
 export class LetterNav extends LitElement {
@@ -92,6 +93,7 @@ export class LetterNav extends LitElement {
         this.stats.artists = mdb.totals.artists;
         this.stats.tracks = mdb.totals.tracks;
         this.stats.time = timeSpan(mdb.totals.playingTime, true);
+        this.stats.parsingTime = mdb.totals.parsingTime;
         getLastParsed().then((date: any) => {
           const formatter = new Intl.DateTimeFormat('en-GB', {
             // @ts-ignore
@@ -148,6 +150,10 @@ export class LetterNav extends LitElement {
       this.requestUpdate();
     }
   }
+  async _refreshCollection() {
+    await updateAndRefresh();
+    this._init();
+  }
   async _resetmp3Stream() {
     await resetServer();
     this.mp3stream = null;
@@ -181,21 +187,32 @@ export class LetterNav extends LitElement {
               </button>`
             : nothing}
         </p>
-        ${!this.isReloading
-          ? html`
-              <p>
-                Reload collection:
+      </div>
+      <div class="container">
+        <h2 class="header">Collection settings</h2>
+        <p>
+          Collection:
+          <button
+            class="btn btn-secondary btn-small"
+            @click=${() => {
+              this._refreshCollection();
+            }}
+          >
+            <span class="icon">${syncIcon}</span> Refresh now
+          </button>
+          ${!this.isReloading
+            ? html`
                 <button
                   class="btn btn-primary btn-small"
                   @click=${() => {
                     this._reloadCollection();
                   }}
                 >
-                  <span class="icon">${syncIcon}</span> Reload now
+                  <span class="icon">${cloudDownloadIcon}</span> Reload now
                 </button>
-              </p>
-            `
-          : nothing}
+              `
+            : nothing}
+        </p>
         <p>
           Purge image cache:
           <button
@@ -316,7 +333,8 @@ export class LetterNav extends LitElement {
         <p>Albums: ${this.stats?.albums}</p>
         <p>Tracks: ${this.stats?.tracks}</p>
         <p>Playing time: ${this.stats?.time}</p>
-        <p>Last parsed: ${this.stats?.parsed}</p>
+        <p>Parsing time: ${this.stats?.parsingTime}ms</p>
+        <p>Last updated: ${this.stats?.parsed}</p>
         ${this.showVersion ? html`<p>Build: [VI]{version}[/VI]</p>` : nothing}
         ${this.stats?.mp3stream
           ? html` <p>Node-mp3stream: ${this.stats?.mp3stream}</p> `
