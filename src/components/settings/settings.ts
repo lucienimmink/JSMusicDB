@@ -151,6 +151,8 @@ export class LetterNav extends LitElement {
     }
   }
   async _refreshCollection() {
+    this.stats.parsingTime = 0;
+    this.requestUpdate();
     await updateAndRefresh();
     this._init();
   }
@@ -193,25 +195,25 @@ export class LetterNav extends LitElement {
         <p>
           Collection:
           <button
-            class="btn btn-secondary btn-small"
+            class="btn btn-secondary btn-small ${this.stats?.parsingTime
+              ? ''
+              : 'disabled'}"
             @click=${() => {
               this._refreshCollection();
             }}
           >
             <span class="icon">${syncIcon}</span> Refresh now
           </button>
-          ${!this.isReloading
-            ? html`
-                <button
-                  class="btn btn-primary btn-small"
-                  @click=${() => {
-                    this._reloadCollection();
-                  }}
-                >
-                  <span class="icon">${cloudDownloadIcon}</span> Reload now
-                </button>
-              `
-            : nothing}
+          <button
+            class="btn btn-primary btn-small ${this.isReloading
+              ? 'disabled'
+              : ''}"
+            @click=${() => {
+              this._reloadCollection();
+            }}
+          >
+            <span class="icon">${cloudDownloadIcon}</span> Reload now
+          </button>
         </p>
         <p>
           Purge image cache:

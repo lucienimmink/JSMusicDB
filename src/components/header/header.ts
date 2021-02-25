@@ -57,15 +57,11 @@ export class Header extends LitElement {
         if (status !== 'ready') {
           this.isReloading = true;
           this.progress = progress ? `${progress}%` : 'scan';
-          document
-            .querySelector('lit-musicdb')
-            ?.dispatchEvent(new CustomEvent(IS_RELOADING));
+          EventBus.emit(IS_RELOADING, this);
           this.requestUpdate();
         } else {
           if (this.isReloading === true) {
-            document
-              .querySelector('lit-musicdb')
-              ?.dispatchEvent(new CustomEvent(DONE_RELOADING));
+            EventBus.emit(DONE_RELOADING, this);
             this.isReloading = false;
             this.requestUpdate();
           }
