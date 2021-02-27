@@ -9,6 +9,7 @@ import smallMuted from '../../styles/small-muted';
 import virtualScroll from '../../styles/virtual-scroll';
 import { REFRESH } from '../../utils/musicdb';
 import { global as EventBus } from '../../utils/EventBus';
+import { nothing } from 'lit-html';
 
 @customElement('albums-nav')
 export class LetterNav extends LitElement {
@@ -140,7 +141,13 @@ export class LetterNav extends LitElement {
                         ></album-art>
                         <div class="details">
                           <span class="album">${album.name}</span>
-                          <span class="small muted">Year: ${album.year}</span>
+                          ${album.year
+                            ? html`
+                                <span class="small muted"
+                                  >Year: ${album.year}</span
+                                >
+                              `
+                            : nothing}
                         </div>
                       </app-link>
                     </li>
