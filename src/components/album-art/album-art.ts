@@ -58,9 +58,12 @@ export class AlbumArt extends LitElement {
     this.dimension = 300;
   }
   private getDimensions() {
+    /*
     this.dimension = Math.min(
       Math.max(this.offsetWidth, this.offsetHeight) || 300
     );
+    */
+    this.dimension = 300;
   }
   render() {
     return html`
@@ -72,6 +75,11 @@ export class AlbumArt extends LitElement {
           // @ts-ignore
           e.target.classList.remove('loading');
         }}
+        @error=${(e: Event) => {
+          // @ts-ignore
+          e.target.classList.remove('loading');
+          console.log('error loading image :(');
+        }}
         loading="lazy"
         class="${this.transparent ? 'transparent ' : ''}"
       />
@@ -79,6 +87,8 @@ export class AlbumArt extends LitElement {
   }
   async connectedCallback() {
     super.connectedCallback();
+    this.artist = this.artist === 'undefined' ? undefined : this.artist;
+    this.album = this.album === 'undefined' ? undefined : this.album;
     if (!this.artist) {
       return;
     }
@@ -89,8 +99,12 @@ export class AlbumArt extends LitElement {
       album: this.album,
       dimension: this.dimension,
     };
-    if (this._cache[`${this.dimension}-${this.artist}-${this.album}`]) {
-      this.art = this._cache[`${this.dimension}-${this.artist}-${this.album}`];
+    let cacheKey = `${this.artist}-${this.album}`;
+    if (!key.album) {
+      cacheKey = `${this.dimension}-${this.artist}`;
+    }
+    if (this._cache[cacheKey]) {
+      this.art = this._cache[cacheKey];
       this.dispatch();
       return;
     }
@@ -118,10 +132,12 @@ export class AlbumArt extends LitElement {
         if (propName === 'artist' || propName === 'album') {
           this.art = defaultPixel;
           this.shadowRoot?.querySelector('img')?.classList.add('loading');
-          if (this._cache[`${this.dimension}-${this.artist}-${this.album}`]) {
-            this.art = this._cache[
-              `${this.dimension}-${this.artist}-${this.album}`
-            ];
+          let cacheKey = `${this.artist}-${this.album}`;
+          if (!this.album) {
+            cacheKey = `${this.dimension}-${this.artist}`;
+          }
+          if (this._cache[cacheKey]) {
+            this.art = this._cache[cacheKey];
             this.dispatch();
             return;
           } else {
@@ -144,7 +160,7 @@ export class AlbumArt extends LitElement {
   }
   isEmptyArt(art: string) {
     const base = this.ARTBASE;
-    if (art === base || art.includes(`fill/null`)) {
+    if (art === base || art === `${base}/` || art.includes(`null`)) {
       return true;
     }
     return false;
@@ -161,12 +177,13 @@ export class AlbumArt extends LitElement {
     if (!album) {
       return await get(`${dimension}-${artist}`, this.customStore);
     }
-    return await get(`${dimension}-${artist}-${album}`, this.customStore);
+    return await get(`${artist}-${album}`, this.customStore);
   }
   async updateArt({ artist, album }: { artist: string; album: string }) {
     let art = this.ARTBASE;
-    art += `,w_${this.dimension},h_${this.dimension},c_fill/`;
     if (!album) {
+      // let's resize those larger artist arts we get.
+      art += `,w_${this.dimension},h_${this.dimension},c_fill/`;
       try {
         art += await fetchArtForArtist(this.artist);
         if (this.isEmptyArt(art)) art = '';
@@ -181,6 +198,7 @@ export class AlbumArt extends LitElement {
       }
       this.art = art || defaultArtist;
     } else {
+      art += '/';
       try {
         art += await fetchArtForAlbum({ artist, album });
         if (this.isEmptyArt(art)) art = '';
@@ -188,9 +206,9 @@ export class AlbumArt extends LitElement {
         art = '';
       }
       if (art) {
-        this._cache[`${this.dimension}-${artist}-${album}`] = art;
+        this._cache[`${artist}-${album}`] = art;
         if (this.cache) {
-          set(`${this.dimension}-${artist}-${album}`, art, this.customStore);
+          set(`${artist}-${album}`, art, this.customStore);
         }
       }
       this.art = art || defaultAlbum;
