@@ -50,7 +50,7 @@ export class LetterNav extends LitElement {
             .sortAndReturnArtistsBy('sortName', 'asc')
             .map((artist: any) => {
               const header = {
-                header: artist.name,
+                header: artist.albumArtist || artist.name,
                 albums: artist.albums.length,
                 id: artist.letter.letter,
               };
