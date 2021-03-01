@@ -78,7 +78,13 @@ export class AlbumArt extends LitElement {
         @error=${(e: Event) => {
           // @ts-ignore
           e.target.classList.remove('loading');
-          console.log('error loading image :(');
+          if (this.album) {
+            // @ts-ignore
+            e.target.src = defaultAlbum;
+          } else {
+            // @ts-ignore
+            e.target.src = defaultArtist;
+          }
         }}
         loading="lazy"
         class="${this.transparent ? 'transparent ' : ''}"
