@@ -1,7 +1,7 @@
 import { css } from 'lit-element';
 
 export default css`
-  li {
+  .track {
     display: flex;
     flex-direction: row;
     box-sizing: border-box;
@@ -10,10 +10,10 @@ export default css`
     transition: background-color 0.2s ease-in-out;
     min-height: 60px;
   }
-  li:hover {
+  .track:hover {
     background: var(--background3);
   }
-  li.active {
+  .track.active {
     background: var(--primary, #006ecd);
     color: var(--letter-color);
     transition: color 0.2s ease-in-out;

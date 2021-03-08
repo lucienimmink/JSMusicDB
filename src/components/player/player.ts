@@ -63,8 +63,8 @@ import {
 import { animationCSS, animateCSS } from '../../utils/animations';
 import player from '../../styles/player';
 
-const FOURMINUTES = 4 * 60 * 1000;
 const ONEMINUTE = 1 * 60 * 1000;
+const FOURMINUTES = 4 * ONEMINUTE;
 
 @customElement('lit-player')
 export class Album extends LitElement {

@@ -14,6 +14,8 @@ export class track extends LitElement {
   track: any;
   @property({ type: String })
   type: string;
+  @property({ type: Boolean })
+  showAlbum: boolean;
 
   static get styles() {
     return [smallMuted, trackNav];
@@ -22,6 +24,7 @@ export class track extends LitElement {
     super();
     this.track = null;
     this.type = 'album';
+    this.showAlbum = false;
     this._listen();
   }
   _listen() {
@@ -46,8 +49,10 @@ export class track extends LitElement {
 
   render() {
     return html`
-      <li
-        class="${this.track.isPlaying || this.track.isPaused ? 'active' : ''}"
+      <div
+        class="track ${this.track.isPlaying || this.track.isPaused
+          ? 'active'
+          : ''}"
       >
         ${this.type === 'album'
           ? html`
@@ -64,7 +69,11 @@ export class track extends LitElement {
           : nothing}
         <span class="title">
           ${this.track.title} <br />
-          <span class="small muted">${this.track.trackArtist}</span>
+          <span class="small muted"
+            >${this.track.trackArtist}${this.showAlbum
+              ? html` • ${this.track.album.name}`
+              : nothing}</span
+          >
         </span>
         <span class="time">
           ${timeSpan(this.track.duration)} <br />
@@ -79,7 +88,7 @@ export class track extends LitElement {
             ? html` <span class="small muted">${this.track.type}</span> `
             : nothing}
         </span>
-      </li>
+      </div>
     `;
   }
 }

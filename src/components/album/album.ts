@@ -126,9 +126,9 @@ export class Album extends LitElement {
       <div class="container">
         ${this.sortedDiscs.map(
           (disc: any) => html`
-            <ol class="album-details">
+            <div class="album-details">
               ${this.sortedDiscs.length > 1
-                ? html` <li class="header">Disc ${disc[0].disc}</li> `
+                ? html` <div class="header">Disc ${disc[0].disc}</div>`
                 : html``}
               ${disc.map(
                 (track: any) => html`
@@ -141,7 +141,7 @@ export class Album extends LitElement {
                   ></track-in-list>
                 `
               )}
-            </ol>
+            </div>
           `
         )}
       </div>

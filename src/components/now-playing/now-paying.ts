@@ -466,6 +466,7 @@ export class NowPlaying extends LitElement {
                     <track-in-list
                       .track=${track}
                       .type=${this.playlist.type}
+                      ?showAlbum=${true}
                       @click=${() => {
                         this._setPlaylist(track);
                       }}

@@ -4,7 +4,7 @@ export default css`
   .container {
     display: block;
   }
-  ol {
+  .album-details {
     margin: 0;
     padding: 0;
     list-style: none;
@@ -13,7 +13,7 @@ export default css`
     cursor: pointer;
     display: block;
   }
-  ol > track-in-list:first-child {
+  .album-details > track-in-list:first-child {
     margin-top: 1px;
   }
   @media (min-width: 768px) {
