@@ -41,5 +41,18 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
+  ],
+  "categories": ["entertainment", "music"],
+  "screenshots": [
+    {
+      "src": "screenshot-1.webp",
+      "sizes": "1920x1040",
+      "type": "image/webp"
+    },
+    {
+      "src": "screenshot-2.webp",
+      "sizes": "1920x1040",
+      "type": "image/webp"
+    }
   ]
 }
