@@ -83,6 +83,7 @@ export default css`
   .time {
     flex-grow: 0;
     white-space: nowrap;
+    font-family: 'Lucida Console', Consolas, ui-monospace;
   }
   .progress {
     flex-grow: 1;
