@@ -84,6 +84,7 @@ export default css`
     flex-grow: 0;
     white-space: nowrap;
     font-family: 'Lucida Console', Consolas, ui-monospace;
+    text-shadow: 0 0 7px var(--background);
   }
   .progress {
     flex-grow: 1;
@@ -152,7 +153,7 @@ export default css`
     position: absolute;
     left: 220px;
     bottom: 10px;
-    text-shadow: 0 0 3px #f8f9fa;
+    text-shadow: 0 0 7px var(--background);
     max-width: calc(100vw - 220px);
   }
   .floating-text-details h4 {
@@ -164,7 +165,6 @@ export default css`
     font-weight: 300;
   }
   .floating-text-details app-link {
-    text-shadow: 0px 0px 1px var(--primary, #006ecd);
     transition: all 0.2s ease-in-out 0s;
   }
   .bottom lit-virtualizer {
