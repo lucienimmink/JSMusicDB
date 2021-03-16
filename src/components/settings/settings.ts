@@ -259,7 +259,7 @@ export class LetterNav extends LitElement {
           ></button>
         </p>
         <p class="radio-group">
-          <label
+          <label class="radio-label"
             ><button
               @click="${(e: Event) => this._toggle('theme', e, 'light')}"
               class="radio ${this.settings?.theme === 'light' ? 'on' : 'off'}"
@@ -267,7 +267,7 @@ export class LetterNav extends LitElement {
             <span>Light theme</span>
           </label>
           <br />
-          <label
+          <label class="radio-label"
             ><button
               @click="${(e: Event) => this._toggle('theme', e, 'dark')}"
               class="radio ${this.settings?.theme === 'dark' ? 'on' : 'off'}"
@@ -275,7 +275,7 @@ export class LetterNav extends LitElement {
             <span>Dark theme</span>
           </label>
           <br />
-          <label
+          <label class="radio-label"
             ><button
               @click="${(e: Event) => this._toggle('theme', e, 'system')}"
               class="radio ${this.settings?.theme === 'system' ? 'on' : 'off'}"
@@ -283,18 +283,19 @@ export class LetterNav extends LitElement {
             <span>System theme</span>
           </label>
           <br />
-          <label
+          <label class="radio-label"
             ><button
               @click="${(e: Event) => this._toggle('theme', e, 'auto')}"
               class="radio ${this.settings?.theme === 'auto' ? 'on' : 'off'}"
             ></button>
             <span>Dynamic theme</span>
+            <span class="small muted"
+              >Dark mode between
+              ${this._formatDate(this.settings?.start, '21:00:00')} and
+              ${this._formatDate(this.settings?.stop, '09:00:00')}</span
+            >
           </label>
-          <span class="small muted"
-            >Dark mode between
-            ${this._formatDate(this.settings?.start, '21:00:00')} and
-            ${this._formatDate(this.settings?.stop, '09:00:00')}</span
-          >
+          <br />
         </p>
         ${this.settings?.theme === 'auto'
           ? html`

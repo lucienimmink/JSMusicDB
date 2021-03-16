@@ -16,6 +16,10 @@ export default css`
     display: block;
     position: relative;
   }
+  .radio-label {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+  }
   .switch {
     position: relative;
     width: 44px;
@@ -81,5 +85,6 @@ export default css`
     line-height: 6px;
     padding-top: 9px;
     font-size: 64px;
+    overflow: hidden;
   }
 `;
