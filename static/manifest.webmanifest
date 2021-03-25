@@ -10,19 +10,19 @@
   "description": "Music database and player built with webtechnology",
   "icons": [
     {
-      "src": "/public/android-chrome-192x192.png",
+      "src": "/public/android-chrome-48x48.png",
       "sizes": "48x48"
     },
     {
-      "src": "/public/android-chrome-192x192.png",
+      "src": "/public/android-chrome-72x72.png",
       "sizes": "72x72"
     },
     {
-      "src": "/public/android-chrome-192x192.png",
+      "src": "/public/android-chrome-96x96.png",
       "sizes": "96x96"
     },
     {
-      "src": "/public/android-chrome-192x192.png",
+      "src": "/public/android-chrome-144x144.png",
       "sizes": "144x144"
     },
     {
