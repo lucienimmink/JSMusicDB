@@ -66,6 +66,9 @@ import player from '../../styles/player';
 const ONEMINUTE = 1 * 60 * 1000;
 const FOURMINUTES = 4 * ONEMINUTE;
 
+const PREGAIN = 11;
+const TARGET_VOLUME = 0.89;
+
 @customElement('lit-player')
 export class Album extends LitElement {
   playlist: any;
@@ -78,6 +81,7 @@ export class Album extends LitElement {
   isShuffled: boolean;
   bgColor: string;
   useDynamicAccentColor: boolean;
+  gain: number;
   static get styles() {
     return [animationCSS, progress, controls, responsive, player];
   }
@@ -93,6 +97,7 @@ export class Album extends LitElement {
     this.useDynamicAccentColor = false;
     this.bgColor = LIGHT;
     this._updateBgColorIfSystemTheme();
+    this.gain = -9;
     this._listen();
     getCurrentPlaylist().then((playlist: any) => {
       this.playlist = playlist;
@@ -198,11 +203,22 @@ export class Album extends LitElement {
     const server = await getServer();
     const jwt = await getJwt();
     const player = this.shadowRoot?.querySelector('audio');
+    await this._setGain();
     if (player && this.track) {
       player.crossOrigin = 'anonymous';
       player.src = `${server}/listen?path=${encodeURIComponent(
         this.track.source.url
       )}&jwt=${jwt}`;
+      /*
+      player.volume = 0.89; // base volume
+      if (this.gain) {
+        let gain = this.gain / 100;
+        if (gain > 0.11) {
+          gain = 0.11;
+        }
+        player.volume = 0.89 + gain;
+      }
+      */
       player.play();
       player.currentTime = startPosition;
       await setCurrentPlaylist(this.playlist);
@@ -456,6 +472,32 @@ export class Album extends LitElement {
         removeCustomCss();
       }
     }
+    if (setting === 'replaygain') {
+      this._setGain();
+    }
+  }
+  async _setGain() {
+    await getSettingByName('replaygain').then(async applyGain => {
+      if (!applyGain) this.gain = 0;
+      if (applyGain) {
+        if (this.playlist?.type === 'album') {
+          this.gain = this.track.album.albumGain || -PREGAIN;
+        } else {
+          this.gain = this.track.trackGain || -PREGAIN;
+        }
+      }
+      const player = this.shadowRoot?.querySelector('audio');
+      if (player) {
+        player.volume = 1;
+        if (this.gain) {
+          let newVolume = Math.pow(100, this.gain / 128) * TARGET_VOLUME;
+          // I'm cheating a bit.
+          if (newVolume > 1) newVolume = 1;
+          player.volume = newVolume;
+        }
+      }
+      return true;
+    });
   }
   _updateBgColorIfSystemTheme() {
     const darkModeMediaQuery = window.matchMedia(

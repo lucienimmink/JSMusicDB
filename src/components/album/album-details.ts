@@ -44,6 +44,7 @@ export class AlbumDetails extends LitElement {
     this.replayGainApplied = false;
     getSettingByName('replaygain').then(async (replaygain: any) => {
       this.replayGainApplied = replaygain;
+      this.requestUpdate();
     });
     this._listen();
   }
