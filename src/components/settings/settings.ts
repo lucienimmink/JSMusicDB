@@ -247,6 +247,13 @@ export class LetterNav extends LitElement {
             class="switch ${this.settings?.continues ? 'on' : 'off'}"
           ></button>
         </p>
+        <p>
+          Apply ReplayGain:
+          <button
+            @click="${(e: Event) => this._toggle('replaygain', e)}"
+            class="switch ${this.settings?.replaygain ? 'on' : 'off'}"
+          ></button>
+        </p>
       </div>
 
       <div class="container">

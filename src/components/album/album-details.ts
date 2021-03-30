@@ -11,6 +11,8 @@ import albumDetails from '../../styles/album-details';
 import smallMuted from '../../styles/small-muted';
 import { hqIcon } from '../icons/hq';
 import responsive from '../../styles/responsive';
+import { getSettingByName, TOGGLE_SETTING } from '../../utils/settings';
+import { global as EventBus } from '../../utils/EventBus';
 
 @customElement('album-details')
 export class AlbumDetails extends LitElement {
@@ -20,6 +22,7 @@ export class AlbumDetails extends LitElement {
   album: string;
   albumDetails: any;
   shrunk: boolean;
+  replayGainApplied: boolean;
 
   static get styles() {
     return [container, buttons, albumDetails, smallMuted, responsive];
@@ -38,6 +41,11 @@ export class AlbumDetails extends LitElement {
       type: 'dummy',
     };
     this.shrunk = false;
+    this.replayGainApplied = false;
+    getSettingByName('replaygain').then(async (replaygain: any) => {
+      this.replayGainApplied = replaygain;
+    });
+    this._listen();
   }
 
   connectedCallback() {
@@ -48,6 +56,19 @@ export class AlbumDetails extends LitElement {
     window.removeEventListener('scroll', this._handleScroll);
     super.disconnectedCallback();
   }
+
+  _listen = () => {
+    EventBus.on(
+      TOGGLE_SETTING,
+      () => {
+        getSettingByName('replaygain').then(async (replaygain: any) => {
+          this.replayGainApplied = replaygain;
+        });
+      },
+      this
+    );
+  };
+
   _handleScroll = () => {
     if (window.pageYOffset > 0) {
       this.shrunk = true;
@@ -118,6 +139,9 @@ export class AlbumDetails extends LitElement {
                 ${this.albumDetails?.type === 'mp4' ||
                 this.albumDetails?.type === 'flac'
                   ? hqIcon
+                  : nothing}
+                ${this.replayGainApplied && this.albumDetails?.albumGain !== 0
+                  ? html` • rg ${this.albumDetails?.albumGain} dB `
                   : nothing}
               </span>
             </h4>
