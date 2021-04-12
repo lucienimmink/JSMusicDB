@@ -137,12 +137,8 @@ export class AlbumDetails extends LitElement {
               ${this.calculateLength(this.albumDetails?.tracks)}
               <span class="small muted md-up-inline">
                 • ${this.albumDetails?.type}
-                ${this.albumDetails?.type === 'mp4' ||
-                this.albumDetails?.type === 'flac'
-                  ? hqIcon
-                  : nothing}
                 ${this.replayGainApplied && this.albumDetails?.albumGain !== 0
-                  ? html` • rg ${this.albumDetails?.albumGain} dB `
+                  ? html` • album gain ${this.albumDetails?.albumGain} dB `
                   : nothing}
               </span>
             </h4>
