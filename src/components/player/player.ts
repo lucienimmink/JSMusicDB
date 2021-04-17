@@ -540,7 +540,7 @@ export class Album extends LitElement {
                 @click=${(e: Event) => this._setPosition(e)}
               >
                 <div
-                  class="progress-bar"
+                  class="progress-bar ${this.isPlaying ? '' : 'paused'}"
                   style=${styleMap({
                     width:
                       (this.track.position / this.track.duration) * 100 + '%',

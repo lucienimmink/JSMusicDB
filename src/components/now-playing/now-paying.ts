@@ -372,7 +372,9 @@ export class NowPlaying extends LitElement {
                         })}
                       ></div>
                       <div
-                        class="progress-bar"
+                        class="progress-bar ${this.track.isPlaying
+                          ? ''
+                          : 'paused'}"
                         style=${styleMap({
                           width:
                             (this.track.position / this.track.duration) * 100 +

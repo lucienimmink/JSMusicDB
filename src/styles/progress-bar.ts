@@ -14,7 +14,21 @@ export default css`
     position: absolute;
     pointer-events: none;
   }
+  .progress-bar.paused {
+    animation: pulsate-animation 1s infinite;
+  }
   .progress-buffered-bar {
     opacity: 0.3;
+  }
+  @keyframes pulsate-animation {
+    0% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.5;
+    }
   }
 `;
