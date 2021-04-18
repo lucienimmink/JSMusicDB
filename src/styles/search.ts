@@ -72,5 +72,7 @@ export default css`
     text-align: end;
     width: 65px;
     min-width: 65px;
+    font-variant-numeric: tabular-nums;
+    font-family: system-ui;
   }
 `;

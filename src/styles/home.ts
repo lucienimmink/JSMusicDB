@@ -45,6 +45,8 @@ export default css`
     min-width: 70px;
     white-space: nowrap;
     justify-content: center;
+    font-variant-numeric: tabular-nums;
+    font-family: system-ui;
   }
   li .playing {
     color: var(--primary, #006ecd);
