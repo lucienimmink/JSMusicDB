@@ -83,7 +83,8 @@ export default css`
   .time {
     flex-grow: 0;
     white-space: nowrap;
-    font-family: 'Lucida Console', Consolas, ui-monospace;
+    font-variant-numeric: tabular-nums;
+    font-family: system-ui;
     text-shadow: 0 0 7px var(--background);
   }
   .progress {
