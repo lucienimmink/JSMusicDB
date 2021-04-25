@@ -68,7 +68,7 @@ export default css`
   }
   .playlist li.header:hover,
   .playlist li.no-hover:hover {
-    backdrop-filter: blur(2x);
+    backdrop-filter: blur(2px);
     background: var(--background-seethrough, rgba(248, 249, 250, 0.85));
   }
   .playlist li.active {

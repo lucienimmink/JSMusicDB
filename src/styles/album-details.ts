@@ -112,7 +112,7 @@ export default css`
       opacity: 0;
     }
     .shrunk {
-      backdrop-filter: blur(2x);
+      backdrop-filter: blur(2px);
       background-color: var(--background2-seethrough, var(--background2));
       padding: 1rem 2rem;
     }

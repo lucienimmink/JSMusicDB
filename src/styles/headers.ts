@@ -2,7 +2,7 @@ import { css } from 'lit-element';
 
 export default css`
   .header {
-    backdrop-filter: blur(2x);
+    backdrop-filter: blur(2px);
     background: var(--background-seethrough, rgba(248, 249, 250, 0.85));
     box-sizing: border-box;
     height: 60px;
