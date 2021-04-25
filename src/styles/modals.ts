@@ -11,6 +11,7 @@ export default css`
   }
   .modal-backdrop {
     position: absolute;
+    backdrop-filter: blur(2x);
     background: var(--background2-seethrough);
     width: 100%;
     height: 100%;
