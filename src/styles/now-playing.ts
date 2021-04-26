@@ -15,6 +15,7 @@ export default css`
   .backdrop {
     position: fixed;
     width: 100%;
+    margin-top: calc((100vh - 100vw) / 2);
   }
   .top {
     backdrop-filter: blur(10px);

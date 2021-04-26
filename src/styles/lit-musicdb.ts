@@ -11,7 +11,7 @@ export default css`
     left: 0;
     background: var(--background, #f8f9fa);
     transition: background-color 0.5s ease-in-out;
-    z-index: 2;
+    z-index: 4;
   }
   letter-nav {
     position: fixed;
