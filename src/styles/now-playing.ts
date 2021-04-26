@@ -12,8 +12,13 @@ export default css`
     z-index: 3;
     overflow: hidden;
   }
+  .backdrop {
+    position: fixed;
+    width: 100%;
+  }
   .top {
-    background: var(--background, #f8f9fa);
+    backdrop-filter: blur(10px);
+    background: var(--background-seethrough, #f8f9fa);
     z-index: 2;
     display: flex;
     flex-direction: column;
@@ -22,17 +27,24 @@ export default css`
     transition: transform 0.2s ease-in-out;
   }
   .bottom {
+    backdrop-filter: blur(10px);
+    background: var(--background-seethrough, #f8f9fa);
     z-index: 1;
     display: block;
     position: absolute;
     left: 0px;
-    top: 105px;
+    top: 50px;
     right: 0px;
-    height: calc(100vh - 155px);
+    height: calc(100vh - 35px);
     overflow-y: auto;
+    transform: translateY(100vh);
+    transition: transform 0.2s ease-in-out;
   }
   .bottomShown .top {
     transform: translateY(calc(-100vh + 135px));
+  }
+  .bottomShown .bottom {
+    transform: translateY(calc(35px));
   }
   .image-wrapper {
     flex-grow: 1;

@@ -53,6 +53,7 @@ export default css`
     display: none;
   }
   .full {
+    backdrop-filter: blur(5px);
     position: fixed;
     height: 100%;
     z-index: 100;

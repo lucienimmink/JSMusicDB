@@ -313,6 +313,15 @@ export class NowPlaying extends LitElement {
                 ? 'bottomShown '
                 : ''}"
             >
+              <div class="backdrop">
+                <album-art
+                  objectFit="contain"
+                  transparent
+                  .album=${this.track.album.name}
+                  .artist=${this.track.album.artist.albumArtist ||
+                  this.track.album.artist.name}
+                ></album-art>
+              </div>
               <div class="top">
                 <div class="image-wrapper">
                   <canvas

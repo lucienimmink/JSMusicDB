@@ -2,6 +2,8 @@ import { css } from 'lit-element';
 
 export default css`
   .jumplist {
+    backdrop-filter: blur(2px);
+    background: var(--background-seethrough, #f8f9fa);
     list-style: none;
     margin: 0;
     padding: 0;
@@ -11,7 +13,6 @@ export default css`
     display: none;
     z-index: 1;
     height: calc(100% - 50px);
-    background: var(--background, #f8f9fa);
     position: fixed;
     width: 100%;
     box-sizing: border-box;
