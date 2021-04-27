@@ -1,4 +1,5 @@
-import { LitElement, customElement, html } from 'lit-element';
+import { LitElement, html } from 'lit';
+import { customElement } from 'lit/decorators.js';
 import { progressSpinner } from '../../styles/loading-indicator';
 
 @customElement('progress-spinner')

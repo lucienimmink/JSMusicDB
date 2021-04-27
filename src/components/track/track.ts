@@ -1,10 +1,10 @@
-import { LitElement, customElement, html, property } from 'lit-element';
+import { LitElement, html, nothing } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 import timeSpan from '../../utils/timespan';
 import { UPDATE_PLAYER } from '../../utils/player';
 import { playIcon } from '../icons/play';
 import { pauseIcon } from '../icons/pause';
 import smallMuted from '../../styles/small-muted';
-import { nothing } from 'lit-html';
 import trackNav from '../../styles/track-nav';
 import { global as EventBus } from '../../utils/EventBus';
 

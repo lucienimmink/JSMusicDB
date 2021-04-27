@@ -1,4 +1,5 @@
-import { LitElement, customElement, html, property } from 'lit-element';
+import { LitElement, html, nothing } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 import { navigator } from 'lit-element-router';
 import './../app-link/app-link';
 
@@ -15,7 +16,6 @@ import { settingsIcon } from '../icons/settings.js';
 import { getScrobbleCache } from '../../utils/settings';
 
 import responsive from '../../styles/responsive';
-import { nothing } from 'lit-html';
 import sideNav from '../../styles/side-nav';
 import { global as EventBus } from '../../utils/EventBus';
 

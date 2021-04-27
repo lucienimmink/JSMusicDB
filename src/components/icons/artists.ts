@@ -1,4 +1,4 @@
-import { html } from 'lit-html';
+import { html } from 'lit';
 
 export const artistsIcon = html`
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">

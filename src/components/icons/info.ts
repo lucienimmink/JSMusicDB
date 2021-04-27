@@ -1,4 +1,4 @@
-import { html } from 'lit-html';
+import { html } from 'lit';
 
 export const infoIcon = html`<svg viewBox="0 0 512 512">
   <path

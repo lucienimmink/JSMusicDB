@@ -1,12 +1,12 @@
-import { LitElement, customElement, html, property } from 'lit-element';
-// import { global as EventBus } from '../../utils/EventBus';
+import { LitElement, html, nothing } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+
 import '../track/track';
 import musicdb from '../musicdb';
 import timeSpan from '../../utils/timespan';
 
 import container from '../../styles/container';
 import buttons from '../../styles/buttons';
-import { nothing } from 'lit-html';
 import albumDetails from '../../styles/album-details';
 import smallMuted from '../../styles/small-muted';
 import { hqIcon } from '../icons/hq';

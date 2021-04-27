@@ -1,4 +1,5 @@
-import { LitElement, customElement, html, property } from 'lit-element';
+import { LitElement, html, nothing } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 import './album-details';
 import '../track/track';
 import musicdb from '../musicdb';
@@ -129,7 +130,7 @@ export class Album extends LitElement {
             <div class="album-details">
               ${this.sortedDiscs.length > 1
                 ? html` <div class="header">Disc ${disc[0].disc}</div>`
-                : html``}
+                : nothing}
               ${disc.map(
                 (track: any) => html`
                   <track-in-list

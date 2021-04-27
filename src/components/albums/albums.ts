@@ -1,4 +1,5 @@
-import { LitElement, customElement, html, property } from 'lit-element';
+import { LitElement, html, nothing } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 import 'lit-virtualizer';
 import '../app-link/app-link';
 import musicdb from '../musicdb';
@@ -9,7 +10,6 @@ import smallMuted from '../../styles/small-muted';
 import virtualScroll from '../../styles/virtual-scroll';
 import { REFRESH } from '../../utils/musicdb';
 import { global as EventBus } from '../../utils/EventBus';
-import { nothing } from 'lit-html';
 
 @customElement('albums-nav')
 export class LetterNav extends LitElement {

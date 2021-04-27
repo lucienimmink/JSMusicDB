@@ -1,4 +1,5 @@
-import { LitElement, customElement, html } from 'lit-element';
+import { LitElement, html, nothing } from 'lit';
+import { customElement } from 'lit/decorators.js';
 import musicdb, { updateAndRefresh } from '../musicdb';
 import timeSpan from '../../utils/timespan';
 import {
@@ -22,7 +23,6 @@ import container from '../../styles/container';
 import smallMuted from '../../styles/small-muted';
 import responsive from '../../styles/responsive';
 import buttons from '../../styles/buttons';
-import { nothing } from 'lit-html';
 import { updateSunriseData } from '../../utils/colour';
 import settings from '../../styles/settings';
 import { REFRESH } from '../../utils/musicdb';
