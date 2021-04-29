@@ -2,7 +2,8 @@ import { css } from 'lit';
 
 export default css`
   .md-up,
-  .md-up-inline {
+  .md-up-inline,
+  .md-up-flex {
     display: none;
   }
   .sr-only {
@@ -21,6 +22,9 @@ export default css`
     }
     .md-up-inline {
       display: inline;
+    }
+    .md-up-flex {
+      display: flex;
     }
     .sm-only {
       display: none;

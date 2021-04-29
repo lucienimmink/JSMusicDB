@@ -315,7 +315,7 @@ export class LetterNav extends LitElement {
               </p>
             `
           : nothing}
-        <p class="md-up">
+        <p class="md-up-flex">
           Show visualisation on now-playing screen:
           <button
             @click="${(e: Event) => this._toggle('visual', e)}"
@@ -324,7 +324,7 @@ export class LetterNav extends LitElement {
         </p>
         ${this.settings?.visual
           ? html`
-              <p class="md-up">
+              <p class="md-up-flex">
                 Show smaller album-art on now-playing screen:
                 <button
                   @click="${(e: Event) => this._toggle('smallArt', e)}"
