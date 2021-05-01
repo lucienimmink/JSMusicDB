@@ -1,4 +1,4 @@
-import { musicdbcore } from 'musicdbcore';
+import { musicdbcore } from '@addasoft/musicdbcore';
 import { getMusicDB } from '../../utils/musicdb';
 import { getServer } from '../../utils/node-mp3stream';
 import { setLastParsed } from '../../utils/settings';

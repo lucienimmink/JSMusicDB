@@ -1,5 +1,5 @@
 import { LitElement, customElement, html, property } from 'lit-element';
-import { navigator } from 'lit-element-router';
+import { navigator } from '@addasoft/lit-element-router';
 import './../app-link/app-link';
 
 import { homeIcon } from '../icons/home.js';

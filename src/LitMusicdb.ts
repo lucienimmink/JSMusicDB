@@ -1,6 +1,6 @@
 import { LitElement, customElement, html } from 'lit-element';
 import { nothing } from 'lit-html';
-import { router } from 'lit-element-router';
+import { router } from '@addasoft/lit-element-router';
 
 import routes from './routes';
 import { global as EventBus } from './utils/EventBus';

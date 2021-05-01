@@ -1,5 +1,5 @@
 import { LitElement, html, property, customElement } from 'lit-element';
-import { navigator } from 'lit-element-router';
+import { navigator } from '@addasoft/lit-element-router';
 import appLink from '../../styles/app-link';
 
 @customElement('app-link')
