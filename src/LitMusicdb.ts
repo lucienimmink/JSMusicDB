@@ -1,6 +1,6 @@
 import { LitElement, html, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { router } from 'lit-element-router';
+import { router } from '@addasoft/lit-element-router';
 
 import routes from './routes';
 import { global as EventBus } from './utils/EventBus';
