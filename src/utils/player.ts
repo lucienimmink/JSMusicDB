@@ -112,17 +112,19 @@ export const getNewPlaylistForRandomPref = (playlist: any) => {
           };
           for (let i = 0; i < playlist.max; i++) {
             if (i % 3 === 0 || i % 5 === 0) {
-              // @ts-ignore
-              newPlaylist.tracks.push(_getRandomTrackFromArtists(highRotation));
+              newPlaylist.tracks.push(
+                // @ts-ignore
+                _getRandomTrackFromArtists(highRotation, newPlaylist)
+              );
             } else if (i % 4 === 0 || i % 7 === 0) {
               newPlaylist.tracks.push(
                 // @ts-ignore
-                _getRandomTrackFromArtists(mediumRotation)
+                _getRandomTrackFromArtists(mediumRotation, newPlaylist)
               );
             } else {
               newPlaylist.tracks.push(
                 // @ts-ignore
-                _getRandomTrackFromArtists(mdb.artistsList())
+                _getRandomTrackFromArtists(mdb.artistsList(), newPlaylist)
               );
             }
           }
@@ -139,7 +141,7 @@ export const getNewPlaylistForRadio = (playlist: any) => {
         const startArtist = mdb.artists[playlist.artist];
         const newPlaylist = {
           name: `Artist radio for ${startArtist.name}`,
-          tracks: [_getRandomTrackFromArtists([startArtist])],
+          tracks: [_getRandomTrackFromArtists([startArtist], null)],
           type: 'radio',
           max: playlist.max,
           artist: playlist.artist,
@@ -199,15 +201,22 @@ const _getNewPlaylistForAlbum = (playlist: any) => {
       .catch(() => reject());
   });
 };
-const _getRandomTrackFromArtists = (artists: Array<any>): any => {
+const _getRandomTrackFromArtists = (
+  artists: Array<any>,
+  playlist: any
+): any => {
   const randomArtist = _shuffle(artists)[0];
   const randomAlbum = _shuffle(randomArtist.albums)[0];
   const randomTrack = _shuffle(randomAlbum.tracks)[0];
   if (randomTrack.duration <= 1000 * 60 * 10) {
-    // skip long songs
+    // skip long songs, skips songs already present in list
+    console.log(playlist?.tracks.includes(randomTrack));
+    if (playlist && playlist.tracks.includes(randomTrack)) {
+      return _getRandomTrackFromArtists(artists, playlist);
+    }
     return randomTrack;
   }
-  return _getRandomTrackFromArtists(artists);
+  return _getRandomTrackFromArtists(artists, playlist);
 };
 const _shuffle = (list: any[]): any[] => {
   for (let i = list.length - 1; i > 0; i--) {
@@ -238,7 +247,10 @@ const _getNextTrack = (artist: any, mdb: any, playlist: any) => {
     _getNextSimilarArtist(artist, mdb)
       .then((similarartists: any) => {
         // add a new track to the playlist
-        const randomTrack = _getRandomTrackFromArtists(similarartists);
+        const randomTrack = _getRandomTrackFromArtists(
+          similarartists,
+          playlist
+        );
         playlist.tracks.push(randomTrack);
         if (playlist.tracks.length < playlist.max) {
           return _getNextTrack(randomTrack.album.artist, mdb, playlist);
