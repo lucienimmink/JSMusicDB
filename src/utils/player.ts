@@ -210,8 +210,7 @@ const _getRandomTrackFromArtists = (
   const randomTrack = _shuffle(randomAlbum.tracks)[0];
   if (randomTrack.duration <= 1000 * 60 * 10) {
     // skip long songs, skips songs already present in list
-    console.log(playlist?.tracks.includes(randomTrack));
-    if (playlist && playlist.tracks.includes(randomTrack)) {
+    if (playlist?.tracks.includes(randomTrack)) {
       return _getRandomTrackFromArtists(artists, playlist);
     }
     return randomTrack;
