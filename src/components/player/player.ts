@@ -358,9 +358,10 @@ export class Album extends LitElement {
     track = this.playlist.tracks[this.playlist.index];
     if (this.isShuffled) {
       this._shuffleCollection();
-      track = this.playlist.tracks[
-        this.playlist.shuffledIndices[this.playlist.index]
-      ];
+      track =
+        this.playlist.tracks[
+          this.playlist.shuffledIndices[this.playlist.index]
+        ];
     }
     animateCSS(this.shadowRoot?.querySelectorAll('h4, h5'), 'slideInDown');
     track.isPlaying = false;
@@ -379,6 +380,7 @@ export class Album extends LitElement {
       if (continuesPlay) {
         EventBus.emit(LOAD_PLAYLIST, this);
         this.playlist = await getNextPlaylist(this.playlist);
+        this.playlist.index = 0;
         await setCurrentPlaylist(this.playlist);
         EventBus.emit(LOADED_PLAYLIST, this);
         this._play();
@@ -393,9 +395,10 @@ export class Album extends LitElement {
     track = this.playlist.tracks[this.playlist.index];
     if (this.isShuffled) {
       this._shuffleCollection();
-      track = this.playlist.tracks[
-        this.playlist.shuffledIndices[this.playlist.index]
-      ];
+      track =
+        this.playlist.tracks[
+          this.playlist.shuffledIndices[this.playlist.index]
+        ];
     }
     if (track) {
       track.isPlaying = false;
