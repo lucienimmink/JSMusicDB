@@ -380,7 +380,7 @@ export class Album extends LitElement {
       if (continuesPlay) {
         EventBus.emit(LOAD_PLAYLIST, this);
         this.playlist = await getNextPlaylist(this.playlist);
-        this.playlist.index = 0;
+        if (!this.playlist.index) this.playlist.index = 0;
         await setCurrentPlaylist(this.playlist);
         EventBus.emit(LOADED_PLAYLIST, this);
         this._play();
