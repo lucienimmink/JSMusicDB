@@ -1,4 +1,5 @@
 import merge from 'deepmerge';
+import resolve from 'rollup-plugin-node-resolve';
 import { createSpaConfig } from '@open-wc/building-rollup';
 import copy from 'rollup-plugin-copy';
 import filesize from 'rollup-plugin-filesize';
@@ -13,6 +14,7 @@ const baseConfig = createSpaConfig({
 export default merge(baseConfig, {
   input: './index.html',
   plugins: [
+    resolve(),
     versionInjector({
       logLevel: 'warn',
     }),

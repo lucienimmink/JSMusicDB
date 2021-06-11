@@ -1,6 +1,6 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import 'lit-virtualizer';
+import { LitVirtualizer } from '@lit-labs/virtualizer';
 import '../app-link/app-link';
 import musicdb from '../musicdb';
 import headers from '../../styles/headers';
