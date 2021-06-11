@@ -13,8 +13,7 @@
     "postversion": "git push && git push --tags",
     "docker:build": "npm run --silent build && docker build -t jsmusicdb/jsmusicdb:latest .",
     "docker:start": "npm run --silent docker:build && docker run --rm -d -p 3000:80/tcp jsmusicdb/jsmusicdb:latest",
-    "docker:push": "docker push jsmusicdb/jsmusicdb:latest",
-    "preinstall": "npx npm-force-resolutions"
+    "docker:push": "docker push jsmusicdb/jsmusicdb:latest"
   },
   "devDependencies": {
     "@open-wc/building-rollup": "^1.10.0",
@@ -74,13 +73,9 @@
     "fast-average-color": "^6.4.0",
     "fuse.js": "^6.4.6",
     "idb-keyval": "^5.0.6",
-    "lit": "^2.0.0-rc.1",
+    "lit": "^2.0.0-rc.2",
     "lit-element-router": "github:lucienimmink/lit-element-router",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-version-injector": "^1.3.3"
-  },
-  "resolutions": {
-    "hosted-git-info": "^4.0.0",
-    "trim-newlines": "^4.0.1"
   }
 }
