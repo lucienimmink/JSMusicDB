@@ -80,6 +80,6 @@
   },
   "resolutions": {
     "hosted-git-info": "^4.0.0",
-    "trim-newlines": "^3.0.1"
+    "trim-newlines": "^4.0.0"
   }
 }
