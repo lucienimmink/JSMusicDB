@@ -130,11 +130,16 @@ export class LetterNav extends LitElement {
     getNewPlaylistForRandomPref({
       max: this.max,
       username: this.lastFMUserName,
-    }).then((playlist: any) => {
-      this.playlist = playlist;
-      this.loading = false;
-      this.requestUpdate();
-    });
+    })
+      .then((playlist: any) => {
+        this.playlist = playlist;
+        this.loading = false;
+        this.requestUpdate();
+      })
+      .catch(() => {
+        this.loading = false;
+        this.requestUpdate();
+      });
   };
   _startArtistRadio = (e: Event) => {
     e.preventDefault();
