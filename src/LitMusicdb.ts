@@ -238,10 +238,8 @@ export class LitMusicdb extends LitElement {
     document.getElementById('themed')?.innerHTML = css.cssText;
   }
   async _autoSwitchTheme() {
-    const {
-      nextCycle,
-      theme,
-    }: { nextCycle: number; theme: string } = await getCurrentTheme();
+    const { nextCycle, theme }: { nextCycle: number; theme: string } =
+      await getCurrentTheme();
     if (nextCycle) {
       console.info(`Switching theme in ${timeSpan(nextCycle)}`);
       clearTimeout(this.themeSwitchCycle);

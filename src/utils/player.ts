@@ -130,7 +130,9 @@ export const getNewPlaylistForRandomPref = (playlist: any) => {
           }
           return resolve(newPlaylist);
         })
-        .catch(() => reject());
+        .catch(e => {
+          return reject(e);
+        });
     });
   });
 };
@@ -206,6 +208,9 @@ const _getRandomTrackFromArtists = (
   playlist: any
 ): any => {
   const randomArtist = _shuffle(artists)[0];
+  if (!randomArtist) {
+    return _getRandomTrackFromArtists(artists, playlist);
+  }
   const randomAlbum = _shuffle(randomArtist.albums)[0];
   const randomTrack = _shuffle(randomAlbum.tracks)[0];
   if (randomTrack.duration <= 1000 * 60 * 10) {
