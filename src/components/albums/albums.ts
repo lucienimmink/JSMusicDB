@@ -108,54 +108,56 @@ export class LetterNav extends LitElement {
       </ul>
       <div class="container">
         <ol class="virtual-scroll">
-          <lit-virtualizer
-            .scrollTarget=${window}
-            .items=${this.albums}
-            .layout=${Layout1d}
-            .renderItem=${(album: any) => html`
-              ${album.header
-                ? html`
-                    <li
-                      class="header"
-                      @click="${() => {
-                        this.showJumpList = true;
-                        this.requestUpdate();
-                      }}"
-                    >
-                      ${album.header}
-                      <span class="small muted">(${album.albums})</span>
-                    </li>
-                  `
-                : html`
-                    <li>
-                      <app-link
-                        flex
-                        text
-                        href="/letter/${album.artist.letter
-                          .escapedLetter}/artist/${album.artist
-                          .escapedName}/album/${album.escapedName}"
-                      >
-                        <album-art
-                          artist="${album.artist.albumArtist ||
-                          album.artist.name}"
-                          album="${album.name}"
-                        ></album-art>
-                        <div class="details">
-                          <span class="album">${album.name}</span>
-                          ${album.year
-                            ? html`
-                                <span class="small muted"
-                                  >Year: ${album.year}</span
-                                >
-                              `
-                            : nothing}
-                        </div>
-                      </app-link>
-                    </li>
-                  `}
-            `}
-          >
-          </lit-virtualizer>
+          ${this.albums.length > 0
+            ? html` <lit-virtualizer
+                .scrollTarget=${window}
+                .items=${this.albums}
+                .layout=${Layout1d}
+                .renderItem=${(album: any) => html`
+                  ${album?.header
+                    ? html`
+                        <li
+                          class="header"
+                          @click="${() => {
+                            this.showJumpList = true;
+                            this.requestUpdate();
+                          }}"
+                        >
+                          ${album.header}
+                          <span class="small muted">(${album.albums})</span>
+                        </li>
+                      `
+                    : html`
+                        <li>
+                          <app-link
+                            flex
+                            text
+                            href="/letter/${album.artist.letter
+                              .escapedLetter}/artist/${album.artist
+                              .escapedName}/album/${album.escapedName}"
+                          >
+                            <album-art
+                              artist="${album.artist.albumArtist ||
+                              album.artist.name}"
+                              album="${album.name}"
+                            ></album-art>
+                            <div class="details">
+                              <span class="album">${album.name}</span>
+                              ${album.year
+                                ? html`
+                                    <span class="small muted"
+                                      >Year: ${album.year}</span
+                                    >
+                                  `
+                                : nothing}
+                            </div>
+                          </app-link>
+                        </li>
+                      `}
+                `}
+              >
+              </lit-virtualizer>`
+            : nothing}
         </ol>
       </div>
     `;

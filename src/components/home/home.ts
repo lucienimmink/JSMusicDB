@@ -7,7 +7,7 @@ import container from '../../styles/container';
 import smallMuted from '../../styles/small-muted';
 import panel from '../../styles/panel';
 
-import { cdIcon } from '../icons/cd';
+import { cdSVG } from '../icons/cd';
 import home from '../../styles/home';
 import { DUMMY_TRACK, REFRESH } from '../../utils/musicdb';
 import { global as EventBus } from '../../utils/EventBus';
@@ -98,7 +98,7 @@ export class HomeNav extends LitElement {
   }
   _onError(e: Event) {
     // @ts-ignore
-    e.target.src = `data:image/svg+xml;base64,${btoa(cdIcon.getHTML())}`;
+    e.target.src = `data:image/svg+xml;base64,${btoa(cdSVG)}`;
   }
   render() {
     return html`

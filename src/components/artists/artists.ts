@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { Layout1d } from '@lit-labs/virtualizer';
 import './../app-link/app-link';
@@ -104,49 +104,51 @@ export class LetterNav extends LitElement {
       </ul>
       <div class="container">
         <ol class="virtual-scroll">
-          <lit-virtualizer
-            .scrollTarget=${window}
-            .items=${this.artists}
-            .layout=${Layout1d}
-            .renderItem=${(artist: any) => html`
-              ${artist.header
-                ? html`
-                    <li
-                      class="header"
-                      @click="${() => {
-                        this.showJumpList = true;
-                        this.requestUpdate();
-                      }}"
-                    >
-                      ${artist.header}
-                      <span class="small muted">(${artist.artists})</span>
-                    </li>
-                  `
-                : html`
-                    <li>
-                      <app-link
-                        flex
-                        text
-                        href="/letter/${artist.letter
-                          .escapedLetter}/artist/${artist.escapedName}"
-                      >
-                        <album-art
-                          artist="${artist.albumArtist || artist.name}"
-                        ></album-art>
-                        <div class="details">
-                          <span class="artist"
-                            >${artist.albumArtist || artist.name}</span
+          ${this.artists.length > 0
+            ? html` <lit-virtualizer
+                .scrollTarget=${window}
+                .items=${this.artists}
+                .layout=${Layout1d}
+                .renderItem=${(artist: any) => html`
+                  ${artist.header
+                    ? html`
+                        <li
+                          class="header"
+                          @click="${() => {
+                            this.showJumpList = true;
+                            this.requestUpdate();
+                          }}"
+                        >
+                          ${artist.header}
+                          <span class="small muted">(${artist.artists})</span>
+                        </li>
+                      `
+                    : html`
+                        <li>
+                          <app-link
+                            flex
+                            text
+                            href="/letter/${artist.letter
+                              .escapedLetter}/artist/${artist.escapedName}"
                           >
-                          <span class="small muted"
-                            >Albums: ${artist.albums.length}</span
-                          >
-                        </div>
-                      </app-link>
-                    </li>
-                  `}
-            `}
-          >
-          </lit-virtualizer>
+                            <album-art
+                              artist="${artist.albumArtist || artist.name}"
+                            ></album-art>
+                            <div class="details">
+                              <span class="artist"
+                                >${artist.albumArtist || artist.name}</span
+                              >
+                              <span class="small muted"
+                                >Albums: ${artist.albums.length}</span
+                              >
+                            </div>
+                          </app-link>
+                        </li>
+                      `}
+                `}
+              >
+              </lit-virtualizer>`
+            : nothing}
         </ol>
       </div>
     `;
