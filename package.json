@@ -69,7 +69,7 @@
     "type": "github"
   },
   "dependencies": {
-    "@addasoft/lit-element-router": "^2.0.3",
+    "@addasoft/lit-element-router": "^2.0.5",
     "@addasoft/musicdbcore": "^1.8.0",
     "@lit-labs/virtualizer": "^0.6.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
