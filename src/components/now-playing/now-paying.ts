@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
+import { Layout1d } from '@lit-labs/virtualizer';
 
 import {
   getCurrentPlaylist,
@@ -474,6 +475,7 @@ export class NowPlaying extends LitElement {
               <div class="bottom">
                 <lit-virtualizer
                   .items=${this.playlist.tracks}
+                  .layout=${Layout1d}
                   .renderItem=${(track: any) => html`
                     <track-in-list
                       .track=${track}
