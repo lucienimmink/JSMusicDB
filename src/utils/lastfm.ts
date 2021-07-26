@@ -90,6 +90,21 @@ export const getRecentlyListened = (user: string) => {
       })
   );
 };
+export const getTopTracks = (user: string, max = 100, period = '3month') => {
+  const params = new URLSearchParams();
+  params.set('api_key', APIKEY);
+  params.set('format', 'json');
+  params.set('period', period);
+  params.set('limit', max.toString());
+  params.set('method', 'user.gettoptracks');
+  params.set('user', user);
+  return fetch(`https://ws.audioscrobbler.com/2.0/?${params.toString()}`).then(
+    response =>
+      response.json().catch(() => {
+        return {};
+      })
+  );
+};
 export const getSK = () => {
   return get(SK);
 };

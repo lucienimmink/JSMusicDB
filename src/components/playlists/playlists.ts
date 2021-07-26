@@ -13,6 +13,7 @@ import {
   UPDATE_PLAYER,
   LOAD_PLAYLIST,
   LOADED_PLAYLIST,
+  getTopTracksForUser,
 } from '../../utils/player';
 import { getLastFMUserName } from '../../utils/lastfm';
 import { playIcon } from '../icons/play';
@@ -141,6 +142,26 @@ export class LetterNav extends LitElement {
         this.requestUpdate();
       });
   };
+  _getTopTracks = (e: Event) => {
+    e.preventDefault();
+    this.loading = true;
+    this.playlist = null;
+    this.showStartArtistSelection = false;
+    this.requestUpdate();
+    getTopTracksForUser({
+      username: this.lastFMUserName,
+      max: this.max,
+    })
+      .then((playlist: any) => {
+        this.playlist = playlist;
+        this.loading = false;
+        this.requestUpdate();
+      })
+      .catch(() => {
+        this.loading = false;
+        this.requestUpdate();
+      });
+  };
   _startArtistRadio = (e: Event) => {
     e.preventDefault();
     this.showStartArtistSelection = true;
@@ -208,6 +229,10 @@ export class LetterNav extends LitElement {
       case 'random-pref':
         this.showStartArtistSelection = false;
         this._generateRandomByPreference(e);
+        break;
+      case 'top':
+        this.showStartArtistSelection = false;
+        this._getTopTracks(e);
         break;
       case 'radio':
         this._startArtistRadio(e);
@@ -288,6 +313,18 @@ export class LetterNav extends LitElement {
                   </li>
                 `
               : nothing}
+            ${this.lastFMUserName
+              ? html`
+                  <li>
+                    <a
+                      href="#"
+                      title=""
+                      @click="${(e: Event) => this._getTopTracks(e)}"
+                      >Most played tracks by ${this.lastFMUserName}</a
+                    >
+                  </li>
+                `
+              : nothing}
             <li>
               <a
                 href="#"
@@ -329,6 +366,13 @@ export class LetterNav extends LitElement {
               : nothing}
             ${this.lastFMUserName
               ? html` <option value="loved">Loved tracks on last.fm</option> `
+              : nothing}
+            ${this.lastFMUserName
+              ? html`
+                  <option value="top">
+                    Most played tracks by ${this.lastFMUserName}
+                  </option>
+                `
               : nothing}
             <option value="random">${this.max} Random tracks</option>
             ${this.lastFMUserName
