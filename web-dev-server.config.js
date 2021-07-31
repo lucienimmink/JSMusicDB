@@ -6,7 +6,7 @@ dotenv.config();
 
 const replace = fromRollup(rollupReplace);
 const processEnvKeys = Object.keys(process.env);
-let replaced = {};
+const replaced = {};
 processEnvKeys.forEach(key => {
   replaced[`process.env.${key}`] = JSON.stringify(process.env[key]);
 });
