@@ -13,6 +13,10 @@ jobs:
       - name: NPM install
         uses: jaid/action-npm-install@v1.2.4
       - name: NPM build
+        env:
+          LASTFM_APIKEY: ${{ secrets.LASTFM_APIKEY }}
+          LASTFM_SECRET: ${{ secrets.LASTFM_SECRET }}
+          FANART_APIKEY: ${{ secrets.FANART_APIKEY }}
         run: npm run build
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2

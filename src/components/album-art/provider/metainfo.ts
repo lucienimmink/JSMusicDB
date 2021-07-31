@@ -1,3 +1,5 @@
+import { LASTFMAPIKEY } from '../../../utils/lastfm';
+
 const getMetaInfo = async ({
   artist,
   album,
@@ -6,7 +8,7 @@ const getMetaInfo = async ({
   album: string;
 }) => {
   const searchParams = new URLSearchParams();
-  searchParams.set('api_key', '956c1818ded606576d6941de5ff793a5');
+  searchParams.set('api_key', LASTFMAPIKEY);
   searchParams.set('artist', artist);
   searchParams.set('format', 'json');
   searchParams.set('autoCorrect', 'true');
