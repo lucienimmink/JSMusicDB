@@ -1,7 +1,12 @@
 import { set, get } from 'idb-keyval';
 import { global as EventBus } from './EventBus';
 import musicdb from '../components/musicdb';
-import { getTopArtists, getSimilairArtists, getLovedTracks } from './lastfm';
+import {
+  getTopArtists,
+  getSimilairArtists,
+  getLovedTracks,
+  getTopTracks,
+} from './lastfm';
 
 const CURRENT_PLAYLIST = 'current-playlist';
 const CURRENT_TIME = 'current-time';
@@ -45,6 +50,8 @@ export const getNextPlaylist = (playlist: any) => {
       return getNewPlaylistForRadio(playlist);
     case 'loved':
       return getNewPlaylistForLovedTracks(playlist);
+    case 'top':
+      return getTopTracksForUser(playlist);
     default:
       throw new Error(
         `No implementation to generate a new playlist for type ${playlist.type}`
@@ -169,6 +176,34 @@ export const getNewPlaylistForLovedTracks = (playlist: any) => {
               username: playlist.username,
             };
             lovedtracks?.track.forEach((track: any) => {
+              const artist = track?.artist?.name;
+              const title = track?.name;
+              const coretrack = mdb.getTrackByArtistAndName(artist, title);
+              if (coretrack) {
+                // @ts-ignore
+                newPlaylist.tracks.push(coretrack);
+              }
+            });
+            resolve(newPlaylist);
+          }
+        );
+      })
+      .catch(() => reject());
+  });
+};
+export const getTopTracksForUser = (playlist: any) => {
+  return new Promise((resolve, reject) => {
+    return musicdb
+      .then((mdb: any) => {
+        getTopTracks(playlist.username, playlist.max).then(
+          ({ toptracks }: { toptracks: any }) => {
+            const newPlaylist = {
+              name: `Most played tracks by ${playlist.username} in the last 3 months`,
+              tracks: [],
+              type: 'top',
+              username: playlist.username,
+            };
+            toptracks?.track.forEach((track: any) => {
               const artist = track?.artist?.name;
               const title = track?.name;
               const coretrack = mdb.getTrackByArtistAndName(artist, title);

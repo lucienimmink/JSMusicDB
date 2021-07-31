@@ -2,8 +2,8 @@ import { get, set } from 'idb-keyval';
 import { Encryption } from './encryption';
 import { getScrobbleCache, setScrobbleCache, getSettings } from './settings';
 
-const APIKEY = '956c1818ded606576d6941de5ff793a5';
-const SECRET = '4d183e73f7578dee78557665e9be3acc';
+export const LASTFMAPIKEY = process.env.LASTFM_APIKEY!;
+export const LASTFMSECRET = process.env.LASTFM_SECRET!;
 const SK = 'sk';
 const USERNAME = 'lastfm-username';
 
@@ -12,7 +12,7 @@ const encryption = new Encryption();
 // Anonymous methods
 export const getSimilairArtists = (artist: any) => {
   const params = new URLSearchParams();
-  params.set('api_key', APIKEY);
+  params.set('api_key', LASTFMAPIKEY);
   params.set('format', 'json');
   params.set('limit', '20');
   params.set('autocorrect', '1');
@@ -28,7 +28,7 @@ export const getSimilairArtists = (artist: any) => {
 
 export const getLovedTracks = (user: string) => {
   const params = new URLSearchParams();
-  params.set('api_key', APIKEY);
+  params.set('api_key', LASTFMAPIKEY);
   params.set('format', 'json');
   params.set('limit', '1000');
   params.set('method', 'user.getlovedtracks');
@@ -50,7 +50,7 @@ export const getTrackInfo = (track: any, user: string) => {
   );
   params.set('album', track.album.name);
   params.set('track', track.title);
-  params.set('api_key', APIKEY);
+  params.set('api_key', LASTFMAPIKEY);
   params.set('format', 'json');
   params.set('user', user);
   return fetch(`https://ws.audioscrobbler.com/2.0/?${params.toString()}`).then(
@@ -63,7 +63,7 @@ export const getTrackInfo = (track: any, user: string) => {
 
 export const getTopArtists = (user: string) => {
   const params = new URLSearchParams();
-  params.set('api_key', APIKEY);
+  params.set('api_key', LASTFMAPIKEY);
   params.set('format', 'json');
   params.set('limit', '50');
   params.set('method', 'user.gettopartists');
@@ -78,10 +78,25 @@ export const getTopArtists = (user: string) => {
 };
 export const getRecentlyListened = (user: string) => {
   const params = new URLSearchParams();
-  params.set('api_key', APIKEY);
+  params.set('api_key', LASTFMAPIKEY);
   params.set('format', 'json');
   params.set('limit', '6');
   params.set('method', 'user.getrecenttracks');
+  params.set('user', user);
+  return fetch(`https://ws.audioscrobbler.com/2.0/?${params.toString()}`).then(
+    response =>
+      response.json().catch(() => {
+        return {};
+      })
+  );
+};
+export const getTopTracks = (user: string, max = 100, period = '3month') => {
+  const params = new URLSearchParams();
+  params.set('api_key', LASTFMAPIKEY);
+  params.set('format', 'json');
+  params.set('period', period);
+  params.set('limit', max.toString());
+  params.set('method', 'user.gettoptracks');
   params.set('user', user);
   return fetch(`https://ws.audioscrobbler.com/2.0/?${params.toString()}`).then(
     response =>
@@ -112,7 +127,7 @@ export const toggleLoved = async (track: any, isLoved = true) => {
   const method = isLoved ? 'track.love' : 'track.unlove';
   const params = new URLSearchParams();
   params.set('method', method);
-  params.set('api_key', APIKEY);
+  params.set('api_key', LASTFMAPIKEY);
   params.set(
     'api_sig',
     _signTrack(
@@ -147,7 +162,7 @@ export const authenticate = async ({
   password: string;
 }) => {
   const params = new URLSearchParams();
-  params.set('api_key', APIKEY);
+  params.set('api_key', LASTFMAPIKEY);
   params.set('api_sig', _signAuthentication(username, password));
   params.set('format', 'json');
   params.set('username', username);
@@ -184,7 +199,7 @@ export const announceNowPlaying = async (track: any) => {
   }
   const params = new URLSearchParams();
   params.set('method', 'track.updateNowPlaying');
-  params.set('api_key', APIKEY);
+  params.set('api_key', LASTFMAPIKEY);
   params.set(
     'api_sig',
     _signTrack(
@@ -249,7 +264,7 @@ export const scrobbleTrack = async (track: any) => {
   }
   const params = new URLSearchParams();
   params.set('method', 'track.scrobble');
-  params.set('api_key', APIKEY);
+  params.set('api_key', LASTFMAPIKEY);
   params.set(
     'api_sig',
     _signTrack(
@@ -278,7 +293,7 @@ export const scrobbleTrack = async (track: any) => {
 // private methods
 const _signAuthentication = (user: string, password: string): string => {
   return encryption.hex_md5(
-    `api_key${APIKEY}methodauth.getMobileSessionpassword${password}username${user}${SECRET}`
+    `api_key${LASTFMAPIKEY}methodauth.getMobileSessionpassword${password}username${user}${LASTFMSECRET}`
   );
 };
 
@@ -292,11 +307,11 @@ const _signTrack = (
 ): string => {
   if (timestamp) {
     return encryption.hex_md5(
-      `album${album}api_key${APIKEY}artist${artist}method${method}sk${sk}timestamp${timestamp}track${track}${SECRET}`
+      `album${album}api_key${LASTFMAPIKEY}artist${artist}method${method}sk${sk}timestamp${timestamp}track${track}${LASTFMSECRET}`
     );
   } else {
     return encryption.hex_md5(
-      `album${album}api_key${APIKEY}artist${artist}method${method}sk${sk}track${track}${SECRET}`
+      `album${album}api_key${LASTFMAPIKEY}artist${artist}method${method}sk${sk}track${track}${LASTFMSECRET}`
     );
   }
 };

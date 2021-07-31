@@ -1,4 +1,4 @@
-const FANARTAPIKEY = '639fca5adcf955a19f9a04f8985e9ded';
+const FANARTAPIKEY = process.env.FANART_APIKEY!;
 
 const fetchArt = async (mbid: string) => {
   if (!mbid) {

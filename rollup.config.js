@@ -4,6 +4,7 @@ import { createSpaConfig } from '@open-wc/building-rollup';
 import copy from 'rollup-plugin-copy';
 import filesize from 'rollup-plugin-filesize';
 import versionInjector from 'rollup-plugin-version-injector';
+import dotenv from 'rollup-plugin-dotenv';
 
 const baseConfig = createSpaConfig({
   developmentMode: process.env.ROLLUP_WATCH === 'true',
@@ -15,6 +16,7 @@ export default merge(baseConfig, {
   input: './index.html',
   plugins: [
     resolve(),
+    dotenv(),
     versionInjector({
       logLevel: 'warn',
     }),
