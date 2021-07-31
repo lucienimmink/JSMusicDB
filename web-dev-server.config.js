@@ -5,13 +5,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const replace = fromRollup(rollupReplace);
+const processEnvKeys = Object.keys(process.env);
+let replaced = {};
+processEnvKeys.forEach(key => {
+  replaced[`process.env.${key}`] = JSON.stringify(process.env[key]);
+});
 
 export default {
-  plugins: [
-    replace({
-      'process.env.LASTFM_APIKEY': JSON.stringify(process.env.LASTFM_APIKEY),
-      'process.env.LASTFM_SECRET': JSON.stringify(process.env.LASTFM_SECRET),
-      'process.env.FANART_APIKEY': JSON.stringify(process.env.FANART_APIKEY),
-    }),
-  ],
+  plugins: [replace(replaced)],
 };
