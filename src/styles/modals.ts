@@ -24,6 +24,7 @@ export default css`
     width: 90vw;
     background: var(--background);
     border: 1px solid var(--darken);
+    color: var(--text-color);
     margin: 5vh auto 0;
     position: relative;
     z-index: 1001;
@@ -43,6 +44,13 @@ export default css`
   }
   .modal-body {
     padding: 0.25rem 1rem;
+  }
+  .modal-body a {
+    color: var(--primary);
+    text-decoration: none;
+  }
+  .modal-body a:hover {
+    text-decoration: underline;
   }
   .modal-footer {
     padding: 0.25rem 1rem 0.5rem;
