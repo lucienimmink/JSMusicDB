@@ -30,6 +30,10 @@ export default [
     pattern: 'playlists',
   },
   {
+    name: 'playlist',
+    pattern: 'playlists/:playlist',
+  },
+  {
     name: 'now-playing',
     pattern: 'now-playing',
   },

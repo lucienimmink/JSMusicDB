@@ -238,10 +238,8 @@ export class LitMusicdb extends LitElement {
     document.getElementById('themed')?.innerHTML = css.cssText;
   }
   async _autoSwitchTheme() {
-    const {
-      nextCycle,
-      theme,
-    }: { nextCycle: number; theme: string } = await getCurrentTheme();
+    const { nextCycle, theme }: { nextCycle: number; theme: string } =
+      await getCurrentTheme();
     if (nextCycle) {
       console.info(`Switching theme in ${timeSpan(nextCycle)}`);
       clearTimeout(this.themeSwitchCycle);
@@ -270,7 +268,8 @@ export class LitMusicdb extends LitElement {
       return;
     }
     document.querySelector('html')?.classList.remove('noscroll');
-    await animateCSS(this.shadowRoot?.querySelector('app-main'), 'slideInUp');
+    if (this.route !== 'playlist')
+      await animateCSS(this.shadowRoot?.querySelector('app-main'), 'slideInUp');
     // console.log(route, params, query);
   }
   _resetServer() {
@@ -328,6 +327,12 @@ export class LitMusicdb extends LitElement {
                 </div>
                 <div route="playlists">
                   <playlists-nav activeroute="${this.route}"></playlists-nav>
+                </div>
+                <div route="playlist">
+                  <playlists-nav
+                    activeroute="${this.route}"
+                    playlist-id="${this.params.playlist}"
+                  ></playlists-nav>
                 </div>
                 <div route="now-playing">
                   <now-playing activeroute="${this.route}"></now-playing>
