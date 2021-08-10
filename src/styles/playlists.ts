@@ -39,7 +39,7 @@ export default css`
     border-top: 0;
     height: auto;
   }
-  .playlists li a {
+  .playlists li app-link {
     display: flex;
     color: var(--primary, #006ecd);
     transition: color 0.2s ease-in-out;
@@ -49,7 +49,7 @@ export default css`
     width: 100%;
     padding-left: 1rem;
   }
-  .playlists li a:hover {
+  .playlists li app-link:hover {
     background: var(--background3);
   }
   .playlist li {
