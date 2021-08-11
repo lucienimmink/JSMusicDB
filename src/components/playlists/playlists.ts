@@ -26,8 +26,8 @@ import smallMuted from '../../styles/small-muted';
 import responsive from '../../styles/responsive';
 import playlists from '../../styles/playlists';
 import { global as EventBus } from '../../utils/EventBus';
-import { syncIcon } from '../icons/sync';
 import buttons from '../../styles/buttons';
+import { redoIcon } from '../icons/redo';
 
 @customElement('playlists-nav')
 export class LetterNav extends LitElement {
@@ -321,7 +321,7 @@ export class LetterNav extends LitElement {
                               @click="${(e: Event) =>
                                 this._reloadPlaylist('loved')}"
                             >
-                              <span class="icon">${syncIcon}</span>
+                              <span class="icon">${redoIcon}</span>
                             </button>
                           `
                         : nothing}</app-link
@@ -340,7 +340,7 @@ export class LetterNav extends LitElement {
                             @click="${(e: Event) =>
                               this._reloadPlaylist('top')}"
                           >
-                            <span class="icon">${syncIcon}</span>
+                            <span class="icon">${redoIcon}</span>
                           </button>`
                         : nothing}
                     </app-link>
@@ -355,7 +355,7 @@ export class LetterNav extends LitElement {
                       class="btn btn-small btn-primary btn-refresh"
                       @click="${(e: Event) => this._reloadPlaylist('random')}"
                     >
-                      <span class="icon">${syncIcon}</span>
+                      <span class="icon">${redoIcon}</span>
                     </button>`
                   : nothing}
               </app-link>
@@ -371,7 +371,7 @@ export class LetterNav extends LitElement {
                             @click="${(e: Event) =>
                               this._reloadPlaylist('random-pref')}"
                           >
-                            <span class="icon">${syncIcon}</span>
+                            <span class="icon">${redoIcon}</span>
                           </button>`
                         : nothing}
                     </app-link>
