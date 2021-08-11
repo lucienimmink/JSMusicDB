@@ -64,7 +64,7 @@ export default css`
   }
   .btn .icon {
     display: inline-block;
-    vertical-align: top;
+    vertical-align: inherit;
   }
   .btn .icon svg {
     display: block;

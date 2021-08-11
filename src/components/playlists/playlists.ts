@@ -26,6 +26,8 @@ import smallMuted from '../../styles/small-muted';
 import responsive from '../../styles/responsive';
 import playlists from '../../styles/playlists';
 import { global as EventBus } from '../../utils/EventBus';
+import { syncIcon } from '../icons/sync';
+import buttons from '../../styles/buttons';
 
 @customElement('playlists-nav')
 export class LetterNav extends LitElement {
@@ -42,8 +44,9 @@ export class LetterNav extends LitElement {
   playlist: any;
   artists: Array<any>;
   loading: boolean;
+  currentPlaylistId: string;
   static get styles() {
-    return [headers, container, smallMuted, responsive, playlists];
+    return [headers, container, smallMuted, responsive, playlists, buttons];
   }
   async attributeChangedCallback(name: any, oldval: any, newval: any) {
     if (name === 'playlist-id') {
@@ -215,7 +218,11 @@ export class LetterNav extends LitElement {
     e.preventDefault();
     this._doSwitchPlaylist(switchTo);
   }
+  _reloadPlaylist(id: string) {
+    this._doSwitchPlaylist(id);
+  }
   _doSwitchPlaylist(switchTo: string) {
+    this.currentPlaylistId = switchTo;
     switch (switchTo) {
       case 'current':
         this.showStartArtistSelection = false;
@@ -284,6 +291,7 @@ export class LetterNav extends LitElement {
     this.loading = false;
     this.max = 100;
     this.playlistId = '';
+    this.currentPlaylistId = '';
     this._listen();
   }
   render() {
@@ -295,7 +303,7 @@ export class LetterNav extends LitElement {
             ${this.current?.tracks?.length > 0
               ? html`
                   <li>
-                    <app-link href="/playlists/current" title=""
+                    <app-link href="/playlists/current" flex
                       >Current playlist</app-link
                     >
                   </li>
@@ -304,8 +312,19 @@ export class LetterNav extends LitElement {
             ${this.lastFMUserName
               ? html`
                   <li>
-                    <app-link href="/playlists/loved" title=""
-                      >Loved tracks on last.fm</app-link
+                    <app-link href="/playlists/loved" flex
+                      >Loved tracks on last.fm
+                      ${this.currentPlaylistId === 'loved'
+                        ? html`
+                            <button
+                              class="btn btn-small btn-primary btn-refresh"
+                              @click="${(e: Event) =>
+                                this._reloadPlaylist('loved')}"
+                            >
+                              <span class="icon">${syncIcon}</span>
+                            </button>
+                          `
+                        : nothing}</app-link
                     >
                   </li>
                 `
@@ -313,28 +332,54 @@ export class LetterNav extends LitElement {
             ${this.lastFMUserName
               ? html`
                   <li>
-                    <app-link href="/playlists/top" title=""
-                      >Most played tracks by ${this.lastFMUserName}</app-link
-                    >
+                    <app-link href="/playlists/top" flex
+                      >Most played tracks by ${this.lastFMUserName}
+                      ${this.currentPlaylistId === 'top'
+                        ? html` <button
+                            class="btn btn-small btn-primary btn-refresh"
+                            @click="${(e: Event) =>
+                              this._reloadPlaylist('top')}"
+                          >
+                            <span class="icon">${syncIcon}</span>
+                          </button>`
+                        : nothing}
+                    </app-link>
                   </li>
                 `
               : nothing}
             <li>
-              <app-link href="/playlists/random" title=""
-                >${this.max} random tracks</app-link
-              >
+              <app-link href="/playlists/random" flex
+                >${this.max} random tracks
+                ${this.currentPlaylistId === 'random'
+                  ? html` <button
+                      class="btn btn-small btn-primary btn-refresh"
+                      @click="${(e: Event) => this._reloadPlaylist('random')}"
+                    >
+                      <span class="icon">${syncIcon}</span>
+                    </button>`
+                  : nothing}
+              </app-link>
             </li>
             ${this.lastFMUserName
               ? html`
                   <li>
-                    <app-link href="/playlists/random-pref" title=""
-                      >${this.max} tracks by preference</app-link
-                    >
+                    <app-link href="/playlists/random-pref" flex
+                      >${this.max} tracks by preference
+                      ${this.currentPlaylistId === 'random-pref'
+                        ? html` <button
+                            class="btn btn-small btn-primary btn-refresh"
+                            @click="${(e: Event) =>
+                              this._reloadPlaylist('random-pref')}"
+                          >
+                            <span class="icon">${syncIcon}</span>
+                          </button>`
+                        : nothing}
+                    </app-link>
                   </li>
                 `
               : nothing}
             <li>
-              <app-link href="/playlists/radio" title="">Artist radio</app-link>
+              <app-link href="/playlists/radio" flex>Artist radio</app-link>
             </li>
           </ul>
           <select
