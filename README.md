@@ -1,6 +1,8 @@
-# JSMusicDBNext
+# JSMusicDB
 
-A web standards based music database and player.
+A web standards based music database and player written using LIT-html, LIT-element and TypeScript. Using modern JavaScript to reduce the normal framework overhead JSMusicDB is less then 80KB while zipped.
+![Screenshot of JSMusicDB in light mode](https://www.jsmusicdb.com/public/screenshot-1.webp 'Screenshot of JSMusicDB in light mode')
+![Screenshot of JSMusicDB in dark mode](https://www.jsmusicdb.com/public/screenshot-2.webp 'Screenshot of JSMusicDB in dark mode')
 
 ## API keys
 
