@@ -35,7 +35,7 @@ import './components/loading-indicator/progress-spinner';
 import { light, dark, system } from './styles/themes';
 import timeSpan from './utils/timespan';
 import { getCurrentTheme, updateSunriseData } from './utils/colour';
-import { getSK } from './utils/lastfm';
+import { getSK, RESET_LASTFM } from './utils/lastfm';
 import { DONE_RELOADING, getJwt, RESET_SERVER } from './utils/node-mp3stream';
 import { animationCSS, animateCSS } from './utils/animations';
 import litMusicdb from './styles/lit-musicdb';
@@ -193,6 +193,7 @@ export class LitMusicdb extends LitElement {
       this
     );
     EventBus.on(RESET_SERVER, this._resetServer, this);
+    EventBus.on(RESET_LASTFM, this._resetLastFM, this);
   }
   _relay = (type: string, method = '') => {
     this.dispatchEvent(new CustomEvent(type, { detail: method }));
@@ -274,6 +275,10 @@ export class LitMusicdb extends LitElement {
   }
   _resetServer() {
     this.hasToken = false;
+    this.requestUpdate();
+  }
+  _resetLastFM() {
+    this.hasSK = false;
     this.requestUpdate();
   }
   render() {
