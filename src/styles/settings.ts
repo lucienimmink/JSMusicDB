@@ -27,9 +27,6 @@ export default css`
     width: 1.5rem;
     height: 1.5rem;
     accent-color: var(--primary);
-    margin: 0 0.75rem;
-  }
-  input[type='radio'] {
-    margin-left: 0;
+    margin: 0 0.75rem 0 0;
   }
 `;

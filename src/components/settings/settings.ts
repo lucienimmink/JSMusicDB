@@ -180,38 +180,32 @@ export class LetterNav extends LitElement {
         <h2 class="header">User information</h2>
         <p>
           Linked to last.fm:
-          ${
-            this?.lastFMUsername !== 'mdb-skipped'
-              ? this.lastFMUsername
-              : 'false'
-          }
-          ${
-            this?.lastFMUsername
-              ? html`<button
-                  class="btn btn-secondary btn-small"
-                  @click=${this._resetLastfM}
-                >
-                  <span class="icon">${trashIcon}</span> ${this
-                    ?.lastFMUsername !== 'mdb-skipped'
-                    ? html`un`
-                    : html`re`}link
-                </button>`
-              : nothing
-          }
+          ${this?.lastFMUsername !== 'mdb-skipped'
+            ? this.lastFMUsername
+            : 'false'}
+          ${this?.lastFMUsername
+            ? html`<button
+                class="btn btn-secondary btn-small"
+                @click=${this._resetLastfM}
+              >
+                <span class="icon">${trashIcon}</span> ${this
+                  ?.lastFMUsername !== 'mdb-skipped'
+                  ? html`un`
+                  : html`re`}link
+              </button>`
+            : nothing}
         </p>
         <p>
           Connected to Node-mp3stream:
           ${this.mp3stream ? this.mp3stream : 'false'}
-          ${
-            this.mp3stream
-              ? html`<button
-                  class="btn btn-secondary btn-small"
-                  @click=${this._resetmp3Stream}
-                >
-                  <span class="icon">${trashIcon}</span> disconnect
-                </button>`
-              : nothing
-          }
+          ${this.mp3stream
+            ? html`<button
+                class="btn btn-secondary btn-small"
+                @click=${this._resetmp3Stream}
+              >
+                <span class="icon">${trashIcon}</span> disconnect
+              </button>`
+            : nothing}
         </p>
       </div>
       <div class="container">
@@ -247,61 +241,52 @@ export class LetterNav extends LitElement {
           </button>
         </p>
       </div>
-
       <div class="container">
         <h2 class="header">Player settings</h2>
         <p>
           <label>
-            Save playliststate
             <input
               type="checkbox"
               ?checked=${this.settings?.playliststate}
               @click="${(e: Event) => this._toggle('playliststate', e)}"
-          /></label>
+            />
+            Save playliststate
+          </label>
         </p>
         <p>
           <label>
-            Manual scrobbling
             <input
               type="checkbox"
               @click="${(e: Event) => this._toggle('manualScrobble', e)}"
               ?checked=${this.settings?.manualScrobble}
             />
+            Manual scrobbling
           </label>
         </p>
         <p>
           <label>
-            Continues play
             <input
               type="checkbox"
               @click="${(e: Event) => this._toggle('continues', e)}"
               ?checked=${this.settings?.continues}
             />
+            Continues play
           </label>
         </p>
         <p>
           <label>
-            Apply ReplayGain
             <input
               type="checkbox"
               @click="${(e: Event) => this._toggle('replaygain', e)}"
               ?checked=${this.settings?.replaygain}
             />
+            Apply ReplayGain
+          </label>
         </p>
       </div>
 
       <div class="container">
-        <h2 class="header">Interface settings</h2>
-        <p>
-          <label>
-            Dynamic accent colour
-            <input
-              type="checkbox"
-              @click="${(e: Event) => this._toggle('dynamicTheme', e)}"
-              ?checked=${this.settings?.dynamicTheme}
-            />
-          </label>
-        </p>
+        <h2 class="header">Theme</h2>
         <p class="radio-group">
           <label>
             <input
@@ -340,50 +325,59 @@ export class LetterNav extends LitElement {
               ${this._formatDate(this.settings?.stop, '09:00:00')}</span
             >
           </label>
-          <br />
         </p>
-        ${
-          this.settings?.theme === 'auto'
-            ? html`
-                <p>
-                  <label>
-                    Track location for more accurate theme switching
-                    <input
-                      type="checkbox"
-                      @click="${(e: Event) => this._toggle('gps', e)}"
-                      ?checked=${this.settings?.gps}
-                    />
-                  </label>
-                </p>
-              `
-            : nothing
-        }
+        ${this.settings?.theme === 'auto'
+          ? html`
+              <p>
+                <label>
+                  <input
+                    type="checkbox"
+                    @click="${(e: Event) => this._toggle('gps', e)}"
+                    ?checked=${this.settings?.gps}
+                  />
+                  Track location for more accurate theme switching
+                </label>
+              </p>
+            `
+          : nothing}
+      </div>
+
+      <div class="container">
+        <h2 class="header">Interface settings</h2>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+              @click="${(e: Event) => this._toggle('dynamicTheme', e)}"
+              ?checked=${this.settings?.dynamicTheme}
+            />
+            Dynamic accent colour
+          </label>
+        </p>
         <p class="md-up-flex">
           <label>
-            Show visualisation on now-playing screen
             <input
               type="checkbox"
               @click="${(e: Event) => this._toggle('visual', e)}"
               ?checked=${this.settings?.visual}
             />
+            Show visualisation on now-playing screen
           </label>
         </p>
-        ${
-          this.settings?.visual
-            ? html`
-                <p class="md-up-flex">
-                  <label>
-                    Show smaller album-art on now-playing screen
-                    <input
-                      type="checkbox"
-                      @click="${(e: Event) => this._toggle('smallArt', e)}"
-                      ?checked=${this.settings?.smallArt}
-                    />
-                  </label>
-                </p>
-              `
-            : nothing
-        }
+        ${this.settings?.visual
+          ? html`
+              <p class="md-up-flex">
+                <label>
+                  <input
+                    type="checkbox"
+                    @click="${(e: Event) => this._toggle('smallArt', e)}"
+                    ?checked=${this.settings?.smallArt}
+                  />
+                  Show smaller album-art on now-playing screen
+                </label>
+              </p>
+            `
+          : nothing}
       </div>
 
       <div class="container">
@@ -395,11 +389,9 @@ export class LetterNav extends LitElement {
         <p>Parsing time: ${this.stats?.parsingTime}ms</p>
         <p>Last updated: ${this.stats?.parsed}</p>
         ${this.showVersion ? html`<p>Build: [VI]{version}[/VI]</p>` : nothing}
-        ${
-          this.stats?.mp3stream
-            ? html` <p>Node-mp3stream: ${this.stats?.mp3stream}</p> `
-            : nothing
-        }
+        ${this.stats?.mp3stream
+          ? html` <p>Node-mp3stream: ${this.stats?.mp3stream}</p> `
+          : nothing}
       </div>
     `;
   }
