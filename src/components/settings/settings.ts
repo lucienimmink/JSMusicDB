@@ -35,6 +35,8 @@ import { trashIcon } from '../icons/trash';
 import { syncIcon } from '../icons/sync';
 import { clear, createStore } from 'idb-keyval';
 import { cloudDownloadIcon } from '../icons/cloudDownload';
+import { unlinkIcon } from '../icons/unlink';
+import { disconnectIcon } from '../icons/disconnect';
 
 @customElement('settings-nav')
 export class LetterNav extends LitElement {
@@ -188,7 +190,7 @@ export class LetterNav extends LitElement {
                 class="btn btn-secondary btn-small"
                 @click=${this._resetLastfM}
               >
-                <span class="icon">${trashIcon}</span> ${this
+                <span class="icon">${unlinkIcon}</span> ${this
                   ?.lastFMUsername !== 'mdb-skipped'
                   ? html`un`
                   : html`re`}link
@@ -203,7 +205,7 @@ export class LetterNav extends LitElement {
                 class="btn btn-secondary btn-small"
                 @click=${this._resetmp3Stream}
               >
-                <span class="icon">${trashIcon}</span> disconnect
+                <span class="icon">${disconnectIcon}</span> disconnect
               </button>`
             : nothing}
         </p>
