@@ -18,6 +18,11 @@ export const getPublicKey = async (server: string) => {
   return await response.json();
 };
 
+export const getVersion = async (server: string) => {
+  const serverVersion = await _versionCheck(server);
+  return serverVersion?.version;
+};
+
 export const authenticate = async (server: string, payload: ArrayBuffer) => {
   const response = await fetch(`${server}/authenticate`, {
     method: 'post',

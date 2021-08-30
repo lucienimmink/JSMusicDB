@@ -17,6 +17,7 @@ import {
   getJwt,
   getRescan,
   getServer,
+  getVersion,
   IS_RELOADING,
   resetServer,
   RESET_SERVER,
@@ -70,6 +71,9 @@ export class LetterNav extends LitElement {
       }
       this.lastFMUsername = await getLastFMUserName();
       this.mp3stream = await getServer();
+      if (this.mp3stream && this.stats) {
+        this.stats.mp3stream = await getVersion(this.mp3stream);
+      }
       this.requestUpdate();
     });
   }
