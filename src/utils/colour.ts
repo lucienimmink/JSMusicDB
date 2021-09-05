@@ -200,10 +200,8 @@ export const updateSunriseData = async (useGPS = true) => {
         return resolve(await _setSunrise(start, nextDayStop));
       });
     }
-    const {
-      start,
-      stop,
-    }: { start: Date; stop: Date } = await _getNewStartAndStop();
+    const { start, stop }: { start: Date; stop: Date } =
+      await _getNewStartAndStop();
     return resolve(await _setSunrise(start, stop));
   });
 };
@@ -217,8 +215,9 @@ export const currentBgColor = async () => {
       return DARK;
     case 'system':
       // eslint-disable-next-line no-case-declarations
-      const darkMode = window.matchMedia('(prefers-color-scheme: dark)')
-        .matches;
+      const darkMode = window.matchMedia(
+        '(prefers-color-scheme: dark)'
+      ).matches;
       return darkMode ? DARK : LIGHT;
     case 'auto':
       return currentIfAuto;

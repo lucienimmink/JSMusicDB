@@ -318,8 +318,7 @@ export class LetterNav extends LitElement {
                         ? html`
                             <button
                               class="btn btn-small btn-primary btn-refresh"
-                              @click="${(e: Event) =>
-                                this._reloadPlaylist('loved')}"
+                              @click="${() => this._reloadPlaylist('loved')}"
                             >
                               <span class="icon">${redoIcon}</span>
                             </button>
@@ -337,8 +336,7 @@ export class LetterNav extends LitElement {
                       ${this.currentPlaylistId === 'top'
                         ? html` <button
                             class="btn btn-small btn-primary btn-refresh"
-                            @click="${(e: Event) =>
-                              this._reloadPlaylist('top')}"
+                            @click="${() => this._reloadPlaylist('top')}"
                           >
                             <span class="icon">${redoIcon}</span>
                           </button>`
@@ -353,7 +351,7 @@ export class LetterNav extends LitElement {
                 ${this.currentPlaylistId === 'random'
                   ? html` <button
                       class="btn btn-small btn-primary btn-refresh"
-                      @click="${(e: Event) => this._reloadPlaylist('random')}"
+                      @click="${() => this._reloadPlaylist('random')}"
                     >
                       <span class="icon">${redoIcon}</span>
                     </button>`
@@ -368,7 +366,7 @@ export class LetterNav extends LitElement {
                       ${this.currentPlaylistId === 'random-pref'
                         ? html` <button
                             class="btn btn-small btn-primary btn-refresh"
-                            @click="${(e: Event) =>
+                            @click="${() =>
                               this._reloadPlaylist('random-pref')}"
                           >
                             <span class="icon">${redoIcon}</span>
