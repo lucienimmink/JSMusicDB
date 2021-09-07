@@ -75,7 +75,7 @@
     "diacritics-normalizr": "^1.0.3",
     "fast-average-color": "^6.4.2",
     "fuse.js": "^6.4.6",
-    "idb-keyval": "^5.1.5",
+    "idb-keyval": "^6.0.0",
     "lit-element": "^2.5.1",
     "lit-html": "^1.4.1",
     "lit-virtualizer": "^0.4.2",
