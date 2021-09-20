@@ -6,6 +6,7 @@ import {
   setCurrentPlaylist,
   startPlaylist,
   setCurrentTime,
+  getCurrentPlaylist,
 } from '../../utils/player';
 import headers from '../../styles/headers';
 import container from '../../styles/container';
@@ -101,6 +102,19 @@ export class Album extends LitElement {
     await setCurrentTime(0);
     startPlaylist(this);
   }
+  async _appendPlaylist(e: Event) {
+    e.preventDefault();
+    const currentPlaylist = (await getCurrentPlaylist()) || {};
+    currentPlaylist.name = 'queued albums';
+    currentPlaylist.tracks = [
+      ...currentPlaylist.tracks,
+      ...this.albumDetails.tracks,
+    ];
+    currentPlaylist.index = currentPlaylist.index || 0;
+    currentPlaylist.type = 'playlist';
+    delete currentPlaylist.album;
+    await setCurrentPlaylist(currentPlaylist);
+  }
   _sort(album: any) {
     album.tracks.sort((a: any, b: any): number => {
       if (a.disc < b.disc) {
@@ -122,6 +136,7 @@ export class Album extends LitElement {
         artist="${this.artist}"
         album="${this.album}"
         @play=${(e: Event) => this._setPlaylist(e)}
+        @queue=${(e: Event) => this._appendPlaylist(e)}
       ></album-details>
       <div class="container">
         ${this.sortedDiscs.map(

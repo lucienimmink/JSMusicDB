@@ -109,6 +109,10 @@ export class AlbumDetails extends LitElement {
     e.preventDefault();
     this.dispatchEvent(new Event('play'));
   }
+  _queueAlbum(e: Event) {
+    e.preventDefault();
+    this.dispatchEvent(new Event('queue'));
+  }
   render() {
     return html`
       <div class="jumbotron ${this.shrunk ? 'shrunk ' : ''}">
@@ -148,6 +152,12 @@ export class AlbumDetails extends LitElement {
                 @click=${(e: any) => this._playAlbum(e)}
               >
                 Play album
+              </button>
+              <button
+                class="btn btn-secondary"
+                @click=${(e: any) => this._queueAlbum(e)}
+              >
+                Queue album
               </button>
             </h4>
           </div>
