@@ -26,6 +26,8 @@ import smallMuted from '../../styles/small-muted';
 import responsive from '../../styles/responsive';
 import playlists from '../../styles/playlists';
 import { global as EventBus } from '../../utils/EventBus';
+import buttons from '../../styles/buttons';
+import { redoIcon } from '../icons/redo';
 
 @customElement('playlists-nav')
 export class LetterNav extends LitElement {
@@ -36,38 +38,44 @@ export class LetterNav extends LitElement {
   current: any;
   @property()
   lastFMUserName: string;
+  @property({ attribute: 'playlist-id' })
+  playlistId: string;
   showStartArtistSelection: boolean;
   playlist: any;
   artists: Array<any>;
   loading: boolean;
+  currentPlaylistId: string;
   static get styles() {
-    return [headers, container, smallMuted, responsive, playlists];
+    return [headers, container, smallMuted, responsive, playlists, buttons];
   }
-  attributeChangedCallback(name: any, oldval: any, newval: any) {
-    if (name === 'activeroute' && newval === 'playlists') {
-      this._getPlaylists();
-      this._populateArtists();
-    } else {
+  async attributeChangedCallback(name: any, oldval: any, newval: any) {
+    if (name === 'playlist-id') {
+      await this._getPlaylists();
+      this._doSwitchPlaylist(decodeURIComponent(newval));
+      return;
+    }
+    if (name === 'activeroute') {
+      if (newval === 'playlists' || newval === 'playlist') {
+        await this._getPlaylists();
+        this._populateArtists();
+        return;
+      }
       // cleanup
       this.playlist = null;
     }
   }
-  _getPlaylists = () => {
-    musicdb.then(() => {
-      getCurrentPlaylist().then((playlist: any) => {
-        if (playlist) {
-          this.current = playlist;
-          this.requestUpdate();
-        }
-      });
-      getLastFMUserName().then((username: any) => {
-        if (username !== 'mdb-skipped') {
-          this.lastFMUserName = username;
-          this.requestUpdate();
-        }
-      });
+  _getPlaylists = async () => {
+    await musicdb;
+    const playlist = await getCurrentPlaylist();
+    if (playlist) {
+      this.current = playlist;
       this.requestUpdate();
-    });
+    }
+    const username = await getLastFMUserName();
+    if (username !== 'mdb-skipped') {
+      this.lastFMUserName = username;
+      this.requestUpdate();
+    }
   };
   setPlaylist = async (track: any) => {
     let startIndex = 0;
@@ -83,8 +91,7 @@ export class LetterNav extends LitElement {
     });
     startPlaylist(this);
   };
-  _setActivePlaylist = (name = 'current', e: Event) => {
-    e.preventDefault();
+  _setActivePlaylist = (name = 'current') => {
     this.showStartArtistSelection = false;
     switch (name) {
       case 'current':
@@ -93,8 +100,7 @@ export class LetterNav extends LitElement {
     }
     this.requestUpdate();
   };
-  _getLovedTracks = (e: Event) => {
-    e.preventDefault();
+  _getLovedTracks = () => {
     this.loading = true;
     this.playlist = null;
     this.showStartArtistSelection = false;
@@ -107,8 +113,7 @@ export class LetterNav extends LitElement {
       this.requestUpdate();
     });
   };
-  _generateRandom = (e: Event) => {
-    e.preventDefault();
+  _generateRandom = () => {
     this.loading = true;
     this.playlist = null;
     this.showStartArtistSelection = false;
@@ -121,8 +126,7 @@ export class LetterNav extends LitElement {
       this.requestUpdate();
     });
   };
-  _generateRandomByPreference = (e: Event) => {
-    e.preventDefault();
+  _generateRandomByPreference = () => {
     this.loading = true;
     this.showStartArtistSelection = false;
     this.playlist = null;
@@ -142,8 +146,7 @@ export class LetterNav extends LitElement {
         this.requestUpdate();
       });
   };
-  _getTopTracks = (e: Event) => {
-    e.preventDefault();
+  _getTopTracks = () => {
     this.loading = true;
     this.playlist = null;
     this.showStartArtistSelection = false;
@@ -162,8 +165,7 @@ export class LetterNav extends LitElement {
         this.requestUpdate();
       });
   };
-  _startArtistRadio = (e: Event) => {
-    e.preventDefault();
+  _startArtistRadio = () => {
     this.showStartArtistSelection = true;
     this.playlist = null;
     this.requestUpdate();
@@ -213,32 +215,40 @@ export class LetterNav extends LitElement {
     e.preventDefault();
     // @ts-ignore
     const switchTo = e?.target?.value;
+    e.preventDefault();
+    this._doSwitchPlaylist(switchTo);
+  }
+  _reloadPlaylist(id: string) {
+    this._doSwitchPlaylist(id);
+  }
+  _doSwitchPlaylist(switchTo: string) {
+    this.currentPlaylistId = switchTo;
     switch (switchTo) {
       case 'current':
         this.showStartArtistSelection = false;
-        this._setActivePlaylist('current', e);
+        this._setActivePlaylist('current');
         break;
       case 'loved':
         this.showStartArtistSelection = false;
-        this._getLovedTracks(e);
+        this._getLovedTracks();
         break;
       case 'random':
         this.showStartArtistSelection = false;
-        this._generateRandom(e);
+        this._generateRandom();
         break;
       case 'random-pref':
         this.showStartArtistSelection = false;
-        this._generateRandomByPreference(e);
+        this._generateRandomByPreference();
         break;
       case 'top':
         this.showStartArtistSelection = false;
-        this._getTopTracks(e);
+        this._getTopTracks();
         break;
       case 'radio':
-        this._startArtistRadio(e);
+        this._startArtistRadio();
         break;
       default:
-        this._setActivePlaylist('current', e);
+        this._setActivePlaylist('current');
     }
   }
   _listen() {
@@ -280,6 +290,8 @@ export class LetterNav extends LitElement {
     this.artists = [];
     this.loading = false;
     this.max = 100;
+    this.playlistId = '';
+    this.currentPlaylistId = '';
     this._listen();
   }
   render() {
@@ -291,12 +303,8 @@ export class LetterNav extends LitElement {
             ${this.current?.tracks?.length > 0
               ? html`
                   <li>
-                    <a
-                      href="#"
-                      title=""
-                      @click="${(e: Event) =>
-                        this._setActivePlaylist('current', e)}"
-                      >Current playlist</a
+                    <app-link href="/playlists/current" flex
+                      >Current playlist</app-link
                     >
                   </li>
                 `
@@ -304,11 +312,18 @@ export class LetterNav extends LitElement {
             ${this.lastFMUserName
               ? html`
                   <li>
-                    <a
-                      href="#"
-                      title=""
-                      @click="${(e: Event) => this._getLovedTracks(e)}"
-                      >Loved tracks on last.fm</a
+                    <app-link href="/playlists/loved" flex
+                      >Loved tracks on last.fm
+                      ${this.currentPlaylistId === 'loved'
+                        ? html`
+                            <button
+                              class="btn btn-small btn-primary btn-refresh"
+                              @click="${() => this._reloadPlaylist('loved')}"
+                            >
+                              <span class="icon">${redoIcon}</span>
+                            </button>
+                          `
+                        : nothing}</app-link
                     >
                   </li>
                 `
@@ -316,43 +331,53 @@ export class LetterNav extends LitElement {
             ${this.lastFMUserName
               ? html`
                   <li>
-                    <a
-                      href="#"
-                      title=""
-                      @click="${(e: Event) => this._getTopTracks(e)}"
-                      >Most played tracks by ${this.lastFMUserName}</a
-                    >
+                    <app-link href="/playlists/top" flex
+                      >Most played tracks by ${this.lastFMUserName}
+                      ${this.currentPlaylistId === 'top'
+                        ? html` <button
+                            class="btn btn-small btn-primary btn-refresh"
+                            @click="${() => this._reloadPlaylist('top')}"
+                          >
+                            <span class="icon">${redoIcon}</span>
+                          </button>`
+                        : nothing}
+                    </app-link>
                   </li>
                 `
               : nothing}
             <li>
-              <a
-                href="#"
-                title=""
-                @click="${(e: Event) => this._generateRandom(e)}"
-                >${this.max} random tracks</a
-              >
+              <app-link href="/playlists/random" flex
+                >${this.max} random tracks
+                ${this.currentPlaylistId === 'random'
+                  ? html` <button
+                      class="btn btn-small btn-primary btn-refresh"
+                      @click="${() => this._reloadPlaylist('random')}"
+                    >
+                      <span class="icon">${redoIcon}</span>
+                    </button>`
+                  : nothing}
+              </app-link>
             </li>
             ${this.lastFMUserName
               ? html`
                   <li>
-                    <a
-                      href="#"
-                      title=""
-                      @click="${(e: Event) =>
-                        this._generateRandomByPreference(e)}"
-                      >${this.max} tracks by preference</a
-                    >
+                    <app-link href="/playlists/random-pref" flex
+                      >${this.max} tracks by preference
+                      ${this.currentPlaylistId === 'random-pref'
+                        ? html` <button
+                            class="btn btn-small btn-primary btn-refresh"
+                            @click="${() =>
+                              this._reloadPlaylist('random-pref')}"
+                          >
+                            <span class="icon">${redoIcon}</span>
+                          </button>`
+                        : nothing}
+                    </app-link>
                   </li>
                 `
               : nothing}
             <li>
-              <a
-                href="#"
-                title=""
-                @click="${(e: Event) => this._startArtistRadio(e)}"
-                >Artist radio</a
-              >
+              <app-link href="/playlists/radio" flex>Artist radio</app-link>
             </li>
           </ul>
           <select

@@ -19,3 +19,6 @@
 /_site/
 /dist/
 /out-tsc/
+
+## env
+.env

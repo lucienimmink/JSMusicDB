@@ -1,4 +1,4 @@
-import { get, set } from 'idb-keyval';
+import { del, get, set } from 'idb-keyval';
 import { Encryption } from './encryption';
 import { getScrobbleCache, setScrobbleCache, getSettings } from './settings';
 
@@ -6,6 +6,7 @@ export const LASTFMAPIKEY = process.env.LASTFM_APIKEY!;
 export const LASTFMSECRET = process.env.LASTFM_SECRET!;
 const SK = 'sk';
 const USERNAME = 'lastfm-username';
+export const RESET_LASTFM = 'reset-lastfm';
 
 const encryption = new Encryption();
 
@@ -116,6 +117,12 @@ export const getLastFMUserName = () => {
 };
 export const setLastFMUserName = (username: string) => {
   return set(USERNAME, username);
+};
+
+export const removeLastFMLink = async () => {
+  await del(SK);
+  await del(USERNAME);
+  return true;
 };
 
 // protected method

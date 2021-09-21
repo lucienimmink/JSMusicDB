@@ -39,18 +39,30 @@ export default css`
     border-top: 0;
     height: auto;
   }
-  .playlists li a {
+  .playlists li app-link {
     display: flex;
     color: var(--primary, #006ecd);
-    transition: color 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
     text-decoration: none;
     align-items: center;
     height: 60px;
     width: 100%;
     padding-left: 1rem;
   }
-  .playlists li a:hover {
+  .playlists li app-link:hover {
     background: var(--background3);
+  }
+  .playlists li .btn-refresh {
+    opacity: 0;
+    position: absolute;
+    right: 10px;
+    margin-top: -5px;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+  }
+  .playlists li app-link:hover .btn-refresh {
+    opacity: 1;
+    pointer-events: all;
   }
   .playlist li {
     display: flex;

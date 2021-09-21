@@ -8,12 +8,17 @@ import {
   getSettings,
   TOGGLE_SETTING,
 } from '../../utils/settings';
-import { getLastFMUserName } from '../../utils/lastfm';
+import {
+  getLastFMUserName,
+  removeLastFMLink,
+  RESET_LASTFM,
+} from '../../utils/lastfm';
 import {
   DONE_RELOADING,
   getJwt,
   getRescan,
   getServer,
+  getVersion,
   IS_RELOADING,
   resetServer,
   RESET_SERVER,
@@ -31,6 +36,8 @@ import { trashIcon } from '../icons/trash';
 import { syncIcon } from '../icons/sync';
 import { clear, createStore } from 'idb-keyval';
 import { cloudDownloadIcon } from '../icons/cloudDownload';
+import { unlinkIcon } from '../icons/unlink';
+import { disconnectIcon } from '../icons/disconnect';
 
 @customElement('settings-nav')
 export class LetterNav extends LitElement {
@@ -64,6 +71,9 @@ export class LetterNav extends LitElement {
       }
       this.lastFMUsername = await getLastFMUserName();
       this.mp3stream = await getServer();
+      if (this.mp3stream && this.stats) {
+        this.stats.mp3stream = await getVersion(this.mp3stream);
+      }
       this.requestUpdate();
     });
   }
@@ -121,7 +131,6 @@ export class LetterNav extends LitElement {
     return formatter.format(date);
   }
   async _toggle(prop: string, e: Event, value: any = null) {
-    e.preventDefault();
     const current = this.settings ? this.settings[prop] : false;
     if (!value) {
       value = !current;
@@ -162,6 +171,12 @@ export class LetterNav extends LitElement {
     EventBus.emit(RESET_SERVER, this);
     this.requestUpdate();
   }
+  async _resetLastfM() {
+    await removeLastFMLink();
+    this.lastFMUsername = null;
+    EventBus.emit(RESET_LASTFM, this);
+    this.requestUpdate();
+  }
   _clearImageCache() {
     clear(createStore('album-art-db', 'album-art-store'));
   }
@@ -170,12 +185,21 @@ export class LetterNav extends LitElement {
       <div class="container">
         <h2 class="header">User information</h2>
         <p>
-          Connected to last.fm:
-          ${this.lastFMUsername
-            ? this.lastFMUsername !== 'mdb-skipped'
-              ? this.lastFMUsername
-              : 'false'
+          Linked to last.fm:
+          ${this?.lastFMUsername !== 'mdb-skipped'
+            ? this.lastFMUsername
             : 'false'}
+          ${this?.lastFMUsername
+            ? html`<button
+                class="btn btn-secondary btn-small"
+                @click=${this._resetLastfM}
+              >
+                <span class="icon">${unlinkIcon}</span> ${this
+                  ?.lastFMUsername !== 'mdb-skipped'
+                  ? html`un`
+                  : html`re`}link
+              </button>`
+            : nothing}
         </p>
         <p>
           Connected to Node-mp3stream:
@@ -185,7 +209,7 @@ export class LetterNav extends LitElement {
                 class="btn btn-secondary btn-small"
                 @click=${this._resetmp3Stream}
               >
-                <span class="icon">${trashIcon}</span> disconnect
+                <span class="icon">${disconnectIcon}</span> disconnect
               </button>`
             : nothing}
         </p>
@@ -223,113 +247,140 @@ export class LetterNav extends LitElement {
           </button>
         </p>
       </div>
-
       <div class="container">
         <h2 class="header">Player settings</h2>
         <p>
-          Save playliststate:
-          <button
-            @click="${(e: Event) => this._toggle('playliststate', e)}"
-            class="switch ${this.settings?.playliststate ? 'on' : 'off'}"
-          ></button>
+          <label>
+            <input
+              type="checkbox"
+              ?checked=${this.settings?.playliststate}
+              @click="${(e: Event) => this._toggle('playliststate', e)}"
+            />
+            Save playliststate
+          </label>
         </p>
         <p>
-          Manual scrobbling:
-          <button
-            @click="${(e: Event) => this._toggle('manualScrobble', e)}"
-            class="switch ${this.settings?.manualScrobble ? 'on' : 'off'}"
-          ></button>
+          <label>
+            <input
+              type="checkbox"
+              @click="${(e: Event) => this._toggle('manualScrobble', e)}"
+              ?checked=${this.settings?.manualScrobble}
+            />
+            Manual scrobbling
+          </label>
         </p>
         <p>
-          Continues play:
-          <button
-            @click="${(e: Event) => this._toggle('continues', e)}"
-            class="switch ${this.settings?.continues ? 'on' : 'off'}"
-          ></button>
+          <label>
+            <input
+              type="checkbox"
+              @click="${(e: Event) => this._toggle('continues', e)}"
+              ?checked=${this.settings?.continues}
+            />
+            Continues play
+          </label>
         </p>
         <p>
-          Apply ReplayGain:
-          <button
-            @click="${(e: Event) => this._toggle('replaygain', e)}"
-            class="switch ${this.settings?.replaygain ? 'on' : 'off'}"
-          ></button>
+          <label>
+            <input
+              type="checkbox"
+              @click="${(e: Event) => this._toggle('replaygain', e)}"
+              ?checked=${this.settings?.replaygain}
+            />
+            Apply ReplayGain
+          </label>
         </p>
       </div>
 
       <div class="container">
-        <h2 class="header">Interface settings</h2>
-        <p>
-          Dynamic accent colour:
-          <button
-            @click="${(e: Event) => this._toggle('dynamicTheme', e)}"
-            class="switch ${this.settings?.dynamicTheme ? 'on' : 'off'}"
-          ></button>
-        </p>
+        <h2 class="header">Theme</h2>
         <p class="radio-group">
-          <label class="radio-label"
-            ><button
+          <label>
+            <input
+              type="radio"
               @click="${(e: Event) => this._toggle('theme', e, 'light')}"
-              class="radio ${this.settings?.theme === 'light' ? 'on' : 'off'}"
-            ></button>
-            <span>Light theme</span>
+              .checked=${this.settings?.theme === 'light'}
+            />
+            Light theme
           </label>
-          <br />
-          <label class="radio-label"
-            ><button
+          <label>
+            <input
+              type="radio"
               @click="${(e: Event) => this._toggle('theme', e, 'dark')}"
-              class="radio ${this.settings?.theme === 'dark' ? 'on' : 'off'}"
-            ></button>
-            <span>Dark theme</span>
+              .checked=${this.settings?.theme === 'dark'}
+            />
+            Dark theme
           </label>
-          <br />
-          <label class="radio-label"
-            ><button
+          <label>
+            <input
+              type="radio"
               @click="${(e: Event) => this._toggle('theme', e, 'system')}"
-              class="radio ${this.settings?.theme === 'system' ? 'on' : 'off'}"
-            ></button>
-            <span>System theme</span>
+              .checked=${this.settings?.theme === 'system'}
+            />
+            System theme
           </label>
-          <br />
-          <label class="radio-label"
-            ><button
+          <label>
+            <input
+              type="radio"
               @click="${(e: Event) => this._toggle('theme', e, 'auto')}"
-              class="radio ${this.settings?.theme === 'auto' ? 'on' : 'off'}"
-            ></button>
-            <span>Dynamic theme</span>
+              .checked=${this.settings?.theme === 'auto'}
+            />
+            Dynamic theme&nbsp;
             <span class="small muted"
               >Dark mode between
               ${this._formatDate(this.settings?.start, '21:00:00')} and
               ${this._formatDate(this.settings?.stop, '09:00:00')}</span
             >
           </label>
-          <br />
         </p>
         ${this.settings?.theme === 'auto'
           ? html`
               <p>
-                Track location for more accurate theme switching:
-                <button
-                  @click="${(e: Event) => this._toggle('gps', e)}"
-                  class="switch ${this.settings?.gps ? 'on' : 'off'}"
-                ></button>
+                <label>
+                  <input
+                    type="checkbox"
+                    @click="${(e: Event) => this._toggle('gps', e)}"
+                    ?checked=${this.settings?.gps}
+                  />
+                  Track location for more accurate theme switching
+                </label>
               </p>
             `
           : nothing}
+      </div>
+
+      <div class="container">
+        <h2 class="header">Interface settings</h2>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+              @click="${(e: Event) => this._toggle('dynamicTheme', e)}"
+              ?checked=${this.settings?.dynamicTheme}
+            />
+            Dynamic accent colour
+          </label>
+        </p>
         <p class="md-up-flex">
-          Show visualisation on now-playing screen:
-          <button
-            @click="${(e: Event) => this._toggle('visual', e)}"
-            class="switch ${this.settings?.visual ? 'on' : 'off'}"
-          ></button>
+          <label>
+            <input
+              type="checkbox"
+              @click="${(e: Event) => this._toggle('visual', e)}"
+              ?checked=${this.settings?.visual}
+            />
+            Show visualisation on now-playing screen
+          </label>
         </p>
         ${this.settings?.visual
           ? html`
               <p class="md-up-flex">
-                Show smaller album-art on now-playing screen:
-                <button
-                  @click="${(e: Event) => this._toggle('smallArt', e)}"
-                  class="switch ${this.settings?.smallArt ? 'on' : 'off'}"
-                ></button>
+                <label>
+                  <input
+                    type="checkbox"
+                    @click="${(e: Event) => this._toggle('smallArt', e)}"
+                    ?checked=${this.settings?.smallArt}
+                  />
+                  Show smaller album-art on now-playing screen
+                </label>
               </p>
             `
           : nothing}
