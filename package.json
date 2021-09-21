@@ -76,7 +76,7 @@
     "fast-average-color": "^6.4.2",
     "fuse.js": "^6.4.6",
     "idb-keyval": "^6.0.0",
-    "lit-element": "2.5.1",
+    "lit-element": "3.0.0",
     "lit-html": "1.4.1",
     "lit-virtualizer": "0.4.2",
     "rollup-plugin-dotenv": "^0.3.0",
