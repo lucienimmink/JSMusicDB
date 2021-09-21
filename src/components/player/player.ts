@@ -2,7 +2,7 @@ declare const MediaMetadata: any;
 
 import { LitElement, customElement, html } from 'lit-element';
 import { global as EventBus } from '../../utils/EventBus';
-import { styleMap } from 'lit-html/directives/style-map';
+import { styleMap } from 'lit-html/directives/style-map.js';
 import {
   getCurrentPlaylist,
   setCurrentPlaylist,
