@@ -1,6 +1,6 @@
 # JSMusicDB
 
-A web standards based music database and player written using LIT-html, LIT-element and TypeScript. Using modern JavaScript to reduce the normal framework overhead JSMusicDB is less then 80KB while zipped.
+A web standards based music database and player written using Lit and TypeScript. Using modern JavaScript to reduce the normal framework overhead JSMusicDB is less then 80KB while zipped.
 
 ## Screenshots
 
