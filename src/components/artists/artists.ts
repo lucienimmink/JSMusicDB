@@ -1,6 +1,6 @@
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Layout1d } from '@lit-labs/virtualizer';
+import '@lit-labs/virtualizer';
 import './../app-link/app-link';
 import musicdb from '../musicdb';
 import headers from '../../styles/headers';
@@ -108,7 +108,6 @@ export class LetterNav extends LitElement {
             ? html` <lit-virtualizer
                 .scrollTarget=${window}
                 .items=${this.artists}
-                .layout=${Layout1d}
                 .renderItem=${(artist: any) => html`
                   ${artist.header
                     ? html`

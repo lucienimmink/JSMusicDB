@@ -1,6 +1,6 @@
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { Layout1d } from '@lit-labs/virtualizer';
+import '@lit-labs/virtualizer';
 import timeSpan from '../../utils/timespan';
 import {
   getCurrentPlaylist,
@@ -423,7 +423,6 @@ export class LetterNav extends LitElement {
                   <lit-virtualizer
                     .scrollTarget=${window}
                     .items=${this.playlist.tracks}
-                    .layout=${Layout1d}
                     .renderItem=${(track: any) => html`
                       <li
                         @click="${() => {
