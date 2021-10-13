@@ -1,6 +1,6 @@
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import 'lit-virtualizer';
+import '@lit-labs/virtualizer';
 import timeSpan from '../../utils/timespan';
 import {
   getCurrentPlaylist,

@@ -1,6 +1,6 @@
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import 'lit-virtualizer';
+import '@lit-labs/virtualizer';
 import '../app-link/app-link';
 import musicdb from '../musicdb';
 import headers from '../../styles/headers';
@@ -28,8 +28,9 @@ export class LetterNav extends LitElement {
     this.showJumpList = false;
     const scroller = this.shadowRoot?.querySelector('lit-virtualizer');
     const index = this.albums.findIndex(letter => letter.id === l);
+    const offsetted = index === 0 ? 0 : index - 1;
     // @ts-ignore
-    scroller.scrollToIndex(index, 'start');
+    scroller.scrollToIndex(offsetted, 'start');
     this.requestUpdate();
   };
   attributeChangedCallback(name: any, oldval: any, newval: any) {
@@ -108,53 +109,55 @@ export class LetterNav extends LitElement {
       </ul>
       <div class="container">
         <ol class="virtual-scroll">
-          <lit-virtualizer
-            .scrollTarget=${window}
-            .items=${this.albums}
-            .renderItem=${(album: any) => html`
-              ${album.header
-                ? html`
-                    <li
-                      class="header"
-                      @click="${() => {
-                        this.showJumpList = true;
-                        this.requestUpdate();
-                      }}"
-                    >
-                      ${album.header}
-                      <span class="small muted">(${album.albums})</span>
-                    </li>
-                  `
-                : html`
-                    <li>
-                      <app-link
-                        flex
-                        text
-                        href="/letter/${album.artist.letter
-                          .escapedLetter}/artist/${album.artist
-                          .escapedName}/album/${album.escapedName}"
-                      >
-                        <album-art
-                          artist="${album.artist.albumArtist ||
-                          album.artist.name}"
-                          album="${album.name}"
-                        ></album-art>
-                        <div class="details">
-                          <span class="album">${album.name}</span>
-                          ${album.year
-                            ? html`
-                                <span class="small muted"
-                                  >Year: ${album.year}</span
-                                >
-                              `
-                            : nothing}
-                        </div>
-                      </app-link>
-                    </li>
-                  `}
-            `}
-          >
-          </lit-virtualizer>
+          ${this.albums.length > 0
+            ? html` <lit-virtualizer
+                .scrollTarget=${window}
+                .items=${this.albums}
+                .renderItem=${(album: any) => html`
+                  ${album?.header
+                    ? html`
+                        <li
+                          class="header"
+                          @click="${() => {
+                            this.showJumpList = true;
+                            this.requestUpdate();
+                          }}"
+                        >
+                          ${album.header}
+                          <span class="small muted">(${album.albums})</span>
+                        </li>
+                      `
+                    : html`
+                        <li>
+                          <app-link
+                            flex
+                            text
+                            href="/letter/${album.artist.letter
+                              .escapedLetter}/artist/${album.artist
+                              .escapedName}/album/${album.escapedName}"
+                          >
+                            <album-art
+                              artist="${album.artist.albumArtist ||
+                              album.artist.name}"
+                              album="${album.name}"
+                            ></album-art>
+                            <div class="details">
+                              <span class="album">${album.name}</span>
+                              ${album.year
+                                ? html`
+                                    <span class="small muted"
+                                      >Year: ${album.year}</span
+                                    >
+                                  `
+                                : nothing}
+                            </div>
+                          </app-link>
+                        </li>
+                      `}
+                `}
+              >
+              </lit-virtualizer>`
+            : nothing}
         </ol>
       </div>
     `;
