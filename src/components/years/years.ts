@@ -109,7 +109,7 @@ export class LetterNav extends LitElement {
             .scrollTarget=${window}
             .items=${this.albums}
             .renderItem=${(album: any) => html`
-              ${album.header
+              ${album?.header
                 ? html`
                     <li
                       class="header"
