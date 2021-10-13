@@ -27,7 +27,7 @@
     "concurrently": "^6.2.2",
     "deepmerge": "^4.2.2",
     "dotenv": "^10.0.0",
-    "eslint": "^7.31.0",
+    "eslint": "^8.0.0",
     "eslint-config-prettier": "^8.3.0",
     "husky": "^7.0.2",
     "lint-staged": "^11.1.2",
