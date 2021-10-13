@@ -346,41 +346,21 @@ export class LetterNav extends LitElement {
               </p>
             `
           : nothing}
-      </div>
-
-      <div class="container">
-        <h2 class="header">Interface settings</h2>
-        <p>
-          <label>
-            <input
-              type="checkbox"
-              @click="${(e: Event) => this._toggle('dynamicTheme', e)}"
-              ?checked=${this.settings?.dynamicTheme}
-            />
-            Dynamic accent colour
-          </label>
-        </p>
         <p class="md-up-flex">
-          <label>
-            <input
-              type="checkbox"
-              @click="${(e: Event) => this._toggle('visual', e)}"
-              ?checked=${this.settings?.visual}
-            />
-            Show visualisation on now-playing screen
-          </label>
+          Show visualisation on now-playing screen:
+          <button
+            @click="${(e: Event) => this._toggle('visual', e)}"
+            class="switch ${this.settings?.visual ? 'on' : 'off'}"
+          ></button>
         </p>
         ${this.settings?.visual
           ? html`
               <p class="md-up-flex">
-                <label>
-                  <input
-                    type="checkbox"
-                    @click="${(e: Event) => this._toggle('smallArt', e)}"
-                    ?checked=${this.settings?.smallArt}
-                  />
-                  Show smaller album-art on now-playing screen
-                </label>
+                Show smaller album-art on now-playing screen:
+                <button
+                  @click="${(e: Event) => this._toggle('smallArt', e)}"
+                  class="switch ${this.settings?.smallArt ? 'on' : 'off'}"
+                ></button>
               </p>
             `
           : nothing}
