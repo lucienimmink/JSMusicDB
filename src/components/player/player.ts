@@ -1,6 +1,7 @@
 declare const MediaMetadata: any;
 
-import { LitElement, customElement, html } from 'lit-element';
+import { LitElement, html, nothing } from 'lit';
+import { customElement } from 'lit/decorators.js';
 import { global as EventBus } from '../../utils/EventBus';
 import { styleMap } from 'lit-html/directives/style-map.js';
 import {
@@ -50,7 +51,6 @@ import { heartIcon } from '../icons/heart';
 import progress from '../../styles/progress-bar';
 import controls from '../../styles/controls';
 import responsive from '../../styles/responsive';
-import { nothing } from 'lit-html';
 import {
   ACCENT_COLOR,
   addCustomCss,

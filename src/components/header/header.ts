@@ -1,9 +1,9 @@
-import { LitElement, customElement, html, property } from 'lit-element';
+import { LitElement, html, nothing } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 import './../app-link/app-link';
 import { barsIcon } from '../icons/bars';
 import musicdb from '../musicdb';
 import responsive from '../../styles/responsive';
-import { nothing } from 'lit-html';
 import {
   DONE_RELOADING,
   getJwt,

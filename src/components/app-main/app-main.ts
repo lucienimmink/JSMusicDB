@@ -1,5 +1,5 @@
-import { LitElement, html } from 'lit-element';
-import { outlet } from '@addasoft/lit-element-router';
+import { LitElement, html } from 'lit';
+import { outlet } from 'lit-element-router';
 
 @outlet
 class Main extends LitElement {

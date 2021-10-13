@@ -1,9 +1,9 @@
-import { LitElement, customElement, html, property } from 'lit-element';
+import { LitElement, html, nothing } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 import '../app-link/app-link';
 import musicdb from '../../components/musicdb';
 import smallMuted from '../../styles/small-muted';
 import panel from '../../styles/panel';
-import { nothing } from 'lit-html';
 import artist from '../../styles/artist';
 import { REFRESH } from '../../utils/musicdb';
 import { global as EventBus } from '../../utils/EventBus';

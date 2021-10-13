@@ -1,5 +1,6 @@
-import { LitElement, customElement, html, property } from 'lit-element';
-import { styleMap } from 'lit-html/directives/style-map.js';
+import { LitElement, html } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { styleMap } from 'lit/directives/style-map.js';
 
 import {
   getCurrentPlaylist,

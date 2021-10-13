@@ -1,5 +1,5 @@
-import { LitElement, customElement, html } from 'lit-element';
-import { nothing } from 'lit-html';
+import { LitElement, html, nothing } from 'lit';
+import { customElement } from 'lit/decorators.js';
 import { getRecentlyListened, getLastFMUserName } from '../../utils/lastfm';
 import musicdb from '../musicdb';
 import headers from '../../styles/headers';

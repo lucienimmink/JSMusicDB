@@ -1,5 +1,5 @@
-import { LitElement, customElement, html, property } from 'lit-element';
-import { nothing } from 'lit-html';
+import { LitElement, html, nothing } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 import 'lit-virtualizer';
 import timeSpan from '../../utils/timespan';
 import {
