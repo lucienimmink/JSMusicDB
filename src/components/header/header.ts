@@ -1,9 +1,9 @@
-import { LitElement, customElement, html, property } from 'lit-element';
+import { LitElement, html, nothing } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 import './../app-link/app-link';
 import { barsIcon } from '../icons/bars';
 import musicdb from '../musicdb';
 import responsive from '../../styles/responsive';
-import { nothing } from 'lit-html';
 import {
   DONE_RELOADING,
   getJwt,
@@ -14,6 +14,7 @@ import {
 } from '../../utils/node-mp3stream';
 import header from '../../styles/header';
 import { global as EventBus } from '../../utils/EventBus';
+import { CHANGE_TITLE } from '../../utils/player';
 
 @customElement('main-header')
 export class Header extends LitElement {
@@ -27,6 +28,8 @@ export class Header extends LitElement {
 
   isReloading: boolean;
   progress: string;
+
+  titleData: any;
 
   static get styles() {
     return [responsive, header];
@@ -46,10 +49,36 @@ export class Header extends LitElement {
         });
       }
     });
+    this._listen();
   }
   _toggleMenu = (e: Event) => {
     e.preventDefault();
     EventBus.emit('toggle-menu', this);
+  };
+  _listen = () => {
+    EventBus.on(
+      CHANGE_TITLE,
+      (target: any, data: any) => {
+        this._changeTitle(data);
+      },
+      this
+    );
+  };
+  _changeTitle = (data: any = {}) => {
+    const dynamic = [];
+    if (this.isReloading) {
+      dynamic.push(this.progress);
+    }
+    if (data?.title) {
+      this.titleData = data;
+    }
+    if (this.titleData?.title) {
+      dynamic.push(`${this.titleData.title} by ${this.titleData.artist}`);
+    }
+    if (dynamic.length > 0) {
+      dynamic.push(''); // for the trailing bullit
+    }
+    document.title = `${dynamic.join(' • ')}JSMusicDB`;
   };
   _poll = ({ server, jwt }: { server: any; jwt: any }) => {
     getProgress(server, jwt).then(
@@ -57,12 +86,14 @@ export class Header extends LitElement {
         if (status !== 'ready') {
           this.isReloading = true;
           this.progress = progress ? `${progress}%` : 'scan';
+          this._changeTitle();
           EventBus.emit(IS_RELOADING, this);
           this.requestUpdate();
         } else {
           if (this.isReloading === true) {
             EventBus.emit(DONE_RELOADING, this);
             this.isReloading = false;
+            this._changeTitle();
             this.requestUpdate();
           }
         }

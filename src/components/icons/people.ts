@@ -1,4 +1,4 @@
-import { html } from 'lit-html';
+import { html } from 'lit';
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-256 -256 1200 1024">
 <path

@@ -1,4 +1,5 @@
-import { LitElement, customElement, html, css } from 'lit-element';
+import { LitElement, html, css } from 'lit';
+import { customElement } from 'lit/decorators.js';
 import { createStore, get, set } from 'idb-keyval';
 import { fetchArtForArtist, fetchArtForAlbum } from './fetchArt';
 import { defaultAlbum, defaultArtist, defaultPixel } from './defaultart';

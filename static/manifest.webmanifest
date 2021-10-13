@@ -45,12 +45,32 @@
   "categories": ["entertainment", "music"],
   "screenshots": [
     {
-      "src": "screenshot-1.webp",
+      "src": "/public/screenshot-1.webp",
       "sizes": "1920x1040",
       "type": "image/webp"
     },
     {
-      "src": "screenshot-2.webp",
+      "src": "/public/screenshot-2.webp",
+      "sizes": "1920x1040",
+      "type": "image/webp"
+    },
+    {
+      "src": "/public/screenshot-3.webp",
+      "sizes": "1920x1040",
+      "type": "image/webp"
+    },
+    {
+      "src": "/public/screenshot-4.webp",
+      "sizes": "1920x1040",
+      "type": "image/webp"
+    },
+    {
+      "src": "/public/screenshot-5.webp",
+      "sizes": "1920x1040",
+      "type": "image/webp"
+    },
+    {
+      "src": "/public/screenshot-6.webp",
       "sizes": "1920x1040",
       "type": "image/webp"
     }

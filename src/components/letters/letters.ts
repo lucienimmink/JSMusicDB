@@ -1,4 +1,5 @@
-import { LitElement, customElement, html, property } from 'lit-element';
+import { LitElement, html } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 import './../app-link/app-link';
 import musicdb from '../musicdb';
 import jumplist from '../../styles/jumplist';

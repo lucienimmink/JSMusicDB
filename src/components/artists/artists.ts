@@ -1,5 +1,6 @@
-import { LitElement, customElement, html, property } from 'lit-element';
-import 'lit-virtualizer';
+import { LitElement, html, nothing } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import '@lit-labs/virtualizer';
 import './../app-link/app-link';
 import musicdb from '../musicdb';
 import headers from '../../styles/headers';
@@ -26,9 +27,10 @@ export class LetterNav extends LitElement {
     this.showJumpList = false;
     const scroller = this.shadowRoot?.querySelector('lit-virtualizer');
     const index = this.artists.findIndex(letter => letter.header === l);
-    this.requestUpdate();
+    const offsetted = index === 0 ? 0 : index - 1;
     // @ts-ignore
-    scroller.scrollToIndex(index, 'start');
+    scroller.scrollToIndex(offsetted, 'start');
+    this.requestUpdate();
   };
   attributeChangedCallback(name: any, oldval: any, newval: any) {
     if (name === 'activeroute' && newval === 'artists') {
@@ -103,48 +105,50 @@ export class LetterNav extends LitElement {
       </ul>
       <div class="container">
         <ol class="virtual-scroll">
-          <lit-virtualizer
-            .scrollTarget=${window}
-            .items=${this.artists}
-            .renderItem=${(artist: any) => html`
-              ${artist.header
-                ? html`
-                    <li
-                      class="header"
-                      @click="${() => {
-                        this.showJumpList = true;
-                        this.requestUpdate();
-                      }}"
-                    >
-                      ${artist.header}
-                      <span class="small muted">(${artist.artists})</span>
-                    </li>
-                  `
-                : html`
-                    <li>
-                      <app-link
-                        flex
-                        text
-                        href="/letter/${artist.letter
-                          .escapedLetter}/artist/${artist.escapedName}"
-                      >
-                        <album-art
-                          artist="${artist.albumArtist || artist.name}"
-                        ></album-art>
-                        <div class="details">
-                          <span class="artist"
-                            >${artist.albumArtist || artist.name}</span
+          ${this.artists.length > 0
+            ? html` <lit-virtualizer
+                .scrollTarget=${window}
+                .items=${this.artists}
+                .renderItem=${(artist: any) => html`
+                  ${artist.header
+                    ? html`
+                        <li
+                          class="header"
+                          @click="${() => {
+                            this.showJumpList = true;
+                            this.requestUpdate();
+                          }}"
+                        >
+                          ${artist.header}
+                          <span class="small muted">(${artist.artists})</span>
+                        </li>
+                      `
+                    : html`
+                        <li>
+                          <app-link
+                            flex
+                            text
+                            href="/letter/${artist.letter
+                              .escapedLetter}/artist/${artist.escapedName}"
                           >
-                          <span class="small muted"
-                            >Albums: ${artist.albums.length}</span
-                          >
-                        </div>
-                      </app-link>
-                    </li>
-                  `}
-            `}
-          >
-          </lit-virtualizer>
+                            <album-art
+                              artist="${artist.albumArtist || artist.name}"
+                            ></album-art>
+                            <div class="details">
+                              <span class="artist"
+                                >${artist.albumArtist || artist.name}</span
+                              >
+                              <span class="small muted"
+                                >Albums: ${artist.albums.length}</span
+                              >
+                            </div>
+                          </app-link>
+                        </li>
+                      `}
+                `}
+              >
+              </lit-virtualizer>`
+            : nothing}
         </ol>
       </div>
     `;

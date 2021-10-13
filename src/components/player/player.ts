@@ -1,8 +1,9 @@
 declare const MediaMetadata: any;
 
-import { LitElement, customElement, html } from 'lit-element';
+import { LitElement, html, nothing } from 'lit';
+import { customElement } from 'lit/decorators.js';
+import { styleMap } from 'lit/directives/style-map.js';
 import { global as EventBus } from '../../utils/EventBus';
-import { styleMap } from 'lit-html/directives/style-map.js';
 import {
   getCurrentPlaylist,
   setCurrentPlaylist,
@@ -10,6 +11,7 @@ import {
   getNextPlaylist,
   getCurrentTime,
   shuffle,
+  CHANGE_TITLE,
   START_CURRENT_PLAYLIST,
   STOP_PLAYER,
   LOAD_PLAYLIST,
@@ -50,7 +52,6 @@ import { heartIcon } from '../icons/heart';
 import progress from '../../styles/progress-bar';
 import controls from '../../styles/controls';
 import responsive from '../../styles/responsive';
-import { nothing } from 'lit-html';
 import {
   ACCENT_COLOR,
   addCustomCss,
@@ -209,16 +210,6 @@ export class Album extends LitElement {
       player.src = `${server}/listen?path=${encodeURIComponent(
         this.track.source.url
       )}&jwt=${jwt}`;
-      /*
-      player.volume = 0.89; // base volume
-      if (this.gain) {
-        let gain = this.gain / 100;
-        if (gain > 0.11) {
-          gain = 0.11;
-        }
-        player.volume = 0.89 + gain;
-      }
-      */
       player.play();
       player.currentTime = startPosition;
       await setCurrentPlaylist(this.playlist);
@@ -303,7 +294,10 @@ export class Album extends LitElement {
     if ('mediaSession' in navigator) {
       (navigator as any).mediaSession.playbackState = 'playing';
     }
-    document.title = `${this.track.title} by ${this.track.trackArtist} - JSMusicDB`;
+    EventBus.emit(CHANGE_TITLE, this, {
+      title: this.track.title,
+      artist: this.track.trackArtist,
+    });
     animateCSS(this.shadowRoot?.querySelectorAll('h4,h5'), 'slideInUp');
     this.requestUpdate();
   }
@@ -318,7 +312,7 @@ export class Album extends LitElement {
     if ('mediaSession' in navigator) {
       (navigator as any).mediaSession.playbackState = 'paused';
     }
-    document.title = `JSMusicDB`;
+    EventBus.emit(CHANGE_TITLE, this, { title: null, artist: null });
     this.requestUpdate();
   }
   _onprogress() {
@@ -387,7 +381,7 @@ export class Album extends LitElement {
         this.requestUpdate();
         return;
       }
-      document.title = `JSMusicDB`;
+      EventBus.emit(CHANGE_TITLE, this, { title: null, artist: null });
       this._stop();
       return;
     }

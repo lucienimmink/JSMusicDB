@@ -27,6 +27,7 @@ export const PREVIOUS_TRACK = 'previous-track';
 export const NEXT_TRACK = 'next-track';
 export const SET_POSITION = 'set-position';
 export const IS_SHUFFLED = 'is-shuffled';
+export const CHANGE_TITLE = 'change-title';
 
 export const getCurrentPlaylist = () => {
   return get(CURRENT_PLAYLIST);

@@ -1,5 +1,6 @@
-import { LitElement, customElement, html, property } from 'lit-element';
-import 'lit-virtualizer';
+import { LitElement, html } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import '@lit-labs/virtualizer';
 import '../app-link/app-link';
 import musicdb from '../musicdb';
 import headers from '../../styles/headers';
@@ -27,9 +28,10 @@ export class LetterNav extends LitElement {
     this.showJumpList = false;
     const scroller = this.shadowRoot?.querySelector('lit-virtualizer');
     const index = this.albums.findIndex(letter => letter.header === y);
-    this.requestUpdate();
+    const offsetted = index === 0 ? 0 : index - 1;
     // @ts-ignore
-    scroller.scrollToIndex(index, 'start');
+    scroller.scrollToIndex(offsetted, 'start');
+    this.requestUpdate();
   };
   attributeChangedCallback(name: any, oldval: any, newval: any) {
     if (name === 'activeroute' && newval === 'years') {
@@ -107,7 +109,7 @@ export class LetterNav extends LitElement {
             .scrollTarget=${window}
             .items=${this.albums}
             .renderItem=${(album: any) => html`
-              ${album.header
+              ${album?.header
                 ? html`
                     <li
                       class="header"

@@ -1,5 +1,5 @@
-import { LitElement, customElement, html, property } from 'lit-element';
-import { nothing } from 'lit-html';
+import { LitElement, html, nothing } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 import { navigator } from '@addasoft/lit-element-router';
 
 import './../app-link/app-link';
