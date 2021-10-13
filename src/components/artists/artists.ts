@@ -27,9 +27,10 @@ export class LetterNav extends LitElement {
     this.showJumpList = false;
     const scroller = this.shadowRoot?.querySelector('lit-virtualizer');
     const index = this.artists.findIndex(letter => letter.header === l);
-    this.requestUpdate();
+    const offsetted = index === 0 ? 0 : index - 1;
     // @ts-ignore
-    scroller.scrollToIndex(index, 'start');
+    scroller.scrollToIndex(offsetted, 'start');
+    this.requestUpdate();
   };
   attributeChangedCallback(name: any, oldval: any, newval: any) {
     if (name === 'activeroute' && newval === 'artists') {
