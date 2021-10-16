@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@open-wc/building-rollup": "^1.10.0",
-    "@open-wc/eslint-config": "^4.3.0",
+    "@open-wc/eslint-config": "^5.0.0",
     "@rollup/plugin-replace": "^3.0.0",
     "@types/node": "^14.17.25",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
