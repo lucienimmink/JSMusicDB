@@ -21,7 +21,7 @@ export class AlbumDetails extends LitElement {
   @property()
   album: string;
   albumDetails: any;
-  shrunk: boolean;
+  shrinkFactor: string;
   replayGainApplied: boolean;
 
   static get styles() {
@@ -40,7 +40,7 @@ export class AlbumDetails extends LitElement {
       tracks: [],
       type: 'dummy',
     };
-    this.shrunk = false;
+    this.shrinkFactor = '';
     this.replayGainApplied = false;
     getSettingByName('replaygain').then(async (replaygain: any) => {
       this.replayGainApplied = replaygain;
@@ -71,10 +71,21 @@ export class AlbumDetails extends LitElement {
   };
 
   _handleScroll = () => {
-    if (window.pageYOffset > 0) {
-      this.shrunk = true;
+    if (window.pageYOffset === 0) {
+      this.shrinkFactor = '';
+    } else if (window.pageYOffset > 150) {
+      this.shrinkFactor = `shrunk`;
     } else {
-      this.shrunk = false;
+      const scrollFactor = window.pageYOffset / 150;
+      if (scrollFactor < 0.25) {
+        this.shrinkFactor = `shrink-1`;
+      } else if (scrollFactor < 0.5) {
+        this.shrinkFactor = `shrink-2`;
+      } else if (scrollFactor < 0.75) {
+        this.shrinkFactor = `shrink-3`;
+      } else {
+        this.shrinkFactor = `shrunk`;
+      }
     }
     this.requestUpdate();
   };
@@ -115,7 +126,7 @@ export class AlbumDetails extends LitElement {
   }
   render() {
     return html`
-      <div class="jumbotron ${this.shrunk ? 'shrunk ' : ''}">
+      <div class="jumbotron ${this.shrinkFactor}">
         <div class="container ${this.albumDetails?.dummy ? 'dummy ' : ''}">
           <album-art
             artist="${this.albumDetails?.artist?.albumArtist ||

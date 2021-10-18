@@ -74,6 +74,27 @@ export default css`
       max-height: 175px;
       margin-left: -2rem;
     }
+    .shrink-1 album-art {
+      flex: 0 0 150px;
+      max-width: 150px;
+      width: 150px;
+      height: 150px;
+      max-height: 150px;
+    }
+    .shrink-2 album-art {
+      flex: 0 0 125px;
+      max-width: 125px;
+      width: 125px;
+      height: 125px;
+      max-height: 125px;
+    }
+    .shrink-3 album-art {
+      flex: 0 0 100px;
+      max-width: 100px;
+      width: 100px;
+      height: 100px;
+      max-height: 100px;
+    }
     .shrunk album-art {
       flex: 0 0 75px;
       max-width: 75px;
@@ -96,20 +117,67 @@ export default css`
       transition: all 0.1s ease-in-out;
     }
     h4 {
+      transform-origin: center top;
       font-size: 1.1rem;
+    }
+    .shrink-1 h2 {
+      font-size: 2.375rem;
+    }
+    .shrink-2 h2 {
+      font-size: 2.25rem;
+    }
+    .shrink-3 h2 {
+      font-size: 2.125rem;
     }
     .shrunk h2 {
       font-size: 2rem;
     }
+    .shrink-1 h3 {
+      font-size: 1.425rem;
+    }
+    .shrink-2 h3 {
+      font-size: 1.35rem;
+    }
+    .shrink-3 h3 {
+      font-size: 1.275rem;
+    }
     .shrunk h3 {
       font-size: 1.2rem;
+    }
+    .shrink-1 h3 .muted {
+      opacity: 0.15;
+    }
+    .shrink-2 h3 .muted {
+      opacity: 0.3;
+    }
+    .shrink-3 h3 .muted {
+      opacity: 0.45;
     }
     .shrunk h3 .muted {
       opacity: 0.6;
     }
+    .shrink-1 h4 {
+      height: 0;
+    }
+    .shrink-2 h4 {
+      height: 0;
+    }
+    .shrink-3 h4 {
+      height: 0;
+      opacity: 0.25;
+    }
     .shrunk h4 {
       height: 0;
       opacity: 0;
+    }
+    .shrink-1 {
+      padding: 1.75rem 2rem;
+    }
+    .shrink-2 {
+      padding: 1.5rem 2rem;
+    }
+    .shrink-3 {
+      padding: 1.25rem 2rem;
     }
     .shrunk {
       backdrop-filter: blur(2px);
