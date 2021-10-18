@@ -27,65 +27,69 @@ export class track extends LitElement {
     this.showAlbum = false;
     this._listen();
   }
+  _updatePlayer = (target: any, { current }: { current: any }) => {
+    this._update(current);
+  };
   _listen() {
-    EventBus.on(
-      UPDATE_PLAYER,
-      (target: any, { current }: { current: any }) => {
-        this._update(current);
-      },
-      this
-    );
+    EventBus.on(UPDATE_PLAYER, this._updatePlayer, this);
   }
   _update(track: any) {
-    if (track.id === this.track.id) {
+    if (track?.id === this.track?.id) {
       this.track = { ...track };
       this.requestUpdate();
       return;
     }
-    this.track.isPlaying = false;
-    this.track.isPaused = false;
-    this.requestUpdate();
+    if (this.track) {
+      this.track.isPlaying = false;
+      this.track.isPaused = false;
+      this.requestUpdate();
+    }
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    EventBus.off(UPDATE_PLAYER, this._updatePlayer, this);
   }
 
   render() {
     return html`
       <div
-        class="track ${this.track.isPlaying || this.track.isPaused
+        class="track ${this.track?.isPlaying || this.track?.isPaused
           ? 'active'
           : ''}"
       >
         ${this.type === 'album'
           ? html`
               <span class="num">
-                ${this.track.isPlaying || this.track.isPaused
+                ${this.track?.isPlaying || this.track?.isPaused
                   ? html`
-                      ${this.track.isPlaying
+                      ${this.track?.isPlaying
                         ? html`${playIcon}`
                         : html`${pauseIcon}`}
                     `
-                  : html` ${this.track.number} `}
+                  : html` ${this.track?.number} `}
               </span>
             `
           : nothing}
         <span class="title">
-          ${this.track.title} <br />
+          ${this.track?.title} <br />
           <span class="small muted"
-            >${this.track.trackArtist}${this.showAlbum
-              ? html` • ${this.track.album.name}`
+            >${this.track?.trackArtist}${this.showAlbum
+              ? html` • ${this.track?.album?.name}`
               : nothing}</span
           >
         </span>
         <span class="time">
-          ${timeSpan(this.track.duration)} <br />
-          ${this.track.position > 0 && this.type === 'album'
+          ${timeSpan(this.track?.duration)} <br />
+          ${this.track?.position > 0 && this.type === 'album'
             ? html`
                 <span class="small muted if-active"
-                  >${timeSpan(this.track.position)}</span
+                  >${timeSpan(this.track?.position)}</span
                 >
               `
             : nothing}
           ${this.type !== 'album'
-            ? html` <span class="small muted">${this.track.type}</span> `
+            ? html` <span class="small muted">${this.track?.type}</span> `
             : nothing}
         </span>
       </div>

@@ -339,7 +339,9 @@ export class Album extends LitElement {
       player.play();
     }
   }
-  _previous() {
+  async _previous() {
+    // always get current playlist from cache first before changing track
+    this.playlist = await getCurrentPlaylist();
     const index = this.playlist.index;
     let track = this.playlist.tracks[this.playlist.index];
     track.isPlaying = false;
@@ -362,6 +364,8 @@ export class Album extends LitElement {
     this._play(0, track);
   }
   async _next() {
+    // always get current playlist from cache first before changing track
+    this.playlist = await getCurrentPlaylist();
     const index = this.playlist.index;
     let track = this.playlist.tracks[this.playlist.index];
     if (track) {
