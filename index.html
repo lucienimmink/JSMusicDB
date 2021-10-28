@@ -54,11 +54,13 @@
       }
       html {
         overflow-x: hidden;
-        overflow-y: scroll;
+        overflow-y: auto;
         overscroll-behavior: none;
+        scrollbar-gutter: stable;
       }
       html.noscroll {
         overflow-y: hidden;
+        scrollbar-gutter: auto;
       }
       ::-webkit-scrollbar {
         width: 6px;
