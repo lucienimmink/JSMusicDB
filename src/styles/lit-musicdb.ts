@@ -7,7 +7,7 @@ export default css`
     padding: 0;
     position: fixed;
     top: 0;
-    right: 0;
+    width: calc(100vw - 6px);
     left: 0;
     background: var(--background, #f8f9fa);
     transition: background-color 0.5s ease-in-out;
@@ -16,7 +16,7 @@ export default css`
   letter-nav {
     position: fixed;
     left: 0;
-    right: 0;
+    width: calc(100vw - 6px);
     top: 50px;
     z-index: 2;
     display: none;
@@ -39,7 +39,7 @@ export default css`
     position: fixed;
     bottom: 0;
     left: 0;
-    right: 0;
+    width: calc(100vw - 6px);
     height: 81px;
     box-sizing: border-box;
     z-index: 2;
@@ -50,7 +50,7 @@ export default css`
     z-index: 101;
     position: fixed;
     left: 0;
-    right: 0;
+    width: calc(100vw - 6px);
     top: 0;
     bottom: 0;
     display: flex;
