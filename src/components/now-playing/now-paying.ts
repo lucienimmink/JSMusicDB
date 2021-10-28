@@ -142,7 +142,11 @@ export class NowPlaying extends LitElement {
     );
   }
   _visualize() {
-    if (this.hasCanvas && navigator.userAgent.indexOf('Mobi') === -1) {
+    if (
+      this.hasCanvas &&
+      navigator.userAgent.indexOf('Mobi') === -1 &&
+      this._player
+    ) {
       const audioCtx = new ((window as any).AudioContext ||
         (window as any).webkitAudioContext)();
       this._analyzer = audioCtx.createAnalyser();

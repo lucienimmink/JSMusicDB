@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import '@lit-labs/virtualizer';
 import '../app-link/app-link';
@@ -122,30 +122,32 @@ export class LetterNav extends LitElement {
                       <span class="small muted">(${album.albums})</span>
                     </li>
                   `
-                : html`
-                    <li>
-                      <app-link
-                        flex
-                        text
-                        href="/letter/${album.artist.letter
-                          .escapedLetter}/artist/${album.artist
-                          .escapedName}/album/${album.escapedName}"
-                      >
-                        <album-art
-                          artist="${album.artist.albumArtist ||
-                          album.artist.name}"
-                          album="${album.name}"
-                        ></album-art>
-                        <div class="details">
-                          <span class="artist">${album.name}</span>
-                          <span class="small muted"
-                            >${album.artist.albumArtist ||
-                            album.artist.name}</span
+                : html` ${album
+                    ? html`
+                        <li>
+                          <app-link
+                            flex
+                            text
+                            href="/letter/${album.artist.letter
+                              .escapedLetter}/artist/${album.artist
+                              .escapedName}/album/${album.escapedName}"
                           >
-                        </div>
-                      </app-link>
-                    </li>
-                  `}
+                            <album-art
+                              artist="${album.artist.albumArtist ||
+                              album.artist.name}"
+                              album="${album.name}"
+                            ></album-art>
+                            <div class="details">
+                              <span class="artist">${album.name}</span>
+                              <span class="small muted"
+                                >${album.artist.albumArtist ||
+                                album.artist.name}</span
+                              >
+                            </div>
+                          </app-link>
+                        </li>
+                      `
+                    : nothing}`}
             `}
           >
           </lit-virtualizer>

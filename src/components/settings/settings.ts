@@ -131,6 +131,7 @@ export class LetterNav extends LitElement {
     return formatter.format(date);
   }
   async _toggle(prop: string, e: Event, value: any = null) {
+    // e.preventDefault();
     const current = this.settings ? this.settings[prop] : false;
     if (!value) {
       value = !current;
@@ -186,32 +187,38 @@ export class LetterNav extends LitElement {
         <h2 class="header">User information</h2>
         <p>
           Linked to last.fm:
-          ${this?.lastFMUsername !== 'mdb-skipped'
-            ? this.lastFMUsername
-            : 'false'}
-          ${this?.lastFMUsername
-            ? html`<button
-                class="btn btn-secondary btn-small"
-                @click=${this._resetLastfM}
-              >
-                <span class="icon">${unlinkIcon}</span> ${this
-                  ?.lastFMUsername !== 'mdb-skipped'
-                  ? html`un`
-                  : html`re`}link
-              </button>`
-            : nothing}
+          ${
+            this?.lastFMUsername !== 'mdb-skipped'
+              ? this.lastFMUsername
+              : 'false'
+          }
+          ${
+            this?.lastFMUsername
+              ? html`<button
+                  class="btn btn-secondary btn-small"
+                  @click=${this._resetLastfM}
+                >
+                  <span class="icon">${unlinkIcon}</span> ${this
+                    ?.lastFMUsername !== 'mdb-skipped'
+                    ? html`un`
+                    : html`re`}link
+                </button>`
+              : nothing
+          }
         </p>
         <p>
           Connected to Node-mp3stream:
           ${this.mp3stream ? this.mp3stream : 'false'}
-          ${this.mp3stream
-            ? html`<button
-                class="btn btn-secondary btn-small"
-                @click=${this._resetmp3Stream}
-              >
-                <span class="icon">${disconnectIcon}</span> disconnect
-              </button>`
-            : nothing}
+          ${
+            this.mp3stream
+              ? html`<button
+                  class="btn btn-secondary btn-small"
+                  @click=${this._resetmp3Stream}
+                >
+                  <span class="icon">${disconnectIcon}</span> disconnect
+                </button>`
+              : nothing
+          }
         </p>
       </div>
       <div class="container">
@@ -293,6 +300,16 @@ export class LetterNav extends LitElement {
 
       <div class="container">
         <h2 class="header">Theme</h2>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+              @click="${(e: Event) => this._toggle('dynamicTheme', e)}"
+              ?checked=${this.settings?.dynamicTheme}
+            />
+            Dynamic accent colour
+          </label>
+        </p>
         <p class="radio-group">
           <label>
             <input
@@ -332,38 +349,52 @@ export class LetterNav extends LitElement {
             >
           </label>
         </p>
-        ${this.settings?.theme === 'auto'
-          ? html`
-              <p>
-                <label>
-                  <input
-                    type="checkbox"
-                    @click="${(e: Event) => this._toggle('gps', e)}"
-                    ?checked=${this.settings?.gps}
-                  />
-                  Track location for more accurate theme switching
-                </label>
-              </p>
-            `
-          : nothing}
+        ${
+          this.settings?.theme === 'auto'
+            ? html`
+                <p>
+                  <label>
+                    <input
+                      type="checkbox"
+                      @click="${(e: Event) => this._toggle('gps', e)}"
+                      ?checked=${this.settings?.gps}
+                    />
+                    Track location for more accurate theme switching
+                  </label>
+                </p>
+              `
+            : nothing
+        }
+        </div>
+        <div class="container">
+          <h2 class="header">Now playing screen</h2>
         <p class="md-up-flex">
-          Show visualisation on now-playing screen:
-          <button
-            @click="${(e: Event) => this._toggle('visual', e)}"
-            class="switch ${this.settings?.visual ? 'on' : 'off'}"
-          ></button>
+          <label>
+            <input
+              type="checkbox"
+              @click="${(e: Event) => this._toggle('visual', e)}"
+              .checked=${this.settings?.visual}
+            />
+            Show visualisation on now playing screen:
+          </label>
         </p>
-        ${this.settings?.visual
-          ? html`
-              <p class="md-up-flex">
-                Show smaller album-art on now-playing screen:
-                <button
-                  @click="${(e: Event) => this._toggle('smallArt', e)}"
-                  class="switch ${this.settings?.smallArt ? 'on' : 'off'}"
-                ></button>
-              </p>
-            `
-          : nothing}
+        <p class="md-up-flex">
+          ${
+            this.settings?.visual
+              ? html`
+                  <label>
+                    <input
+                      type="checkbox"
+                      @click="${(e: Event) => this._toggle('smallArt', e)}"
+                      .checked=${this.settings?.smallArt}
+                    />
+                    Show smaller album art on now playing screen:
+                  </label>
+                `
+              : nothing
+          }
+        </p>
+          </div>
       </div>
 
       <div class="container">
@@ -375,9 +406,11 @@ export class LetterNav extends LitElement {
         <p>Parsing time: ${this.stats?.parsingTime}ms</p>
         <p>Last updated: ${this.stats?.parsed}</p>
         ${this.showVersion ? html`<p>Build: [VI]{version}[/VI]</p>` : nothing}
-        ${this.stats?.mp3stream
-          ? html` <p>Node-mp3stream: ${this.stats?.mp3stream}</p> `
-          : nothing}
+        ${
+          this.stats?.mp3stream
+            ? html` <p>Node-mp3stream: ${this.stats?.mp3stream}</p> `
+            : nothing
+        }
       </div>
     `;
   }
