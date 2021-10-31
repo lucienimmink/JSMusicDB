@@ -12,7 +12,8 @@ export default css`
     width: 20px;
   }
   h1 {
-    background: var(--background3, #e9ecef);
+    backdrop-filter: blur(2px);
+    background: var(--background3-seethrough, #e9ecef);
     color: var(--text-color);
     margin: 0px;
     padding: 0px;
@@ -45,6 +46,9 @@ export default css`
   @media (min-width: 576px) {
     .md-up {
       display: inline;
+    }
+    h1 {
+      background: var(--background3, #e9ecef);
     }
   }
 `;

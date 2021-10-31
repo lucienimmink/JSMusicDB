@@ -9,8 +9,6 @@ export default css`
     top: 0;
     right: 0;
     left: 0;
-    background: var(--background, #f8f9fa);
-    transition: background-color 0.5s ease-in-out;
     z-index: 4;
   }
   letter-nav {
