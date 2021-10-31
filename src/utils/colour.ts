@@ -3,7 +3,7 @@ declare const window: any;
 //@ts-ignore
 import { tinycolor } from '@thebespokepixel/es-tinycolor';
 //@ts-ignore
-import FastAverageColor from 'fast-average-color/dist/index.es6';
+import FastAverageColor from 'fast-average-color';
 import { getSettingByName, setSetting } from './settings';
 
 export const ACCENT_COLOR = 'accent-color';
