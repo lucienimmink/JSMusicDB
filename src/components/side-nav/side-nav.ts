@@ -173,7 +173,11 @@ export class SideNav extends LitElement {
               >${yearsIcon} <span>Years</span></app-link
             >
           </li>
-          <li class="${this.route === 'playlists' ? 'active' : ''}">
+          <li
+            class="${this.route === 'playlists' || this.route === 'playlist'
+              ? 'active'
+              : ''}"
+          >
             <app-link href="/playlists" title="Playlists" menu flex
               >${playlistsIcon} <span>Playlists</span></app-link
             >
