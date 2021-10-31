@@ -424,41 +424,47 @@ export class LetterNav extends LitElement {
                     .scrollTarget=${window}
                     .items=${this.playlist.tracks}
                     .renderItem=${(track: any) => html`
-                      <li
-                        @click="${() => {
-                          this.setPlaylist(track);
-                        }}"
-                        class="${track.isPlaying || track.isPaused
-                          ? 'active'
-                          : ''}"
-                      >
-                        <span class="title">
-                          ${track.isPlaying || track.isPaused
-                            ? html`
-                                ${track.isPlaying
-                                  ? html`${playIcon}`
-                                  : html`${pauseIcon}`}
-                              `
-                            : nothing}
-                          ${track.title} <br /><span class="small muted"
-                            >${track.trackArtist} &bull;
-                            ${track.album.name}</span
-                          ></span
-                        >
-                        <span class="time"
-                          >${timeSpan(track.duration)} <br />
-                          ${track.position > 0 &&
-                          (track.isPlaying || track.isPaused)
-                            ? html`
-                                <span class="small muted"
-                                  >${timeSpan(track.position)}</span
-                                >
-                              `
-                            : html`
-                                <span class="small muted">${track.type}</span>
-                              `}</span
-                        >
-                      </li>
+                      ${track
+                        ? html`
+                            <li
+                              @click="${() => {
+                                this.setPlaylist(track);
+                              }}"
+                              class="${track.isPlaying || track.isPaused
+                                ? 'active'
+                                : ''}"
+                            >
+                              <span class="title">
+                                ${track.isPlaying || track.isPaused
+                                  ? html`
+                                      ${track.isPlaying
+                                        ? html`${playIcon}`
+                                        : html`${pauseIcon}`}
+                                    `
+                                  : nothing}
+                                ${track.title} <br /><span class="small muted"
+                                  >${track.trackArtist} &bull;
+                                  ${track.album.name}</span
+                                ></span
+                              >
+                              <span class="time"
+                                >${timeSpan(track.duration)} <br />
+                                ${track.position > 0 &&
+                                (track.isPlaying || track.isPaused)
+                                  ? html`
+                                      <span class="small muted"
+                                        >${timeSpan(track.position)}</span
+                                      >
+                                    `
+                                  : html`
+                                      <span class="small muted"
+                                        >${track.type}</span
+                                      >
+                                    `}</span
+                              >
+                            </li>
+                          `
+                        : nothing}
                     `}
                   >
                   </lit-virtualizer>
