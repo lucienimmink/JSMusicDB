@@ -79,7 +79,7 @@
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@thebespokepixel/es-tinycolor": "^2.1.1",
     "diacritics-normalizr": "^1.0.3",
-    "fast-average-color": "^6.4.2",
+    "fast-average-color": "^7.0.0",
     "fuse.js": "^6.4.6",
     "idb-keyval": "^6.0.3",
     "lit": "^2.0.2",
