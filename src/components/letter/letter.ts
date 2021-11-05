@@ -5,6 +5,8 @@ import musicdb from '../../components/musicdb';
 import smallMuted from '../../styles/small-muted';
 import panel from '../../styles/panel';
 import letter from '../../styles/letter';
+import { global as EventBus } from '../../utils/EventBus';
+import { timeStamp } from 'console';
 
 @customElement('artists-in-letter')
 export class Letter extends LitElement {
@@ -19,12 +21,6 @@ export class Letter extends LitElement {
     this.letter = '';
     this.artists = [];
   }
-  attributeChangedCallback(name: any, oldval: any, newval: any) {
-    if (name === 'letter') {
-      this.getArtists(newval);
-    }
-    super.attributeChangedCallback(name, oldval, newval);
-  }
   getArtists(l = this.letter) {
     l = decodeURIComponent(l);
     musicdb
@@ -37,6 +33,12 @@ export class Letter extends LitElement {
       .catch((error: any) => {
         console.log(error);
       });
+  }
+  attributeChangedCallback(name: string, oldvalue: string, newvalue: string) {
+    if (name === 'letter') {
+      this.getArtists(newvalue);
+    }
+    super.attributeChangedCallback(name, oldvalue, newvalue);
   }
   render() {
     return html`

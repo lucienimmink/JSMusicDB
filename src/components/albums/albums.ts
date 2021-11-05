@@ -58,14 +58,13 @@ export class LetterNav extends LitElement {
         console.log(error);
       });
   };
-  _listen() {
-    EventBus.on(
-      REFRESH,
-      () => {
-        this._getAlbums();
-      },
-      this
-    );
+  connectedCallback() {
+    super.connectedCallback();
+    EventBus.on(REFRESH, this._getAlbums(), this);
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    EventBus.off(REFRESH, this._getAlbums(), this);
   }
   constructor() {
     super();
@@ -74,7 +73,6 @@ export class LetterNav extends LitElement {
     this.showJumpList = false;
     this.activeroute = '';
     this.hasVisiblePlayer = false;
-    this._listen();
     this._getAlbums();
   }
   render() {

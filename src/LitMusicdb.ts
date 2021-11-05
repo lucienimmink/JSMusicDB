@@ -271,7 +271,6 @@ export class LitMusicdb extends LitElement {
     document.querySelector('html')?.classList.remove('noscroll');
     if (this.route !== 'playlist')
       await animateCSS(this.shadowRoot?.querySelector('app-main'), 'slideInUp');
-    // console.log(route, params, query);
   }
   _resetServer() {
     this.hasToken = false;
@@ -309,58 +308,47 @@ export class LitMusicdb extends LitElement {
                 </div>
                 <div route="letter">
                   <artists-in-letter
-                    letter="${this.params.letter}"
+                    letter="${this.params?.letter}"
                   ></artists-in-letter>
                 </div>
                 <div route="artists">
                   <artists-nav
-                    activeroute="${this.route}"
                     .hasVisiblePlayer=${this.showPlayer}
                   ></artists-nav>
                 </div>
                 <div route="albums">
-                  <albums-nav
-                    activeroute="${this.route}"
-                    .hasVisiblePlayer=${this.showPlayer}
-                  ></albums-nav>
+                  <albums-nav></albums-nav>
                 </div>
                 <div route="years">
-                  <years-nav
-                    activeroute="${this.route}"
-                    .hasVisiblePlayer=${this.showPlayer}
-                  ></years-nav>
+                  <years-nav .hasVisiblePlayer=${this.showPlayer}></years-nav>
                 </div>
                 <div route="playlists">
-                  <playlists-nav activeroute="${this.route}"></playlists-nav>
+                  <playlists-nav></playlists-nav>
                 </div>
                 <div route="playlist">
                   <playlists-nav
-                    activeroute="${this.route}"
-                    playlist-id="${this.params.playlist}"
+                    playlist-id="${this.params?.playlist}"
                   ></playlists-nav>
                 </div>
                 <div route="now-playing">
-                  <now-playing activeroute="${this.route}"></now-playing>
+                  <now-playing></now-playing>
                 </div>
                 <div route="artist">
                   <albums-in-artist
-                    artist="${this.params.artist}"
+                    artist="${this.params?.artist}"
                   ></albums-in-artist>
                 </div>
                 <div route="album">
                   <tracks-in-album
-                    artist="${this.params.artist}"
-                    album="${this.params.album}"
+                    artist="${this.params?.artist}"
+                    album="${this.params?.album}"
                   ></tracks-in-album>
                 </div>
                 <div route="settings">
-                  <settings-nav activeroute="${this.route}"></settings-nav>
+                  <settings-nav></settings-nav>
                 </div>
                 <div route="search">
-                  <search-nav
-                    activeroute="${this.route}"
-                    query="${this.query?.q}"
-                  ></search-nav>
+                  <search-nav query="${this.query?.q}"></search-nav>
                 </div>
               </app-main>
               ${this.showPlayer ? html` <lit-player></lit-player> ` : nothing}

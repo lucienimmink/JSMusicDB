@@ -35,6 +35,12 @@ export class Album extends LitElement {
     this.sortedDiscs = [];
     this._listen();
   }
+  attributeChangedCallback(name: string, oldvalue: string, newvalue: string) {
+    super.attributeChangedCallback(name, oldvalue, newvalue);
+    if (name === 'album') {
+      this._getTracks();
+    }
+  }
   _listen() {
     EventBus.on(
       REFRESH,
@@ -43,12 +49,6 @@ export class Album extends LitElement {
       },
       this
     );
-  }
-  attributeChangedCallback(name: any, oldval: any, newval: any) {
-    if (name === 'album') {
-      this._getTracks(this.artist, newval);
-    }
-    super.attributeChangedCallback(name, oldval, newval);
   }
   _getTracks(artist = this.artist, album = this.album) {
     this.sortedDiscs = [];
