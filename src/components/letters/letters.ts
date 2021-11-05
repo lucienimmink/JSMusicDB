@@ -22,16 +22,14 @@ export class LetterNav extends LitElement {
     this.letters = [];
     this.hasVisiblePlayer = false;
     this._init();
-    this._listen();
   }
-  _listen() {
-    EventBus.on(
-      REFRESH,
-      () => {
-        this._init();
-      },
-      this
-    );
+  connectedCallback() {
+    super.connectedCallback();
+    EventBus.on(REFRESH, this._init(), this);
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    EventBus.off(REFRESH, this._init(), this);
   }
   private _init() {
     musicdb

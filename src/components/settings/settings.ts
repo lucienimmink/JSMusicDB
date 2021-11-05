@@ -59,7 +59,6 @@ export class LetterNav extends LitElement {
     this.isReloading = false;
     this.showVersion = true;
     this._init();
-    this._listen();
     getSettings().then(async (settings: any) => {
       this.settings = settings;
       if (!this.settings) {
@@ -77,24 +76,17 @@ export class LetterNav extends LitElement {
       this.requestUpdate();
     });
   }
-  _listen() {
-    EventBus.on(REFRESH, this._init, this);
-    EventBus.on(
-      IS_RELOADING,
-      () => {
-        this.isReloading = true;
-        this.requestUpdate();
-      },
-      this
-    );
-    EventBus.on(
-      DONE_RELOADING,
-      () => {
-        this.isReloading = false;
-        this.requestUpdate();
-      },
-      this
-    );
+  connectedCallback() {
+    super.connectedCallback();
+    EventBus.on(REFRESH, this._init(), this);
+    EventBus.on(IS_RELOADING, this._setIsReloadingTrue(), this);
+    EventBus.on(DONE_RELOADING, this._setIsReloadingFalse(), this);
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    EventBus.off(REFRESH, this._init(), this);
+    EventBus.off(IS_RELOADING, this._setIsReloadingTrue(), this);
+    EventBus.off(DONE_RELOADING, this._setIsReloadingFalse(), this);
   }
   private _init() {
     musicdb
@@ -119,7 +111,14 @@ export class LetterNav extends LitElement {
         console.log(error);
       });
   }
-
+  private _setIsReloadingTrue() {
+    this.isReloading = true;
+    this.requestUpdate();
+  }
+  private _setIsReloadingFalse() {
+    this.isReloading = false;
+    this.requestUpdate();
+  }
   _formatDate(date: any, fallback: string) {
     if (!date) {
       return fallback;

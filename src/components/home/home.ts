@@ -35,16 +35,15 @@ export class HomeNav extends LitElement {
       }
     });
     this._init();
-    this._listen();
   }
-  _listen() {
-    EventBus.on(
-      REFRESH,
-      () => {
-        this._init();
-      },
-      this
-    );
+  connectedCallback() {
+    super.connectedCallback();
+    EventBus.on(REFRESH, this._init(), this);
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    EventBus.off(REFRESH, this._init(), this);
+    clearInterval(this.counter);
   }
   _init() {
     musicdb
@@ -92,10 +91,6 @@ export class HomeNav extends LitElement {
       <span class="small muted">Right now</span>
     `;
   }
-  disconnectedCallback() {
-    clearInterval(this.counter);
-    super.disconnectedCallback();
-  }
   _onError(e: Event) {
     // @ts-ignore
     e.target.src = `data:image/svg+xml;base64,${btoa(cdSVG)}`;
@@ -109,7 +104,7 @@ export class HomeNav extends LitElement {
               <ol>
                 ${this.recenttracks.map(
                   (track: any) => html`
-                    <li class="${track.dummy ? 'dummy ' : nothing}">
+                    <li class="${track.dummy ? 'dummy ' : ''}">
                       <img
                         src="${track.image[1]['#text']}"
                         class="album-art"

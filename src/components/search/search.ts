@@ -33,7 +33,6 @@ export class SearchNav extends LitElement {
     this.activeroute = '';
     this.query = '';
     this._doSearch();
-    this._listen();
   }
   attributeChangedCallback(name: any, oldval: any, newval: any) {
     if (name === 'query') {
@@ -47,14 +46,13 @@ export class SearchNav extends LitElement {
     this.requestUpdate();
     super.attributeChangedCallback(name, oldval, newval);
   }
-  _listen() {
-    EventBus.on(
-      REFRESH,
-      () => {
-        this._doSearch();
-      },
-      this
-    );
+  connectedCallback() {
+    super.connectedCallback();
+    EventBus.on(REFRESH, this._doSearch(), this);
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    EventBus.off(REFRESH, this._doSearch(), this);
   }
   _doSearch() {
     musicdb

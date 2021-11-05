@@ -20,16 +20,14 @@ export class Artist extends LitElement {
     super();
     this.artist = '';
     this.albums = [];
-    this._listen();
   }
-  _listen() {
-    EventBus.on(
-      REFRESH,
-      () => {
-        this._getAlbums();
-      },
-      this
-    );
+  connectedCallback() {
+    super.connectedCallback();
+    EventBus.on(REFRESH, this._getAlbums(), this);
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    EventBus.off(REFRESH, this._getAlbums(), this);
   }
   attributeChangedCallback(name: any, oldval: any, newval: any) {
     if (name === 'artist') {

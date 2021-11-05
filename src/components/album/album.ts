@@ -33,7 +33,6 @@ export class Album extends LitElement {
     this.album = '';
     this.albumDetails = {};
     this.sortedDiscs = [];
-    this._listen();
   }
   attributeChangedCallback(name: string, oldvalue: string, newvalue: string) {
     super.attributeChangedCallback(name, oldvalue, newvalue);
@@ -41,14 +40,13 @@ export class Album extends LitElement {
       this._getTracks();
     }
   }
-  _listen() {
-    EventBus.on(
-      REFRESH,
-      () => {
-        this._getTracks();
-      },
-      this
-    );
+  connectedCallback() {
+    super.connectedCallback();
+    EventBus.on(REFRESH, this._getTracks(), this);
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    EventBus.off(REFRESH, this._getTracks(), this);
   }
   _getTracks(artist = this.artist, album = this.album) {
     this.sortedDiscs = [];
