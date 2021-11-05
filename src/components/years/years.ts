@@ -33,14 +33,6 @@ export class LetterNav extends LitElement {
     scroller.scrollToIndex(offsetted, 'start');
     this.requestUpdate();
   };
-  attributeChangedCallback(name: any, oldval: any, newval: any) {
-    if (name === 'activeroute' && newval === 'years') {
-      this._getAlbums();
-    } else {
-      this.years = [];
-      this.albums = [];
-    }
-  }
   _getAlbums = () => {
     musicdb.then((mdb: any) => {
       this.years = [];
@@ -77,6 +69,7 @@ export class LetterNav extends LitElement {
     this.showJumpList = false;
     this.hasVisiblePlayer = false;
     this._listen();
+    this._getAlbums();
   }
   _listen() {
     EventBus.on(REFRESH, this._getAlbums, this);
