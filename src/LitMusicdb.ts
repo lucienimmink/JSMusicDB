@@ -41,6 +41,7 @@ import { animationCSS, animateCSS } from './utils/animations';
 import litMusicdb from './styles/lit-musicdb';
 import { REFRESH } from './utils/musicdb';
 import scrollbar from './styles/scrollbar';
+import { TOGGLE_MENU } from './components/side-nav/side-nav';
 
 @customElement('lit-musicdb')
 @router
@@ -81,8 +82,6 @@ export class LitMusicdb extends LitElement {
     this.hasData = false;
     this.hasSK = true;
     this.hasToken = true;
-
-    this._listen();
 
     this.addEventListener(
       '_player',
@@ -173,27 +172,31 @@ export class LitMusicdb extends LitElement {
       });
     });
   }
-  _listen() {
+  connectedCallback() {
+    super.connectedCallback();
     EventBus.on(START_CURRENT_PLAYLIST, this._startCurrentPlaylist, this);
     EventBus.on(STOP_PLAYER, this._stopPlayer, this);
-    EventBus.on(
-      DONE_RELOADING,
-      () => {
-        refresh().then(() => {
-          this.requestUpdate();
-        });
-      },
-      this
-    );
-    EventBus.on(
-      TOGGLE_SETTING,
-      (target: any, setting: any) => {
-        if (target.target !== this) this._toggleSetting(setting);
-      },
-      this
-    );
+    EventBus.on(DONE_RELOADING, this._doRefresh, this);
+    EventBus.on(TOGGLE_SETTING, this._doToggleSetting, this);
     EventBus.on(RESET_SERVER, this._resetServer, this);
     EventBus.on(RESET_LASTFM, this._resetLastFM, this);
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    EventBus.off(START_CURRENT_PLAYLIST, this._startCurrentPlaylist, this);
+    EventBus.off(STOP_PLAYER, this._stopPlayer, this);
+    EventBus.off(DONE_RELOADING, this._doRefresh, this);
+    EventBus.off(TOGGLE_SETTING, this._doToggleSetting, this);
+    EventBus.off(RESET_SERVER, this._resetServer, this);
+    EventBus.off(RESET_LASTFM, this._resetLastFM, this);
+  }
+  _doRefresh() {
+    refresh().then(() => {
+      this.requestUpdate();
+    });
+  }
+  _doToggleSetting(target: any, setting: any) {
+    if (target.target !== this) this._toggleSetting(setting);
   }
   _relay = (type: string, method = '') => {
     this.dispatchEvent(new CustomEvent(type, { detail: method }));
@@ -263,7 +266,7 @@ export class LitMusicdb extends LitElement {
     this.params = params;
     this.query = query;
     window.scrollTo(0, 0);
-    EventBus.emit('toggle-menu', this, 'close');
+    EventBus.emit(TOGGLE_MENU, this, 'close');
     if (route === 'now-playing') {
       document.querySelector('html')?.classList.add('noscroll');
       return;

@@ -72,7 +72,6 @@ export class NowPlaying extends LitElement {
     this.isBottomShown = false;
     this.accentColor = '';
     this.playlist = null;
-    this._listen();
     this.addEventListener(
       '_player',
       (e: any) => {
@@ -93,53 +92,44 @@ export class NowPlaying extends LitElement {
       this.requestUpdate();
     });
   }
-  _listen() {
-    EventBus.on(
-      UPDATE_PLAYER,
-      (target: any, data: any) => {
-        this._update(data);
-      },
-      this
-    );
-    EventBus.on(
-      TOGGLE_LOVED_UPDATED,
-      (target: any, data: any) => {
-        this._update(data);
-      },
-      this
-    );
-    EventBus.on(
-      TOGGLE_SHUFFLE_UPDATED,
-      (target: any, isShuffled: boolean) => {
-        this.isShuffled = isShuffled;
-        this.requestUpdate();
-      },
-      this
-    );
-    EventBus.on(
-      ACCENT_COLOR,
-      (target: any, accentColor: string) => {
-        this.accentColor = accentColor;
-      },
-      this
-    );
-    EventBus.on(
-      TOGGLE_SETTING,
-      (target: any, setting: any) => {
-        if (setting.setting === 'smallArt') {
-          this.smallArt = setting.value;
-          this.requestUpdate();
-        }
-        if (setting.setting === 'visual') {
-          this.hasCanvas = setting.value;
-          if (this.hasCanvas && !this._analyzer) {
-            this._visualize();
-          }
-          this.requestUpdate();
-        }
-      },
-      this
-    );
+  connectedCallback() {
+    super.connectedCallback();
+    EventBus.on(UPDATE_PLAYER, this._doUpdate, this);
+    EventBus.on(TOGGLE_LOVED_UPDATED, this._doUpdate, this);
+    EventBus.on(TOGGLE_SHUFFLE_UPDATED, this._doToggleShuffleUpdated, this);
+    EventBus.on(ACCENT_COLOR, this._doAccentColor, this);
+    EventBus.on(TOGGLE_SETTING, this._doToggleSetting, this);
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    EventBus.off(UPDATE_PLAYER, this._doUpdate, this);
+    EventBus.off(TOGGLE_LOVED_UPDATED, this._doUpdate, this);
+    EventBus.off(TOGGLE_SHUFFLE_UPDATED, this._doToggleShuffleUpdated, this);
+    EventBus.off(ACCENT_COLOR, this._doAccentColor, this);
+    EventBus.off(TOGGLE_SETTING, this._doToggleSetting, this);
+  }
+  _doUpdate(target: any, data: any) {
+    this._update(data);
+  }
+  _doToggleShuffleUpdated(target: any, isShuffled: boolean) {
+    this.isShuffled = isShuffled;
+    this.requestUpdate();
+  }
+  _doAccentColor(target: any, accentColor: string) {
+    this.accentColor = accentColor;
+  }
+  _doToggleSetting(target: any, setting: any) {
+    if (setting.setting === 'smallArt') {
+      this.smallArt = setting.value;
+      this.requestUpdate();
+    }
+    if (setting.setting === 'visual') {
+      this.hasCanvas = setting.value;
+      if (this.hasCanvas && !this._analyzer) {
+        this._visualize();
+      }
+      this.requestUpdate();
+    }
   }
   _visualize() {
     if (

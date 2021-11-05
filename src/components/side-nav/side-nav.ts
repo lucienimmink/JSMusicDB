@@ -19,6 +19,7 @@ import responsive from '../../styles/responsive';
 import sideNav from '../../styles/side-nav';
 import { global as EventBus } from '../../utils/EventBus';
 
+export const TOGGLE_MENU = 'toggle-menu';
 @customElement('side-nav')
 @navigator
 export class SideNav extends LitElement {
@@ -44,16 +45,17 @@ export class SideNav extends LitElement {
     this.hasScrobbleCache = false;
     this.hasVisiblePlayer = false;
     this.query = '';
-    this._listen();
   }
-  _listen() {
-    EventBus.on(
-      'toggle-menu',
-      (target: any, state: string) => {
-        this._handleEvent(state);
-      },
-      this
-    );
+  connectedCallback() {
+    super.connectedCallback();
+    EventBus.on(TOGGLE_MENU, this._doToggleMenu, this);
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    EventBus.off(TOGGLE_MENU, this._doToggleMenu, this);
+  }
+  _doToggleMenu(target: any, state: string) {
+    this._handleEvent(state);
   }
   _getScrobbleCache = () => {
     getScrobbleCache().then((cachedTracks: any) => {

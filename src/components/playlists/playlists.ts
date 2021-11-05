@@ -28,6 +28,7 @@ import playlists from '../../styles/playlists';
 import { global as EventBus } from '../../utils/EventBus';
 import buttons from '../../styles/buttons';
 import { redoIcon } from '../icons/redo';
+import { throws } from 'assert';
 
 @customElement('playlists-nav')
 export class LetterNav extends LitElement {
@@ -51,17 +52,12 @@ export class LetterNav extends LitElement {
   async attributeChangedCallback(name: any, oldval: any, newval: any) {
     if (name === 'playlist-id') {
       await this._getPlaylists();
+      if (newval === 'radio') {
+        this.artists = [];
+        this._populateArtists();
+      }
       this._doSwitchPlaylist(decodeURIComponent(newval));
       return;
-    }
-    if (name === 'activeroute') {
-      if (newval === 'playlists' || newval === 'playlist') {
-        await this._getPlaylists();
-        this._populateArtists();
-        return;
-      }
-      // cleanup
-      this.playlist = null;
     }
   }
   _getPlaylists = async () => {
@@ -251,34 +247,29 @@ export class LetterNav extends LitElement {
         this._setActivePlaylist('current');
     }
   }
-  _listen() {
-    EventBus.on(
-      UPDATE_PLAYER,
-      (target: any, { current }: { current: any }) => {
-        this._update(current);
-      },
-      this
-    );
-    EventBus.on(
-      LOAD_PLAYLIST,
-      () => {
-        this.loading = true;
-        this.playlist = null;
-        this.requestUpdate();
-      },
-      this
-    );
-    EventBus.on(
-      LOADED_PLAYLIST,
-      async () => {
-        this.loading = false;
-        this.playlist = await getCurrentPlaylist();
-        // @ts-ignore
-        this.shadowRoot.querySelector('#playlist-selector').value = 'current';
-        this.requestUpdate();
-      },
-      this
-    );
+  _loadPlaylist() {
+    this.loading = true;
+    this.playlist = null;
+    this.requestUpdate();
+  }
+  async _loadedPlaylist() {
+    this.loading = false;
+    this.playlist = await getCurrentPlaylist();
+    // @ts-ignore
+    this.shadowRoot.querySelector('#playlist-selector').value = 'current';
+    this.requestUpdate();
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    EventBus.on(UPDATE_PLAYER, this._update, this);
+    EventBus.on(LOAD_PLAYLIST, this._loadPlaylist, this);
+    EventBus.on(LOADED_PLAYLIST, this._loadedPlaylist, this);
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    EventBus.off(UPDATE_PLAYER, this._update, this);
+    EventBus.off(LOAD_PLAYLIST, this._loadPlaylist, this);
+    EventBus.off(LOADED_PLAYLIST, this._loadedPlaylist, this);
   }
   constructor() {
     super();
@@ -292,7 +283,6 @@ export class LetterNav extends LitElement {
     this.max = 100;
     this.playlistId = '';
     this.currentPlaylistId = '';
-    this._listen();
   }
   render() {
     return html`

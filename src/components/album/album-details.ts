@@ -46,30 +46,23 @@ export class AlbumDetails extends LitElement {
       this.replayGainApplied = replaygain;
       this.requestUpdate();
     });
-    this._listen();
   }
 
   connectedCallback() {
     super.connectedCallback();
     window.addEventListener('scroll', this._handleScroll);
+    EventBus.on(TOGGLE_SETTING, this._doToggleReplayGainSetting, this);
   }
   disconnectedCallback() {
-    window.removeEventListener('scroll', this._handleScroll);
     super.disconnectedCallback();
+    window.removeEventListener('scroll', this._handleScroll);
+    EventBus.off(TOGGLE_SETTING, this._doToggleReplayGainSetting, this);
   }
-
-  _listen = () => {
-    EventBus.on(
-      TOGGLE_SETTING,
-      () => {
-        getSettingByName('replaygain').then(async (replaygain: any) => {
-          this.replayGainApplied = replaygain;
-        });
-      },
-      this
-    );
-  };
-
+  _doToggleReplayGainSetting() {
+    getSettingByName('replaygain').then(async (replaygain: any) => {
+      this.replayGainApplied = replaygain;
+    });
+  }
   _handleScroll = () => {
     if (window.pageYOffset === 0) {
       this.shrinkFactor = '';

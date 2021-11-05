@@ -25,14 +25,10 @@ export class track extends LitElement {
     this.track = null;
     this.type = 'album';
     this.showAlbum = false;
-    this._listen();
   }
   _updatePlayer = (target: any, { current }: { current: any }) => {
     this._update(current);
   };
-  _listen() {
-    EventBus.on(UPDATE_PLAYER, this._updatePlayer, this);
-  }
   _update(track: any) {
     if (track?.id === this.track?.id) {
       this.track = { ...track };
@@ -45,7 +41,10 @@ export class track extends LitElement {
       this.requestUpdate();
     }
   }
-
+  connectedCallback() {
+    super.connectedCallback();
+    EventBus.on(UPDATE_PLAYER, this._updatePlayer, this);
+  }
   disconnectedCallback() {
     super.disconnectedCallback();
     EventBus.off(UPDATE_PLAYER, this._updatePlayer, this);

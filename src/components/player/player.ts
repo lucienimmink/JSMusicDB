@@ -99,7 +99,6 @@ export class Album extends LitElement {
     this.bgColor = LIGHT;
     this._updateBgColorIfSystemTheme();
     this.gain = -9;
-    this._listen();
     getCurrentPlaylist().then((playlist: any) => {
       this.playlist = playlist;
       getCurrentTime().then((time: any) => {
@@ -128,68 +127,41 @@ export class Album extends LitElement {
       this.playlist.shuffledIndices = shuffle(availableIndices);
     }
   }
-  _listen() {
-    EventBus.on(
-      START_CURRENT_PLAYLIST,
-      (target: any, data: any) => {
-        const startPosition = data?.startPosition || 0;
-        getCurrentPlaylist().then((playlist: any) => {
-          this.playlist = playlist;
-          this._play(startPosition);
-          this.requestUpdate();
-        });
-      },
-      this
-    );
-    EventBus.on(
-      TOGGLE_PLAY_PAUSE_PLAYER,
-      () => {
-        this._togglePlayPause();
-      },
-      this
-    );
-    EventBus.on(
-      TOGGLE_LOVED,
-      () => {
-        this._toggleLoved();
-      },
-      this
-    );
-    EventBus.on(
-      PREVIOUS_TRACK,
-      () => {
-        this._previous();
-      },
-      this
-    );
-    EventBus.on(
-      NEXT_TRACK,
-      () => {
-        this._next();
-      },
-      this
-    );
-    EventBus.on(
-      SET_POSITION,
-      (target: any, position: any) => {
-        this._play(position);
-      },
-      this
-    );
-    EventBus.on(
-      TOGGLE_SHUFFLE,
-      () => {
-        this._toggleShuffled();
-      },
-      this
-    );
-    EventBus.on(
-      TOGGLE_SETTING,
-      (target: any, setting: any) => {
-        this._toggleSetting(setting);
-      },
-      this
-    );
+  connectedCallback() {
+    super.connectedCallback();
+    EventBus.on(START_CURRENT_PLAYLIST, this._startCurrentPlaylist, this);
+    EventBus.on(TOGGLE_PLAY_PAUSE_PLAYER, this._togglePlayPause, this);
+    EventBus.on(TOGGLE_LOVED, this._toggleLoved, this);
+    EventBus.on(PREVIOUS_TRACK, this._previous, this);
+    EventBus.on(NEXT_TRACK, this._next, this);
+    EventBus.on(SET_POSITION, this._doSetPosition, this);
+    EventBus.on(TOGGLE_SHUFFLE, this._toggleShuffled, this);
+    EventBus.on(TOGGLE_SETTING, this._doToggleSetting, this);
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    EventBus.off(START_CURRENT_PLAYLIST, this._startCurrentPlaylist, this);
+    EventBus.off(TOGGLE_PLAY_PAUSE_PLAYER, this._togglePlayPause, this);
+    EventBus.off(TOGGLE_LOVED, this._toggleLoved, this);
+    EventBus.off(PREVIOUS_TRACK, this._previous, this);
+    EventBus.off(NEXT_TRACK, this._next, this);
+    EventBus.off(SET_POSITION, this._doSetPosition, this);
+    EventBus.off(TOGGLE_SHUFFLE, this._toggleShuffled, this);
+    EventBus.off(TOGGLE_SETTING, this._doToggleSetting, this);
+  }
+  _startCurrentPlaylist(target: any, data: any) {
+    const startPosition = data?.startPosition || 0;
+    getCurrentPlaylist().then((playlist: any) => {
+      this.playlist = playlist;
+      this._play(startPosition);
+      this.requestUpdate();
+    });
+  }
+  _doSetPosition(target: any, position: any) {
+    this._play(position);
+  }
+  _doToggleSetting(target: any, setting: any) {
+    this._toggleSetting(setting);
   }
   async _play(startPosition = 0, track: any = null) {
     this.track = track || this.playlist?.tracks[this.playlist.index || 0];

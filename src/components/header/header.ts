@@ -15,6 +15,7 @@ import {
 import header from '../../styles/header';
 import { global as EventBus } from '../../utils/EventBus';
 import { CHANGE_TITLE } from '../../utils/player';
+import { TOGGLE_MENU } from '../side-nav/side-nav';
 
 @customElement('main-header')
 export class Header extends LitElement {
@@ -49,21 +50,22 @@ export class Header extends LitElement {
         });
       }
     });
-    this._listen();
   }
   _toggleMenu = (e: Event) => {
     e.preventDefault();
-    EventBus.emit('toggle-menu', this);
+    EventBus.emit(TOGGLE_MENU, this);
   };
-  _listen = () => {
-    EventBus.on(
-      CHANGE_TITLE,
-      (target: any, data: any) => {
-        this._changeTitle(data);
-      },
-      this
-    );
-  };
+  connectedCallback() {
+    super.connectedCallback();
+    EventBus.on(CHANGE_TITLE, this._doChangeTitle, this);
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    EventBus.off(CHANGE_TITLE, this._doChangeTitle, this);
+  }
+  _doChangeTitle(target: any, data: any) {
+    this._changeTitle(data);
+  }
   _changeTitle = (data: any = {}) => {
     const dynamic = [];
     if (this.isReloading) {
