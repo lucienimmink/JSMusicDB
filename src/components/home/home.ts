@@ -67,6 +67,7 @@ export class HomeNav extends LitElement {
     );
   }
   _setDummyData() {
+    this.recenttracks = [];
     for (let i = 0; i < 7; i++) {
       this.recenttracks.push(DUMMY_TRACK);
     }
