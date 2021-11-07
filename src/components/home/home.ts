@@ -28,17 +28,17 @@ export class HomeNav extends LitElement {
     this.recenttracks = [];
     this.recentAdded = [];
     this.counter = -1;
+    this._init();
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    EventBus.on(REFRESH, this._init(), this);
     getLastFMUserName().then((name: any) => {
       if (name !== 'mdb-skipped') {
         this._setDummyData();
         this._poll(name);
       }
     });
-    this._init();
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    EventBus.on(REFRESH, this._init(), this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
