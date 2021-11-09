@@ -15,7 +15,7 @@ export const canLogin = async (server: string) => {
 
 export const getPublicKey = async (server: string) => {
   const response = await fetch(`${server}/public-key`);
-  return await response.json();
+  return response.json();
 };
 
 export const getVersion = async (server: string) => {
@@ -43,44 +43,44 @@ export const authenticate = async (server: string, payload: ArrayBuffer) => {
 export const getRescan = async (server: string, jwt: string) => {
   const ts = new Date().getTime();
   const response = await fetch(`${server}/rescan?jwt=${jwt}&ts=${ts}`);
-  return await response.text();
+  return response.text();
 };
 
 export const getProgress = async (server: string, jwt: string) => {
   const ts = new Date().getTime();
   const response = await fetch(`${server}/progress?jwt=${jwt}&ts=${ts}`);
-  return await response.json();
+  return response.json();
 };
 
 export const getJwt = async () => {
-  return await get(JWT);
+  return get(JWT);
 };
 
 export const setJwt = async (jwt: string) => {
-  return await set(JWT, jwt);
+  return set(JWT, jwt);
 };
 export const getServer = async () => {
-  return await get(SERVER);
+  return get(SERVER);
 };
 export const setServer = async (server: string) => {
-  return await set(SERVER, server);
+  return set(SERVER, server);
 };
 export const resetServer = async () => {
   await del(SERVER);
-  return await del(JWT);
+  return del(JWT);
 };
 
 const _versionCheck = async (server: string) => {
   const response = await fetch(`${server}/version`);
-  return await response.json();
+  return response.json();
 };
-const _arrayBufferToBase64 = (buffer: ArrayBuffer) => {
-  return btoa(
-    new Uint8Array(buffer).reduce((data, byte) => {
-      return data + String.fromCharCode(byte);
-    }, '')
+const _arrayBufferToBase64 = (buffer: ArrayBuffer) =>
+  btoa(
+    new Uint8Array(buffer).reduce(
+      (data, byte) => data + String.fromCharCode(byte),
+      ''
+    )
   );
-};
 
 const _semver = (v1: string, v2: string) => {
   const v1s = v1.split('.');

@@ -48,13 +48,13 @@ export class LetterNav extends LitElement {
       sortedYears.forEach((year: string) => {
         this.years.push(mdb.years[year]);
       });
-      this.years.map((year: any) => {
+      this.years.forEach((year: any) => {
         const header = {
           header: year.year,
           albums: year.albums.length,
         };
         this.albums.push(header);
-        year.albums.map((album: any) => {
+        year.albums.forEach((album: any) => {
           this.albums.push(album);
         });
       });

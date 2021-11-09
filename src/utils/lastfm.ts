@@ -262,7 +262,7 @@ export const scrobbleTrack = async (track: any) => {
       track: track.title,
       timestamp: timestamp.toString(),
     });
-    return await setScrobbleCache(scrobbleList);
+    return setScrobbleCache(scrobbleList);
   }
   // online
   const sk: any = await get(SK);
@@ -298,11 +298,10 @@ export const scrobbleTrack = async (track: any) => {
 };
 
 // private methods
-const _signAuthentication = (user: string, password: string): string => {
-  return encryption.hex_md5(
+const _signAuthentication = (user: string, password: string): string =>
+  encryption.hex_md5(
     `api_key${LASTFMAPIKEY}methodauth.getMobileSessionpassword${password}username${user}${LASTFMSECRET}`
   );
-};
 
 const _signTrack = (
   artist: string,
@@ -312,13 +311,11 @@ const _signTrack = (
   sk: string,
   method: string
 ): string => {
-  if (timestamp) {
-    return encryption.hex_md5(
-      `album${album}api_key${LASTFMAPIKEY}artist${artist}method${method}sk${sk}timestamp${timestamp}track${track}${LASTFMSECRET}`
-    );
-  } else {
-    return encryption.hex_md5(
-      `album${album}api_key${LASTFMAPIKEY}artist${artist}method${method}sk${sk}track${track}${LASTFMSECRET}`
-    );
-  }
+  return timestamp
+    ? encryption.hex_md5(
+        `album${album}api_key${LASTFMAPIKEY}artist${artist}method${method}sk${sk}timestamp${timestamp}track${track}${LASTFMSECRET}`
+      )
+    : encryption.hex_md5(
+        `album${album}api_key${LASTFMAPIKEY}artist${artist}method${method}sk${sk}track${track}${LASTFMSECRET}`
+      );
 };

@@ -29,12 +29,9 @@ export const SET_POSITION = 'set-position';
 export const IS_SHUFFLED = 'is-shuffled';
 export const CHANGE_TITLE = 'change-title';
 
-export const getCurrentPlaylist = () => {
-  return get(CURRENT_PLAYLIST);
-};
-export const setCurrentPlaylist = (playlist: any) => {
-  return set(CURRENT_PLAYLIST, playlist);
-};
+export const getCurrentPlaylist = () => get(CURRENT_PLAYLIST);
+export const setCurrentPlaylist = (playlist: any) =>
+  set(CURRENT_PLAYLIST, playlist);
 
 export const startPlaylist = (target: any) => {
   EventBus.emit(START_CURRENT_PLAYLIST, target);
@@ -86,7 +83,7 @@ export const getNewPlaylistForRandom = (playlist: any) => {
           type: 'random',
           max: playlist.max,
         };
-        randomTracks.map(id => {
+        randomTracks.forEach(id => {
           // @ts-ignore
           nextPlaylist.tracks.push(mdb.tracks[id]);
         });
@@ -96,8 +93,8 @@ export const getNewPlaylistForRandom = (playlist: any) => {
   });
 };
 export const getNewPlaylistForRandomPref = (playlist: any) => {
-  return new Promise((resolve, reject) => {
-    return musicdb.then((mdb: any) => {
+  return new Promise((resolve, reject) =>
+    musicdb.then((mdb: any) => {
       const highRotation: Array<any> = [];
       const mediumRotation: Array<any> = [];
       getTopArtists(playlist.username)
@@ -141,12 +138,12 @@ export const getNewPlaylistForRandomPref = (playlist: any) => {
         .catch(e => {
           return reject(e);
         });
-    });
-  });
+    })
+  );
 };
 export const getNewPlaylistForRadio = (playlist: any) => {
-  return new Promise((resolve, reject) => {
-    return musicdb
+  return new Promise((resolve, reject) =>
+    musicdb
       .then((mdb: any) => {
         const startArtist = mdb.artists[playlist.artist];
         const newPlaylist = {
@@ -161,12 +158,12 @@ export const getNewPlaylistForRadio = (playlist: any) => {
           resolve(newPlaylist);
         });
       })
-      .catch(() => reject());
-  });
+      .catch(() => reject())
+  );
 };
-export const getNewPlaylistForLovedTracks = (playlist: any) => {
-  return new Promise((resolve, reject) => {
-    return musicdb
+export const getNewPlaylistForLovedTracks = (playlist: any) =>
+  new Promise((resolve, reject) =>
+    musicdb
       .then((mdb: any) => {
         getLovedTracks(playlist.username).then(
           ({ lovedtracks }: { lovedtracks: any }) => {
@@ -189,12 +186,11 @@ export const getNewPlaylistForLovedTracks = (playlist: any) => {
           }
         );
       })
-      .catch(() => reject());
-  });
-};
-export const getTopTracksForUser = (playlist: any) => {
-  return new Promise((resolve, reject) => {
-    return musicdb
+      .catch(() => reject())
+  );
+export const getTopTracksForUser = (playlist: any) =>
+  new Promise((resolve, reject) =>
+    musicdb
       .then((mdb: any) => {
         getTopTracks(playlist.username, playlist.max).then(
           ({ toptracks }: { toptracks: any }) => {
@@ -217,12 +213,11 @@ export const getTopTracksForUser = (playlist: any) => {
           }
         );
       })
-      .catch(() => reject());
-  });
-};
-const _getNewPlaylistForAlbum = (playlist: any) => {
-  return new Promise((resolve, reject) => {
-    return musicdb
+      .catch(() => reject())
+  );
+const _getNewPlaylistForAlbum = (playlist: any) =>
+  new Promise((resolve, reject) =>
+    musicdb
       .then((mdb: any) => {
         const nextAlbum = mdb.getNextAlbum(playlist.album);
         const nextPlaylist = {
@@ -236,9 +231,8 @@ const _getNewPlaylistForAlbum = (playlist: any) => {
         };
         return resolve(nextPlaylist);
       })
-      .catch(() => reject());
-  });
-};
+      .catch(() => reject())
+  );
 const _getRandomTrackFromArtists = (
   artists: Array<any>,
   playlist: any
@@ -268,9 +262,8 @@ const _shuffle = (list: any[]): any[] => {
   return list;
 };
 export const shuffle = _shuffle;
-const _getSortName = (artistname: string) => {
-  return encodeURIComponent(_stripFromName(artistname, ['the ', '"', 'a ']));
-};
+const _getSortName = (artistname: string) =>
+  encodeURIComponent(_stripFromName(artistname, ['the ', '"', 'a ']));
 const _stripFromName = (name: string, strip: string[]) => {
   let f = name ? name.toUpperCase() : '';
   f = f.trim();
@@ -282,8 +275,8 @@ const _stripFromName = (name: string, strip: string[]) => {
   });
   return f;
 };
-const _getNextTrack = (artist: any, mdb: any, playlist: any) => {
-  const promise = new Promise((resolve, reject) => {
+const _getNextTrack = (artist: any, mdb: any, playlist: any) =>
+  new Promise((resolve, reject) => {
     _getNextSimilarArtist(artist, mdb)
       .then((similarartists: any) => {
         // add a new track to the playlist
@@ -292,18 +285,14 @@ const _getNextTrack = (artist: any, mdb: any, playlist: any) => {
           playlist
         );
         playlist.tracks.push(randomTrack);
-        if (playlist.tracks.length < playlist.max) {
-          return _getNextTrack(randomTrack.album.artist, mdb, playlist);
-        } else {
-          return reject();
-        }
+        return playlist.tracks.length < playlist.max
+          ? _getNextTrack(randomTrack.album.artist, mdb, playlist)
+          : reject();
       })
       .catch(() => reject());
   });
-  return promise;
-};
-const _getNextSimilarArtist = (artist: any, mdb: any): Promise<any> => {
-  const promise = new Promise((resolve, reject) => {
+const _getNextSimilarArtist = (artist: any, mdb: any): Promise<any> =>
+  new Promise((resolve, reject) => {
     getSimilairArtists(artist.name).then(({ similarartists }) => {
       const foundSimilar: Array<any> = [];
       similarartists?.artist.forEach(({ name }: { name: string }) => {
@@ -318,5 +307,3 @@ const _getNextSimilarArtist = (artist: any, mdb: any): Promise<any> => {
       reject();
     });
   });
-  return promise;
-};

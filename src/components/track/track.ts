@@ -9,7 +9,7 @@ import trackNav from '../../styles/track-nav';
 import { global as EventBus } from '../../utils/EventBus';
 
 @customElement('track-in-list')
-export class track extends LitElement {
+export class Track extends LitElement {
   @property()
   track: any;
   @property({ type: String })

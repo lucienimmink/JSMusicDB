@@ -31,7 +31,7 @@ export default function timeSpan(mseconds: number, humanize = false) {
   value.push(leftPad0(minutes));
   value.push(leftPad0(Math.round(seconds % 60)));
   if (days) {
-    return `${getDays(days)}` + value.join(':');
+    return `${getDays(days)}${value.join(':')}`;
   }
   return value.join(':');
 }

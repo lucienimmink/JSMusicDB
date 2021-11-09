@@ -12,7 +12,7 @@ class EventBus {
    * @param {object} scope The scope in which the callback shall be executed
    * @param  {...any} args Any number of args to be passed to the callback
    */
-  on(type, callback, scope, ...args) {
+  on(type: string, callback: function, scope: object, ...args: any[]) {
     if (typeof this.events[type] === 'undefined') {
       // Check if there is already event of this type registered
       this.events[type] = []; // If not, create array for it
@@ -26,7 +26,7 @@ class EventBus {
    * @param {function} callback Callback of the event to remove
    * @param {object} scope The scope of the to be removed event
    */
-  off(type, callback, scope) {
+  off(type: string, callback: function, scope: object) {
     if (typeof this.events[type] === 'undefined') {
       // Check if event of this type exists
       return; // If not just return
@@ -44,7 +44,7 @@ class EventBus {
    * @param {callback} callback Callback of the to be checked event
    * @param {object} scope Scope of the to be checked event
    */
-  has(type, callback, scope) {
+  has(type: string, callback: callback, scope: object) {
     if (typeof this.events[type] === 'undefined') {
       // Check if the passed type even exists
       return false; // If not, quit method
@@ -74,7 +74,7 @@ class EventBus {
    * @param {object} target The caller
    * @param {...any} args Any number of args to be passed to the callback
    */
-  emit(type, target, ...args) {
+  emit(type: string, target: object, ...args: any[]) {
     if (typeof this.events[type] === 'undefined') {
       // Check if any event of the passed type exists
       return; // If not, quit method
@@ -86,7 +86,7 @@ class EventBus {
 
     for (const event of events) {
       // Iterate all events
-      if (event && event.callback) {
+      if (event?.callback) {
         // Check if callback of event is set
         event.callback.apply(event.scope, [bag, ...args, ...event.args]); // Call callback
       }
@@ -97,8 +97,7 @@ class EventBus {
     let str = '';
     for (const [type, events] of Object.entries(this.events)) {
       for (const event of events) {
-        const className =
-          (event.scope && event.scope.constructor.name) || 'Anonymous';
+        const className = event.scope?.constructor.name || 'Anonymous';
         str += `${className} listening for "${type}"\n`;
       }
     }

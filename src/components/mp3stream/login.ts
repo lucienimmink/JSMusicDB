@@ -33,7 +33,6 @@ export class LetterNav extends LitElement {
     this.username = '';
     this.password = '';
     this.server = `${location.protocol}//${location.host}`;
-    // this.server = 'https://www.arielext.org:16882';
     this.token = '';
     this.hasError = false;
     this.showInfoModal = true;
@@ -67,8 +66,6 @@ export class LetterNav extends LitElement {
       this.token = jwt;
       await setJwt(this.token);
       await setServer(this.server);
-      // this.requestUpdate();
-
       // ok, this is quick and dirty; need better solution
       // eslint-disable-next-line no-self-assign
       location.href = location.href;
@@ -86,14 +83,13 @@ export class LetterNav extends LitElement {
       ['encrypt']
     );
     const payload = new TextEncoder().encode(JSON.stringify(user));
-    const encrypted = await crypto.subtle.encrypt(
+    return crypto.subtle.encrypt(
       {
         name: 'RSA-OAEP',
       },
       encryptionKey,
       payload
     );
-    return encrypted;
   }
   async _toggleInfo() {
     if (this.showInfoModal) {

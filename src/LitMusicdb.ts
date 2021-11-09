@@ -11,7 +11,6 @@ import musicdb, { refresh, update } from './components/musicdb';
 import './components/app-link/app-link';
 import './components/app-main/app-main';
 import './components/letter-nav/letter-nav';
-import './components/side-nav/side-nav';
 import './components/header/header';
 import './components/home/home';
 import './components/letters/letters';
@@ -41,7 +40,7 @@ import { animationCSS, animateCSS } from './utils/animations';
 import litMusicdb from './styles/lit-musicdb';
 import { REFRESH } from './utils/musicdb';
 import scrollbar from './styles/scrollbar';
-import { TOGGLE_MENU } from './components/side-nav/side-nav';
+import * as sideNav from './components/side-nav/side-nav';
 
 @customElement('lit-musicdb')
 @router
@@ -266,7 +265,7 @@ export class LitMusicdb extends LitElement {
     this.params = params;
     this.query = query;
     window.scrollTo(0, 0);
-    EventBus.emit(TOGGLE_MENU, this, 'close');
+    EventBus.emit(sideNav.TOGGLE_MENU, this, 'close');
     if (route === 'now-playing') {
       document.querySelector('html')?.classList.add('noscroll');
       return;

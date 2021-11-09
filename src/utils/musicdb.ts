@@ -4,10 +4,10 @@ export const MUSICDB = 'musicdb';
 export const REFRESH = 'refresh';
 
 export const setMusicDB = async (musicdb: any) => {
-  return await set(MUSICDB, musicdb);
+  return set(MUSICDB, musicdb);
 };
 export const getMusicDB = async () => {
-  return await get(MUSICDB);
+  return get(MUSICDB);
 };
 
 export const DUMMY_TRACK = {
