@@ -28,7 +28,6 @@ import playlists from '../../styles/playlists';
 import { global as EventBus } from '../../utils/EventBus';
 import buttons from '../../styles/buttons';
 import { redoIcon } from '../icons/redo';
-import { throws } from 'assert';
 
 @customElement('playlists-nav')
 export class LetterNav extends LitElement {
@@ -57,7 +56,6 @@ export class LetterNav extends LitElement {
         this._populateArtists();
       }
       this._doSwitchPlaylist(decodeURIComponent(newval));
-      return;
     }
   }
   _getPlaylists = async () => {
@@ -196,8 +194,7 @@ export class LetterNav extends LitElement {
     if (this.playlist) {
       const updatedTracks = this.playlist?.tracks.map((track: any) => {
         if (current.id === track.id) {
-          track = { ...current };
-          return track;
+          return { ...current };
         }
         track.isPlaying = false;
         track.isPaused = false;
@@ -264,6 +261,7 @@ export class LetterNav extends LitElement {
     EventBus.on(UPDATE_PLAYER, this._update, this);
     EventBus.on(LOAD_PLAYLIST, this._loadPlaylist, this);
     EventBus.on(LOADED_PLAYLIST, this._loadedPlaylist, this);
+    this._getPlaylists();
   }
   disconnectedCallback() {
     super.disconnectedCallback();
