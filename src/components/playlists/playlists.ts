@@ -190,11 +190,11 @@ export class LetterNav extends LitElement {
       this.requestUpdate();
     });
   };
-  _update(current: any) {
+  _update(target: any, current: any) {
     if (this.playlist) {
       const updatedTracks = this.playlist?.tracks.map((track: any) => {
-        if (current.id === track.id) {
-          return { ...current };
+        if (current?.current.id === track.id) {
+          return { ...current.current };
         }
         track.isPlaying = false;
         track.isPaused = false;
