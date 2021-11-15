@@ -172,6 +172,7 @@ export class LetterNav extends LitElement {
           this.artists.push(artist);
         });
       });
+      this.requestUpdate();
     });
   };
   _generateArtistRadio = (e: Event) => {
