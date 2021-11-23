@@ -87,11 +87,11 @@ export class LetterNav extends LitElement {
   };
   _setActivePlaylist = (name = 'current') => {
     this.showStartArtistSelection = false;
-    switch (name) {
-      case 'current':
-        this.playlist = this.current;
-        break;
+
+    if (name === 'current') {
+      this.playlist = this.current;
     }
+
     this.requestUpdate();
   };
   _getLovedTracks = () => {
@@ -101,11 +101,12 @@ export class LetterNav extends LitElement {
     this.requestUpdate();
     getNewPlaylistForLovedTracks({
       username: this.lastFMUserName,
-    }).then((playlist: any) => {
-      this.playlist = playlist;
-      this.loading = false;
-      this.requestUpdate();
-    });
+    })
+      .then((playlist: any) => this._updatePlaylist(playlist))
+      .catch(() => {
+        this.loading = false;
+        this.requestUpdate();
+      });
   };
   _generateRandom = () => {
     this.loading = true;
@@ -114,11 +115,12 @@ export class LetterNav extends LitElement {
     this.requestUpdate();
     getNewPlaylistForRandom({
       max: this.max,
-    }).then((playlist: any) => {
-      this.playlist = playlist;
-      this.loading = false;
-      this.requestUpdate();
-    });
+    })
+      .then((playlist: any) => this._updatePlaylist(playlist))
+      .catch(() => {
+        this.loading = false;
+        this.requestUpdate();
+      });
   };
   _generateRandomByPreference = () => {
     this.loading = true;
@@ -130,15 +132,16 @@ export class LetterNav extends LitElement {
       max: this.max,
       username: this.lastFMUserName,
     })
-      .then((playlist: any) => {
-        this.playlist = playlist;
-        this.loading = false;
-        this.requestUpdate();
-      })
+      .then((playlist: any) => this._updatePlaylist(playlist))
       .catch(() => {
         this.loading = false;
         this.requestUpdate();
       });
+  };
+  _updatePlaylist = (playlist: any) => {
+    this.playlist = playlist;
+    this.loading = false;
+    this.requestUpdate();
   };
   _getTopTracks = () => {
     this.loading = true;
@@ -149,11 +152,7 @@ export class LetterNav extends LitElement {
       username: this.lastFMUserName,
       max: this.max,
     })
-      .then((playlist: any) => {
-        this.playlist = playlist;
-        this.loading = false;
-        this.requestUpdate();
-      })
+      .then((playlist: any) => this._updatePlaylist(playlist))
       .catch(() => {
         this.loading = false;
         this.requestUpdate();
@@ -167,10 +166,12 @@ export class LetterNav extends LitElement {
   _populateArtists = () => {
     musicdb.then((mdb: any) => {
       const letters = mdb.sortedLetters;
-      letters.map((letter: any) => {
-        letter.sortAndReturnArtistsBy('sortName', 'asc').map((artist: any) => {
-          this.artists.push(artist);
-        });
+      letters.forEach((letter: any) => {
+        letter
+          .sortAndReturnArtistsBy('sortName', 'asc')
+          .forEach((artist: any) => {
+            this.artists.push(artist);
+          });
       });
       this.requestUpdate();
     });
@@ -185,11 +186,12 @@ export class LetterNav extends LitElement {
     getNewPlaylistForRadio({
       max: this.max,
       artist: startArtistID,
-    }).then((playlist: any) => {
-      this.playlist = playlist;
-      this.loading = false;
-      this.requestUpdate();
-    });
+    })
+      .then((playlist: any) => this._updatePlaylist(playlist))
+      .catch(() => {
+        this.loading = false;
+        this.requestUpdate();
+      });
   };
   _update(target: any, current: any) {
     if (this.playlist) {
