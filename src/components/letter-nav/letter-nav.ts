@@ -22,11 +22,11 @@ export class LetterNav extends LitElement {
   }
   connectedCallback() {
     super.connectedCallback();
-    EventBus.on(REFRESH, this._init(), this);
+    EventBus.on(REFRESH, this._init, this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    EventBus.off(REFRESH, this._init(), this);
+    EventBus.off(REFRESH, this._init, this);
   }
   private _init() {
     musicdb

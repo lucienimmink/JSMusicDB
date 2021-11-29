@@ -59,8 +59,8 @@ export class LetterNav extends LitElement {
     this.isReloading = false;
     this.showVersion = true;
     this._init();
-    getSettings().then(async (settings: any) => {
-      this.settings = settings;
+    getSettings().then(async (setting: any) => {
+      this.settings = setting;
       if (!this.settings) {
         this.settings = {};
       }
@@ -78,15 +78,15 @@ export class LetterNav extends LitElement {
   }
   connectedCallback() {
     super.connectedCallback();
-    EventBus.on(REFRESH, this._init(), this);
-    EventBus.on(IS_RELOADING, this._setIsReloadingTrue(), this);
-    EventBus.on(DONE_RELOADING, this._setIsReloadingFalse(), this);
+    EventBus.on(REFRESH, this._init, this);
+    EventBus.on(IS_RELOADING, this._setIsReloadingTrue, this);
+    EventBus.on(DONE_RELOADING, this._setIsReloadingFalse, this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    EventBus.off(REFRESH, this._init(), this);
-    EventBus.off(IS_RELOADING, this._setIsReloadingTrue(), this);
-    EventBus.off(DONE_RELOADING, this._setIsReloadingFalse(), this);
+    EventBus.off(REFRESH, this._init, this);
+    EventBus.off(IS_RELOADING, this._setIsReloadingTrue, this);
+    EventBus.off(DONE_RELOADING, this._setIsReloadingFalse, this);
   }
   private _init() {
     musicdb

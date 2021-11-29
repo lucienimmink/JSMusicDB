@@ -60,11 +60,11 @@ export class LetterNav extends LitElement {
   };
   connectedCallback() {
     super.connectedCallback();
-    EventBus.on(REFRESH, this._getAlbums(), this);
+    EventBus.on(REFRESH, this._getAlbums, this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    EventBus.off(REFRESH, this._getAlbums(), this);
+    EventBus.off(REFRESH, this._getAlbums, this);
   }
   constructor() {
     super();

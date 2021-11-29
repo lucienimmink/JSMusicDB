@@ -32,7 +32,7 @@ export class HomeNav extends LitElement {
   }
   connectedCallback() {
     super.connectedCallback();
-    EventBus.on(REFRESH, this._init(), this);
+    EventBus.on(REFRESH, this._init, this);
     getLastFMUserName().then((name: any) => {
       if (name !== 'mdb-skipped') {
         this._setDummyData();
@@ -42,7 +42,7 @@ export class HomeNav extends LitElement {
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    EventBus.off(REFRESH, this._init(), this);
+    EventBus.off(REFRESH, this._init, this);
     clearInterval(this.counter);
   }
   _init() {

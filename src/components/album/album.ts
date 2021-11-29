@@ -42,11 +42,11 @@ export class Album extends LitElement {
   }
   connectedCallback() {
     super.connectedCallback();
-    EventBus.on(REFRESH, this._getTracks(), this);
+    EventBus.on(REFRESH, this._getTracks, this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    EventBus.off(REFRESH, this._getTracks(), this);
+    EventBus.off(REFRESH, this._getTracks, this);
   }
   _getTracks(artist = this.artist, album = this.album) {
     this.sortedDiscs = [];

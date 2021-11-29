@@ -91,13 +91,11 @@ export class Header extends LitElement {
           this._changeTitle();
           EventBus.emit(IS_RELOADING, this);
           this.requestUpdate();
-        } else {
-          if (this.isReloading === true) {
-            EventBus.emit(DONE_RELOADING, this);
-            this.isReloading = false;
-            this._changeTitle();
-            this.requestUpdate();
-          }
+        } else if (this.isReloading === true) {
+          EventBus.emit(DONE_RELOADING, this);
+          this.isReloading = false;
+          this._changeTitle();
+          this.requestUpdate();
         }
         setTimeout(() => {
           this._poll({ server, jwt });
