@@ -5,8 +5,6 @@ import musicdb from '../../components/musicdb';
 import smallMuted from '../../styles/small-muted';
 import panel from '../../styles/panel';
 import letter from '../../styles/letter';
-import { global as EventBus } from '../../utils/EventBus';
-import { timeStamp } from 'console';
 
 @customElement('artists-in-letter')
 export class Letter extends LitElement {
