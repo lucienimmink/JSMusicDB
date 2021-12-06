@@ -237,8 +237,8 @@ export class LitMusicdb extends LitElement {
       setting: 'theme',
       value: css,
     });
-    // @ts-ignore
-    document.getElementById('themed')?.innerHTML = css.cssText;
+    const themeElement = document.getElementById('themed');
+    if (themeElement) themeElement.innerHTML = css.cssText;
   }
   async _autoSwitchTheme() {
     const { nextCycle, theme }: { nextCycle: number; theme: string } =
