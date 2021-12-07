@@ -20,18 +20,23 @@ const convertToStrict = (color: any): any => {
 };
 
 const getReadableColor = (rgba: any, bgcolor = LIGHT): any => {
-  if (!tinycolor.isReadable(rgba, bgcolor)) {
+  if (
+    !tinycolor.isReadable(rgba, tinycolor(bgcolor, {}), {
+      level: 'AA',
+      size: 'small',
+    })
+  ) {
     if (bgcolor === DARK) {
-      return getReadableColor(new tinycolor(rgba).lighten(2), bgcolor);
+      return getReadableColor(tinycolor(rgba, {}).lighten(2), bgcolor);
     }
-    return getReadableColor(new tinycolor(rgba).darken(2), bgcolor);
+    return getReadableColor(tinycolor(rgba, {}).darken(2), bgcolor);
   }
-  return convertToStrict(new tinycolor(rgba).toRgb());
+  return convertToStrict(tinycolor(rgba, {}).toRgb());
 };
 
 const getHighestContrast = (color: any): any => {
-  return tinycolor.readability(DARK, color) >
-    tinycolor.readability(LIGHT, color)
+  return tinycolor.readability(tinycolor(DARK, {}), color) >
+    tinycolor.readability(tinycolor(LIGHT, {}), color)
     ? DARK
     : LIGHT;
 };
@@ -80,10 +85,10 @@ export function getDominantColorByURL(
 }
 export function getColorsFromRGBWithBGColor(rgba: any, bgColor: string): any {
   const text = getReadableColor(rgba, bgColor);
-  const lighten = convertToStrict(new tinycolor(text).lighten().toRgb());
-  const darken = convertToStrict(new tinycolor(text).darken().toRgb());
-  const lighten30 = convertToStrict(new tinycolor(text).lighten(30).toRgb());
-  const darken30 = convertToStrict(new tinycolor(text).darken(30).toRgb());
+  const lighten = convertToStrict(tinycolor(text, {}).lighten().toRgb());
+  const darken = convertToStrict(tinycolor(text, {}).darken().toRgb());
+  const lighten30 = convertToStrict(tinycolor(text, {}).lighten(30).toRgb());
+  const darken30 = convertToStrict(tinycolor(text, {}).darken(30).toRgb());
   return {
     rgba,
     text,
@@ -91,11 +96,11 @@ export function getColorsFromRGBWithBGColor(rgba: any, bgColor: string): any {
     darken,
     lighten30,
     darken30,
-    letterColor: getHighestContrast(new tinycolor(text)),
+    letterColor: getHighestContrast(tinycolor(text, {})),
   };
 }
 export function convertRGBtoString(rgba: any): string {
-  return new tinycolor(rgba).toRgbString();
+  return tinycolor(rgba, {}).toRgbString();
 }
 export function addCustomCss(colors: any): void {
   const accentCSSOverrideNode: HTMLElement = document.createElement('style');
@@ -158,7 +163,6 @@ const _getNewStartAndStop = async () => {
 const _setSunrise = async (start: any, stop: any) => {
   await setSetting('start', start);
   await setSetting('stop', stop);
-  return;
 };
 export const getCurrentTheme = async () => {
   const now: any = new Date();
@@ -194,10 +198,12 @@ export const updateSunriseData = async (useGPS = true) => {
           `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`
         );
         const { results } = await response.json();
-        const start = new Date(results.sunset);
-        const stop: Date = new Date(results.sunrise);
-        const nextDayStop: Date = new Date(stop.setDate(stop.getDate() + 1));
-        return resolve(await _setSunrise(start, nextDayStop));
+        const sunset = new Date(results.sunset);
+        const sunrise: Date = new Date(results.sunrise);
+        const nextDayStop: Date = new Date(
+          sunrise.setDate(sunrise.getDate() + 1)
+        );
+        return resolve(await _setSunrise(sunset, nextDayStop));
       });
     }
     const { start, stop }: { start: Date; stop: Date } =
