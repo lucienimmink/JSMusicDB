@@ -16,6 +16,8 @@ export default css`
     border-radius: 50%;
     background: none;
     margin-left: 0.5rem;
+    line-height: normal;
+    padding: 0;
     transition: all 0.2s ease-in-out;
   }
   .controls .btn:hover,
@@ -31,6 +33,9 @@ export default css`
   }
   .controls .btn svg {
     width: 18px;
+  }
+  .controls .btn + .btn {
+    margin-left: 0.5rem;
   }
   @media (min-width: 576px) {
     .controls .btn {

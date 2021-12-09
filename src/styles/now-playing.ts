@@ -130,8 +130,9 @@ export default css`
   }
   .controls .btn-toggle {
     position: absolute;
-    bottom: -11px;
+    bottom: -16px;
     height: 25px;
+    padding-left: 5px;
   }
   .controls .btn-toggle:active {
     background: none;
@@ -203,6 +204,18 @@ export default css`
       width: 33%;
       flex-grow: 1;
       padding-right: 0;
+    }
+    .controls .btn {
+      margin-left: 1.5rem;
+    }
+    .controls .btn svg {
+      height: 1.5rem;
+      width: 1.5rem;
+    }
+    .controls .btn-toggle {
+      bottom: -10px;
+      height: 25px;
+      padding-left: 17px;
     }
     .controls-meta {
       position: static;

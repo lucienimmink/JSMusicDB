@@ -42,6 +42,7 @@ import { artistsIcon } from '../icons/artists';
 import { albumsIcon } from '../icons/albums';
 import { playlistsIcon } from '../icons/playlists';
 import { global as EventBus } from '../../utils/EventBus';
+import buttons from '../../styles/buttons';
 
 @customElement('now-playing')
 export class NowPlaying extends LitElement {
@@ -61,7 +62,7 @@ export class NowPlaying extends LitElement {
   _player: any;
 
   static get styles() {
-    return [animationCSS, container, progress, controls, nowPlaying];
+    return [animationCSS, container, progress, buttons, controls, nowPlaying];
   }
   constructor() {
     super();

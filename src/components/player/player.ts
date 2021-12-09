@@ -63,6 +63,7 @@ import {
 } from '../../utils/colour';
 import { animationCSS, animateCSS } from '../../utils/animations';
 import player from '../../styles/player';
+import buttons from '../../styles/buttons';
 
 const ONEMINUTE = 1 * 60 * 1000;
 const FOURMINUTES = 4 * ONEMINUTE;
@@ -84,7 +85,7 @@ export class Album extends LitElement {
   useDynamicAccentColor: boolean;
   gain: number;
   static get styles() {
-    return [animationCSS, progress, controls, responsive, player];
+    return [animationCSS, progress, controls, responsive, buttons, player];
   }
   constructor() {
     super();
