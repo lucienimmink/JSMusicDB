@@ -9,9 +9,10 @@ const fetchArt = async (mbid: string) => {
   );
   if (response.status === 200) {
     const json = await response.json();
-    const { artistbackground } = json;
-    if (artistbackground) {
-      return artistbackground[0].url;
+    const { artistthumb } = json;
+    if (artistthumb) {
+      console.log(artistthumb[0].url);
+      return artistthumb[0].url;
     }
   }
   throw Error('no art found in provider fanart');
