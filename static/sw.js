@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 self.addEventListener('activate', event => {
   event.waitUntil(self.clients.claim());
 });
@@ -10,6 +11,8 @@ self.addEventListener('fetch', function (event) {
     if (
       event.request.url.indexOf('/listen') !== -1 ||
       event.request.url.indexOf('/rescan') !== -1 ||
+      event.request.url.indexOf('/version') !== -1 ||
+      event.request.url.indexOf('/public-key') !== -1 ||
       event.request.url.indexOf('file://') !== -1
     ) {
       // nothing to see here, carry on
