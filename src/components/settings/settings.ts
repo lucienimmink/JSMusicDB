@@ -182,7 +182,7 @@ export class LetterNav extends LitElement {
   }
   render() {
     return html`
-      <div class="container">
+      <div class="container container-block">
         <h2 class="header">User information</h2>
         <p>
           Linked to last.fm:
@@ -220,7 +220,7 @@ export class LetterNav extends LitElement {
           }
         </p>
       </div>
-      <div class="container">
+      <div class="container container-block">
         <h2 class="header">Collection settings</h2>
         <p>
           Collection:
@@ -253,7 +253,7 @@ export class LetterNav extends LitElement {
           </button>
         </p>
       </div>
-      <div class="container">
+      <div class="container container-block">
         <h2 class="header">Player settings</h2>
         <p>
           <label>
@@ -297,7 +297,7 @@ export class LetterNav extends LitElement {
         </p>
       </div>
 
-      <div class="container">
+      <div class="container container-block">
         <h2 class="header">Theme</h2>
         <p>
           <label>
@@ -365,38 +365,38 @@ export class LetterNav extends LitElement {
             : nothing
         }
         </div>
-        <div class="container">
+        <div class="container container-block md-up">
           <h2 class="header">Now playing screen</h2>
-        <p class="md-up-flex">
-          <label>
-            <input
-              type="checkbox"
-              @click="${(e: Event) => this._toggle('visual', e)}"
-              .checked=${this.settings?.visual}
-            />
-            Show visualisation on now playing screen:
-          </label>
-        </p>
-        <p class="md-up-flex">
-          ${
-            this.settings?.visual
-              ? html`
-                  <label>
-                    <input
-                      type="checkbox"
-                      @click="${(e: Event) => this._toggle('smallArt', e)}"
-                      .checked=${this.settings?.smallArt}
-                    />
-                    Show smaller album art on now playing screen:
-                  </label>
-                `
-              : nothing
-          }
-        </p>
+            <p>
+              <label>
+                <input
+                  type="checkbox"
+                  @click="${(e: Event) => this._toggle('visual', e)}"
+                  .checked=${this.settings?.visual}
+                />
+                Show visualisation on now playing screen:
+              </label>
+            </p>
+            <p>
+              ${
+                this.settings?.visual
+                  ? html`
+                      <label>
+                        <input
+                          type="checkbox"
+                          @click="${(e: Event) => this._toggle('smallArt', e)}"
+                          .checked=${this.settings?.smallArt}
+                        />
+                        Show smaller album art on now playing screen:
+                      </label>
+                    `
+                  : nothing
+              }
+            </p>
           </div>
       </div>
 
-      <div class="container">
+      <div class="container container-block">
         <h2 class="header">Information</h2>
         <p>Artists: ${this.stats?.artists}</p>
         <p>Albums: ${this.stats?.albums}</p>

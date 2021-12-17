@@ -4,9 +4,6 @@ export default css`
   .btn-small {
     margin-left: 1rem;
   }
-  .container {
-    display: block;
-  }
   p {
     margin: 0.5rem 1rem 0.7rem;
     display: flex;

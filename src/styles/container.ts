@@ -10,6 +10,9 @@ export default css`
     box-sizing: border-box;
     transition: color 0.05s ease-in-out, background-color 0.5s ease-in-out;
   }
+  .container-block {
+    display: block;
+  }
   .p-1 {
     padding: 1rem;
   }
