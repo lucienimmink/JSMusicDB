@@ -11,7 +11,6 @@ const fetchArt = async (mbid: string) => {
     const json = await response.json();
     const { artistthumb } = json;
     if (artistthumb) {
-      console.log(artistthumb[0].url);
       return artistthumb[0].url;
     }
   }
