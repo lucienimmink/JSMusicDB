@@ -10,7 +10,7 @@ const fetchArt = async (mbid: string) => {
     const json = await response.json();
     const { url } = json;
     if (url) {
-      return url;
+      return `https:${url}`;
     }
   }
   throw Error('no art found in provider mp3stream');

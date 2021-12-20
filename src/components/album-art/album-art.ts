@@ -192,7 +192,14 @@ export class AlbumArt extends LitElement {
       // let's resize those larger artist arts we get.
       art += `,w_${this.dimension},h_${this.dimension},c_fill/`;
       try {
-        art += await fetchArtForArtist(this.artist);
+        const remoteURL = await fetchArtForArtist(this.artist);
+        // @ts-ignore
+        if (remoteURL.lastIndexOf(':') !== 5) {
+          // @ts-ignore
+          art = remoteURL;
+        } else {
+          art += remoteURL;
+        }
         if (this.isEmptyArt(art)) art = '';
       } catch (e) {
         art = '';
