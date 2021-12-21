@@ -25,4 +25,15 @@ const getMetaInfo = async ({
   return json;
 };
 
-export { getMetaInfo };
+const getMBID = async (artist: string) => {
+  const searchParams = new URLSearchParams();
+  searchParams.set('fmt', 'json');
+  searchParams.set('query', artist);
+  const response = await fetch(
+    `https://musicbrainz.org/ws/2/artist/?${searchParams}`
+  );
+  const { artists } = await response.json();
+  return artists[0].id;
+};
+
+export { getMetaInfo, getMBID };

@@ -1,4 +1,4 @@
-import { getMetaInfo } from './provider/metainfo';
+import { getMetaInfo, getMBID } from './provider/metainfo';
 import { populate } from './provider/populate';
 import { config as albumConfig } from './provider/album/config';
 import { config as artistConfig } from './provider/artist/config';
@@ -7,9 +7,12 @@ import { promiseAny } from './utils/promise-any';
 const fetchArtForArtist = async (artist: string) => {
   const album = '';
   const json = await getMetaInfo({ artist, album });
-  const {
+  let {
     artist: { mbid },
   } = json;
+  if (!mbid) {
+    mbid = await getMBID(artist);
+  }
   const id = { mbid, artist };
   return await promiseAny(populate(id, artistConfig));
 };
