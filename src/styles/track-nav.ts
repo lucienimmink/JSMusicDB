@@ -1,6 +1,14 @@
 import { css } from 'lit';
 
 export default css`
+  ::-moz-selection {
+    background-color: var(--primary);
+    color: var(--letter-color);
+  }
+  ::selection {
+    background-color: var(--primary);
+    color: var(--letter-color);
+  }
   .track {
     display: flex;
     flex-direction: row;

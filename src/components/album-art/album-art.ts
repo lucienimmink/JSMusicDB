@@ -36,6 +36,12 @@ export class AlbumArt extends LitElement {
         transition: all 0.2s ease-in-out;
         background: rgba(255, 255, 255, 0.85);
       }
+      ::-moz-selection {
+        background-color: var(--primary);
+      }
+      ::selection {
+        background-color: var(--primary);
+      }
       p {
         margin: 0;
       }
