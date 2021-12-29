@@ -1,6 +1,14 @@
 import { css } from 'lit';
 
 export default css`
+  ::-moz-selection {
+    background-color: var(--letter-color);
+    color: var(--primary);
+  }
+  ::selection {
+    background-color: var(--letter-color);
+    color: var(--primary);
+  }
   ul {
     background-color: var(--primary);
     display: flex;
