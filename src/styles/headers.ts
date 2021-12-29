@@ -12,7 +12,7 @@ export default css`
     position: sticky;
     z-index: 1;
     margin-bottom: -1px;
-    top: 50px;
+    top: 49px;
     font-size: 1.2rem;
     font-weight: 300;
   }

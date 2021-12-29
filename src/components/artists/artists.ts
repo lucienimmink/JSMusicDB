@@ -36,6 +36,7 @@ export class LetterNav extends LitElement {
   _getArtists = () => {
     musicdb
       .then((mdb: any) => {
+        this.artists = [];
         this.letters = mdb.sortedLetters;
         this.letters.forEach((letter: any) => {
           const header = {

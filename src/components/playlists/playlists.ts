@@ -1,6 +1,7 @@
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import '@lit-labs/virtualizer';
+import { navigator } from '@addasoft/lit-element-router';
 import timeSpan from '../../utils/timespan';
 import {
   getCurrentPlaylist,
@@ -30,6 +31,7 @@ import buttons from '../../styles/buttons';
 import { redoIcon } from '../icons/redo';
 
 @customElement('playlists-nav')
+@navigator
 export class LetterNav extends LitElement {
   @property()
   activeroute: string;
@@ -211,8 +213,10 @@ export class LetterNav extends LitElement {
     e.preventDefault();
     // @ts-ignore
     const switchTo = e?.target?.value;
-    e.preventDefault();
-    this._doSwitchPlaylist(switchTo);
+    this.navigate(`/playlists/${switchTo}`);
+  }
+  navigate(href: any) {
+    throw new Error(`Method not implemented. ${href}`);
   }
   _reloadPlaylist(id: string) {
     this._doSwitchPlaylist(id);

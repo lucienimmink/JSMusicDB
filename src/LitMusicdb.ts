@@ -319,7 +319,7 @@ export class LitMusicdb extends LitElement {
                   ></artists-nav>
                 </div>
                 <div route="albums">
-                  <albums-nav></albums-nav>
+                  <albums-nav .hasVisiblePlayer=${this.showPlayer}></albums-nav>
                 </div>
                 <div route="years">
                   <years-nav .hasVisiblePlayer=${this.showPlayer}></years-nav>
