@@ -10,7 +10,8 @@
     "start:build": "npm run build && web-dev-server --root-dir dist --app-index index.html --open --compatibility none",
     "start": "concurrently --kill-others --names tsc,web-dev-server \"npm run tsc:watch\" \"web-dev-server --app-index index.html --node-resolve --open --watch\"",
     "tsc:watch": "tsc --watch",
-    "postversion": "git push && git push --tags"
+    "postversion": "git push && git push --tags",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@open-wc/building-rollup": "^2.0.0",
@@ -47,15 +48,10 @@
     "singleQuote": true,
     "arrowParens": "avoid"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
     "*.ts": [
-      "eslint --fix",
-      "prettier --write",
+      "npm run lint",
+      "npm run format",
       "git add"
     ]
   },
