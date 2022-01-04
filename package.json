@@ -10,10 +10,7 @@
     "start:build": "npm run build && web-dev-server --root-dir dist --app-index index.html --open --compatibility none",
     "start": "concurrently --kill-others --names tsc,web-dev-server \"npm run tsc:watch\" \"web-dev-server --app-index index.html --node-resolve --open --watch\"",
     "tsc:watch": "tsc --watch",
-    "postversion": "git push && git push --tags",
-    "docker:build": "npm run --silent build && docker build -t jsmusicdb/jsmusicdb:latest .",
-    "docker:start": "npm run --silent docker:build && docker run --rm -d -p 3000:80/tcp jsmusicdb/jsmusicdb:latest",
-    "docker:push": "docker push jsmusicdb/jsmusicdb:latest"
+    "postversion": "git push && git push --tags"
   },
   "devDependencies": {
     "@open-wc/building-rollup": "^2.0.0",

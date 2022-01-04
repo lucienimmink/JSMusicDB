@@ -7,6 +7,7 @@ import versionInjector from 'rollup-plugin-version-injector';
 import dotenv from 'rollup-plugin-dotenv';
 
 const baseConfig = createSpaConfig({
+  // eslint-disable-next-line no-undef
   developmentMode: process.env.ROLLUP_WATCH === 'true',
   injectServiceWorker: false,
   workbox: false,
@@ -30,9 +31,8 @@ export default merge(baseConfig, {
   manualChunks: moduleID => {
     if (moduleID.includes('node_modules')) {
       return 'vendor';
-    } else {
-      return 'main';
     }
+    return 'main';
   },
   output: [
     {
