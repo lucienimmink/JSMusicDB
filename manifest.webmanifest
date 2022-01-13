@@ -10,33 +10,33 @@
   "description": "Music database and player built with webtechnology",
   "icons": [
     {
-      "src": "/public/android-chrome-48x48.png",
+      "src": "/assets/android-chrome-48x48.png",
       "sizes": "48x48"
     },
     {
-      "src": "/public/android-chrome-72x72.png",
+      "src": "/assets/android-chrome-72x72.png",
       "sizes": "72x72"
     },
     {
-      "src": "/public/android-chrome-96x96.png",
+      "src": "/assets/android-chrome-96x96.png",
       "sizes": "96x96"
     },
     {
-      "src": "/public/android-chrome-144x144.png",
+      "src": "/assets/android-chrome-144x144.png",
       "sizes": "144x144"
     },
     {
-      "src": "/public/android-chrome-192x192.png",
+      "src": "/assets/android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/public/android-chrome-512x512.png",
+      "src": "/assets/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     },
     {
-      "src": "/public/maskable_icon.png",
+      "src": "/assets/maskable_icon.png",
       "sizes": "256x256",
       "type": "image/png",
       "purpose": "any maskable"
@@ -45,32 +45,32 @@
   "categories": ["entertainment", "music"],
   "screenshots": [
     {
-      "src": "/public/screenshot-1.webp",
+      "src": "/assets/screenshot-1.webp",
       "sizes": "1920x1040",
       "type": "image/webp"
     },
     {
-      "src": "/public/screenshot-2.webp",
+      "src": "/assets/screenshot-2.webp",
       "sizes": "1920x1040",
       "type": "image/webp"
     },
     {
-      "src": "/public/screenshot-3.webp",
+      "src": "/assets/screenshot-3.webp",
       "sizes": "1920x1040",
       "type": "image/webp"
     },
     {
-      "src": "/public/screenshot-4.webp",
+      "src": "/assets/screenshot-4.webp",
       "sizes": "1920x1040",
       "type": "image/webp"
     },
     {
-      "src": "/public/screenshot-5.webp",
+      "src": "/assets/screenshot-5.webp",
       "sizes": "1920x1040",
       "type": "image/webp"
     },
     {
-      "src": "/public/screenshot-6.webp",
+      "src": "/assets/screenshot-6.webp",
       "sizes": "1920x1040",
       "type": "image/webp"
     }

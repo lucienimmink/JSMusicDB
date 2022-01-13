@@ -8,36 +8,36 @@ A web standards based music database and player written using Lit and TypeScript
 
 #### Light mode
 
-![Screenshot of JSMusicDB in light mode](https://www.jsmusicdb.com/public/screenshot-1.webp 'Screenshot of JSMusicDB in light mode')
+![Screenshot of JSMusicDB in light mode](https://www.jsmusicdb.com/assets/screenshot-1.webp 'Screenshot of JSMusicDB in light mode')
 
 #### Dark mode
 
-![Screenshot of JSMusicDB in dark mode](https://www.jsmusicdb.com/public/screenshot-2.webp 'Screenshot of JSMusicDB in dark mode')
+![Screenshot of JSMusicDB in dark mode](https://www.jsmusicdb.com/assets/screenshot-2.webp 'Screenshot of JSMusicDB in dark mode')
 
 #### Now playing screen with spectrum analyser
 
-![Screenshot of JSMusicDB showing the now-playing screen](https://www.jsmusicdb.com/public/screenshot-3.webp 'Screenshot of JSMusicDB showing the now-playing screen')
+![Screenshot of JSMusicDB showing the now-playing screen](https://www.jsmusicdb.com/assets/screenshot-3.webp 'Screenshot of JSMusicDB showing the now-playing screen')
 
 #### All artists starting the the same letter
 
-![Screenshot of JSMusicDB letter view](https://www.jsmusicdb.com/public/screenshot-4.webp 'Screenshot of JSMusicDB letter view')
+![Screenshot of JSMusicDB letter view](https://www.jsmusicdb.com/assets/screenshot-4.webp 'Screenshot of JSMusicDB letter view')
 
 #### Endless list of all albums
 
-![Screenshot of JSMusicDB albums vies](https://www.jsmusicdb.com/public/screenshot-5.webp 'Screenshot of JSMusicDB albums view')
+![Screenshot of JSMusicDB albums vies](https://www.jsmusicdb.com/assets/screenshot-5.webp 'Screenshot of JSMusicDB albums view')
 
 #### Various playlists
 
-![Screenshot of JSMusicDB playlist view](https://www.jsmusicdb.com/public/screenshot-6.webp 'Screenshot of JSMusicDB playlist view')
+![Screenshot of JSMusicDB playlist view](https://www.jsmusicdb.com/assets/screenshot-6.webp 'Screenshot of JSMusicDB playlist view')
 
 ### Mobile
 
-![Screenshot of JSMusicDB in light mode](https://www.jsmusicdb.com/public/screenshot-1-xs.webp 'Screenshot of JSMusicDB in light mode')
-![Screenshot of JSMusicDB in dark mode](https://www.jsmusicdb.com/public/screenshot-2-xs.webp 'Screenshot of JSMusicDB in dark mode')
-![Screenshot of JSMusicDB showing the now-playing screen](https://www.jsmusicdb.com/public/screenshot-3-xs.webp 'Screenshot of JSMusicDB showing the now-playing screen')
-![Screenshot of JSMusicDB letter view](https://www.jsmusicdb.com/public/screenshot-4-xs.webp 'Screenshot of JSMusicDB letter view')
-![Screenshot of JSMusicDB albums vies](https://www.jsmusicdb.com/public/screenshot-5-xs.webp 'Screenshot of JSMusicDB albums view')
-![Screenshot of JSMusicDB playlist view](https://www.jsmusicdb.com/public/screenshot-6-xs.webp 'Screenshot of JSMusicDB playlist view')
+![Screenshot of JSMusicDB in light mode](https://www.jsmusicdb.com/assets/screenshot-1-xs.webp 'Screenshot of JSMusicDB in light mode')
+![Screenshot of JSMusicDB in dark mode](https://www.jsmusicdb.com/assets/screenshot-2-xs.webp 'Screenshot of JSMusicDB in dark mode')
+![Screenshot of JSMusicDB showing the now-playing screen](https://www.jsmusicdb.com/assets/screenshot-3-xs.webp 'Screenshot of JSMusicDB showing the now-playing screen')
+![Screenshot of JSMusicDB letter view](https://www.jsmusicdb.com/assets/screenshot-4-xs.webp 'Screenshot of JSMusicDB letter view')
+![Screenshot of JSMusicDB albums vies](https://www.jsmusicdb.com/assets/screenshot-5-xs.webp 'Screenshot of JSMusicDB albums view')
+![Screenshot of JSMusicDB playlist view](https://www.jsmusicdb.com/assets/screenshot-6-xs.webp 'Screenshot of JSMusicDB playlist view')
 
 ## API keys
 
