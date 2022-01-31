@@ -24,7 +24,7 @@
     "@web/dev-server-rollup": "^0.3.11",
     "concurrently": "^7.0.0",
     "deepmerge": "^4.2.2",
-    "dotenv": "^14.0.0",
+    "dotenv": "^15.0.0",
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.3.0",
     "husky": "^7.0.4",
