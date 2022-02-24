@@ -9,7 +9,7 @@ jobs:
       - name: Actions/checkout
         uses: actions/checkout@v2.4.0
       - name: Actions/setup-node
-        uses: actions/setup-node@v2.5.1
+        uses: actions/setup-node@v3.0.0
       - name: NPM install
         uses: jaid/action-npm-install@v1.2.4
       - name: Create env file
