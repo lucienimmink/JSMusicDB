@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Actions/checkout
-        uses: actions/checkout@v3.0.0
+        uses: actions/checkout@v3.0.1
       - name: Actions/setup-node
         uses: actions/setup-node@v3.0.0
       - name: NPM install
