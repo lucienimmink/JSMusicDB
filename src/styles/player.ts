@@ -6,6 +6,14 @@ export default css`
     box-shadow: 0 7px 11px var(--text-color);
     transition: background-color 0.5s ease-in-out;
   }
+  ::-moz-selection {
+    background-color: var(--primary);
+    color: var(--letter-color);
+  }
+  ::selection {
+    background-color: var(--primary);
+    color: var(--letter-color);
+  }
   audio {
     display: none;
   }
