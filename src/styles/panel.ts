@@ -28,6 +28,10 @@ export default css`
     .panel {
       width: 11vw;
       height: 11vw;
+      max-width: 300px;
+      max-height: 300px;
+    }
+    .panel-home {
       max-width: 155px;
       max-height: 155px;
     }

@@ -138,7 +138,7 @@ export class HomeNav extends LitElement {
                         .escapedLetter}/artist/${album.artist
                         .escapedName}/album/${album.escapedName}"
                     >
-                      <div class="panel">
+                      <div class="panel panel-home">
                         <album-art
                           artist="${album.artist.albumArtist ||
                           album.artist.name}"
