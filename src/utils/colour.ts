@@ -1,8 +1,6 @@
 declare const window: any;
 
-//@ts-ignore
 import { tinycolor } from '@thebespokepixel/es-tinycolor';
-//@ts-ignore
 import FastAverageColor from 'fast-average-color';
 import { getSettingByName, setSetting } from './settings';
 

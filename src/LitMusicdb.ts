@@ -103,6 +103,7 @@ export class LitMusicdb extends LitElement {
         }
       );
     }
+    this._getTheme();
     musicdb
       .then(() => {
         getSettingByName('playliststate').then((start: any) => {
@@ -127,7 +128,7 @@ export class LitMusicdb extends LitElement {
         this.loading = false;
         this.requestUpdate();
       });
-    this._getTheme();
+
     getSK()
       .then((sk: unknown) => {
         this.hasSK = !!sk;
