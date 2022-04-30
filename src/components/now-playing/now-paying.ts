@@ -1,8 +1,15 @@
-import { LitElement, html } from 'lit';
+import '@lit-labs/virtualizer';
+import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
-import '@lit-labs/virtualizer';
-
+import buttons from '../../styles/buttons';
+import container from '../../styles/container';
+import controls from '../../styles/controls';
+import nowPlaying from '../../styles/now-playing';
+import progress from '../../styles/progress-bar';
+import { animateCSS, animationCSS } from '../../utils/animations';
+import { ACCENT_COLOR } from '../../utils/colour';
+import { global as EventBus } from '../../utils/EventBus';
 import {
   getCurrentPlaylist,
   NEXT_TRACK,
@@ -19,30 +26,20 @@ import {
   TOGGLE_SHUFFLE_UPDATED,
   UPDATE_PLAYER,
 } from '../../utils/player';
-import timeSpan from '../../utils/timespan';
 import { getSettingByName, TOGGLE_SETTING } from '../../utils/settings';
-
+import timeSpan from '../../utils/timespan';
+import { albumsIcon } from '../icons/albums';
+import { artistsIcon } from '../icons/artists';
+import { chevronDownIcon } from '../icons/chevron-down';
+import { chevronUpIcon } from '../icons/chevron-up';
+import { heartIcon } from '../icons/heart';
 import { nextIcon } from '../icons/next';
 import { pauseIcon } from '../icons/pause';
 import { playIcon } from '../icons/play';
+import { playlistsIcon } from '../icons/playlists';
 import { previousIcon } from '../icons/previous';
 import { randomIcon } from '../icons/random';
 import { volumeIcon } from '../icons/volume';
-import { heartIcon } from '../icons/heart';
-
-import container from '../../styles/container';
-import progress from '../../styles/progress-bar';
-import controls from '../../styles/controls';
-import { ACCENT_COLOR } from '../../utils/colour';
-import { chevronUpIcon } from '../icons/chevron-up';
-import { chevronDownIcon } from '../icons/chevron-down';
-import { animationCSS, animateCSS } from '../../utils/animations';
-import nowPlaying from '../../styles/now-playing';
-import { artistsIcon } from '../icons/artists';
-import { albumsIcon } from '../icons/albums';
-import { playlistsIcon } from '../icons/playlists';
-import { global as EventBus } from '../../utils/EventBus';
-import buttons from '../../styles/buttons';
 
 @customElement('now-playing')
 export class NowPlaying extends LitElement {

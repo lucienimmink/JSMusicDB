@@ -1,16 +1,15 @@
-import { LitElement, html, nothing } from 'lit';
+import { html, LitElement, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { getRecentlyListened, getLastFMUserName } from '../../utils/lastfm';
-import musicdb from '../musicdb';
-import headers from '../../styles/headers';
 import container from '../../styles/container';
-import smallMuted from '../../styles/small-muted';
-import panel from '../../styles/panel';
-
-import { cdSVG } from '../icons/cd';
+import headers from '../../styles/headers';
 import home from '../../styles/home';
-import { DUMMY_TRACK, REFRESH } from '../../utils/musicdb';
+import panel from '../../styles/panel';
+import smallMuted from '../../styles/small-muted';
 import { global as EventBus } from '../../utils/EventBus';
+import { getLastFMUserName, getRecentlyListened } from '../../utils/lastfm';
+import { DUMMY_TRACK, REFRESH } from '../../utils/musicdb';
+import { cdSVG } from '../icons/cd';
+import musicdb from '../musicdb';
 
 const INTERVAL = 1000 * 30;
 const LATEST_ADDITIONS = 14;

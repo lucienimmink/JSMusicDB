@@ -1,15 +1,15 @@
-import { LitElement, html, nothing } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
 import '@lit-labs/virtualizer';
-import '../app-link/app-link';
-import musicdb from '../musicdb';
-import headers from '../../styles/headers';
+import { html, LitElement, nothing } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 import container from '../../styles/container';
+import headers from '../../styles/headers';
 import jumplist from '../../styles/jumplist';
 import smallMuted from '../../styles/small-muted';
 import virtualScroll from '../../styles/virtual-scroll';
-import { REFRESH } from '../../utils/musicdb';
 import { global as EventBus } from '../../utils/EventBus';
+import { REFRESH } from '../../utils/musicdb';
+import '../app-link/app-link';
+import musicdb from '../musicdb';
 
 @customElement('albums-nav')
 export class LetterNav extends LitElement {

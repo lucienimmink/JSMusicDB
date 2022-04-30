@@ -1,17 +1,16 @@
-import { LitElement, html, nothing } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
 import { navigator } from '@addasoft/lit-element-router';
-
-import './../app-link/app-link';
-import musicdb from '../musicdb';
+import { html, LitElement, nothing } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 import container from '../../styles/container';
 import headers from '../../styles/headers';
+import search from '../../styles/search';
 import smallMuted from '../../styles/small-muted';
 import warn from '../../styles/warn';
-import timeSpan from '../../utils/timespan';
-import search from '../../styles/search';
-import { REFRESH } from '../../utils/musicdb';
 import { global as EventBus } from '../../utils/EventBus';
+import { REFRESH } from '../../utils/musicdb';
+import timeSpan from '../../utils/timespan';
+import musicdb from '../musicdb';
+import './../app-link/app-link';
 
 const MAX = 100;
 

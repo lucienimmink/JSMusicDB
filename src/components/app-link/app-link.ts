@@ -1,6 +1,6 @@
-import { LitElement, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
 import { navigator } from '@addasoft/lit-element-router';
+import { html, LitElement } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 import appLink from '../../styles/app-link';
 
 @customElement('app-link')

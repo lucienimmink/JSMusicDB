@@ -1,19 +1,19 @@
-import { LitElement, html, nothing } from 'lit';
+import { html, LitElement, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
+import buttons from '../../styles/buttons';
+import container from '../../styles/container';
+import headers from '../../styles/headers';
+import login from '../../styles/login';
+import modals from '../../styles/modals';
+import { animateCSS, animationCSS } from '../../utils/animations';
 import {
   authenticate,
   getSK,
-  setSk,
   setLastFMUserName,
+  setSk,
 } from '../../utils/lastfm';
-import headers from '../../styles/headers';
-import container from '../../styles/container';
-import login from '../../styles/login';
-import { timesIcon } from '../icons/times';
 import { infoIcon } from '../icons/info';
-import buttons from '../../styles/buttons';
-import modals from '../../styles/modals';
-import { animateCSS, animationCSS } from '../../utils/animations';
+import { timesIcon } from '../icons/times';
 
 @customElement('lastfm-login')
 export class LetterNav extends LitElement {

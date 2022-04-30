@@ -1,10 +1,10 @@
-import { LitElement, html } from 'lit';
+import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import './../app-link/app-link';
 import musicdb from '../../components/musicdb';
-import smallMuted from '../../styles/small-muted';
-import panel from '../../styles/panel';
 import letter from '../../styles/letter';
+import panel from '../../styles/panel';
+import smallMuted from '../../styles/small-muted';
+import './../app-link/app-link';
 
 @customElement('artists-in-letter')
 export class Letter extends LitElement {

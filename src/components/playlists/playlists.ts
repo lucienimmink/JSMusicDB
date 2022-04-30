@@ -1,34 +1,34 @@
-import { LitElement, html, nothing } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
-import '@lit-labs/virtualizer';
 import { navigator } from '@addasoft/lit-element-router';
-import timeSpan from '../../utils/timespan';
+import '@lit-labs/virtualizer';
+import { html, LitElement, nothing } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import buttons from '../../styles/buttons';
+import container from '../../styles/container';
+import headers from '../../styles/headers';
+import playlists from '../../styles/playlists';
+import responsive from '../../styles/responsive';
+import smallMuted from '../../styles/small-muted';
+import { global as EventBus } from '../../utils/EventBus';
+import { getLastFMUserName } from '../../utils/lastfm';
 import {
   getCurrentPlaylist,
-  setCurrentPlaylist,
-  startPlaylist,
+  getNewPlaylistForLovedTracks,
+  getNewPlaylistForRadio,
   getNewPlaylistForRandom,
   getNewPlaylistForRandomPref,
-  getNewPlaylistForRadio,
-  getNewPlaylistForLovedTracks,
-  UPDATE_PLAYER,
-  LOAD_PLAYLIST,
-  LOADED_PLAYLIST,
   getTopTracksForUser,
+  LOADED_PLAYLIST,
+  LOAD_PLAYLIST,
+  setCurrentPlaylist,
+  startPlaylist,
+  UPDATE_PLAYER,
 } from '../../utils/player';
-import { getLastFMUserName } from '../../utils/lastfm';
-import { playIcon } from '../icons/play';
+import timeSpan from '../../utils/timespan';
 import { pauseIcon } from '../icons/pause';
-import musicdb from '../musicdb';
-import '../loading-indicator/loading-indicator';
-import headers from '../../styles/headers';
-import container from '../../styles/container';
-import smallMuted from '../../styles/small-muted';
-import responsive from '../../styles/responsive';
-import playlists from '../../styles/playlists';
-import { global as EventBus } from '../../utils/EventBus';
-import buttons from '../../styles/buttons';
+import { playIcon } from '../icons/play';
 import { redoIcon } from '../icons/redo';
+import '../loading-indicator/loading-indicator';
+import musicdb from '../musicdb';
 
 @customElement('playlists-nav')
 @navigator

@@ -1,46 +1,43 @@
-import { LitElement, html, nothing } from 'lit';
-import { customElement } from 'lit/decorators.js';
 import { router } from '@addasoft/lit-element-router';
-
-import routes from './routes';
-import { global as EventBus } from './utils/EventBus';
-import { START_CURRENT_PLAYLIST, STOP_PLAYER } from './utils/player';
-import { getSettingByName, TOGGLE_SETTING } from './utils/settings';
-import musicdb, { refresh, update } from './components/musicdb';
-
+import { html, LitElement, nothing } from 'lit';
+import { customElement } from 'lit/decorators.js';
+import './components/album-art/album-art';
+import './components/album/album';
+import './components/albums/albums';
 import './components/app-link/app-link';
 import './components/app-main/app-main';
-import './components/letter-nav/letter-nav';
+import './components/artist/artist';
+import './components/artists/artists';
 import './components/header/header';
 import './components/home/home';
-import './components/letters/letters';
-import './components/artists/artists';
-import './components/albums/albums';
-import './components/years/years';
-import './components/letter/letter';
-import './components/artist/artist';
-import './components/playlists/playlists';
-import './components/album/album';
-import './components/album-art/album-art';
-import './components/settings/settings';
 import './components/last-fm/login';
-import './components/mp3stream/login';
-import './components/player/player';
-import './components/now-playing/now-paying';
-import './components/search/search';
+import './components/letter-nav/letter-nav';
+import './components/letter/letter';
+import './components/letters/letters';
 import './components/loading-indicator/loading-indicator';
 import './components/loading-indicator/progress-spinner';
-
-import { light, dark, system } from './styles/themes';
-import timeSpan from './utils/timespan';
-import { getCurrentTheme, updateSunriseData } from './utils/colour';
-import { getSK, RESET_LASTFM } from './utils/lastfm';
-import { DONE_RELOADING, getJwt, RESET_SERVER } from './utils/node-mp3stream';
-import { animationCSS, animateCSS } from './utils/animations';
-import litMusicdb from './styles/lit-musicdb';
-import { REFRESH } from './utils/musicdb';
-import scrollbar from './styles/scrollbar';
+import './components/mp3stream/login';
+import musicdb, { refresh, update } from './components/musicdb';
+import './components/now-playing/now-paying';
+import './components/player/player';
+import './components/playlists/playlists';
+import './components/search/search';
+import './components/settings/settings';
 import * as sideNav from './components/side-nav/side-nav';
+import './components/years/years';
+import routes from './routes';
+import litMusicdb from './styles/lit-musicdb';
+import scrollbar from './styles/scrollbar';
+import { dark, light, system } from './styles/themes';
+import { animateCSS, animationCSS } from './utils/animations';
+import { getCurrentTheme, updateSunriseData } from './utils/colour';
+import { global as EventBus } from './utils/EventBus';
+import { getSK, RESET_LASTFM } from './utils/lastfm';
+import { REFRESH } from './utils/musicdb';
+import { DONE_RELOADING, getJwt, RESET_SERVER } from './utils/node-mp3stream';
+import { START_CURRENT_PLAYLIST, STOP_PLAYER } from './utils/player';
+import { getSettingByName, TOGGLE_SETTING } from './utils/settings';
+import timeSpan from './utils/timespan';
 
 @customElement('lit-musicdb')
 @router

@@ -1,57 +1,14 @@
 declare const MediaMetadata: any;
 
-import { LitElement, html, nothing } from 'lit';
+import { html, LitElement, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
-import { global as EventBus } from '../../utils/EventBus';
-import {
-  getCurrentPlaylist,
-  setCurrentPlaylist,
-  setCurrentTime,
-  getNextPlaylist,
-  getCurrentTime,
-  shuffle,
-  CHANGE_TITLE,
-  START_CURRENT_PLAYLIST,
-  STOP_PLAYER,
-  LOAD_PLAYLIST,
-  LOADED_PLAYLIST,
-  TOGGLE_PLAY_PAUSE_PLAYER,
-  TOGGLE_LOVED,
-  TOGGLE_LOVED_UPDATED,
-  PREVIOUS_TRACK,
-  NEXT_TRACK,
-  SET_POSITION,
-  TOGGLE_SHUFFLE_UPDATED,
-  TOGGLE_SHUFFLE,
-  getIsShuffled,
-  setIsShuffled,
-  UPDATE_PLAYER,
-  PLAY_PLAYER_START,
-  PLAY_PLAYER,
-  PAUSE_PLAYER,
-} from '../../utils/player';
-import {
-  announceNowPlaying,
-  scrobbleTrack,
-  toggleLoved,
-  getTrackInfo,
-  getLastFMUserName,
-} from '../../utils/lastfm';
-import { getSettingByName, TOGGLE_SETTING } from '../../utils/settings';
-import { getServer, getJwt } from '../../utils/node-mp3stream';
-
-import { nextIcon } from '../icons/next';
-import { pauseIcon } from '../icons/pause';
-import { playIcon } from '../icons/play';
-import { previousIcon } from '../icons/previous';
-import { randomIcon } from '../icons/random';
-import { volumeIcon } from '../icons/volume';
-import { heartIcon } from '../icons/heart';
-
-import progress from '../../styles/progress-bar';
+import buttons from '../../styles/buttons';
 import controls from '../../styles/controls';
+import player from '../../styles/player';
+import progress from '../../styles/progress-bar';
 import responsive from '../../styles/responsive';
+import { animateCSS, animationCSS } from '../../utils/animations';
 import {
   ACCENT_COLOR,
   addCustomCss,
@@ -61,9 +18,50 @@ import {
   LIGHT,
   removeCustomCss,
 } from '../../utils/colour';
-import { animationCSS, animateCSS } from '../../utils/animations';
-import player from '../../styles/player';
-import buttons from '../../styles/buttons';
+import { global as EventBus } from '../../utils/EventBus';
+import {
+  announceNowPlaying,
+  getLastFMUserName,
+  getTrackInfo,
+  scrobbleTrack,
+  toggleLoved,
+} from '../../utils/lastfm';
+import { getJwt, getServer } from '../../utils/node-mp3stream';
+import {
+  CHANGE_TITLE,
+  getCurrentPlaylist,
+  getCurrentTime,
+  getIsShuffled,
+  getNextPlaylist,
+  LOADED_PLAYLIST,
+  LOAD_PLAYLIST,
+  NEXT_TRACK,
+  PAUSE_PLAYER,
+  PLAY_PLAYER,
+  PLAY_PLAYER_START,
+  PREVIOUS_TRACK,
+  setCurrentPlaylist,
+  setCurrentTime,
+  setIsShuffled,
+  SET_POSITION,
+  shuffle,
+  START_CURRENT_PLAYLIST,
+  STOP_PLAYER,
+  TOGGLE_LOVED,
+  TOGGLE_LOVED_UPDATED,
+  TOGGLE_PLAY_PAUSE_PLAYER,
+  TOGGLE_SHUFFLE,
+  TOGGLE_SHUFFLE_UPDATED,
+  UPDATE_PLAYER,
+} from '../../utils/player';
+import { getSettingByName, TOGGLE_SETTING } from '../../utils/settings';
+import { heartIcon } from '../icons/heart';
+import { nextIcon } from '../icons/next';
+import { pauseIcon } from '../icons/pause';
+import { playIcon } from '../icons/play';
+import { previousIcon } from '../icons/previous';
+import { randomIcon } from '../icons/random';
+import { volumeIcon } from '../icons/volume';
 
 const ONEMINUTE = 1 * 60 * 1000;
 const FOURMINUTES = 4 * ONEMINUTE;

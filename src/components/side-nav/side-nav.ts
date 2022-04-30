@@ -1,23 +1,21 @@
-import { LitElement, html, nothing } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
 import { navigator } from '@addasoft/lit-element-router';
-import './../app-link/app-link';
-
-import { homeIcon } from '../icons/home.js';
-import { timesIcon } from '../icons/times.js';
-import { lettersIcon } from '../icons/letters.js';
-import { artistsIcon } from '../icons/artists.js';
-import { albumsIcon } from '../icons/albums.js';
-import { yearsIcon } from '../icons/years.js';
-import { playlistsIcon } from '../icons/playlists.js';
-import { nowPlayingIcon } from '../icons/now-playing.js';
-import { scrobbleCacheIcon } from '../icons/scrobble-cache.js';
-import { settingsIcon } from '../icons/settings.js';
-import { getScrobbleCache } from '../../utils/settings';
-
+import { html, LitElement, nothing } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 import responsive from '../../styles/responsive';
 import sideNav from '../../styles/side-nav';
 import { global as EventBus } from '../../utils/EventBus';
+import { getScrobbleCache } from '../../utils/settings';
+import { albumsIcon } from '../icons/albums.js';
+import { artistsIcon } from '../icons/artists.js';
+import { homeIcon } from '../icons/home.js';
+import { lettersIcon } from '../icons/letters.js';
+import { nowPlayingIcon } from '../icons/now-playing.js';
+import { playlistsIcon } from '../icons/playlists.js';
+import { scrobbleCacheIcon } from '../icons/scrobble-cache.js';
+import { settingsIcon } from '../icons/settings.js';
+import { timesIcon } from '../icons/times.js';
+import { yearsIcon } from '../icons/years.js';
+import './../app-link/app-link';
 
 export const TOGGLE_MENU = 'toggle-menu';
 @customElement('side-nav')

@@ -1,19 +1,19 @@
-import { LitElement, html, nothing } from 'lit';
+import { html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import './album-details';
-import '../track/track';
-import musicdb from '../musicdb';
-import {
-  setCurrentPlaylist,
-  startPlaylist,
-  setCurrentTime,
-  getCurrentPlaylist,
-} from '../../utils/player';
-import headers from '../../styles/headers';
-import container from '../../styles/container';
 import album from '../../styles/album';
-import { REFRESH } from '../../utils/musicdb';
+import container from '../../styles/container';
+import headers from '../../styles/headers';
 import { global as EventBus } from '../../utils/EventBus';
+import { REFRESH } from '../../utils/musicdb';
+import {
+  getCurrentPlaylist,
+  setCurrentPlaylist,
+  setCurrentTime,
+  startPlaylist,
+} from '../../utils/player';
+import musicdb from '../musicdb';
+import '../track/track';
+import './album-details';
 
 @customElement('tracks-in-album')
 export class Album extends LitElement {

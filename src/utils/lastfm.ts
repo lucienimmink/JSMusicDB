@@ -1,6 +1,6 @@
 import { del, get, set } from 'idb-keyval';
 import { Encryption } from './encryption';
-import { getScrobbleCache, setScrobbleCache, getSettings } from './settings';
+import { getScrobbleCache, getSettings, setScrobbleCache } from './settings';
 
 export const LASTFMAPIKEY = process.env.LASTFM_APIKEY!;
 export const LASTFMSECRET = process.env.LASTFM_SECRET!;

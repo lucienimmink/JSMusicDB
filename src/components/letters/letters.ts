@@ -1,10 +1,10 @@
-import { LitElement, html } from 'lit';
+import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import './../app-link/app-link';
-import musicdb from '../musicdb';
 import jumplist from '../../styles/jumplist';
-import { REFRESH } from '../../utils/musicdb';
 import { global as EventBus } from '../../utils/EventBus';
+import { REFRESH } from '../../utils/musicdb';
+import musicdb from '../musicdb';
+import './../app-link/app-link';
 
 @customElement('letters-nav')
 export class LetterNav extends LitElement {

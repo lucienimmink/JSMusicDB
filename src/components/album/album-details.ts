@@ -1,18 +1,16 @@
-import { LitElement, html, nothing } from 'lit';
+import { html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-
-import '../track/track';
-import musicdb from '../musicdb';
-import timeSpan from '../../utils/timespan';
-
-import container from '../../styles/container';
-import buttons from '../../styles/buttons';
 import albumDetails from '../../styles/album-details';
-import smallMuted from '../../styles/small-muted';
-import { hqIcon } from '../icons/hq';
+import buttons from '../../styles/buttons';
+import container from '../../styles/container';
 import responsive from '../../styles/responsive';
-import { getSettingByName, TOGGLE_SETTING } from '../../utils/settings';
+import smallMuted from '../../styles/small-muted';
 import { global as EventBus } from '../../utils/EventBus';
+import { getSettingByName, TOGGLE_SETTING } from '../../utils/settings';
+import timeSpan from '../../utils/timespan';
+import { hqIcon } from '../icons/hq';
+import musicdb from '../musicdb';
+import '../track/track';
 
 @customElement('album-details')
 export class AlbumDetails extends LitElement {

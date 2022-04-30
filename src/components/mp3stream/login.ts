@@ -1,22 +1,22 @@
-import { LitElement, html, nothing } from 'lit';
+import { html, LitElement, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
-
+import buttons from '../../styles/buttons';
+import container from '../../styles/container';
+import headers from '../../styles/headers';
+import login from '../../styles/login';
+import modals from '../../styles/modals';
+import { animateCSS, animationCSS } from '../../utils/animations';
 import {
-  canLogin,
-  getPublicKey,
   authenticate,
-  setJwt,
+  canLogin,
   getJwt,
+  getPublicKey,
+  setJwt,
   setServer,
 } from '../../utils/node-mp3stream';
-import headers from '../../styles/headers';
-import container from '../../styles/container';
-import login from '../../styles/login';
 import { infoIcon } from '../icons/info';
-import buttons from '../../styles/buttons';
-import modals from '../../styles/modals';
 import { timesIcon } from '../icons/times';
-import { animateCSS, animationCSS } from '../../utils/animations';
+
 @customElement('mp3stream-login')
 export class LetterNav extends LitElement {
   username: string;

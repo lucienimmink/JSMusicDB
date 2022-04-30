@@ -1,12 +1,12 @@
-import { LitElement, html, nothing } from 'lit';
+import { html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import timeSpan from '../../utils/timespan';
-import { UPDATE_PLAYER } from '../../utils/player';
-import { playIcon } from '../icons/play';
-import { pauseIcon } from '../icons/pause';
 import smallMuted from '../../styles/small-muted';
 import trackNav from '../../styles/track-nav';
 import { global as EventBus } from '../../utils/EventBus';
+import { UPDATE_PLAYER } from '../../utils/player';
+import timeSpan from '../../utils/timespan';
+import { pauseIcon } from '../icons/pause';
+import { playIcon } from '../icons/play';
 
 @customElement('track-in-list')
 export class Track extends LitElement {

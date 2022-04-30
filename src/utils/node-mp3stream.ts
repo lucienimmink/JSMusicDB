@@ -1,4 +1,4 @@
-import { get, set, del } from 'idb-keyval';
+import { del, get, set } from 'idb-keyval';
 const MINIMALSTREAMVERSION = '4.0.0';
 const JWT = 'jwt';
 const SERVER = 'server';

@@ -1,9 +1,8 @@
-import { LitElement, html, nothing } from 'lit';
+import { html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import './../app-link/app-link';
-import { barsIcon } from '../icons/bars';
-import musicdb from '../musicdb';
+import header from '../../styles/header';
 import responsive from '../../styles/responsive';
+import { global as EventBus } from '../../utils/EventBus';
 import {
   DONE_RELOADING,
   getJwt,
@@ -12,10 +11,11 @@ import {
   IS_RELOADING,
   POLL_INTERVALL,
 } from '../../utils/node-mp3stream';
-import header from '../../styles/header';
-import { global as EventBus } from '../../utils/EventBus';
 import { CHANGE_TITLE } from '../../utils/player';
+import { barsIcon } from '../icons/bars';
+import musicdb from '../musicdb';
 import { TOGGLE_MENU } from '../side-nav/side-nav';
+import './../app-link/app-link';
 
 @customElement('main-header')
 export class Header extends LitElement {

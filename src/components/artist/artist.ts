@@ -1,12 +1,12 @@
-import { LitElement, html, nothing } from 'lit';
+import { html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import '../app-link/app-link';
 import musicdb from '../../components/musicdb';
-import smallMuted from '../../styles/small-muted';
-import panel from '../../styles/panel';
 import artist from '../../styles/artist';
-import { REFRESH } from '../../utils/musicdb';
+import panel from '../../styles/panel';
+import smallMuted from '../../styles/small-muted';
 import { global as EventBus } from '../../utils/EventBus';
+import { REFRESH } from '../../utils/musicdb';
+import '../app-link/app-link';
 
 @customElement('albums-in-artist')
 export class Artist extends LitElement {

@@ -1,18 +1,20 @@
-import { LitElement, html, nothing } from 'lit';
+import { clear, createStore } from 'idb-keyval';
+import { html, LitElement, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import musicdb, { updateAndRefresh } from '../musicdb';
-import timeSpan from '../../utils/timespan';
-import {
-  getLastParsed,
-  setSetting,
-  getSettings,
-  TOGGLE_SETTING,
-} from '../../utils/settings';
+import buttons from '../../styles/buttons';
+import container from '../../styles/container';
+import headers from '../../styles/headers';
+import responsive from '../../styles/responsive';
+import settings from '../../styles/settings';
+import smallMuted from '../../styles/small-muted';
+import { updateSunriseData } from '../../utils/colour';
+import { global as EventBus } from '../../utils/EventBus';
 import {
   getLastFMUserName,
   removeLastFMLink,
   RESET_LASTFM,
 } from '../../utils/lastfm';
+import { REFRESH } from '../../utils/musicdb';
 import {
   DONE_RELOADING,
   getJwt,
@@ -23,21 +25,19 @@ import {
   resetServer,
   RESET_SERVER,
 } from '../../utils/node-mp3stream';
-import headers from '../../styles/headers';
-import container from '../../styles/container';
-import smallMuted from '../../styles/small-muted';
-import responsive from '../../styles/responsive';
-import buttons from '../../styles/buttons';
-import { updateSunriseData } from '../../utils/colour';
-import settings from '../../styles/settings';
-import { REFRESH } from '../../utils/musicdb';
-import { global as EventBus } from '../../utils/EventBus';
-import { trashIcon } from '../icons/trash';
-import { syncIcon } from '../icons/sync';
-import { clear, createStore } from 'idb-keyval';
+import {
+  getLastParsed,
+  getSettings,
+  setSetting,
+  TOGGLE_SETTING,
+} from '../../utils/settings';
+import timeSpan from '../../utils/timespan';
 import { cloudDownloadIcon } from '../icons/cloudDownload';
-import { unlinkIcon } from '../icons/unlink';
 import { disconnectIcon } from '../icons/disconnect';
+import { syncIcon } from '../icons/sync';
+import { trashIcon } from '../icons/trash';
+import { unlinkIcon } from '../icons/unlink';
+import musicdb, { updateAndRefresh } from '../musicdb';
 
 @customElement('settings-nav')
 export class LetterNav extends LitElement {

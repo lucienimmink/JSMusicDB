@@ -1,10 +1,10 @@
-import { set, get } from 'idb-keyval';
-import { global as EventBus } from './EventBus';
+import { get, set } from 'idb-keyval';
 import musicdb from '../components/musicdb';
+import { global as EventBus } from './EventBus';
 import {
-  getTopArtists,
-  getSimilairArtists,
   getLovedTracks,
+  getSimilairArtists,
+  getTopArtists,
   getTopTracks,
 } from './lastfm';
 
