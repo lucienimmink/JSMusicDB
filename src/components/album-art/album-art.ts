@@ -1,8 +1,9 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { createStore, get, set } from 'idb-keyval';
 import { fetchArtForArtist, fetchArtForAlbum } from './fetchArt';
 import { defaultAlbum, defaultArtist, defaultPixel } from './defaultart';
+import albumArt from '../../styles/album-art';
 @customElement('album-art')
 export class AlbumArt extends LitElement {
   art: any;
@@ -13,6 +14,7 @@ export class AlbumArt extends LitElement {
   artist: any;
   cache: boolean;
   transparent: boolean;
+  isDefault = false;
   dimension: number;
   ARTBASE = `https://res.cloudinary.com/jsmusicdb-com/image/fetch/f_auto`;
 
@@ -29,30 +31,7 @@ export class AlbumArt extends LitElement {
     };
   }
   static get styles() {
-    return css`
-      img {
-        width: 100%;
-        height: 100%;
-        transition: all 0.2s ease-in-out;
-        background: rgba(255, 255, 255, 0.85);
-      }
-      ::-moz-selection {
-        background-color: var(--primary);
-      }
-      ::selection {
-        background-color: var(--primary);
-      }
-      p {
-        margin: 0;
-      }
-      .loading {
-        opacity: 0.25;
-        filter: blur(5px);
-      }
-      .transparent {
-        background: transparent;
-      }
-    `;
+    return [albumArt];
   }
   constructor() {
     super();
@@ -85,6 +64,7 @@ export class AlbumArt extends LitElement {
         @error=${(e: Event) => {
           // @ts-ignore
           e.target.classList.remove('loading');
+
           if (this.album) {
             // @ts-ignore
             e.target.src = defaultAlbum;
@@ -94,7 +74,9 @@ export class AlbumArt extends LitElement {
           }
         }}
         loading="lazy"
-        class="${this.transparent ? 'transparent ' : ''}"
+        class="${this.transparent ? 'transparent ' : ''} ${this.isDefault
+          ? 'default'
+          : ''}"
       />
     `;
   }
@@ -146,6 +128,7 @@ export class AlbumArt extends LitElement {
           this.art = defaultPixel;
           this.shadowRoot?.querySelector('img')?.classList.add('loading');
           let cacheKey = `${this.artist}-${this.album}`;
+          this.isDefault = false;
           if (!this.album) {
             cacheKey = `${this.dimension}-${this.artist}`;
           }
@@ -194,14 +177,19 @@ export class AlbumArt extends LitElement {
   }
   async updateArt({ artist, album }: { artist: string; album: string }) {
     let art = this.ARTBASE;
+    this.isDefault = false;
     if (!album) {
       // let's resize those larger artist arts we get.
       art += `,w_${this.dimension},h_${this.dimension},c_fill/`;
       try {
         const remoteURL = await fetchArtForArtist(this.artist);
         art += remoteURL;
-        if (this.isEmptyArt(art)) art = '';
+        if (this.isEmptyArt(art)) {
+          art = '';
+          this.isDefault = true;
+        }
       } catch (e) {
+        this.isDefault = true;
         art = '';
       }
       if (art) {
@@ -215,8 +203,12 @@ export class AlbumArt extends LitElement {
       art += '/';
       try {
         art += await fetchArtForAlbum({ artist, album });
-        if (this.isEmptyArt(art)) art = '';
+        if (this.isEmptyArt(art)) {
+          art = '';
+          this.isDefault = true;
+        }
       } catch (e) {
+        this.isDefault = true;
         art = '';
       }
       if (art) {

@@ -43,6 +43,7 @@ export const dark = css`
     --background2-seethrough: rgba(37, 37, 38, 0.9);
     --background3: rgb(60, 60, 60);
     --background3-seethrough: rgba(60, 60, 60, 0.9);
+    --album-art-filter: invert(0.9);
   }
 `;
 
@@ -89,6 +90,7 @@ export const system = css`
       --background2-seethrough: rgba(37, 37, 38, 0.9);
       --background3: rgb(60, 60, 60);
       --background3-seethrough: rgba(60, 60, 60, 0.9);
+      --album-art-filter: invert(0.9);
     }
   }
 `;
