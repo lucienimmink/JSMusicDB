@@ -4,6 +4,23 @@ import { customElement } from 'lit/decorators.js';
 import albumArt from '../../styles/album-art';
 import { defaultAlbum, defaultArtist, defaultPixel } from './defaultart';
 import { fetchArtForAlbum, fetchArtForArtist } from './fetchArt';
+
+const resizeObserver = new ResizeObserver((entries: any) => {
+  for (const entry of entries) {
+    const element = entry.target as HTMLImageElement;
+    // console.log('Element has changed size', entry, element, this);
+    element.setAttribute(
+      'width',
+      Math.round(Number(entry.contentRect.width)).toString()
+    );
+    element.setAttribute(
+      'height',
+      Math.round(Number(entry.contentRect.height)).toString()
+    );
+    element.dispatchEvent(new CustomEvent('resize', { bubbles: true }));
+  }
+});
+
 @customElement('album-art')
 export class AlbumArt extends LitElement {
   art: any;
@@ -43,11 +60,10 @@ export class AlbumArt extends LitElement {
     this.transparent = false;
     this.dimension = 300;
   }
-  private getDimensions() {
-    // this.dimension = Math.min(
-    //   Math.max(this.offsetWidth, this.offsetHeight) || 300
-    // );
-    this.dimension = 300;
+  public getDimensions() {
+    this.dimension =
+      Number(this.shadowRoot?.querySelector('img')?.getAttribute('width')) ||
+      this.dimension;
   }
   render() {
     return html`
@@ -75,6 +91,8 @@ export class AlbumArt extends LitElement {
         class="${this.transparent ? 'transparent ' : ''} ${this.isDefault
           ? 'default'
           : ''}"
+        width="${this.dimension}"
+        height="${this.dimension}"
       />
     `;
   }
@@ -92,7 +110,7 @@ export class AlbumArt extends LitElement {
       album: this.album,
       dimension: this.dimension,
     };
-    let cacheKey = `${this.artist}-${this.album}`;
+    let cacheKey = `${this.dimension}-${this.artist}-${this.album}`;
     if (!key.album) {
       cacheKey = `${this.dimension}-${this.artist}`;
     }
@@ -109,6 +127,24 @@ export class AlbumArt extends LitElement {
     } else {
       this.updateArt(key);
     }
+    // @ts-ignore
+    resizeObserver.observe(this.shadowRoot?.querySelector('img'));
+    this.shadowRoot
+      ?.querySelector('img')
+      ?.addEventListener('resize', async () => {
+        this.getDimensions();
+        key.dimension = this.dimension;
+        key.artist = this.artist;
+        key.album = this.album;
+        const cache = await this.getArt(key);
+        this.cache = !(this.getAttribute('cache') === 'false');
+        if (this.cache && cache) {
+          this.art = cache;
+          this.dispatch();
+        } else {
+          this.updateArt(key);
+        }
+      });
   }
   dispatch() {
     const evt = new CustomEvent('art', {
@@ -154,7 +190,12 @@ export class AlbumArt extends LitElement {
   }
   isEmptyArt(art: string) {
     const base = this.ARTBASE;
-    if (art === base || art === `${base}/` || art.includes(`null`)) {
+    if (
+      art === base ||
+      art === `${base}/` ||
+      art.includes(`null`) ||
+      art.endsWith(',c_fill/')
+    ) {
       return true;
     }
     return false;
@@ -171,7 +212,7 @@ export class AlbumArt extends LitElement {
     if (!album) {
       return await get(`${dimension}-${artist}`, this.customStore);
     }
-    return await get(`${artist}-${album}`, this.customStore);
+    return await get(`${dimension}-${artist}-${album}`, this.customStore);
   }
   async updateArt({ artist, album }: { artist: string; album: string }) {
     let art = this.ARTBASE;
@@ -198,7 +239,8 @@ export class AlbumArt extends LitElement {
       }
       this.art = art || defaultArtist;
     } else {
-      art += '/';
+      // let's resize those larger artist arts we get.
+      art += `,w_${this.dimension},h_${this.dimension},c_fill/`;
       try {
         art += await fetchArtForAlbum({ artist, album });
         if (this.isEmptyArt(art)) {

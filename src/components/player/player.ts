@@ -526,6 +526,7 @@ export class Album extends LitElement {
                     .artist=${this.track.album.artist.albumArtist ||
                     this.track.album.artist.name}
                     .album=${this.track.album.name}
+                    dimension="75"
                   ></album-art>
                 </app-link>
                 <div class="details">

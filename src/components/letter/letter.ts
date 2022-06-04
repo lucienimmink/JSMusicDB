@@ -38,6 +38,7 @@ export class Letter extends LitElement {
     }
     super.attributeChangedCallback(name, oldvalue, newvalue);
   }
+
   render() {
     return html`
       ${this.artists.map(
