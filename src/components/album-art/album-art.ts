@@ -221,7 +221,10 @@ export class AlbumArt extends LitElement {
       // let's resize those larger artist arts we get.
       art += `,w_${this.dimension},h_${this.dimension},c_fill/`;
       try {
-        const remoteURL = await fetchArtForArtist(this.artist);
+        const remoteURL =
+          (await get(`remoteURL-${artist}`, this.customStore)) ||
+          (await fetchArtForArtist(this.artist));
+        await set(`remoteURL-${artist}`, remoteURL, this.customStore);
         art += remoteURL;
         if (this.isEmptyArt(art)) {
           art = '';
@@ -242,7 +245,11 @@ export class AlbumArt extends LitElement {
       // let's resize those larger artist arts we get.
       art += `,w_${this.dimension},h_${this.dimension},c_fill/`;
       try {
-        art += await fetchArtForAlbum({ artist, album });
+        const remoteURL =
+          (await get(`remoteURL-${artist}-${album}`, this.customStore)) ||
+          (await fetchArtForAlbum({ artist, album }));
+        await set(`remoteURL-${artist}-${album}`, remoteURL, this.customStore);
+        art += remoteURL;
         if (this.isEmptyArt(art)) {
           art = '';
           this.isDefault = true;
