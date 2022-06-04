@@ -16,7 +16,7 @@ export class AlbumArt extends LitElement {
   transparent: boolean;
   isDefault = false;
   dimension: number;
-  ARTBASE = `https://res.cloudinary.com/jsmusicdb-com/image/fetch/f_auto`;
+  ARTBASE = `https://res.cloudinary.com/jsmusicdb-com/image/fetch/f_auto,q_auto`;
 
   static get properties() {
     return {
@@ -44,11 +44,9 @@ export class AlbumArt extends LitElement {
     this.dimension = 300;
   }
   private getDimensions() {
-    /*
-    this.dimension = Math.min(
-      Math.max(this.offsetWidth, this.offsetHeight) || 300
-    );
-    */
+    // this.dimension = Math.min(
+    //   Math.max(this.offsetWidth, this.offsetHeight) || 300
+    // );
     this.dimension = 300;
   }
   render() {
