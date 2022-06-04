@@ -1,9 +1,9 @@
-import { LitElement, html } from 'lit';
-import { customElement } from 'lit/decorators.js';
 import { createStore, get, set } from 'idb-keyval';
-import { fetchArtForArtist, fetchArtForAlbum } from './fetchArt';
-import { defaultAlbum, defaultArtist, defaultPixel } from './defaultart';
+import { html, LitElement } from 'lit';
+import { customElement } from 'lit/decorators.js';
 import albumArt from '../../styles/album-art';
+import { defaultAlbum, defaultArtist, defaultPixel } from './defaultart';
+import { fetchArtForAlbum, fetchArtForArtist } from './fetchArt';
 @customElement('album-art')
 export class AlbumArt extends LitElement {
   art: any;

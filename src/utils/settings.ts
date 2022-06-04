@@ -1,4 +1,4 @@
-import { set, get } from 'idb-keyval';
+import { get, set } from 'idb-keyval';
 
 const LAST_PARSED = 'last-parsed';
 const SETTINGS = 'settings';

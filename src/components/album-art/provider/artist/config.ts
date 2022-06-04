@@ -1,6 +1,6 @@
-import { fetchArt as fanart } from './fanart';
-import { fetchArt as audiodb } from './audiodb';
 import { fetchArt as mp3stream } from '../mp3stream';
+import { fetchArt as audiodb } from './audiodb';
+import { fetchArt as fanart } from './fanart';
 
 const config = [
   {

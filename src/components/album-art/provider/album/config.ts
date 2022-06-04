@@ -1,5 +1,5 @@
-import { fetchArt as lastfm } from './lastfm';
 import { fetchArt as mp3stream } from './../mp3stream';
+import { fetchArt as lastfm } from './lastfm';
 
 const config = [
   {

@@ -1,11 +1,11 @@
-import merge from 'deepmerge';
-import resolve from '@rollup/plugin-node-resolve';
-import babel from '@rollup/plugin-babel';
 import { createSpaConfig } from '@open-wc/building-rollup';
+import { babel } from '@rollup/plugin-babel';
+import resolve from '@rollup/plugin-node-resolve';
+import merge from 'deepmerge';
 import copy from 'rollup-plugin-copy';
+import dotenv from 'rollup-plugin-dotenv';
 import filesize from 'rollup-plugin-filesize';
 import versionInjector from 'rollup-plugin-version-injector';
-import dotenv from 'rollup-plugin-dotenv';
 
 const baseConfig = createSpaConfig({
   // eslint-disable-next-line no-undef

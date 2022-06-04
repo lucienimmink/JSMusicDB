@@ -1,5 +1,5 @@
-import { peopleSVG } from '../icons/people';
 import { cdSVG } from '../icons/cd';
+import { peopleSVG } from '../icons/people';
 
 const defaultAlbum = `data:image/svg+xml;base64,${btoa(cdSVG)}`;
 const defaultArtist = `data:image/svg+xml;base64,${btoa(peopleSVG)}`;

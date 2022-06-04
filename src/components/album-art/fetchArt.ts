@@ -1,7 +1,7 @@
-import { getMetaInfo, getMBID } from './provider/metainfo';
-import { populate } from './provider/populate';
 import { config as albumConfig } from './provider/album/config';
 import { config as artistConfig } from './provider/artist/config';
+import { getMBID, getMetaInfo } from './provider/metainfo';
+import { populate } from './provider/populate';
 
 const fetchArtForArtist = async (artist: string) => {
   const album = '';
