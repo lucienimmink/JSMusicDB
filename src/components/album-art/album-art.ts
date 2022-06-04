@@ -8,7 +8,6 @@ import { fetchArtForAlbum, fetchArtForArtist } from './fetchArt';
 const resizeObserver = new ResizeObserver((entries: any) => {
   for (const entry of entries) {
     const element = entry.target as HTMLImageElement;
-    // console.log('Element has changed size', entry, element, this);
     element.setAttribute(
       'width',
       Math.round(Number(entry.contentRect.width)).toString()
@@ -29,7 +28,6 @@ export class AlbumArt extends LitElement {
   objectFit: string;
   album: any;
   artist: any;
-  cache: boolean;
   transparent: boolean;
   isDefault = false;
   dimension: number;
@@ -40,7 +38,6 @@ export class AlbumArt extends LitElement {
       artist: { type: String },
       album: { type: String },
       art: { type: String },
-      cache: { type: Boolean },
       customStore: { type: Object },
       _cache: { type: Object },
       objectFit: { type: String },
@@ -56,7 +53,6 @@ export class AlbumArt extends LitElement {
     this._cache = {};
     this.customStore = createStore('album-art-db', 'album-art-store');
     this.objectFit = 'cover';
-    this.cache = false;
     this.transparent = false;
     this.dimension = 300;
   }
@@ -120,9 +116,7 @@ export class AlbumArt extends LitElement {
       return;
     }
     const cache = await this.getArt(key);
-    this.cache = !(this.getAttribute('cache') === 'false');
-    this.cache = true;
-    if (this.cache && cache) {
+    if (cache) {
       this.art = cache;
       this.dispatch();
     } else {
@@ -138,8 +132,7 @@ export class AlbumArt extends LitElement {
         key.artist = this.artist;
         key.album = this.album;
         const cache = await this.getArt(key);
-        this.cache = !(this.getAttribute('cache') === 'false');
-        if (this.cache && cache) {
+        if (cache) {
           this.art = cache;
           this.dispatch();
         } else {
@@ -158,11 +151,10 @@ export class AlbumArt extends LitElement {
   updated(changedProperties: Map<string | number | symbol, unknown>) {
     changedProperties.forEach(
       async (oldValue: any, propName: string | number | symbol) => {
-        this.cache = !(this.getAttribute('cache') === 'false');
         if (propName === 'artist' || propName === 'album') {
           this.art = defaultPixel;
           this.shadowRoot?.querySelector('img')?.classList.add('loading');
-          let cacheKey = `${this.artist}-${this.album}`;
+          let cacheKey = `${this.dimension}-${this.artist}-${this.album}`;
           this.isDefault = false;
           if (!this.album) {
             cacheKey = `${this.dimension}-${this.artist}`;
@@ -178,7 +170,8 @@ export class AlbumArt extends LitElement {
               dimension: this.dimension,
             };
             const cache = await this.getArt(key);
-            if (this.cache && cache) {
+            if (cache) {
+              this._cache[cacheKey] = cache;
               this.art = cache;
               this.dispatch();
             } else {
@@ -215,12 +208,20 @@ export class AlbumArt extends LitElement {
     }
     return await get(`${dimension}-${artist}-${album}`, this.customStore);
   }
-  async updateArt({ artist, album }: { artist: string; album: string }) {
+  async updateArt({
+    artist,
+    album,
+    dimension,
+  }: {
+    artist: string;
+    album: string;
+    dimension: number;
+  }) {
     let art = this.ARTBASE;
     this.isDefault = false;
     if (!album) {
       // let's resize those larger artist arts we get.
-      art += `,w_${this.dimension},h_${this.dimension},c_fill/`;
+      art += `,w_${dimension},h_${dimension},c_fill/`;
       try {
         const remoteURL =
           (await get(`remoteURL-${artist}`, this.customStore)) ||
@@ -236,15 +237,13 @@ export class AlbumArt extends LitElement {
         art = '';
       }
       if (art) {
-        this._cache[`${this.dimension}-${artist}`] = art;
-        if (this.cache) {
-          set(`${this.dimension}-${artist}`, art, this.customStore);
-        }
+        this._cache[`${dimension}-${artist}`] = art;
+        set(`${dimension}-${artist}`, art, this.customStore);
       }
       this.art = art || defaultArtist;
     } else {
       // let's resize those larger artist arts we get.
-      art += `,w_${this.dimension},h_${this.dimension},c_fill/`;
+      art += `,w_${dimension},h_${dimension},c_fill/`;
       try {
         const remoteURL =
           (await get(`remoteURL-${artist}-${album}`, this.customStore)) ||
@@ -260,10 +259,8 @@ export class AlbumArt extends LitElement {
         art = '';
       }
       if (art) {
-        this._cache[`${this.dimension}-${artist}-${album}`] = art;
-        if (this.cache) {
-          set(`${this.dimension}-${artist}-${album}`, art, this.customStore);
-        }
+        this._cache[`${dimension}-${artist}-${album}`] = art;
+        set(`${dimension}-${artist}-${album}`, art, this.customStore);
       }
       this.art = art || defaultAlbum;
     }
