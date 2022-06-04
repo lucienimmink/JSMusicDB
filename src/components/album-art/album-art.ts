@@ -121,6 +121,7 @@ export class AlbumArt extends LitElement {
     }
     const cache = await this.getArt(key);
     this.cache = !(this.getAttribute('cache') === 'false');
+    this.cache = true;
     if (this.cache && cache) {
       this.art = cache;
       this.dispatch();
@@ -259,9 +260,9 @@ export class AlbumArt extends LitElement {
         art = '';
       }
       if (art) {
-        this._cache[`${artist}-${album}`] = art;
+        this._cache[`${this.dimension}-${artist}-${album}`] = art;
         if (this.cache) {
-          set(`${artist}-${album}`, art, this.customStore);
+          set(`${this.dimension}-${artist}-${album}`, art, this.customStore);
         }
       }
       this.art = art || defaultAlbum;
