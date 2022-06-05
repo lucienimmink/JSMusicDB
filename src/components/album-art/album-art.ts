@@ -153,6 +153,7 @@ export class AlbumArt extends LitElement {
       async (oldValue: any, propName: string | number | symbol) => {
         if (propName === 'artist' || propName === 'album') {
           this.art = defaultPixel;
+          this.getDimensions();
           this.shadowRoot?.querySelector('img')?.classList.add('loading');
           let cacheKey = `${this.dimension}-${this.artist}-${this.album}`;
           this.isDefault = false;
@@ -223,10 +224,11 @@ export class AlbumArt extends LitElement {
       // let's resize those larger artist arts we get.
       art += `,w_${dimension},h_${dimension},c_fill/`;
       try {
-        const remoteURL =
-          (await get(`remoteURL-${artist}`, this.customStore)) ||
-          (await fetchArtForArtist(this.artist));
-        await set(`remoteURL-${artist}`, remoteURL, this.customStore);
+        let remoteURL = await get(`remoteURL-${artist}`, this.customStore);
+        if (!remoteURL) {
+          remoteURL = await fetchArtForArtist(this.artist);
+          await set(`remoteURL-${artist}`, remoteURL, this.customStore);
+        }
         art += remoteURL;
         if (this.isEmptyArt(art)) {
           art = '';
@@ -245,10 +247,18 @@ export class AlbumArt extends LitElement {
       // let's resize those larger artist arts we get.
       art += `,w_${dimension},h_${dimension},c_fill/`;
       try {
-        const remoteURL =
-          (await get(`remoteURL-${artist}-${album}`, this.customStore)) ||
-          (await fetchArtForAlbum({ artist, album }));
-        await set(`remoteURL-${artist}-${album}`, remoteURL, this.customStore);
+        let remoteURL = await get(
+          `remoteURL-${artist}-${album}`,
+          this.customStore
+        );
+        if (!remoteURL) {
+          remoteURL = await fetchArtForAlbum({ artist, album });
+          await set(
+            `remoteURL-${artist}-${album}`,
+            remoteURL,
+            this.customStore
+          );
+        }
         art += remoteURL;
         if (this.isEmptyArt(art)) {
           art = '';
