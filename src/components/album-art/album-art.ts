@@ -123,9 +123,21 @@ export class AlbumArt extends LitElement {
         key.dimension = this.dimension;
         key.artist = this.artist;
         key.album = this.album;
+        let cacheKey = `${this.artist}-${this.album}`;
+        if (!key.album) {
+          cacheKey = `${this.artist}`;
+        }
+        if (sharedCache[cacheKey]) {
+          this.art = this.replaceDimensions(
+            sharedCache[cacheKey],
+            this.dimension
+          );
+          this.dispatch();
+          return;
+        }
         const cache = await this.getArt(key);
         if (cache) {
-          this.art = cache;
+          this.art = this.replaceDimensions(cache, this.dimension);
           this.dispatch();
         } else {
           this.updateArt(key);
