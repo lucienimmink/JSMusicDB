@@ -137,6 +137,7 @@ export class AlbumArt extends LitElement {
         }
         const cache = await this.getArt(key);
         if (cache) {
+          sharedCache[cacheKey] = cache;
           this.art = this.replaceDimensions(cache, this.dimension);
           this.dispatch();
         } else {
