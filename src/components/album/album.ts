@@ -48,7 +48,10 @@ export class Album extends LitElement {
     super.disconnectedCallback();
     EventBus.off(REFRESH, this._getTracks, this);
   }
-  _getTracks(artist = this.artist, album = this.album) {
+  _getTracks(artist: any = this.artist, album = this.album) {
+    if (artist instanceof Object) {
+      artist = this.artist;
+    }
     this.sortedDiscs = [];
     musicdb
       .then((mdb: any) => {
