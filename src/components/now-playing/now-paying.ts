@@ -1,6 +1,6 @@
 import '@lit-labs/virtualizer';
-import { html, LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { html, LitElement, nothing } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import buttons from '../../styles/buttons';
 import container from '../../styles/container';
@@ -26,6 +26,7 @@ import {
   TOGGLE_SHUFFLE_UPDATED,
   UPDATE_PLAYER,
 } from '../../utils/player';
+import { SWITCH_ROUTE } from '../../utils/router';
 import { getSettingByName, TOGGLE_SETTING } from '../../utils/settings';
 import timeSpan from '../../utils/timespan';
 import { albumsIcon } from '../icons/albums';
@@ -57,6 +58,8 @@ export class NowPlaying extends LitElement {
   _dataArray: any;
   _hearableBars: any;
   _player: any;
+  @state()
+  active = false;
 
   static get styles() {
     return [animationCSS, container, progress, buttons, controls, nowPlaying];
@@ -97,6 +100,7 @@ export class NowPlaying extends LitElement {
     EventBus.on(TOGGLE_SHUFFLE_UPDATED, this._doToggleShuffleUpdated, this);
     EventBus.on(ACCENT_COLOR, this._doAccentColor, this);
     EventBus.on(TOGGLE_SETTING, this._doToggleSetting, this);
+    EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
@@ -105,6 +109,10 @@ export class NowPlaying extends LitElement {
     EventBus.off(TOGGLE_SHUFFLE_UPDATED, this._doToggleShuffleUpdated, this);
     EventBus.off(ACCENT_COLOR, this._doAccentColor, this);
     EventBus.off(TOGGLE_SETTING, this._doToggleSetting, this);
+    EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
+  }
+  isActiveRoute(event: Event, route: string) {
+    this.active = route === 'now-playing';
   }
   _doUpdate(target: any, data: any) {
     this._update(data);
@@ -299,30 +307,16 @@ export class NowPlaying extends LitElement {
   }
   render() {
     return html`
-      ${this.track
-        ? html`
-            <div
-              class="wrapper ${this.smallArt ? 'small ' : ''} ${this
-                .isBottomShown
-                ? 'bottomShown '
-                : ''}"
-            >
-              <div class="backdrop">
-                <album-art
-                  objectFit="contain"
-                  transparent
-                  .album=${this.track.album.name}
-                  .artist=${this.track.album.artist.albumArtist ||
-                  this.track.album.artist.name}
-                ></album-art>
-              </div>
-              <div class="top">
-                <div class="image-wrapper">
-                  <canvas
-                    id="visualisation"
-                    class="${this.hasCanvas ? 'active' : ''}"
-                  ></canvas>
-                  <div class="current-album-art">
+      ${this.active
+        ? html` ${this.track
+            ? html`
+                <div
+                  class="wrapper ${this.smallArt ? 'small ' : ''} ${this
+                    .isBottomShown
+                    ? 'bottomShown '
+                    : ''}"
+                >
+                  <div class="backdrop">
                     <album-art
                       objectFit="contain"
                       transparent
@@ -331,178 +325,201 @@ export class NowPlaying extends LitElement {
                       this.track.album.artist.name}
                     ></album-art>
                   </div>
-                  <div class="floating-text-details">
-                    <h4>${this.track.title}</h4>
-                    <h5>
-                      <app-link
-                        inline
-                        text
-                        href="/letter/${this.track.album.artist.letter
-                          .escapedLetter}/artist/${this.track.album.artist
-                          .escapedName}"
-                      >
-                        ${this.track.trackArtist}
-                      </app-link>
-                      &bull;
-                      <app-link
-                        inline
-                        text
-                        href="/letter/${this.track.album.artist.letter
-                          .escapedLetter}/artist/${this.track.album.artist
-                          .escapedName}/album/${this.track.album.escapedName}"
-                      >
-                        ${this.track.album.name}
-                      </app-link>
-                    </h5>
+                  <div class="top">
+                    <div class="image-wrapper">
+                      <canvas
+                        id="visualisation"
+                        class="${this.hasCanvas ? 'active' : ''}"
+                      ></canvas>
+                      <div class="current-album-art">
+                        <album-art
+                          objectFit="contain"
+                          transparent
+                          .album=${this.track.album.name}
+                          .artist=${this.track.album.artist.albumArtist ||
+                          this.track.album.artist.name}
+                        ></album-art>
+                      </div>
+                      <div class="floating-text-details">
+                        <h4>${this.track.title}</h4>
+                        <h5>
+                          <app-link
+                            inline
+                            text
+                            href="/letter/${this.track.album.artist.letter
+                              .escapedLetter}/artist/${this.track.album.artist
+                              .escapedName}"
+                          >
+                            ${this.track.trackArtist}
+                          </app-link>
+                          &bull;
+                          <app-link
+                            inline
+                            text
+                            href="/letter/${this.track.album.artist.letter
+                              .escapedLetter}/artist/${this.track.album.artist
+                              .escapedName}/album/${this.track.album
+                              .escapedName}"
+                          >
+                            ${this.track.album.name}
+                          </app-link>
+                        </h5>
+                      </div>
+                    </div>
+                    <div class="controls-wrapper">
+                      <div class="time-controls">
+                        <span class="time start"
+                          >${timeSpan(this.track.position)}</span
+                        >
+                        <div
+                          class="progress"
+                          @click=${(e: Event) => this._setPosition(e)}
+                        >
+                          <div
+                            class="progress-bar progress-buffered-bar"
+                            style=${styleMap({
+                              width:
+                                (this.track.buffered.end /
+                                  this.track.duration) *
+                                  100 +
+                                '%',
+                            })}
+                          ></div>
+                          <div
+                            class="progress-bar ${this.track.isPlaying
+                              ? ''
+                              : 'paused'}"
+                            style=${styleMap({
+                              width:
+                                (this.track.position / this.track.duration) *
+                                  100 +
+                                '%',
+                            })}
+                          ></div>
+                        </div>
+                        <span class="time stop"
+                          >${timeSpan(this.track.duration)}</span
+                        >
+                      </div>
+                      <div class="details-wrapper">
+                        <div class="text-details">
+                          <h4>${this.track.title}</h4>
+                          <h5>
+                            <app-link
+                              inline
+                              href="/letter/${this.track.album.artist.letter
+                                .escapedLetter}/artist/${this.track.album.artist
+                                .escapedName}"
+                            >
+                              ${this.track.trackArtist}
+                            </app-link>
+                            &bull;
+                            <app-link
+                              inline
+                              href="/letter/${this.track.album.artist.letter
+                                .escapedLetter}/artist/${this.track.album.artist
+                                .escapedName}/album/${this.track.album
+                                .escapedName}"
+                            >
+                              ${this.track.album.name}
+                            </app-link>
+                          </h5>
+                        </div>
+                        <div class="controls">
+                          <button
+                            class="btn"
+                            @click=${() => this._previous()}
+                            aria-label="previous track"
+                          >
+                            ${previousIcon}
+                          </button>
+                          <button
+                            class="btn"
+                            @click=${() => this._togglePlayPause()}
+                            aria-label="play or pause"
+                          >
+                            ${this.track.isPlaying ? pauseIcon : playIcon}
+                          </button>
+                          <button
+                            class="btn"
+                            @click=${() => this._next()}
+                            aria-label="next track"
+                          >
+                            ${nextIcon}
+                          </button>
+                          <button
+                            class="btn btn-toggle"
+                            @click=${() => this._toggleView()}
+                            aria-label="show or hide playlist"
+                          >
+                            ${this.isBottomShown
+                              ? chevronDownIcon
+                              : chevronUpIcon}
+                          </button>
+                        </div>
+                        <div class="controls controls-meta">
+                          <button class="btn" style="display:none">
+                            ${volumeIcon}
+                          </button>
+                          <button
+                            class="btn ${this.track.isLoved ? 'active' : ''}"
+                            @click=${() => this._toggleLoved()}
+                            aria-label="love or unlove track"
+                          >
+                            ${heartIcon}
+                          </button>
+                          <button
+                            class="btn ${this.isShuffled ? 'active' : ''}"
+                            @click=${() => this._toggleShuffle()}
+                            aria-label="shuffle or unshuffle playlist"
+                          >
+                            ${randomIcon}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="bottom">
+                    <lit-virtualizer
+                      .items=${this.playlist?.tracks}
+                      .renderItem=${(track: any) => html`
+                        <track-in-list
+                          .track=${track}
+                          .type=${this.playlist.type}
+                          ?showAlbum=${true}
+                          @click=${() => {
+                            this._setPlaylist(track);
+                          }}
+                        ></track-in-list>
+                      `}
+                    ></lit-virtualizer>
                   </div>
                 </div>
-                <div class="controls-wrapper">
-                  <div class="time-controls">
-                    <span class="time start"
-                      >${timeSpan(this.track.position)}</span
+              `
+            : html`
+                <div class="container p-1">
+                  <h3>Nothing is playing</h3>
+                  <p>
+                    This is where you'll see the song you're playing and songs
+                    that are coming up.
+                  </p>
+                  <p>
+                    Find an
+                    <app-link href="/artists" inline
+                      ><span class="icon">${artistsIcon}</span> artist</app-link
                     >
-                    <div
-                      class="progress"
-                      @click=${(e: Event) => this._setPosition(e)}
+                    or
+                    <app-link href="/albums" inline
+                      ><span class="icon">${albumsIcon}</span>album</app-link
+                    >that you want to play; or setup a
+                    <app-link href="/playlists" inline
+                      ><span class="icon">${playlistsIcon}</span
+                      >playlist</app-link
                     >
-                      <div
-                        class="progress-bar progress-buffered-bar"
-                        style=${styleMap({
-                          width:
-                            (this.track.buffered.end / this.track.duration) *
-                              100 +
-                            '%',
-                        })}
-                      ></div>
-                      <div
-                        class="progress-bar ${this.track.isPlaying
-                          ? ''
-                          : 'paused'}"
-                        style=${styleMap({
-                          width:
-                            (this.track.position / this.track.duration) * 100 +
-                            '%',
-                        })}
-                      ></div>
-                    </div>
-                    <span class="time stop"
-                      >${timeSpan(this.track.duration)}</span
-                    >
-                  </div>
-                  <div class="details-wrapper">
-                    <div class="text-details">
-                      <h4>${this.track.title}</h4>
-                      <h5>
-                        <app-link
-                          inline
-                          href="/letter/${this.track.album.artist.letter
-                            .escapedLetter}/artist/${this.track.album.artist
-                            .escapedName}"
-                        >
-                          ${this.track.trackArtist}
-                        </app-link>
-                        &bull;
-                        <app-link
-                          inline
-                          href="/letter/${this.track.album.artist.letter
-                            .escapedLetter}/artist/${this.track.album.artist
-                            .escapedName}/album/${this.track.album.escapedName}"
-                        >
-                          ${this.track.album.name}
-                        </app-link>
-                      </h5>
-                    </div>
-                    <div class="controls">
-                      <button
-                        class="btn"
-                        @click=${() => this._previous()}
-                        aria-label="previous track"
-                      >
-                        ${previousIcon}
-                      </button>
-                      <button
-                        class="btn"
-                        @click=${() => this._togglePlayPause()}
-                        aria-label="play or pause"
-                      >
-                        ${this.track.isPlaying ? pauseIcon : playIcon}
-                      </button>
-                      <button
-                        class="btn"
-                        @click=${() => this._next()}
-                        aria-label="next track"
-                      >
-                        ${nextIcon}
-                      </button>
-                      <button
-                        class="btn btn-toggle"
-                        @click=${() => this._toggleView()}
-                        aria-label="show or hide playlist"
-                      >
-                        ${this.isBottomShown ? chevronDownIcon : chevronUpIcon}
-                      </button>
-                    </div>
-                    <div class="controls controls-meta">
-                      <button class="btn" style="display:none">
-                        ${volumeIcon}
-                      </button>
-                      <button
-                        class="btn ${this.track.isLoved ? 'active' : ''}"
-                        @click=${() => this._toggleLoved()}
-                        aria-label="love or unlove track"
-                      >
-                        ${heartIcon}
-                      </button>
-                      <button
-                        class="btn ${this.isShuffled ? 'active' : ''}"
-                        @click=${() => this._toggleShuffle()}
-                        aria-label="shuffle or unshuffle playlist"
-                      >
-                        ${randomIcon}
-                      </button>
-                    </div>
-                  </div>
+                  </p>
                 </div>
-              </div>
-              <div class="bottom">
-                <lit-virtualizer
-                  .items=${this.playlist?.tracks}
-                  .renderItem=${(track: any) => html`
-                    <track-in-list
-                      .track=${track}
-                      .type=${this.playlist.type}
-                      ?showAlbum=${true}
-                      @click=${() => {
-                        this._setPlaylist(track);
-                      }}
-                    ></track-in-list>
-                  `}
-                ></lit-virtualizer>
-              </div>
-            </div>
-          `
-        : html`
-            <div class="container p-1">
-              <h3>Nothing is playing</h3>
-              <p>
-                This is where you'll see the song you're playing and songs that
-                are coming up.
-              </p>
-              <p>
-                Find an
-                <app-link href="/artists" inline
-                  ><span class="icon">${artistsIcon}</span> artist</app-link
-                >
-                or
-                <app-link href="/albums" inline
-                  ><span class="icon">${albumsIcon}</span>album</app-link
-                >that you want to play; or setup a
-                <app-link href="/playlists" inline
-                  ><span class="icon">${playlistsIcon}</span>playlist</app-link
-                >
-              </p>
-            </div>
-          `}
+              `}`
+        : nothing}
     `;
   }
 }

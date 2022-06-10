@@ -10,6 +10,7 @@ import './../app-link/app-link';
 export class LetterNav extends LitElement {
   @property()
   route: string;
+  @property({ type: Array })
   letters: Array<any>;
   static get styles() {
     return [letterNav];
@@ -32,7 +33,6 @@ export class LetterNav extends LitElement {
     musicdb
       .then((mdb: any) => {
         this.letters = mdb.sortedLetters;
-        this.requestUpdate();
       })
       .catch((error: any) => {
         console.log(error);

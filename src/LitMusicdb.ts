@@ -36,6 +36,7 @@ import { getSK, RESET_LASTFM } from './utils/lastfm';
 import { REFRESH } from './utils/musicdb';
 import { DONE_RELOADING, getJwt, RESET_SERVER } from './utils/node-mp3stream';
 import { START_CURRENT_PLAYLIST, STOP_PLAYER } from './utils/player';
+import { SWITCH_ROUTE } from './utils/router';
 import { getSettingByName, TOGGLE_SETTING } from './utils/settings';
 import timeSpan from './utils/timespan';
 
@@ -66,6 +67,7 @@ export class LitMusicdb extends LitElement {
   static get routes() {
     return routes;
   }
+
   constructor() {
     super();
     this.route = '';
@@ -187,6 +189,9 @@ export class LitMusicdb extends LitElement {
     EventBus.off(RESET_SERVER, this._resetServer, this);
     EventBus.off(RESET_LASTFM, this._resetLastFM, this);
   }
+  updated() {
+    EventBus.emit(SWITCH_ROUTE, this, this.route);
+  }
   _doRefresh() {
     refresh().then(() => {
       this.requestUpdate();
@@ -264,6 +269,7 @@ export class LitMusicdb extends LitElement {
     this.query = query;
     window.scrollTo(0, 0);
     EventBus.emit(sideNav.TOGGLE_MENU, this, 'close');
+    EventBus.emit(SWITCH_ROUTE, this, route);
     if (route === 'now-playing') {
       document.querySelector('html')?.classList.add('noscroll');
       return;

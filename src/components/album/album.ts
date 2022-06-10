@@ -1,5 +1,5 @@
 import { html, LitElement, nothing } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import album from '../../styles/album';
 import container from '../../styles/container';
 import headers from '../../styles/headers';
@@ -11,6 +11,7 @@ import {
   setCurrentTime,
   startPlaylist,
 } from '../../utils/player';
+import { SWITCH_ROUTE } from '../../utils/router';
 import musicdb from '../musicdb';
 import '../track/track';
 import './album-details';
@@ -23,6 +24,8 @@ export class Album extends LitElement {
   album: string;
   albumDetails: any;
   sortedDiscs: Array<any>;
+  @state()
+  active = false;
 
   static get styles() {
     return [container, headers, album];
@@ -43,10 +46,15 @@ export class Album extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     EventBus.on(REFRESH, this._getTracks, this);
+    EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
     EventBus.off(REFRESH, this._getTracks, this);
+    EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
+  }
+  isActiveRoute(event: Event, route: string) {
+    this.active = route === 'album';
   }
   _getTracks(artist: any = this.artist, album = this.album) {
     if (artist instanceof Object) {
@@ -134,34 +142,36 @@ export class Album extends LitElement {
   }
   render() {
     return html`
-      <album-details
-        artist="${this.artist}"
-        album="${this.album}"
-        @play=${(e: Event) => this._setPlaylist(e)}
-        @queue=${(e: Event) => this._appendPlaylist(e)}
-      ></album-details>
-      <div class="container">
-        ${this.sortedDiscs.map(
-          (disc: any) => html`
-            <div class="album-details">
-              ${this.sortedDiscs.length > 1
-                ? html` <div class="header">Disc ${disc[0].disc}</div>`
-                : nothing}
-              ${disc.map(
-                (track: any) => html`
-                  <track-in-list
-                    @click=${(e: Event) => {
-                      this._setPlaylist(e, track);
-                    }}
-                    .track=${track}
-                    type="album"
-                  ></track-in-list>
+      ${this.active
+        ? html` <album-details
+              artist="${this.artist}"
+              album="${this.album}"
+              @play=${(e: Event) => this._setPlaylist(e)}
+              @queue=${(e: Event) => this._appendPlaylist(e)}
+            ></album-details>
+            <div class="container">
+              ${this.sortedDiscs.map(
+                (disc: any) => html`
+                  <div class="album-details">
+                    ${this.sortedDiscs.length > 1
+                      ? html` <div class="header">Disc ${disc[0].disc}</div>`
+                      : nothing}
+                    ${disc.map(
+                      (track: any) => html`
+                        <track-in-list
+                          @click=${(e: Event) => {
+                            this._setPlaylist(e, track);
+                          }}
+                          .track=${track}
+                          type="album"
+                        ></track-in-list>
+                      `
+                    )}
+                  </div>
                 `
               )}
-            </div>
-          `
-        )}
-      </div>
+            </div>`
+        : nothing}
     `;
   }
 }

@@ -1,11 +1,12 @@
 import { html, LitElement, nothing } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import musicdb from '../../components/musicdb';
 import artist from '../../styles/artist';
 import panel from '../../styles/panel';
 import smallMuted from '../../styles/small-muted';
 import { global as EventBus } from '../../utils/EventBus';
 import { REFRESH } from '../../utils/musicdb';
+import { SWITCH_ROUTE } from '../../utils/router';
 import '../app-link/app-link';
 
 @customElement('albums-in-artist')
@@ -13,6 +14,8 @@ export class Artist extends LitElement {
   @property()
   artist: string;
   albums: Array<any>;
+  @state()
+  active = false;
   static get styles() {
     return [smallMuted, panel, artist];
   }
@@ -24,10 +27,15 @@ export class Artist extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     EventBus.on(REFRESH, this._getAlbums, this);
+    EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
     EventBus.off(REFRESH, this._getAlbums, this);
+    EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
+  }
+  isActiveRoute(event: Event, route: string) {
+    this.active = route === 'artist';
   }
   attributeChangedCallback(name: any, oldval: any, newval: any) {
     if (name === 'artist') {
@@ -48,29 +56,32 @@ export class Artist extends LitElement {
   }
   render() {
     return html`
-      ${this.albums.map(
-        (album: any) => html`
-          <app-link
-            href="/letter/${album.artist.letter.escapedLetter}/artist/${album
-              .artist.escapedName}/album/${album.escapedName}"
-          >
-            <div class="panel">
-              <album-art
-                artist="${album.artist.albumArtist || album.artist.name}"
-                album="${album.name}"
-              ></album-art>
-              <div class="panel-info color-type-primary-alt">
-                <span>${album.name}</span>
-                ${album.year === 0
-                  ? nothing
-                  : html`
-                      <span class="small muted">Year: ${album.year}</span>
-                    `}
-              </div>
-            </div>
-          </app-link>
-        `
-      )}
+      ${this.active
+        ? html` ${this.albums.map(
+            (album: any) => html`
+              <app-link
+                href="/letter/${album.artist.letter
+                  .escapedLetter}/artist/${album.artist
+                  .escapedName}/album/${album.escapedName}"
+              >
+                <div class="panel">
+                  <album-art
+                    artist="${album.artist.albumArtist || album.artist.name}"
+                    album="${album.name}"
+                  ></album-art>
+                  <div class="panel-info color-type-primary-alt">
+                    <span>${album.name}</span>
+                    ${album.year === 0
+                      ? nothing
+                      : html`
+                          <span class="small muted">Year: ${album.year}</span>
+                        `}
+                  </div>
+                </div>
+              </app-link>
+            `
+          )}`
+        : nothing}
     `;
   }
 }
