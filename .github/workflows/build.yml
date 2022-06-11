@@ -5,10 +5,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      LASTFM_APIKEY: ${{ secrets.LASTFM_APIKEY }}
-      LASTFM_SECRET: ${{ secrets.LASTFM_SECRET }}
-      FANART_APIKEY: ${{ secrets.FANART_APIKEY }}
     steps:
       - name: Actions/checkout
         uses: actions/checkout@v3.0.2
@@ -21,6 +17,12 @@ jobs:
           key: ${{ runner.os }}-js-${{ hashFiles('package-lock.json') }}
       - name: Install dependencies
         run: npm ci
+      - name: Create env file
+        run: |
+          touch .env
+          echo LASTFM_APIKEY=${{ secrets.LASTFM_APIKEY }} >> .env
+          echo LASTFM_SECRET=${{ secrets.LASTFM_SECRET }} >> .env
+          echo FANART_APIKEY=${{ secrets.FANART_APIKEY }} >> .env
       - name: NPM build
         run: npm run build
       - name: Deploy to Netlify
