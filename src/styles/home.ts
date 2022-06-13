@@ -59,10 +59,15 @@ export default css`
   .grid {
     display: flex;
     flex-wrap: wrap;
-    margin: 1rem 1rem 3rem;
+    margin: var(--distance) 0 3rem;
     justify-content: space-evenly;
+    --distance: 3vw;
+    gap: var(--distance);
   }
   @media (min-width: 768px) {
+    .grid {
+      --distance: 1vw;
+    }
     app-link:nth-child(11),
     app-link:nth-child(12),
     app-link:nth-child(13),

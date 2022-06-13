@@ -1,7 +1,7 @@
 import { html, LitElement, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import musicdb from '../../components/musicdb';
-import letter from '../../styles/letter';
+import grid from '../../styles/grid';
 import panel from '../../styles/panel';
 import smallMuted from '../../styles/small-muted';
 import { global as EventBus } from '../../utils/EventBus';
@@ -17,7 +17,7 @@ export class Letter extends LitElement {
   @state()
   active = false;
   static get styles() {
-    return [smallMuted, panel, letter];
+    return [smallMuted, panel, grid];
   }
   constructor() {
     super();

@@ -15,9 +15,11 @@ export default css`
     transition: color 0.2s ease-in-out;
     flex-grow: 0;
     margin-right: 1rem;
+    display: flex;
+    align-items: center;
   }
   svg {
-    width: 20px;
+    width: 25px;
   }
   h1 {
     backdrop-filter: blur(2px);
@@ -29,9 +31,10 @@ export default css`
     text-overflow: ellipsis;
     overflow: hidden;
     display: flex;
+    align-items: center;
     height: 50px;
     font-weight: 300;
-    padding-left: 10px;
+    padding-left: 1rem;
     transition: color 0.5s ease-in-out, background-color 0.5s ease-in-out;
   }
   app-link {
@@ -41,7 +44,6 @@ export default css`
   div {
     flex-grow: 1;
     white-space: nowrap;
-    display: block;
     overflow: hidden;
     text-overflow: ellipsis;
   }

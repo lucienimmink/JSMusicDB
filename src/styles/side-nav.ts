@@ -92,20 +92,22 @@ export default css`
     margin-left: 0.75rem;
   }
   h1 {
-    margin: 0 0 0 10px;
+    margin: 0 0 0 1rem;
     padding: 0;
     font-weight: 300;
     height: 50px;
+    display: flex;
+    align-items: center;
   }
   h1 a {
     text-decoration: none;
-    display: inline-block;
-    margin-top: 0px;
-    vertical-align: sub;
     color: var(--primary);
+    margin-right: 1rem;
+    display: flex;
+    align-items: center;
   }
   h1 svg {
-    width: 20px;
+    width: 25px;
   }
   input {
     border: 1px solid var(--primary, #006ecd);
