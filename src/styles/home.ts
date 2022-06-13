@@ -23,9 +23,9 @@ export default css`
   li .album-art {
     margin-right: 0.75rem;
     flex-grow: 0;
-    width: 54px;
-    min-width: 54px;
-    height: 54px;
+    width: 64px;
+    min-width: 64px;
+    height: 64px;
     border: 1px solid var(--background3, #f3f4f5);
     box-shadow: 0px 0px 1px var(--primary, #006ecd);
     background: rgba(255, 255, 255, 0.85);
