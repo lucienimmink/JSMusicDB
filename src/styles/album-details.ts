@@ -107,7 +107,6 @@ export default css`
     }
     h2 {
       font-size: 2.5rem;
-      margin-top: 3px;
       transition: all 0.1s ease-in-out;
     }
     h3,
@@ -121,16 +120,20 @@ export default css`
       font-size: 1.1rem;
     }
     .shrink-1 h2 {
+      margin-top: -3px;
       font-size: 2.375rem;
     }
     .shrink-2 h2 {
+      margin-top: -1px;
       font-size: 2.25rem;
     }
     .shrink-3 h2 {
+      margin-top: 1px;
       font-size: 2.125rem;
     }
     .shrunk h2 {
       font-size: 2rem;
+      margin-top: 3px;
     }
     .shrink-1 h3 {
       font-size: 1.425rem;
