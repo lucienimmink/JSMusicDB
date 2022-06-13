@@ -1,6 +1,6 @@
 import { clear, createStore } from 'idb-keyval';
 import { html, LitElement, nothing } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 import buttons from '../../styles/buttons';
 import container from '../../styles/container';
 import headers from '../../styles/headers';
@@ -25,6 +25,7 @@ import {
   resetServer,
   RESET_SERVER,
 } from '../../utils/node-mp3stream';
+import { SWITCH_ROUTE } from '../../utils/router';
 import {
   getLastParsed,
   getSettings,
@@ -47,6 +48,8 @@ export class LetterNav extends LitElement {
   mp3stream: any;
   isReloading: boolean;
   showVersion: boolean;
+  @state()
+  active = false;
   static get styles() {
     return [buttons, container, headers, smallMuted, responsive, settings];
   }
@@ -81,12 +84,17 @@ export class LetterNav extends LitElement {
     EventBus.on(REFRESH, this._init, this);
     EventBus.on(IS_RELOADING, this._setIsReloadingTrue, this);
     EventBus.on(DONE_RELOADING, this._setIsReloadingFalse, this);
+    EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
     EventBus.off(REFRESH, this._init, this);
     EventBus.off(IS_RELOADING, this._setIsReloadingTrue, this);
     EventBus.off(DONE_RELOADING, this._setIsReloadingFalse, this);
+    EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
+  }
+  isActiveRoute(event: Event, route: string) {
+    this.active = route === 'settings';
   }
   private _init() {
     musicdb

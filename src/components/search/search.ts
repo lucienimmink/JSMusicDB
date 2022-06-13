@@ -1,6 +1,6 @@
 import { navigator } from '@addasoft/lit-element-router';
 import { html, LitElement, nothing } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import container from '../../styles/container';
 import headers from '../../styles/headers';
 import search from '../../styles/search';
@@ -8,6 +8,7 @@ import smallMuted from '../../styles/small-muted';
 import warn from '../../styles/warn';
 import { global as EventBus } from '../../utils/EventBus';
 import { REFRESH } from '../../utils/musicdb';
+import { SWITCH_ROUTE } from '../../utils/router';
 import timeSpan from '../../utils/timespan';
 import musicdb from '../musicdb';
 import './../app-link/app-link';
@@ -24,6 +25,8 @@ export class SearchNav extends LitElement {
   artists: any;
   albums: any;
   tracks: any;
+  @state()
+  active = false;
   static get styles() {
     return [container, headers, smallMuted, warn, search];
   }
@@ -48,10 +51,15 @@ export class SearchNav extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     EventBus.on(REFRESH, this._doSearch, this);
+    EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
     EventBus.off(REFRESH, this._doSearch, this);
+    EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
+  }
+  isActiveRoute(event: Event, route: string) {
+    this.active = route === 'search';
   }
   _doSearch() {
     musicdb
@@ -89,153 +97,161 @@ export class SearchNav extends LitElement {
     throw new Error(`Method not implemented. ${href}`);
   }
   render() {
-    return html`
-      ${this.artists?.list.length > 0
-        ? html`
-            <div class="container">
-              ${this.artists?.overflow
-                ? html`
-                    <div class="warn">
-                      Your search yielded over <strong>${MAX}</strong> results
-                      Only the first ${MAX} are shown. Please try to refine your
-                      search query
-                    </div>
-                  `
-                : nothing}
-              <ol>
-                <li class="header">
-                  Artists
-                  <span class="small muted"
-                    >(${this.artists?.list.length})</span
-                  >
-                </li>
-                ${this.artists?.list.map(
-                  (artist: any) => html`
-                    <li>
-                      <app-link
-                        flex
-                        text
-                        href="/letter/${artist.letter
-                          .escapedLetter}/artist/${artist.escapedName}"
-                      >
-                        <album-art
-                          artist="${artist.albumArtist || artist.name}"
-                        ></album-art>
-                        <div class="details">
-                          <span class="artist"
-                            >${artist.albumArtist || artist.name}</span
-                          >
-                          <span class="small muted"
-                            >Albums: ${artist.albums.length}</span
-                          >
+    return html` ${this.active
+      ? html`
+          ${this.active && this.artists?.list.length > 0
+            ? html`
+                <div class="container">
+                  ${this.artists?.overflow
+                    ? html`
+                        <div class="warn">
+                          Your search yielded over
+                          <strong>${MAX}</strong> results Only the first ${MAX}
+                          are shown. Please try to refine your search query
                         </div>
-                      </app-link>
-                    </li>
-                  `
-                )}
-              </ol>
-            </div>
-          `
-        : nothing}
-      ${this.albums?.list.length > 0
-        ? html`
-            <div class="container">
-              ${this.albums?.overflow
-                ? html`
-                    <div class="warn">
-                      Your search yielded over <strong>${MAX}</strong> results
-                      Only the first ${MAX} are shown. Please try to refine your
-                      search query
-                    </div>
-                  `
-                : nothing}
-              <ol>
-                <li class="header">
-                  Albums
-                  <span class="small muted">(${this.albums?.list.length})</span>
-                </li>
-                ${this.albums?.list.map(
-                  (album: any) => html`
-                    <li>
-                      <app-link
-                        flex
-                        text
-                        href="/letter/${album.artist.letter
-                          .escapedLetter}/artist/${album.artist
-                          .escapedName}/album/${album.escapedName}"
+                      `
+                    : nothing}
+                  <ol>
+                    <li class="header">
+                      Artists
+                      <span class="small muted"
+                        >(${this.artists?.list.length})</span
                       >
-                        <album-art
-                          artist="${album.artist.albumArtist ||
-                          album.artist.name}"
-                          album="${album.name}"
-                        ></album-art>
-                        <div class="details">
-                          <span class="album">${album.name}</span>
-                          ${album.year
-                            ? html`
-                                <span class="small muted"
-                                  >Year: ${album.year}</span
-                                >
-                              `
-                            : nothing}
-                        </div>
-                      </app-link>
                     </li>
-                  `
-                )}
-              </ol>
-            </div>
-          `
-        : nothing}
-      ${this.tracks?.list.length > 0
-        ? html`
-            <div class="container">
-              ${this.tracks?.overflow
-                ? html`
-                    <div class="warn">
-                      Your search yielded over <strong>${MAX}</strong> results
-                      Only the first ${MAX} are shown. Please try to refine your
-                      search query
-                    </div>
-                  `
-                : nothing}
-              <ol>
-                <li class="header">
-                  Tracks
-                  <span class="small muted">(${this.tracks?.list.length})</span>
-                </li>
-                ${this.tracks?.list.map(
-                  (track: any) => html`
-                    <li
-                      class="track"
-                      @click=${(e: Event) => this._handleTrackClick(e, track)}
-                    >
-                      <span class="title">
-                        ${track.title} <br />
-                        <span class="small muted"
-                          >${track.trackArtist} &bull; ${track.album.name}</span
-                        >
-                      </span>
-                      <span class="time"
-                        >${timeSpan(track.duration)} <br />
-                        ${track.position > 0 &&
-                        (track.isPlaying || track.isPaused)
-                          ? html`
-                              <span class="small muted"
-                                >${timeSpan(track.position)}</span
+                    ${this.artists?.list.map(
+                      (artist: any) => html`
+                        <li>
+                          <app-link
+                            flex
+                            text
+                            href="/letter/${artist.letter
+                              .escapedLetter}/artist/${artist.escapedName}"
+                          >
+                            <album-art
+                              artist="${artist.albumArtist || artist.name}"
+                            ></album-art>
+                            <div class="details">
+                              <span class="artist"
+                                >${artist.albumArtist || artist.name}</span
                               >
-                            `
-                          : html`
-                              <span class="small muted">${track.type}</span>
-                            `}
-                      </span>
+                              <span class="small muted"
+                                >Albums: ${artist.albums.length}</span
+                              >
+                            </div>
+                          </app-link>
+                        </li>
+                      `
+                    )}
+                  </ol>
+                </div>
+              `
+            : nothing}
+          ${this.albums?.list.length > 0
+            ? html`
+                <div class="container">
+                  ${this.albums?.overflow
+                    ? html`
+                        <div class="warn">
+                          Your search yielded over
+                          <strong>${MAX}</strong> results Only the first ${MAX}
+                          are shown. Please try to refine your search query
+                        </div>
+                      `
+                    : nothing}
+                  <ol>
+                    <li class="header">
+                      Albums
+                      <span class="small muted"
+                        >(${this.albums?.list.length})</span
+                      >
                     </li>
-                  `
-                )}
-              </ol>
-            </div>
-          `
-        : nothing}
-    `;
+                    ${this.albums?.list.map(
+                      (album: any) => html`
+                        <li>
+                          <app-link
+                            flex
+                            text
+                            href="/letter/${album.artist.letter
+                              .escapedLetter}/artist/${album.artist
+                              .escapedName}/album/${album.escapedName}"
+                          >
+                            <album-art
+                              artist="${album.artist.albumArtist ||
+                              album.artist.name}"
+                              album="${album.name}"
+                            ></album-art>
+                            <div class="details">
+                              <span class="album">${album.name}</span>
+                              ${album.year
+                                ? html`
+                                    <span class="small muted"
+                                      >Year: ${album.year}</span
+                                    >
+                                  `
+                                : nothing}
+                            </div>
+                          </app-link>
+                        </li>
+                      `
+                    )}
+                  </ol>
+                </div>
+              `
+            : nothing}
+          ${this.tracks?.list.length > 0
+            ? html`
+                <div class="container">
+                  ${this.tracks?.overflow
+                    ? html`
+                        <div class="warn">
+                          Your search yielded over
+                          <strong>${MAX}</strong> results Only the first ${MAX}
+                          are shown. Please try to refine your search query
+                        </div>
+                      `
+                    : nothing}
+                  <ol>
+                    <li class="header">
+                      Tracks
+                      <span class="small muted"
+                        >(${this.tracks?.list.length})</span
+                      >
+                    </li>
+                    ${this.tracks?.list.map(
+                      (track: any) => html`
+                        <li
+                          class="track"
+                          @click=${(e: Event) =>
+                            this._handleTrackClick(e, track)}
+                        >
+                          <span class="title">
+                            ${track.title} <br />
+                            <span class="small muted"
+                              >${track.trackArtist} &bull;
+                              ${track.album.name}</span
+                            >
+                          </span>
+                          <span class="time"
+                            >${timeSpan(track.duration)} <br />
+                            ${track.position > 0 &&
+                            (track.isPlaying || track.isPaused)
+                              ? html`
+                                  <span class="small muted"
+                                    >${timeSpan(track.position)}</span
+                                  >
+                                `
+                              : html`
+                                  <span class="small muted">${track.type}</span>
+                                `}
+                          </span>
+                        </li>
+                      `
+                    )}
+                  </ol>
+                </div>
+              `
+            : nothing}
+        `
+      : nothing}`;
   }
 }

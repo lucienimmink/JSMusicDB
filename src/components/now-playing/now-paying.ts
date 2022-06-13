@@ -345,7 +345,6 @@ export class NowPlaying extends LitElement {
                         <h5>
                           <app-link
                             inline
-                            text
                             href="/letter/${this.track.album.artist.letter
                               .escapedLetter}/artist/${this.track.album.artist
                               .escapedName}"
@@ -355,7 +354,6 @@ export class NowPlaying extends LitElement {
                           &bull;
                           <app-link
                             inline
-                            text
                             href="/letter/${this.track.album.artist.letter
                               .escapedLetter}/artist/${this.track.album.artist
                               .escapedName}/album/${this.track.album
