@@ -50,7 +50,7 @@ export default css`
   progress-spinner {
     display: inline-block;
     flex-grow: 0;
-    margin: -14px -10px 0 0;
+    margin: 23px -14px 0px 0px;
     font-size: 0.8rem;
   }
   @media (min-width: 576px) {
