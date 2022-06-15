@@ -13,7 +13,7 @@ import { cdSVG } from '../icons/cd';
 import musicdb from '../musicdb';
 
 const INTERVAL = 1000 * 30;
-const LATEST_ADDITIONS = 14;
+const LATEST_ADDITIONS = 12;
 
 @customElement('home-nav')
 export class HomeNav extends LitElement {

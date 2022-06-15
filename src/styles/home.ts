@@ -60,33 +60,23 @@ export default css`
     display: flex;
     flex-wrap: wrap;
     margin: var(--distance) 0 3rem;
-    justify-content: space-evenly;
+    justify-content: center;
     --distance: 3vw;
     gap: var(--distance);
   }
   @media (min-width: 768px) {
     .grid {
-      --distance: 1vw;
+      --distance: 16px;
     }
     app-link:nth-child(11),
-    app-link:nth-child(12),
-    app-link:nth-child(13),
-    app-link:nth-child(14) {
+    app-link:nth-child(12) {
       display: none;
     }
   }
   @media (min-width: 992px) {
     app-link:nth-child(11),
-    app-link:nth-child(12),
-    app-link:nth-child(13),
-    app-link:nth-child(14) {
+    app-link:nth-child(12) {
       display: block;
-    }
-  }
-  @media (min-width: 1200px) {
-    app-link:nth-child(13),
-    app-link:nth-child(14) {
-      display: none;
     }
   }
 `;

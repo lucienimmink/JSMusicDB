@@ -26,7 +26,7 @@ export default css`
   }
   @media (min-width: 768px) {
     .container {
-      max-width: 720px;
+      max-width: 748px;
     }
     .p-1 {
       padding: 0;
@@ -34,7 +34,7 @@ export default css`
   }
   @media (min-width: 992px) {
     .container {
-      max-width: 960px;
+      max-width: 890px;
     }
   }
   @media (min-width: 1200px) {

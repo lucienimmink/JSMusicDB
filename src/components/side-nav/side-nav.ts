@@ -151,7 +151,7 @@ export class SideNav extends LitElement {
           </li>
           ${this.full
             ? html`
-                <li class="sm-only ${this.route === 'letters' ? 'active' : ''}">
+                <li class="md-down ${this.route === 'letters' ? 'active' : ''}">
                   <app-link href="/letters" title="Letters" menu flex
                     >${lettersIcon} <span>Letters</span></app-link
                   >

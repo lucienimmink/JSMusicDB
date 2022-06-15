@@ -6,6 +6,7 @@ export default css`
     background: var(--background-seethrough, rgba(248, 249, 250, 0.85));
     box-sizing: border-box;
     height: 60px;
+    border-top: 0;
     border-bottom: 1px solid var(--primary, #006ecd);
     transition: all 0.5s ease-in-out;
     padding: 1.85rem 1rem 0;
@@ -22,7 +23,7 @@ export default css`
     transition: none;
     cursor: pointer;
   }
-  @media (min-width: 768px) {
+  @media (min-width: 992px) {
     .header {
       top: 100px;
     }

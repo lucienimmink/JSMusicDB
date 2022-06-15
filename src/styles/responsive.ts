@@ -16,6 +16,9 @@ export default css`
     clip-path: inset(50%);
     border: 0;
   }
+  .md-down {
+    display: block;
+  }
   @media (min-width: 576px) {
     .md-up {
       display: block;
@@ -27,6 +30,11 @@ export default css`
       display: flex;
     }
     .sm-only {
+      display: none;
+    }
+  }
+  @media (min-width: 992px) {
+    .md-down {
       display: none;
     }
   }

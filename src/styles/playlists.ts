@@ -133,13 +133,19 @@ export default css`
     }
     .playlists ul {
       position: sticky;
-      top: 100px;
+      top: 0;
     }
     .playlist {
       width: 70%;
     }
     loading-indicator {
       margin: calc(50vh - 106px) auto 0;
+    }
+  }
+  @media (min-width: 992px) {
+    .playlists ul {
+      position: sticky;
+      top: 100px;
     }
   }
 `;

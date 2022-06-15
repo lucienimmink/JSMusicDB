@@ -11,6 +11,10 @@ export default css`
     box-shadow: 0px 0px 1px var(--primary, #006ecd);
     box-sizing: border-box;
   }
+  .panel-home {
+    width: 45vw;
+    height: 45vw;
+  }
   @media (min-width: 576px) {
     .panel {
       width: 19vw;
@@ -22,6 +26,10 @@ export default css`
       width: 15vw;
       height: 15vw;
     }
+    .panel-home {
+      width: 130px;
+      height: 130px;
+    }
   }
   @media (min-width: 992px) {
     .panel {
@@ -31,8 +39,14 @@ export default css`
       max-height: 300px;
     }
     .panel-home {
-      max-width: 155px;
-      max-height: 155px;
+      width: 131px;
+      height: 131px;
+    }
+  }
+  @media (min-width: 1200px) {
+    .panel-home {
+      width: 170px;
+      height: 170px;
     }
   }
   .panel-background {

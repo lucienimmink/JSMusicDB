@@ -62,45 +62,30 @@ export default css`
   h3 .muted svg {
     top: 2px;
   }
-  @media (min-width: 768px) {
+  @media (min-width: 992px) {
     .jumbotron {
       padding: 2rem;
     }
     album-art {
-      flex: 0 0 175px;
-      max-width: 175px;
-      width: 175px;
-      height: 175px;
-      max-height: 175px;
+      --size: 190px;
       margin-left: -2rem;
+      flex: 0 0 var(--size);
+      max-width: var(--size);
+      width: var(--size);
+      height: var(--size);
+      max-height: var(--size);
     }
     .shrink-1 album-art {
-      flex: 0 0 150px;
-      max-width: 150px;
-      width: 150px;
-      height: 150px;
-      max-height: 150px;
+      --size: 150px;
     }
     .shrink-2 album-art {
-      flex: 0 0 125px;
-      max-width: 125px;
-      width: 125px;
-      height: 125px;
-      max-height: 125px;
+      --size: 125px;
     }
     .shrink-3 album-art {
-      flex: 0 0 100px;
-      max-width: 100px;
-      width: 100px;
-      height: 100px;
-      max-height: 100px;
+      --size: 100px;
     }
     .shrunk album-art {
-      flex: 0 0 75px;
-      max-width: 75px;
-      width: 75px;
-      height: 75px;
-      max-height: 75px;
+      --size: 75px;
     }
     h3 .muted {
       opacity: 0;
@@ -178,23 +163,18 @@ export default css`
     }
     .shrink-2 {
       padding: 1.5rem 2rem;
+      backdrop-filter: blur(0.5px);
+      background-color: var(--background2-seethrough);
     }
     .shrink-3 {
+      backdrop-filter: blur(1px);
+      background-color: var(--background2-seethrough);
       padding: 1.25rem 2rem;
     }
     .shrunk {
       backdrop-filter: blur(2px);
-      background-color: var(--background2-seethrough, var(--background2));
+      background-color: var(--background2-seethrough);
       padding: 1rem 2rem;
-    }
-  }
-  @media (min-width: 992px) {
-    album-art {
-      flex: 0 0 190px;
-      max-width: 190px;
-      width: 190px;
-      height: 190px;
-      max-height: 190px;
     }
   }
 `;

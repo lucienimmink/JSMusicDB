@@ -16,7 +16,7 @@ export default css`
   .album-details > track-in-list:first-child {
     margin-top: 1px;
   }
-  @media (min-width: 768px) {
+  @media (min-width: 992px) {
     .container {
       padding-top: 254px;
     }

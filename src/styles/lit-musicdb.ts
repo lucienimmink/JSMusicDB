@@ -56,7 +56,7 @@ export default css`
     justify-content: center;
     align-items: center;
   }
-  @media (min-width: 768px) {
+  @media (min-width: 992px) {
     side-nav {
       display: block;
     }
