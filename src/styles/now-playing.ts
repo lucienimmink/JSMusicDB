@@ -168,7 +168,7 @@ export default css`
     position: absolute;
     left: 220px;
     bottom: 9px;
-    background: var(----background-floating-text);
+    background: var(--background-floating-text);
     backdrop-filter: blur(10px);
     padding: 0 10px;
     max-width: calc(100vw - 250px);
