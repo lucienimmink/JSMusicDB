@@ -70,7 +70,6 @@ export default css`
       transparent 0%,
       var(--background) 100%
     );
-    text-shadow: 0 0 3px var(--background3);
   }
   .container {
     display: block;
@@ -98,7 +97,10 @@ export default css`
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
     font-family: system-ui;
-    text-shadow: 0 0 7px var(--background);
+    background: var(--background-floating-text);
+    backdrop-filter: blur(3px);
+    padding: 0px 10px;
+    margin: 0 -1px;
   }
   .progress {
     flex-grow: 1;
