@@ -320,19 +320,18 @@ export class NowPlaying extends LitElement {
         ? html` ${this.track
             ? html`
                 <div
-                  class="wrapper ${this.smallArt ? 'small ' : ''} ${
-                this.isBottomShown ? 'bottomShown ' : ''
-              }"
+                  class="wrapper ${this.smallArt ? 'small ' : ''} ${this
+                    .isBottomShown
+                    ? 'bottomShown '
+                    : ''}"
                 >
                   <div class="backdrop">
                     <album-art
                       objectFit="contain"
                       transparent
                       .album=${this.track.album.name}
-                      .artist=${
-                        this.track.album.artist.albumArtist ||
-                        this.track.album.artist.name
-                      }
+                      .artist=${this.track.album.artist.albumArtist ||
+                      this.track.album.artist.name}
                     ></album-art>
                   </div>
                   <div class="top">
@@ -346,10 +345,8 @@ export class NowPlaying extends LitElement {
                           objectFit="contain"
                           transparent
                           .album=${this.track.album.name}
-                          .artist=${
-                            this.track.album.artist.albumArtist ||
-                            this.track.album.artist.name
-                          }
+                          .artist=${this.track.album.artist.albumArtist ||
+                          this.track.album.artist.name}
                         ></album-art>
                       </div>
                       <div class="floating-text-details">
@@ -357,32 +354,28 @@ export class NowPlaying extends LitElement {
                         <h5>
                           <app-link
                             inline
-                            href="/letter/${
-                              this.track.album.artist.letter.escapedLetter
-                            }/artist/${this.track.album.artist.escapedName}"
+                            href="/letter/${this.track.album.artist.letter
+                              .escapedLetter}/artist/${this.track.album.artist
+                              .escapedName}"
                           >
                             ${this.track.trackArtist}
                           </app-link>
                           &bull;
                           <app-link
                             inline
-                            href="/letter/${
-                              this.track.album.artist.letter.escapedLetter
-                            }/artist/${
-                this.track.album.artist.escapedName
-              }/album/${this.track.album.escapedName}"
+                            href="/letter/${this.track.album.artist.letter
+                              .escapedLetter}/artist/${this.track.album.artist
+                              .escapedName}/album/${this.track.album
+                              .escapedName}"
                           >
                             ${this.track.album.name}
                           </app-link>
                         </h5>
                       </div>
                     </div>
-                    ${
-                      this.hasError
-                        ? html`<div class="error">
-                            Error loading music data
-                          </div>`
-                        : html`<div class="controls-wrapper">
+                    ${this.hasError
+                      ? html`<div class="error">Error loading music data</div>`
+                      : html`<div class="controls-wrapper">
                             <div class="time-controls">
                               <span class="time start"
                                 >${timeSpan(this.track.position)}</span
@@ -402,9 +395,9 @@ export class NowPlaying extends LitElement {
                                   })}
                                 ></div>
                                 <div
-                                  class="progress-bar ${this.track.isPlaying
-                                    ? ''
-                                    : 'paused'}"
+                                  class="progress-bar ${
+                                    this.track.isPlaying ? '' : 'paused'
+                                  }"
                                   style=${styleMap({
                                     width:
                                       (this.track.position /
@@ -424,19 +417,24 @@ export class NowPlaying extends LitElement {
                                 <h5>
                                   <app-link
                                     inline
-                                    href="/letter/${this.track.album.artist
-                                      .letter.escapedLetter}/artist/${this.track
-                                      .album.artist.escapedName}"
+                                    href="/letter/${
+                                      this.track.album.artist.letter
+                                        .escapedLetter
+                                    }/artist/${
+                          this.track.album.artist.escapedName
+                        }"
                                   >
                                     ${this.track.trackArtist}
                                   </app-link>
                                   &bull;
                                   <app-link
                                     inline
-                                    href="/letter/${this.track.album.artist
-                                      .letter.escapedLetter}/artist/${this.track
-                                      .album.artist.escapedName}/album/${this
-                                      .track.album.escapedName}"
+                                    href="/letter/${
+                                      this.track.album.artist.letter
+                                        .escapedLetter
+                                    }/artist/${
+                          this.track.album.artist.escapedName
+                        }/album/${this.track.album.escapedName}"
                                   >
                                     ${this.track.album.name}
                                   </app-link>
@@ -469,9 +467,11 @@ export class NowPlaying extends LitElement {
                                   @click=${() => this._toggleView()}
                                   aria-label="show or hide playlist"
                                 >
-                                  ${this.isBottomShown
-                                    ? chevronDownIcon
-                                    : chevronUpIcon}
+                                  ${
+                                    this.isBottomShown
+                                      ? chevronDownIcon
+                                      : chevronUpIcon
+                                  }
                                 </button>
                               </div>
                               <div class="controls controls-meta">
@@ -479,9 +479,9 @@ export class NowPlaying extends LitElement {
                                   ${volumeIcon}
                                 </button>
                                 <button
-                                  class="btn ${this.track.isLoved
-                                    ? 'active'
-                                    : ''}"
+                                  class="btn ${
+                                    this.track.isLoved ? 'active' : ''
+                                  }"
                                   @click=${() => this._toggleLoved()}
                                   aria-label="love or unlove track"
                                 >
@@ -496,9 +496,8 @@ export class NowPlaying extends LitElement {
                                 </button>
                               </div>
                             </div>
-                          </div>`
-                    }
-                    </div>
+                          </div>
+                    </div>`}
                   </div>
                   <div class="bottom">
                     <lit-virtualizer

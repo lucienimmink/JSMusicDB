@@ -36,7 +36,7 @@ export default css`
     left: 0px;
     top: 50px;
     right: 0px;
-    height: calc(100vh - 35px);
+    height: calc(100vh - 129px);
     overflow-y: auto;
     transform: translateY(100vh);
     transition: transform 0.2s ease-in-out;
