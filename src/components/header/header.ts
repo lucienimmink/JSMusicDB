@@ -85,7 +85,7 @@ export class Header extends LitElement {
   _poll = ({ server, jwt }: { server: any; jwt: any }) => {
     getProgress(server, jwt).then(
       ({ progress, status }: { progress: any; status: any }) => {
-        if (status !== 'ready') {
+        if (status !== 'ready' && status !== 'error') {
           this.isReloading = true;
           this.progress = progress ? `${progress}%` : 'scan';
           this._changeTitle();
@@ -97,9 +97,11 @@ export class Header extends LitElement {
           this._changeTitle();
           this.requestUpdate();
         }
-        setTimeout(() => {
-          this._poll({ server, jwt });
-        }, POLL_INTERVALL);
+        if (status !== 'error') {
+          setTimeout(() => {
+            this._poll({ server, jwt });
+          }, POLL_INTERVALL);
+        }
       }
     );
   };

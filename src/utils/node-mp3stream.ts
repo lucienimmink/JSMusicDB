@@ -49,7 +49,13 @@ export const getRescan = async (server: string, jwt: string) => {
 export const getProgress = async (server: string, jwt: string) => {
   const ts = new Date().getTime();
   const response = await fetch(`${server}/progress?jwt=${jwt}&ts=${ts}`);
-  return response.json();
+  if (response.status === 200) {
+    return response.json();
+  }
+  return {
+    status: 'error',
+    progres: 0,
+  };
 };
 
 export const getJwt = async () => {

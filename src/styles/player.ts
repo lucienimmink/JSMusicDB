@@ -59,6 +59,11 @@ export default css`
     text-overflow: ellipsis;
     overflow: hidden;
   }
+  .error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   @media (min-width: 576px) {
     album-art {
       margin-right: 1rem;

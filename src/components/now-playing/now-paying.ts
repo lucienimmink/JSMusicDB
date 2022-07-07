@@ -14,6 +14,7 @@ import {
   getCurrentPlaylist,
   NEXT_TRACK,
   PAUSE_PLAYER,
+  PLAYER_ERROR,
   PLAY_PLAYER_START,
   PREVIOUS_TRACK,
   setCurrentPlaylist,
@@ -46,6 +47,8 @@ import { volumeIcon } from '../icons/volume';
 export class NowPlaying extends LitElement {
   @property()
   route: string;
+  @property({ type: Boolean })
+  hasError: boolean;
   track: any;
   isShuffled: boolean;
   hasCanvas: boolean;
@@ -73,6 +76,7 @@ export class NowPlaying extends LitElement {
     this.isBottomShown = false;
     this.accentColor = '';
     this.playlist = null;
+    this.hasError = false;
     this.addEventListener(
       '_player',
       (e: any) => {
@@ -101,6 +105,7 @@ export class NowPlaying extends LitElement {
     EventBus.on(ACCENT_COLOR, this._doAccentColor, this);
     EventBus.on(TOGGLE_SETTING, this._doToggleSetting, this);
     EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
+    EventBus.on(PLAYER_ERROR, this._doHasError, this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
@@ -110,6 +115,7 @@ export class NowPlaying extends LitElement {
     EventBus.off(ACCENT_COLOR, this._doAccentColor, this);
     EventBus.off(TOGGLE_SETTING, this._doToggleSetting, this);
     EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
+    EventBus.off(PLAYER_ERROR, this._doHasError, this);
   }
   isActiveRoute(event: Event, route: string) {
     this.active = route === 'now-playing';
@@ -136,6 +142,9 @@ export class NowPlaying extends LitElement {
       }
       this.requestUpdate();
     }
+  }
+  _doHasError(target: any, error: any) {
+    this.hasError = error;
   }
   _visualize() {
     if (
@@ -311,18 +320,19 @@ export class NowPlaying extends LitElement {
         ? html` ${this.track
             ? html`
                 <div
-                  class="wrapper ${this.smallArt ? 'small ' : ''} ${this
-                    .isBottomShown
-                    ? 'bottomShown '
-                    : ''}"
+                  class="wrapper ${this.smallArt ? 'small ' : ''} ${
+                this.isBottomShown ? 'bottomShown ' : ''
+              }"
                 >
                   <div class="backdrop">
                     <album-art
                       objectFit="contain"
                       transparent
                       .album=${this.track.album.name}
-                      .artist=${this.track.album.artist.albumArtist ||
-                      this.track.album.artist.name}
+                      .artist=${
+                        this.track.album.artist.albumArtist ||
+                        this.track.album.artist.name
+                      }
                     ></album-art>
                   </div>
                   <div class="top">
@@ -336,8 +346,10 @@ export class NowPlaying extends LitElement {
                           objectFit="contain"
                           transparent
                           .album=${this.track.album.name}
-                          .artist=${this.track.album.artist.albumArtist ||
-                          this.track.album.artist.name}
+                          .artist=${
+                            this.track.album.artist.albumArtist ||
+                            this.track.album.artist.name
+                          }
                         ></album-art>
                       </div>
                       <div class="floating-text-details">
@@ -345,136 +357,147 @@ export class NowPlaying extends LitElement {
                         <h5>
                           <app-link
                             inline
-                            href="/letter/${this.track.album.artist.letter
-                              .escapedLetter}/artist/${this.track.album.artist
-                              .escapedName}"
+                            href="/letter/${
+                              this.track.album.artist.letter.escapedLetter
+                            }/artist/${this.track.album.artist.escapedName}"
                           >
                             ${this.track.trackArtist}
                           </app-link>
                           &bull;
                           <app-link
                             inline
-                            href="/letter/${this.track.album.artist.letter
-                              .escapedLetter}/artist/${this.track.album.artist
-                              .escapedName}/album/${this.track.album
-                              .escapedName}"
+                            href="/letter/${
+                              this.track.album.artist.letter.escapedLetter
+                            }/artist/${
+                this.track.album.artist.escapedName
+              }/album/${this.track.album.escapedName}"
                           >
                             ${this.track.album.name}
                           </app-link>
                         </h5>
                       </div>
                     </div>
-                    <div class="controls-wrapper">
-                      <div class="time-controls">
-                        <span class="time start"
-                          >${timeSpan(this.track.position)}</span
-                        >
-                        <div
-                          class="progress"
-                          @click=${(e: Event) => this._setPosition(e)}
-                        >
-                          <div
-                            class="progress-bar progress-buffered-bar"
-                            style=${styleMap({
-                              width:
-                                (this.track.buffered.end /
-                                  this.track.duration) *
-                                  100 +
-                                '%',
-                            })}
-                          ></div>
-                          <div
-                            class="progress-bar ${this.track.isPlaying
-                              ? ''
-                              : 'paused'}"
-                            style=${styleMap({
-                              width:
-                                (this.track.position / this.track.duration) *
-                                  100 +
-                                '%',
-                            })}
-                          ></div>
-                        </div>
-                        <span class="time stop"
-                          >${timeSpan(this.track.duration)}</span
-                        >
-                      </div>
-                      <div class="details-wrapper">
-                        <div class="text-details">
-                          <h4>${this.track.title}</h4>
-                          <h5>
-                            <app-link
-                              inline
-                              href="/letter/${this.track.album.artist.letter
-                                .escapedLetter}/artist/${this.track.album.artist
-                                .escapedName}"
-                            >
-                              ${this.track.trackArtist}
-                            </app-link>
-                            &bull;
-                            <app-link
-                              inline
-                              href="/letter/${this.track.album.artist.letter
-                                .escapedLetter}/artist/${this.track.album.artist
-                                .escapedName}/album/${this.track.album
-                                .escapedName}"
-                            >
-                              ${this.track.album.name}
-                            </app-link>
-                          </h5>
-                        </div>
-                        <div class="controls">
-                          <button
-                            class="btn"
-                            @click=${() => this._previous()}
-                            aria-label="previous track"
-                          >
-                            ${previousIcon}
-                          </button>
-                          <button
-                            class="btn"
-                            @click=${() => this._togglePlayPause()}
-                            aria-label="play or pause"
-                          >
-                            ${this.track.isPlaying ? pauseIcon : playIcon}
-                          </button>
-                          <button
-                            class="btn"
-                            @click=${() => this._next()}
-                            aria-label="next track"
-                          >
-                            ${nextIcon}
-                          </button>
-                          <button
-                            class="btn btn-toggle"
-                            @click=${() => this._toggleView()}
-                            aria-label="show or hide playlist"
-                          >
-                            ${this.isBottomShown
-                              ? chevronDownIcon
-                              : chevronUpIcon}
-                          </button>
-                        </div>
-                        <div class="controls controls-meta">
-                          <button class="btn" style="display:none">
-                            ${volumeIcon}
-                          </button>
-                          <button
-                            class="btn ${this.track.isLoved ? 'active' : ''}"
-                            @click=${() => this._toggleLoved()}
-                            aria-label="love or unlove track"
-                          >
-                            ${heartIcon}
-                          </button>
-                          <button
-                            class="btn ${this.isShuffled ? 'active' : ''}"
-                            @click=${() => this._toggleShuffle()}
-                            aria-label="shuffle or unshuffle playlist"
-                          >
-                            ${randomIcon}
-                          </button>
-                        </div>
-                      </div>
+                    ${
+                      this.hasError
+                        ? html`<div class="error">
+                            Error loading music data
+                          </div>`
+                        : html`<div class="controls-wrapper">
+                            <div class="time-controls">
+                              <span class="time start"
+                                >${timeSpan(this.track.position)}</span
+                              >
+                              <div
+                                class="progress"
+                                @click=${(e: Event) => this._setPosition(e)}
+                              >
+                                <div
+                                  class="progress-bar progress-buffered-bar"
+                                  style=${styleMap({
+                                    width:
+                                      (this.track.buffered.end /
+                                        this.track.duration) *
+                                        100 +
+                                      '%',
+                                  })}
+                                ></div>
+                                <div
+                                  class="progress-bar ${this.track.isPlaying
+                                    ? ''
+                                    : 'paused'}"
+                                  style=${styleMap({
+                                    width:
+                                      (this.track.position /
+                                        this.track.duration) *
+                                        100 +
+                                      '%',
+                                  })}
+                                ></div>
+                              </div>
+                              <span class="time stop"
+                                >${timeSpan(this.track.duration)}</span
+                              >
+                            </div>
+                            <div class="details-wrapper">
+                              <div class="text-details">
+                                <h4>${this.track.title}</h4>
+                                <h5>
+                                  <app-link
+                                    inline
+                                    href="/letter/${this.track.album.artist
+                                      .letter.escapedLetter}/artist/${this.track
+                                      .album.artist.escapedName}"
+                                  >
+                                    ${this.track.trackArtist}
+                                  </app-link>
+                                  &bull;
+                                  <app-link
+                                    inline
+                                    href="/letter/${this.track.album.artist
+                                      .letter.escapedLetter}/artist/${this.track
+                                      .album.artist.escapedName}/album/${this
+                                      .track.album.escapedName}"
+                                  >
+                                    ${this.track.album.name}
+                                  </app-link>
+                                </h5>
+                              </div>
+                              <div class="controls">
+                                <button
+                                  class="btn"
+                                  @click=${() => this._previous()}
+                                  aria-label="previous track"
+                                >
+                                  ${previousIcon}
+                                </button>
+                                <button
+                                  class="btn"
+                                  @click=${() => this._togglePlayPause()}
+                                  aria-label="play or pause"
+                                >
+                                  ${this.track.isPlaying ? pauseIcon : playIcon}
+                                </button>
+                                <button
+                                  class="btn"
+                                  @click=${() => this._next()}
+                                  aria-label="next track"
+                                >
+                                  ${nextIcon}
+                                </button>
+                                <button
+                                  class="btn btn-toggle"
+                                  @click=${() => this._toggleView()}
+                                  aria-label="show or hide playlist"
+                                >
+                                  ${this.isBottomShown
+                                    ? chevronDownIcon
+                                    : chevronUpIcon}
+                                </button>
+                              </div>
+                              <div class="controls controls-meta">
+                                <button class="btn" style="display:none">
+                                  ${volumeIcon}
+                                </button>
+                                <button
+                                  class="btn ${this.track.isLoved
+                                    ? 'active'
+                                    : ''}"
+                                  @click=${() => this._toggleLoved()}
+                                  aria-label="love or unlove track"
+                                >
+                                  ${heartIcon}
+                                </button>
+                                <button
+                                  class="btn ${this.isShuffled ? 'active' : ''}"
+                                  @click=${() => this._toggleShuffle()}
+                                  aria-label="shuffle or unshuffle playlist"
+                                >
+                                  ${randomIcon}
+                                </button>
+                              </div>
+                            </div>
+                          </div>`
+                    }
                     </div>
                   </div>
                   <div class="bottom">

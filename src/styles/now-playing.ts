@@ -189,6 +189,15 @@ export default css`
     width: 100%;
     cursor: pointer;
   }
+  .error {
+    background: var(--background);
+    height: 135px;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+    justify-content: center;
+  }
   @media (min-width: 576px) {
     .details-wrapper {
       flex-direction: row;
@@ -204,6 +213,9 @@ export default css`
       width: 33%;
       flex-grow: 1;
       padding-right: 0;
+    }
+    .error {
+      height: 85px;
     }
     .controls .btn {
       margin-left: 1.5rem;

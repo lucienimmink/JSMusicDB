@@ -1,7 +1,7 @@
 declare const MediaMetadata: any;
 
 import { html, LitElement, nothing } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import buttons from '../../styles/buttons';
 import controls from '../../styles/controls';
@@ -37,6 +37,7 @@ import {
   LOAD_PLAYLIST,
   NEXT_TRACK,
   PAUSE_PLAYER,
+  PLAYER_ERROR,
   PLAY_PLAYER,
   PLAY_PLAYER_START,
   PREVIOUS_TRACK,
@@ -82,6 +83,8 @@ export class Album extends LitElement {
   bgColor: string;
   useDynamicAccentColor: boolean;
   gain: number;
+  @state()
+  hasErrorWhilePlaying: boolean;
   static get styles() {
     return [animationCSS, progress, controls, responsive, buttons, player];
   }
@@ -98,6 +101,7 @@ export class Album extends LitElement {
     this.bgColor = LIGHT;
     this._updateBgColorIfSystemTheme();
     this.gain = -9;
+    this.hasErrorWhilePlaying = false;
     getCurrentPlaylist().then((playlist: any) => {
       this.playlist = playlist;
       getCurrentTime().then((time: any) => {
@@ -181,17 +185,26 @@ export class Album extends LitElement {
       player.src = `${server}/listen?path=${encodeURIComponent(
         this.track.source.url
       )}&jwt=${jwt}`;
-      player.play();
-      player.currentTime = startPosition;
-      await setCurrentPlaylist(this.playlist);
-      const username: any = await getLastFMUserName();
-      const trackinfo: any = await getTrackInfo(this.track, username);
-      this.isLoved = false;
-      if (trackinfo?.track?.userloved === '1') {
-        this.isLoved = true;
-      }
-      this.track.isLoved = this.isLoved;
-      this.requestUpdate();
+      player
+        .play()
+        .then(async () => {
+          this.hasErrorWhilePlaying = false;
+          EventBus.emit(PLAYER_ERROR, this, false);
+          player.currentTime = startPosition;
+          await setCurrentPlaylist(this.playlist);
+          const username: any = await getLastFMUserName();
+          const trackinfo: any = await getTrackInfo(this.track, username);
+          this.isLoved = false;
+          if (trackinfo?.track?.userloved === '1') {
+            this.isLoved = true;
+          }
+          this.track.isLoved = this.isLoved;
+          this.requestUpdate();
+        })
+        .catch(() => {
+          this.hasErrorWhilePlaying = true;
+          EventBus.emit(PLAYER_ERROR, this, true);
+        });
       if ('mediaSession' in navigator) {
         (navigator as any).mediaSession.metadata = new MediaMetadata({
           title: this.track.title,
@@ -529,68 +542,71 @@ export class Album extends LitElement {
                     dimension="75"
                   ></album-art>
                 </app-link>
-                <div class="details">
-                  <h4>${this.track.title}</h4>
-                  <h5>
-                    <app-link
-                      inline
-                      href="/letter/${this.track.album.artist.letter
-                        .escapedLetter}/artist/${this.track.album.artist
-                        .escapedName}"
-                    >
-                      ${this.track.trackArtist}
-                    </app-link>
-                    &bull;
-                    <app-link
-                      inline
-                      href="/letter/${this.track.album.artist.letter
-                        .escapedLetter}/artist/${this.track.album.artist
-                        .escapedName}/album/${this.track.album.escapedName}"
-                    >
-                      ${this.track.album.name}
-                    </app-link>
-                  </h5>
-                </div>
-                <div class="controls">
-                  <button
-                    class="btn"
-                    @click=${() => this._previous()}
-                    aria-label="previous track"
-                  >
-                    ${previousIcon}
-                  </button>
-                  <button
-                    class="btn"
-                    @click=${() => this._togglePlayPause()}
-                    aria-label="play or pause"
-                  >
-                    ${this.isPlaying ? pauseIcon : playIcon}
-                  </button>
-                  <button
-                    class="btn"
-                    @click=${() => this._next()}
-                    aria-label="next track"
-                  >
-                    ${nextIcon}
-                  </button>
-                  <button class="btn" style="display:none">
-                    ${volumeIcon}
-                  </button>
-                  <button
-                    class="btn md-up ${this.isLoved ? 'active' : ''}"
-                    @click=${() => this._toggleLoved()}
-                    aria-label="love or unlove track"
-                  >
-                    ${heartIcon}
-                  </button>
-                  <button
-                    class="btn md-up ${this.isShuffled ? 'active' : ''}"
-                    @click=${() => this._toggleShuffled()}
-                    aria-label="shuffle or unshuffle playlist"
-                  >
-                    ${randomIcon}
-                  </button>
-                </div>
+                ${this.hasErrorWhilePlaying
+                  ? html`<div class="error">Error loading music data</div>`
+                  : html` <div class="details">
+                        <h4>${this.track.title}</h4>
+                        <h5>
+                          <app-link
+                            inline
+                            href="/letter/${this.track.album.artist.letter
+                              .escapedLetter}/artist/${this.track.album.artist
+                              .escapedName}"
+                          >
+                            ${this.track.trackArtist}
+                          </app-link>
+                          &bull;
+                          <app-link
+                            inline
+                            href="/letter/${this.track.album.artist.letter
+                              .escapedLetter}/artist/${this.track.album.artist
+                              .escapedName}/album/${this.track.album
+                              .escapedName}"
+                          >
+                            ${this.track.album.name}
+                          </app-link>
+                        </h5>
+                      </div>
+                      <div class="controls">
+                        <button
+                          class="btn"
+                          @click=${() => this._previous()}
+                          aria-label="previous track"
+                        >
+                          ${previousIcon}
+                        </button>
+                        <button
+                          class="btn"
+                          @click=${() => this._togglePlayPause()}
+                          aria-label="play or pause"
+                        >
+                          ${this.isPlaying ? pauseIcon : playIcon}
+                        </button>
+                        <button
+                          class="btn"
+                          @click=${() => this._next()}
+                          aria-label="next track"
+                        >
+                          ${nextIcon}
+                        </button>
+                        <button class="btn" style="display:none">
+                          ${volumeIcon}
+                        </button>
+                        <button
+                          class="btn md-up ${this.isLoved ? 'active' : ''}"
+                          @click=${() => this._toggleLoved()}
+                          aria-label="love or unlove track"
+                        >
+                          ${heartIcon}
+                        </button>
+                        <button
+                          class="btn md-up ${this.isShuffled ? 'active' : ''}"
+                          @click=${() => this._toggleShuffled()}
+                          aria-label="shuffle or unshuffle playlist"
+                        >
+                          ${randomIcon}
+                        </button>
+                      </div>`}
               </div>
             </div>
           `
