@@ -97,10 +97,6 @@ export default css`
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
     font-family: system-ui;
-    background: var(--background-floating-text);
-    backdrop-filter: blur(3px);
-    padding: 0px 10px;
-    margin: 0 -1px;
   }
   .progress {
     flex-grow: 1;
@@ -231,6 +227,12 @@ export default css`
     }
     .controls-meta .btn svg {
       width: 20x;
+    }
+    .time {
+      background: var(--background-floating-text);
+      backdrop-filter: blur(3px);
+      padding: 0px 10px;
+      margin: 0 -1px;
     }
     .small .controls-wrapper {
       height: 85px;
