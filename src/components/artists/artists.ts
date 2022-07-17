@@ -13,13 +13,16 @@ import musicdb from '../musicdb';
 import './../app-link/app-link';
 @customElement('artists-nav')
 export class LetterNav extends LitElement {
-  letters: Array<any>;
-  artists: Array<any>;
   showJumpList: boolean;
   @property()
   activeroute: string;
   @property({ type: Boolean })
   hasVisiblePlayer: boolean;
+
+  @state()
+  artists: Array<any>;
+  @state()
+  letters: Array<any>;
   @state()
   active = false;
   static get styles() {
@@ -53,7 +56,6 @@ export class LetterNav extends LitElement {
               this.artists.push(artist);
             });
         });
-        this.requestUpdate();
       })
       .catch((error: any) => {
         console.log(error);

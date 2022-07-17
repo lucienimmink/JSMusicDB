@@ -13,6 +13,7 @@ import '../app-link/app-link';
 export class Artist extends LitElement {
   @property()
   artist: string;
+  @state()
   albums: Array<any>;
   @state()
   active = false;
@@ -48,7 +49,6 @@ export class Artist extends LitElement {
       .then((mdb: any) => {
         this.albums =
           mdb.artists[artist]?.sortAndReturnAlbumsBy('year', 'asc') || [];
-        this.requestUpdate();
       })
       .catch((error: any) => {
         console.log(error);

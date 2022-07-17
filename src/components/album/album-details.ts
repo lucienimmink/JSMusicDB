@@ -1,5 +1,5 @@
 import { html, LitElement, nothing } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import albumDetails from '../../styles/album-details';
 import buttons from '../../styles/buttons';
 import container from '../../styles/container';
@@ -18,8 +18,12 @@ export class AlbumDetails extends LitElement {
   artist: string;
   @property()
   album: string;
+
+  @state()
   albumDetails: any;
+  @state()
   shrinkFactor: string;
+  @state()
   replayGainApplied: boolean;
 
   static get styles() {
@@ -42,7 +46,6 @@ export class AlbumDetails extends LitElement {
     this.replayGainApplied = false;
     getSettingByName('replaygain').then(async (replaygain: any) => {
       this.replayGainApplied = replaygain;
-      this.requestUpdate();
     });
   }
 
@@ -78,7 +81,6 @@ export class AlbumDetails extends LitElement {
         this.shrinkFactor = `shrunk`;
       }
     }
-    this.requestUpdate();
   };
 
   attributeChangedCallback(name: any, oldval: any, newval: any) {
@@ -91,7 +93,6 @@ export class AlbumDetails extends LitElement {
     musicdb
       .then((mdb: any) => {
         this.albumDetails = mdb.albums[`${artist}|${album}`];
-        this.requestUpdate();
       })
       .catch((error: any) => {
         console.log(error);

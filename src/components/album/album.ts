@@ -22,7 +22,10 @@ export class Album extends LitElement {
   artist: string;
   @property()
   album: string;
+
+  @state()
   albumDetails: any;
+  @state()
   sortedDiscs: Array<any>;
   @state()
   active = false;
@@ -82,7 +85,6 @@ export class Album extends LitElement {
         discnrs.forEach(disc => {
           this.sortedDiscs.push(this.albumDetails.discs[disc.name]);
         });
-        this.requestUpdate();
       })
       .catch((error: any) => {
         console.log(error);

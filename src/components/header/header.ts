@@ -1,5 +1,5 @@
 import { html, LitElement, nothing } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import header from '../../styles/header';
 import responsive from '../../styles/responsive';
 import { global as EventBus } from '../../utils/EventBus';
@@ -24,12 +24,15 @@ export class Header extends LitElement {
   @property()
   album: string;
 
+  @state()
   art: any;
+  @state()
   alb: any;
-
+  @state()
   isReloading: boolean;
+  @state()
   progress: string;
-
+  @state()
   titleData: any;
 
   static get styles() {
@@ -90,12 +93,10 @@ export class Header extends LitElement {
           this.progress = progress ? `${progress}%` : 'scan';
           this._changeTitle();
           EventBus.emit(IS_RELOADING, this);
-          this.requestUpdate();
         } else if (this.isReloading === true) {
           EventBus.emit(DONE_RELOADING, this);
           this.isReloading = false;
           this._changeTitle();
-          this.requestUpdate();
         }
         if (status !== 'error') {
           setTimeout(() => {

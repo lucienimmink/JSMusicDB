@@ -14,13 +14,14 @@ import musicdb from '../musicdb';
 
 @customElement('albums-nav')
 export class LetterNav extends LitElement {
-  letters: Array<any>;
   albums: Array<any>;
   showJumpList: boolean;
   @property()
   activeroute: string;
   @property({ type: Boolean })
   hasVisiblePlayer: boolean;
+  @state()
+  letters: Array<any>;
   @state()
   active = false;
   static get styles() {
@@ -56,7 +57,6 @@ export class LetterNav extends LitElement {
               });
             });
         });
-        this.requestUpdate();
       })
       .catch((error: any) => {
         console.log(error);

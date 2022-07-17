@@ -17,8 +17,11 @@ const LATEST_ADDITIONS = 12;
 
 @customElement('home-nav')
 export class HomeNav extends LitElement {
+  @state()
   recenttracks: Array<any>;
+  @state()
   recentAdded: Array<any>;
+  @state()
   counter: any;
   @state()
   active = false;
@@ -57,7 +60,6 @@ export class HomeNav extends LitElement {
     musicdb
       .then((mdb: any) => {
         this.recentAdded = mdb.getLatestAdditions(LATEST_ADDITIONS);
-        this.requestUpdate();
       })
       .catch((error: any) => {
         console.log(error);
@@ -67,7 +69,6 @@ export class HomeNav extends LitElement {
     getRecentlyListened(name).then(
       ({ recenttracks }: { recenttracks: any }) => {
         this.recenttracks = recenttracks?.track;
-        this.requestUpdate();
         this.counter = setTimeout(() => {
           this._poll(name);
         }, INTERVAL);
@@ -79,7 +80,6 @@ export class HomeNav extends LitElement {
     for (let i = 0; i < 7; i++) {
       this.recenttracks.push(DUMMY_TRACK);
     }
-    this.requestUpdate();
   }
   _formatDate(dateString: string) {
     const date = new Date(Number(dateString) * 1000);
