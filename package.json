@@ -8,7 +8,7 @@
     "format": "npm run format:eslint && npm run format:prettier",
     "build": "rimraf dist && tsc && rollup -c rollup.config.js",
     "start:build": "npm run build && web-dev-server --root-dir dist --app-index index.html --open --compatibility none",
-    "start": "concurrently --kill-others --names tsc,web-dev-server,custom-elements-manifes \"npm run tsc:watch\" \"npm run analyse:watch\" \"web-dev-server --app-index index.html --node-resolve --open --watch\"",
+    "start": "concurrently --kill-others --names tsc,web-dev-server,custom-elements-manifest \"npm run tsc:watch\" \"npm run analyse:watch\" \"web-dev-server --app-index index.html --node-resolve --open --watch\"",
     "tsc:watch": "tsc --watch",
     "postversion": "git push && git push --tags",
     "prepare": "husky install",
