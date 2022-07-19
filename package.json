@@ -1,7 +1,7 @@
 {
   "name": "jsmusicdb",
   "private": true,
-  "version": "3.19.7",
+  "version": "3.19.8",
   "files": [
     "dist"
   ],
