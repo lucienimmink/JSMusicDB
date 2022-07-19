@@ -1,5 +1,4 @@
 // @ts-nocheck
-
 // https://github.com/tbreuss/eventbus
 class EventBus {
   constructor() {
@@ -13,7 +12,7 @@ class EventBus {
    * @param {object} scope The scope in which the callback shall be executed
    * @param  {...any} args Any number of args to be passed to the callback
    */
-  on(type: string, callback: any, scope: object, ...args: any[]) {
+  on(type: string, callback: function, scope: object, ...args: any[]) {
     if (typeof this.events[type] === 'undefined') {
       // Check if there is already event of this type registered
       this.events[type] = []; // If not, create array for it
@@ -27,7 +26,7 @@ class EventBus {
    * @param {function} callback Callback of the event to remove
    * @param {object} scope The scope of the to be removed event
    */
-  off(type: string, callback: any, scope: object) {
+  off(type: string, callback: function, scope: object) {
     if (typeof this.events[type] === 'undefined') {
       // Check if event of this type exists
       return; // If not just return

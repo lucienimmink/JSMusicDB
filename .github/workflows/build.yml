@@ -20,11 +20,11 @@ jobs:
       - name: Create env file
         run: |
           touch .env
-          echo VITE_LASTFM_APIKEY=${{ secrets.LASTFM_APIKEY }} >> .env
-          echo VITE_LASTFM_SECRET=${{ secrets.LASTFM_SECRET }} >> .env
-          echo VITE_FANART_APIKEY=${{ secrets.FANART_APIKEY }} >> .env
+          echo LASTFM_APIKEY=${{ secrets.LASTFM_APIKEY }} >> .env
+          echo LASTFM_SECRET=${{ secrets.LASTFM_SECRET }} >> .env
+          echo FANART_APIKEY=${{ secrets.FANART_APIKEY }} >> .env
       - name: NPM build
-        run: npm run build -- --base=/${{ github.event.repository.name }}/
+        run: npm run build
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
         with:

@@ -2,11 +2,8 @@ import { del, get, set } from 'idb-keyval';
 import { Encryption } from './encryption';
 import { getScrobbleCache, getSettings, setScrobbleCache } from './settings';
 
-// @ts-ignore
-export const LASTFMAPIKEY = import.meta.env.VITE_LASTFM_APIKEY;
-// @ts-ignore
-export const LASTFMSECRET = import.meta.env.VITE_LASTFM_SECRET;
-
+export const LASTFMAPIKEY = process.env.LASTFM_APIKEY!;
+export const LASTFMSECRET = process.env.LASTFM_SECRET!;
 const SK = 'sk';
 const USERNAME = 'lastfm-username';
 export const RESET_LASTFM = 'reset-lastfm';
