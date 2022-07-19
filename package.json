@@ -51,7 +51,7 @@
     "lit": "^2.2.7"
   },
   "devDependencies": {
-    "@custom-elements-manifest/analyzer": "^0.0.1",
+    "@custom-elements-manifest/analyzer": "^0.6.0",
     "@typescript-eslint/eslint-plugin": "^5.9.1",
     "api-viewer-element": "^1.0.0-pre.3",
     "eslint": "^8.20.0",
