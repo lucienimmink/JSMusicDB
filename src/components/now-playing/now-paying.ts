@@ -7,6 +7,7 @@ import container from '../../styles/container';
 import controls from '../../styles/controls';
 import nowPlaying from '../../styles/now-playing';
 import progress from '../../styles/progress-bar';
+import smallMuted from '../../styles/small-muted';
 import { animateCSS, animationCSS } from '../../utils/animations';
 import { ACCENT_COLOR } from '../../utils/colour';
 import { global as EventBus } from '../../utils/EventBus';
@@ -65,7 +66,15 @@ export class NowPlaying extends LitElement {
   active = false;
 
   static get styles() {
-    return [animationCSS, container, progress, buttons, controls, nowPlaying];
+    return [
+      animationCSS,
+      container,
+      progress,
+      buttons,
+      controls,
+      nowPlaying,
+      smallMuted,
+    ];
   }
   constructor() {
     super();
@@ -320,7 +329,7 @@ export class NowPlaying extends LitElement {
         ? html` ${this.track
             ? html`
                 <div
-                  class="wrapper ${this.smallArt ? 'small ' : ''} ${this
+                  class="wrapper ${this.smallArt ? 'smallArt ' : ''} ${this
                     .isBottomShown
                     ? 'bottomShown '
                     : ''}"
@@ -370,6 +379,11 @@ export class NowPlaying extends LitElement {
                           >
                             ${this.track.album.name}
                           </app-link>
+                          ${this.track.disc
+                            ? html`<span class="small muted"
+                                >(${this.track.disc})</span
+                              >`
+                            : nothing}
                         </h5>
                       </div>
                     </div>

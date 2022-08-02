@@ -246,11 +246,11 @@ export default css`
       padding: 0px 10px;
       margin: 0 -1px;
     }
-    .small .controls-wrapper {
+    .smallArt .controls-wrapper {
       height: 85px;
       max-height: 85px;
     }
-    .small .current-album-art {
+    .smallArt .current-album-art {
       height: 200px;
       width: 200px;
       margin: 0;
@@ -262,13 +262,13 @@ export default css`
       background: rgba(255, 255, 255, 0.85);
       box-shadow: 0px 0px 1px var(--primary, #006ecd);
     }
-    .small canvas {
+    .smallArt canvas {
       height: calc(100vh - 50px);
     }
-    .small .floating-text-details {
+    .smallArt .floating-text-details {
       display: block;
     }
-    .small .text-details {
+    .smallArt .text-details {
       opacity: 0;
     }
     .bottom lit-virtualizer {

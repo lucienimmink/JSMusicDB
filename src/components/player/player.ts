@@ -8,6 +8,7 @@ import controls from '../../styles/controls';
 import player from '../../styles/player';
 import progress from '../../styles/progress-bar';
 import responsive from '../../styles/responsive';
+import smallMuted from '../../styles/small-muted';
 import { animateCSS, animationCSS } from '../../utils/animations';
 import {
   ACCENT_COLOR,
@@ -86,7 +87,15 @@ export class Album extends LitElement {
   @state()
   hasErrorWhilePlaying: boolean;
   static get styles() {
-    return [animationCSS, progress, controls, responsive, buttons, player];
+    return [
+      animationCSS,
+      progress,
+      controls,
+      responsive,
+      buttons,
+      player,
+      smallMuted,
+    ];
   }
   constructor() {
     super();
@@ -565,6 +574,11 @@ export class Album extends LitElement {
                           >
                             ${this.track.album.name}
                           </app-link>
+                          ${this.track.disc
+                            ? html`<span class="small muted"
+                                >(${this.track.disc})</span
+                              >`
+                            : nothing}
                         </h5>
                       </div>
                       <div class="controls">
