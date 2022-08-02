@@ -14,6 +14,7 @@ import {
   getCurrentPlaylist,
   getNewPlaylistForLovedTracks,
   getNewPlaylistForRadio,
+  getNewPlaylistForRadioPref,
   getNewPlaylistForRandom,
   getNewPlaylistForRandomPref,
   getTopTracksForUser,
@@ -44,8 +45,11 @@ export class LetterNav extends LitElement {
   @property({ attribute: 'playlist-id' })
   playlistId: string;
   showStartArtistSelection: boolean;
+  @state()
   playlist: any;
+  @state()
   artists: Array<any>;
+  @state()
   loading: boolean;
   currentPlaylistId: string;
   @state()
@@ -103,36 +107,30 @@ export class LetterNav extends LitElement {
     this.loading = true;
     this.playlist = null;
     this.showStartArtistSelection = false;
-    this.requestUpdate();
     getNewPlaylistForLovedTracks({
       username: this.lastFMUserName,
     })
       .then((playlist: any) => this._updatePlaylist(playlist))
       .catch(() => {
         this.loading = false;
-        this.requestUpdate();
       });
   };
   _generateRandom = () => {
     this.loading = true;
     this.playlist = null;
     this.showStartArtistSelection = false;
-    this.requestUpdate();
     getNewPlaylistForRandom({
       max: this.max,
     })
       .then((playlist: any) => this._updatePlaylist(playlist))
       .catch(() => {
         this.loading = false;
-        this.requestUpdate();
       });
   };
   _generateRandomByPreference = () => {
     this.loading = true;
     this.showStartArtistSelection = false;
     this.playlist = null;
-    this.requestUpdate();
-    // getTopArtists
     getNewPlaylistForRandomPref({
       max: this.max,
       username: this.lastFMUserName,
@@ -140,13 +138,24 @@ export class LetterNav extends LitElement {
       .then((playlist: any) => this._updatePlaylist(playlist))
       .catch(() => {
         this.loading = false;
-        this.requestUpdate();
+      });
+  };
+  _generateRadioByPreference = () => {
+    this.loading = true;
+    this.showStartArtistSelection = false;
+    this.playlist = null;
+    getNewPlaylistForRadioPref({
+      max: this.max,
+      username: this.lastFMUserName,
+    })
+      .then((playlist: any) => this._updatePlaylist(playlist))
+      .catch(() => {
+        this.loading = false;
       });
   };
   _updatePlaylist = (playlist: any) => {
     this.playlist = playlist;
     this.loading = false;
-    this.requestUpdate();
   };
   _getTopTracks = () => {
     this.loading = true;
@@ -160,7 +169,6 @@ export class LetterNav extends LitElement {
       .then((playlist: any) => this._updatePlaylist(playlist))
       .catch(() => {
         this.loading = false;
-        this.requestUpdate();
       });
   };
   _startArtistRadio = () => {
@@ -195,7 +203,6 @@ export class LetterNav extends LitElement {
       .then((playlist: any) => this._updatePlaylist(playlist))
       .catch(() => {
         this.loading = false;
-        this.requestUpdate();
       });
   };
   _update(target: any, current: any) {
@@ -209,7 +216,6 @@ export class LetterNav extends LitElement {
         return track;
       });
       this.playlist.tracks = updatedTracks;
-      this.requestUpdate();
     }
   }
   _switchPlaylist(e: Event) {
@@ -242,6 +248,10 @@ export class LetterNav extends LitElement {
       case 'random-pref':
         this.showStartArtistSelection = false;
         this._generateRandomByPreference();
+        break;
+      case 'pref-radio':
+        this.showStartArtistSelection = false;
+        this._generateRadioByPreference();
         break;
       case 'top':
         this.showStartArtistSelection = false;
@@ -381,6 +391,24 @@ export class LetterNav extends LitElement {
                       </li>
                     `
                   : nothing}
+                ${this.lastFMUserName
+                  ? html`
+                      <li>
+                        <app-link href="/playlists/pref-radio" flex
+                          >Radio by preference
+                          ${this.currentPlaylistId === 'pref-radio'
+                            ? html` <button
+                                class="btn btn-small btn-primary btn-refresh"
+                                @click="${() =>
+                                  this._reloadPlaylist('pref-radio')}"
+                              >
+                                <span class="icon">${redoIcon}</span>
+                              </button>`
+                            : nothing}
+                        </app-link>
+                      </li>
+                    `
+                  : nothing}
                 <li>
                   <app-link href="/playlists/radio" flex>Artist radio</app-link>
                 </li>
@@ -412,6 +440,11 @@ export class LetterNav extends LitElement {
                       <option value="random-pref">
                         ${this.max} Random tracks by preference
                       </option>
+                    `
+                  : nothing}
+                ${this.lastFMUserName
+                  ? html`
+                      <option value="pref-radio">Radio by preference</option>
                     `
                   : nothing}
                 <option value="radio">Artist radio</option>

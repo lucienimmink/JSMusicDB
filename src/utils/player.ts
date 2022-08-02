@@ -45,6 +45,8 @@ export const getNextPlaylist = (playlist: any) => {
       return getNewPlaylistForRandom(playlist);
     case 'random-pref':
       return getNewPlaylistForRandomPref(playlist);
+    case 'radio-pref':
+      return getNewPlaylistForRadioPref(playlist);
     case 'radio':
       return getNewPlaylistForRadio(playlist);
     case 'loved':
@@ -132,6 +134,63 @@ export const getNewPlaylistForRandomPref = (playlist: any) => {
                 // @ts-ignore
                 _getRandomTrackFromArtists(mdb.artistsList(), newPlaylist)
               );
+            }
+          }
+          return resolve(newPlaylist);
+        })
+        .catch(e => {
+          return reject(e);
+        });
+    })
+  );
+};
+export const getNewPlaylistForRadioPref = (playlist: any) => {
+  return new Promise((resolve, reject) =>
+    musicdb.then((mdb: any) => {
+      const highRotation: Array<any> = [];
+      const mediumRotation: Array<any> = [];
+      getTopArtists(playlist.username)
+        .then(async ({ topartists }: { topartists: any }) => {
+          topartists?.artist.forEach((artist: any, index: number) => {
+            const sortName = _getSortName(artist.name);
+            const coreArtist = mdb.artists[sortName];
+            if (coreArtist && index < 15) {
+              highRotation.push(coreArtist);
+            } else {
+              mediumRotation.push(coreArtist);
+            }
+          });
+          const newPlaylist = {
+            name: `Radio based on ${playlist.username} recently listened tracks`,
+            tracks: [],
+            type: 'random-pref',
+            max: playlist.max,
+            username: playlist.username,
+          };
+          for (let i = 0; i < playlist.max; i++) {
+            if (i % 3 === 0 || i % 5 === 0) {
+              newPlaylist.tracks.push(
+                // @ts-ignore
+                _getRandomTrackFromArtists(highRotation, newPlaylist)
+              );
+            } else if (i % 4 === 0 || i % 7 === 0) {
+              newPlaylist.tracks.push(
+                // @ts-ignore
+                _getRandomTrackFromArtists(mediumRotation, newPlaylist)
+              );
+            } else {
+              // use the preferences to get a related random track
+              const randomHighRotationArtist = _shuffle(highRotation)[0];
+              const relatedArtists = await _getNextSimilarArtist(
+                randomHighRotationArtist,
+                mdb
+              );
+              const randomTrack = await _getRandomTrackFromArtists(
+                relatedArtists,
+                newPlaylist
+              );
+              // @ts-ignore
+              newPlaylist.tracks.push(randomTrack);
             }
           }
           return resolve(newPlaylist);
