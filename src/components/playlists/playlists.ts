@@ -216,6 +216,7 @@ export class LetterNav extends LitElement {
         return track;
       });
       this.playlist.tracks = updatedTracks;
+      this.requestUpdate();
     }
   }
   _switchPlaylist(e: Event) {
