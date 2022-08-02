@@ -60,7 +60,7 @@
     ]
   },
   "name": "jsmusicdb",
-  "version": "3.21.0",
+  "version": "3.21.1",
   "description": "Web standards music database and player",
   "author": "Lucien Immink",
   "license": "MIT",
