@@ -175,6 +175,9 @@ export class Album extends LitElement {
   _doToggleSetting(target: any, setting: any) {
     this._toggleSetting(setting);
   }
+  _hasMoreDiscs() {
+    return Object.keys(this.track.album.discs).length > 1;
+  }
   async _play(startPosition = 0, track: any = null) {
     this.track = track || this.playlist?.tracks[this.playlist.index || 0];
     if (this.isShuffled) {
@@ -574,7 +577,7 @@ export class Album extends LitElement {
                           >
                             ${this.track.album.name}
                           </app-link>
-                          ${this.track.disc
+                          ${this._hasMoreDiscs()
                             ? html`<span class="small muted"
                                 >(${this.track.disc})</span
                               >`

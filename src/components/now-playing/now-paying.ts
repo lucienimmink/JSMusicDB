@@ -323,6 +323,9 @@ export class NowPlaying extends LitElement {
     this.isBottomShown = !this.isBottomShown;
     this.requestUpdate();
   }
+  _hasMoreDiscs() {
+    return Object.keys(this.track.album.discs).length > 1;
+  }
   render() {
     return html`
       ${this.active
@@ -379,7 +382,7 @@ export class NowPlaying extends LitElement {
                           >
                             ${this.track.album.name}
                           </app-link>
-                          ${this.track.disc
+                          ${this._hasMoreDiscs()
                             ? html`<span class="small muted"
                                 >(${this.track.disc})</span
                               >`
