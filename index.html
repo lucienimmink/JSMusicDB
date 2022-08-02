@@ -1,182 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    />
-    <meta name="Description" content="Web standards based music player" />
-    <link rel="manifest" href="manifest.webmanifest" />
-    <base href="/" />
 
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="192x192"
-      href="./assets/android-chrome-192x192.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="512x512"
-      href="./assets/android-chrome-512x512.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="./assets/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="./assets/favicon-16x16.png"
-    />
-    <link rel="apple-touch-icon" href="./assets/android-chrome-192x192.png" />
-    <meta name="theme-color" content="#0063B1" />
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="Description" content="Web standards based music player" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <base href="/" />
 
-    <style>
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-        background: var(--background, #f8f9fa);
-        color: var(--text-color, #212529);
-        font-family: 'fira_sanslight', system-ui;
-        font-variant-ligatures: no-common-ligatures;
-        font-size: 1rem;
-        font-weight: 300;
-        line-height: 1.5;
-        text-align: left;
-        transition: color 0.5s ease-in-out, background 0.5s ease-in-out;
-      }
-      html {
-        overflow-x: hidden;
-        overflow-y: scroll;
-        overscroll-behavior: none;
-      }
-      html.noscroll {
-        overflow-y: hidden;
-      }
-      ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
-      }
-      ::-webkit-scrollbar-track {
-        background-color: var(--progress-background, #f3f4f5);
-      }
-      ::-webkit-scrollbar-thumb {
-        background-color: var(--progress, #006ecd);
-      }
-      ::-moz-selection {
-        background-color: var(--primary);
-        color: var(--letter-color);
-      }
-      ::selection {
-        background-color: var(--primary);
-        color: var(--letter-color);
-      }
-      .loader {
-        background: var(--background);
-        color: var(--text-color);
-        z-index: 101;
-        position: fixed;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
-      .progress-bar {
-        height: 6px;
-        display: block;
-        transition: width 0.1s linear;
-        position: relative;
-        background: transparent;
-        width: 180px;
-      }
-      .progress-circle {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 4px;
-        height: 4px;
-        border-radius: 50%;
-        animation: progress-bar-animation 3s infinite;
-        background-color: var(--primary, #006ecd);
-      }
-      .progress-circle:nth-child(2) {
-        animation-delay: 200ms;
-      }
-      .progress-circle:nth-child(3) {
-        animation-delay: 400ms;
-      }
-      .progress-circle:nth-child(4) {
-        animation-delay: 600ms;
-      }
-      .progress-circle:nth-child(5) {
-        animation-delay: 800ms;
-      }
-      @keyframes progress-bar-animation {
-        0% {
-          transform: translate(0, 0);
-          animation-timing-function: ease-in;
-          opacity: 0;
-        }
-        30% {
-          transform: translate(60px, 0);
-          animation-timing-function: linear;
-          opacity: 1;
-        }
-        70% {
-          transform: translate(120px, 0);
-          animation-timing-function: ease-out;
-          opacity: 1;
-        }
-        100% {
-          transform: translate(180px, 0);
-          opacity: 0;
-        }
-      }
-      @font-face {
-        font-family: 'fira_sanslight';
-        src: url('assets/firasans-light-webfont.woff2') format('woff2'),
-          url('assets/firasans-light-webfont.woff') format('woff');
-        font-weight: normal;
-        font-style: normal;
-        font-display: swap;
-      }
-    </style>
-    <style id="themed"></style>
-    <title>JSMusicDB</title>
-  </head>
+  <link rel="icon" type="image/png" sizes="192x192" href="./assets/android-chrome-192x192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="./assets/android-chrome-512x512.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png" />
+  <link rel="apple-touch-icon" href="./assets/android-chrome-192x192.png" />
+  <meta name="theme-color" content="#0063B1" />
 
-  <body>
-    <lit-musicdb>
-      <div class="loader">
-        Loading
-        <div class="progress-bar">
-          <div class="progress-circle"></div>
-          <div class="progress-circle"></div>
-          <div class="progress-circle"></div>
-          <div class="progress-circle"></div>
-          <div class="progress-circle"></div>
-        </div>
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--background, #f8f9fa);
+      color: var(--text-color, #212529);
+      font-family: 'fira_sanslight', system-ui;
+      font-variant-ligatures: no-common-ligatures;
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.5;
+      text-align: left;
+      transition: color 0.5s ease-in-out, background 0.5s ease-in-out;
+    }
+
+    html {
+      overflow-x: hidden;
+      overflow-y: scroll;
+      overscroll-behavior: none;
+    }
+
+    html.noscroll {
+      overflow-y: hidden;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background-color: var(--progress-background, #f3f4f5);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: var(--progress, #006ecd);
+    }
+
+    ::-moz-selection {
+      background-color: var(--primary);
+      color: var(--letter-color);
+    }
+
+    ::selection {
+      background-color: var(--primary);
+      color: var(--letter-color);
+    }
+
+    .loader {
+      background: var(--background);
+      color: var(--text-color);
+      z-index: 101;
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .progress-bar {
+      height: 6px;
+      display: block;
+      transition: width 0.1s linear;
+      position: relative;
+      background: transparent;
+      width: 180px;
+    }
+
+    .progress-circle {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      animation: progress-bar-animation 3s infinite;
+      background-color: var(--primary, #006ecd);
+    }
+
+    .progress-circle:nth-child(2) {
+      animation-delay: 200ms;
+    }
+
+    .progress-circle:nth-child(3) {
+      animation-delay: 400ms;
+    }
+
+    .progress-circle:nth-child(4) {
+      animation-delay: 600ms;
+    }
+
+    .progress-circle:nth-child(5) {
+      animation-delay: 800ms;
+    }
+
+    @keyframes progress-bar-animation {
+      0% {
+        transform: translate(0, 0);
+        animation-timing-function: ease-in;
+        opacity: 0;
+      }
+
+      30% {
+        transform: translate(60px, 0);
+        animation-timing-function: linear;
+        opacity: 1;
+      }
+
+      70% {
+        transform: translate(120px, 0);
+        animation-timing-function: ease-out;
+        opacity: 1;
+      }
+
+      100% {
+        transform: translate(180px, 0);
+        opacity: 0;
+      }
+    }
+
+    @font-face {
+      font-family: 'fira_sanslight';
+      src: url('assets/firasans-light-webfont.woff2') format('woff2'),
+        url('assets/firasans-light-webfont.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+  </style>
+  <style id="themed"></style>
+  <title>JSMusicDB</title>
+</head>
+
+<body>
+  <lit-musicdb>
+    <div class="loader">
+      Loading
+      <div class="progress-bar">
+        <div class="progress-circle"></div>
+        <div class="progress-circle"></div>
+        <div class="progress-circle"></div>
+        <div class="progress-circle"></div>
+        <div class="progress-circle"></div>
       </div>
-    </lit-musicdb>
-    <script type="module" src="./out-tsc/src/LitMusicdb.js"></script>
-    <script>
+    </div>
+  </lit-musicdb>
+  <script>let exports = {};</script>
+  <script type="module" src="./out-tsc/src/LitMusicdb.js"></script>
+  <script>
       /* eslint-disable no-undef */ 'serviceWorker' in navigator &&
-        window.addEventListener('load', function () {
-          navigator.serviceWorker.register('sw.js').catch(function (e) {
-            console.error('ServiceWorker registration failed: ', e);
-          });
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js').catch(function (e) {
+          console.error('ServiceWorker registration failed: ', e);
         });
-    </script>
-  </body>
+      });
+  </script>
+</body>
+
 </html>
