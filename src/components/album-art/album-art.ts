@@ -28,6 +28,7 @@ export class AlbumArt extends LitElement {
   objectFit: string;
   album: any;
   artist: any;
+  static: boolean;
   transparent: boolean;
   isDefault = false;
   dimension: number;
@@ -42,6 +43,7 @@ export class AlbumArt extends LitElement {
       _cache: { type: Object },
       objectFit: { type: String },
       transparent: { type: Boolean },
+      static: { type: Boolean },
     };
   }
   static get styles() {
@@ -54,6 +56,7 @@ export class AlbumArt extends LitElement {
     this.objectFit = 'cover';
     this.transparent = false;
     this.dimension = 300;
+    this.static = false;
   }
   public getDimensions() {
     this.dimension =
@@ -114,36 +117,38 @@ export class AlbumArt extends LitElement {
     if (!key.album) {
       cacheKey = `${this.artist}`;
     }
-    // @ts-ignore
-    resizeObserver.observe(this.shadowRoot?.querySelector('img'));
-    this.shadowRoot
-      ?.querySelector('img')
-      ?.addEventListener('resize', async () => {
-        this.getDimensions();
-        key.dimension = this.dimension;
-        key.artist = this.artist;
-        key.album = this.album;
-        let cacheKey = `${this.artist}-${this.album}`;
-        if (!key.album) {
-          cacheKey = `${this.artist}`;
-        }
-        if (sharedCache[cacheKey]) {
-          this.art = this.replaceDimensions(
-            sharedCache[cacheKey],
-            this.dimension
-          );
-          this.dispatch();
-          return;
-        }
-        const cache = await this.getArt(key);
-        if (cache) {
-          sharedCache[cacheKey] = cache;
-          this.art = this.replaceDimensions(cache, this.dimension);
-          this.dispatch();
-        } else {
-          this.updateArt(key);
-        }
-      });
+    if (!this.static) {
+      // @ts-ignore
+      resizeObserver.observe(this.shadowRoot?.querySelector('img'));
+      this.shadowRoot
+        ?.querySelector('img')
+        ?.addEventListener('resize', async () => {
+          this.getDimensions();
+          key.dimension = this.dimension;
+          key.artist = this.artist;
+          key.album = this.album;
+          let cacheKey = `${this.artist}-${this.album}`;
+          if (!key.album) {
+            cacheKey = `${this.artist}`;
+          }
+          if (sharedCache[cacheKey]) {
+            this.art = this.replaceDimensions(
+              sharedCache[cacheKey],
+              this.dimension
+            );
+            this.dispatch();
+            return;
+          }
+          const cache = await this.getArt(key);
+          if (cache) {
+            sharedCache[cacheKey] = cache;
+            this.art = this.replaceDimensions(cache, this.dimension);
+            this.dispatch();
+          } else {
+            this.updateArt(key);
+          }
+        });
+    }
     if (sharedCache[cacheKey]) {
       this.art = this.replaceDimensions(sharedCache[cacheKey], this.dimension);
       this.dispatch();

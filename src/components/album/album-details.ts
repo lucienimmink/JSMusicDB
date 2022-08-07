@@ -65,22 +65,8 @@ export class AlbumDetails extends LitElement {
     });
   }
   _handleScroll = () => {
-    if (window.pageYOffset === 0) {
-      this.shrinkFactor = '';
-    } else if (window.pageYOffset > 150) {
-      this.shrinkFactor = `shrunk`;
-    } else {
-      const scrollFactor = window.pageYOffset / 150;
-      if (scrollFactor < 0.25) {
-        this.shrinkFactor = `shrink-1`;
-      } else if (scrollFactor < 0.5) {
-        this.shrinkFactor = `shrink-2`;
-      } else if (scrollFactor < 0.75) {
-        this.shrinkFactor = `shrink-3`;
-      } else {
-        this.shrinkFactor = `shrunk`;
-      }
-    }
+    const scroll = window.scrollY >= 160 ? 1 : window.scrollY / 160;
+    this.style.setProperty('--scroll', scroll.toString());
   };
 
   attributeChangedCallback(name: any, oldval: any, newval: any) {
@@ -124,6 +110,7 @@ export class AlbumDetails extends LitElement {
             artist="${this.albumDetails?.artist?.albumArtist ||
             this.albumDetails?.artist?.name}"
             album="${this.albumDetails?.name}"
+            ?static=${true}
           ></album-art>
           <div class="details">
             <h2>${this.albumDetails?.name}</h2>

@@ -65,116 +65,85 @@ export default css`
   @media (min-width: 992px) {
     .jumbotron {
       padding: 2rem;
+      animation: jumbotron 1s linear infinite;
+    }
+    @keyframes jumbotron {
+      to {
+        backdrop-filter: blur(2px);
+        background-color: var(--background2-seethrough);
+        padding: 1rem 2rem;
+      }
     }
     album-art {
-      --size: 190px;
       margin-left: -2rem;
-      flex: 0 0 var(--size);
-      max-width: var(--size);
-      width: var(--size);
-      height: var(--size);
-      max-height: var(--size);
+      flex: 0 0 190px;
+      max-width: 190px;
+      width: 190px;
+      height: 190px;
+      max-height: 190px;
+      animation: album-art 1s linear infinite;
     }
-    .shrink-1 album-art {
-      --size: 150px;
+    @keyframes album-art {
+      to {
+        flex: 0 0 75px;
+        max-width: 75px;
+        width: 75px;
+        height: 75px;
+        max-height: 75px;
+      }
     }
-    .shrink-2 album-art {
-      --size: 125px;
-    }
-    .shrink-3 album-art {
-      --size: 100px;
-    }
-    .shrunk album-art {
-      --size: 75px;
-    }
+
     h3 .muted {
       opacity: 0;
+      animation: h3muted 1s linear infinite;
+    }
+    @keyframes h3muted {
+      to {
+        opacity: 0.6;
+      }
     }
     h2 {
       font-size: 2.5rem;
-      transition: all 0.1s ease-in-out;
+      animation: h2 1s linear infinite;
+    }
+    @keyframes h2 {
+      to {
+        font-size: 2rem;
+        margin-top: 3px;
+      }
     }
     h3,
     h4 {
       font-size: 1.5rem;
       overflow: hidden;
-      transition: all 0.1s ease-in-out;
+    }
+    h3 {
+      animation: h3 1s linear infinite;
+    }
+    @keyframes h3 {
+      to {
+        font-size: 1.2rem;
+      }
     }
     h4 {
       transform-origin: center top;
       font-size: 1.1rem;
+      animation: h4 1s linear infinite;
     }
-    .shrink-1 h2 {
-      margin-top: -3px;
-      font-size: 2.375rem;
+    @keyframes h4 {
+      25% {
+        opacity: 0.25;
+      }
+      to {
+        height: 0;
+        opacity: 0;
+      }
     }
-    .shrink-2 h2 {
-      margin-top: -1px;
-      font-size: 2.25rem;
-    }
-    .shrink-3 h2 {
-      margin-top: 1px;
-      font-size: 2.125rem;
-    }
-    .shrunk h2 {
-      font-size: 2rem;
-      margin-top: 3px;
-    }
-    .shrink-1 h3 {
-      font-size: 1.425rem;
-    }
-    .shrink-2 h3 {
-      font-size: 1.35rem;
-    }
-    .shrink-3 h3 {
-      font-size: 1.275rem;
-    }
-    .shrunk h3 {
-      font-size: 1.2rem;
-    }
-    .shrink-1 h3 .muted {
-      opacity: 0.15;
-    }
-    .shrink-2 h3 .muted {
-      opacity: 0.3;
-    }
-    .shrink-3 h3 .muted {
-      opacity: 0.45;
-    }
-    .shrunk h3 .muted {
-      opacity: 0.6;
-    }
-    .shrink-1 h4 {
-      height: 0;
-    }
-    .shrink-2 h4 {
-      height: 0;
-    }
-    .shrink-3 h4 {
-      height: 0;
-      opacity: 0.25;
-    }
-    .shrunk h4 {
-      height: 0;
-      opacity: 0;
-    }
-    .shrink-1 {
-      padding: 1.75rem 2rem;
-    }
-    .shrink-2 {
-      padding: 1.5rem 2rem;
-      backdrop-filter: blur(0.5px);
-      background-color: var(--background2-seethrough);
-    }
-    .shrink-3 {
-      backdrop-filter: blur(1px);
-      background-color: var(--background2-seethrough);
-      padding: 1.25rem 2rem;
-    }
-    .shrunk {
-      backdrop-filter: blur(2px);
-      background-color: var(--background2-seethrough);
-      padding: 1rem 2rem;
+    :host * {
+      animation-play-state: paused !important;
+      animation-delay: calc(var(--scroll) * -1s) !important;
+      animation-iteration-count: 1 !important;
+      animation-fill-mode: both !important;
     }
   }
 `;
