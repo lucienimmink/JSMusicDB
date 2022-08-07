@@ -2,7 +2,7 @@ name: Build
 
 on:
   push:
-    branches: ['feature/vite']
+    branches: ['feature/*']
   pull_request:
     branches: ['main']
 jobs:
