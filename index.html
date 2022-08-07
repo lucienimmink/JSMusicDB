@@ -5,16 +5,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="Description" content="Web standards based music player" />
-  <link rel="manifest" href="manifest.webmanifest" />
-  <base href="/" />
-
-  <link rel="icon" type="image/png" sizes="192x192" href="./assets/android-chrome-192x192.png" />
-  <link rel="icon" type="image/png" sizes="512x512" href="./assets/android-chrome-512x512.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png" />
-  <link rel="apple-touch-icon" href="./assets/android-chrome-192x192.png" />
   <meta name="theme-color" content="#0063B1" />
-
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <base href="/" />
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/android-chrome-192x192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/android-chrome-512x512.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png" />
+  <link rel="apple-touch-icon" href="assets/android-chrome-192x192.png" />
   <style>
     html,
     body {
@@ -151,6 +149,7 @@
   </style>
   <style id="themed"></style>
   <title>JSMusicDB</title>
+  <script type="module" src="/src/LitMusicDB.ts"></script>
 </head>
 
 <body>
@@ -166,8 +165,6 @@
       </div>
     </div>
   </lit-musicdb>
-  <script>let exports = {};</script>
-  <script type="module" src="./out-tsc/src/LitMusicdb.js"></script>
   <script>
       /* eslint-disable no-undef */ 'serviceWorker' in navigator &&
       window.addEventListener('load', function () {

@@ -1,4 +1,5 @@
-const FANARTAPIKEY = process.env.FANART_APIKEY!;
+// @ts-ignore
+const FANARTAPIKEY = import.meta.env.VITE_FANART_APIKEY!;
 
 const fetchArt = async (mbid: string) => {
   if (!mbid) {
