@@ -18,7 +18,7 @@ jobs:
           node-version: '16.x'
       - name: List files in the repository
         run: |
-          ls ${{ github.workspace }}
+          ls ${{ github.workspace }}/src
       - name: Install dependencies
         run: npm ci
       - name: Create env file
