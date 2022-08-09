@@ -249,8 +249,8 @@ export class AlbumArt extends LitElement {
     let art = this.ARTBASE;
     this.isDefault = false;
     if (!album) {
-      // let's resize those larger artist arts we get.
-      art += `,w_${dimension},h_${dimension},c_fill/`;
+      // let's resize those larger artist arts we get; using face detection to crop to their faces
+      art += `,w_${dimension},h_${dimension},c_thumb,g_faces/`;
       try {
         let remoteURL = await get(`remoteURL-${artist}`, this.customStore);
         if (!remoteURL) {
@@ -272,7 +272,7 @@ export class AlbumArt extends LitElement {
       }
       this.art = art || defaultArtist;
     } else {
-      // let's resize those larger artist arts we get.
+      // let's resize those larger album arts we get.
       art += `,w_${dimension},h_${dimension},c_fill/`;
       try {
         let remoteURL = await get(
