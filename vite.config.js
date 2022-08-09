@@ -1,4 +1,5 @@
 import versionInjector from 'rollup-plugin-version-injector';
+import { chunkSplitPlugin } from 'vite-plugin-chunk-split';
 import { defineConfig } from 'vite';
 
 // https://vitejs.dev/config/
@@ -6,12 +7,6 @@ export default defineConfig({
   build: {
     entry: 'index.html',
     rollupOptions: {
-      manualChunks: moduleID => {
-        if (moduleID.includes('node_modules')) {
-          return 'vendor';
-        }
-        return 'main';
-      },
       plugins: [
         versionInjector({
           logLevel: 'warn',
@@ -19,4 +14,14 @@ export default defineConfig({
       ],
     },
   },
+  plugins: [
+    chunkSplitPlugin({
+      strategy: 'default',
+      customSplitting: {
+        'vendor': [/node_modules/],
+        'utils': [/src\/utils/, /src\/components\/last-fm/, /src\/components\/mp3stream/],
+        'styles': [/src\/styles/],
+      }
+    })
+  ]
 });
