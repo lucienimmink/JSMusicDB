@@ -26,6 +26,8 @@ export class AlbumDetails extends LitElement {
   @state()
   replayGainApplied: boolean;
 
+  static readonly SCROLLOFFSET = 160;
+
   static get styles() {
     return [container, buttons, albumDetails, smallMuted, responsive];
   }
@@ -65,7 +67,10 @@ export class AlbumDetails extends LitElement {
     });
   }
   _handleScroll = () => {
-    const scroll = window.scrollY >= 160 ? 1 : window.scrollY / 160;
+    const scroll =
+      window.scrollY >= AlbumDetails.SCROLLOFFSET
+        ? 1
+        : window.scrollY / AlbumDetails.SCROLLOFFSET;
     this.style.setProperty('--scroll', scroll.toString());
   };
 

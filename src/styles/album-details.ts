@@ -75,7 +75,7 @@ export default css`
       }
     }
     album-art {
-      margin-left: -2rem;
+      margin-left: -42px;
       flex: 0 0 190px;
       max-width: 190px;
       width: 190px;
