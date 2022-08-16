@@ -8,6 +8,13 @@ export default css`
     height: 100%;
     color: var(--primary, default);
     text-decoration: none;
+    transition: color 0.2s ease-in-out;
+  }
+  a:hover {
+    color: var(--primary-hover, var(--primary, default));
+  }
+  a:not([href]) {
+    color: var(--text-color, default);
   }
   span {
     width: 100%;
@@ -29,7 +36,13 @@ export default css`
   .letter {
     color: var(--letter-color, default);
   }
+  .letter:hover {
+    color: var(--letter-color, default);
+  }
   .text {
+    color: var(--text-color, default);
+  }
+  .text:hover {
     color: var(--text-color, default);
   }
   .menu {

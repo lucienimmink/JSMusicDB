@@ -1,5 +1,6 @@
 import { navigator } from '@addasoft/lit-element-router';
 import { html, LitElement } from 'lit';
+import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { customElement, property } from 'lit/decorators.js';
 import appLink from '../../styles/app-link';
 
@@ -25,8 +26,10 @@ export default class Link extends LitElement {
   }
   constructor() {
     super();
-    this.href = '';
-    this.title = '';
+    // @ts-ignore
+    this.href = undefined;
+    // @ts-ignore
+    this.title = undefined;
     this.inline = false;
     this.flex = false;
     this.letter = false;
@@ -36,15 +39,15 @@ export default class Link extends LitElement {
   render() {
     return html`
       <a
-        title="${this.title}"
-        href="${this.href}"
+        title="${ifDefined(this.title)}"
+        href="${ifDefined(this.href)}"
         @click="${this.linkClick}"
         class="${this.inline ? 'inline ' : ''}${this.flex ? 'flex ' : ''}${this
           .letter
           ? 'letter '
           : ''}
-          ${this.menu ? 'menu ' : ''}${this.text ? 'text ' : ''}
-        "
+            ${this.menu ? 'menu ' : ''}${this.text ? 'text ' : ''}
+          "
       >
         <span><slot></slot></span>
       </a>
