@@ -12,9 +12,6 @@ import { SWITCH_ROUTE } from '../../utils/router';
 import { cdSVG } from '../icons/cd';
 import musicdb from '../musicdb';
 
-const INTERVAL = 1000 * 30;
-const LATEST_ADDITIONS = 12;
-
 @customElement('home-nav')
 export class HomeNav extends LitElement {
   @state()
@@ -25,6 +22,9 @@ export class HomeNav extends LitElement {
   counter: any;
   @state()
   active = false;
+
+  private readonly INTERVAL = 1000 * 30;
+  private readonly LATEST_ADDITIONS = 10;
 
   static get styles() {
     return [container, headers, smallMuted, panel, home];
@@ -59,7 +59,7 @@ export class HomeNav extends LitElement {
   _init() {
     musicdb
       .then((mdb: any) => {
-        this.recentAdded = mdb.getLatestAdditions(LATEST_ADDITIONS);
+        this.recentAdded = mdb.getLatestAdditions(this.LATEST_ADDITIONS);
       })
       .catch((error: any) => {
         console.log(error);
@@ -71,7 +71,7 @@ export class HomeNav extends LitElement {
         this.recenttracks = recenttracks?.track;
         this.counter = setTimeout(() => {
           this._poll(name);
-        }, INTERVAL);
+        }, this.INTERVAL);
       }
     );
   }

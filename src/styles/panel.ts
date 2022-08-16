@@ -27,26 +27,26 @@ export default css`
       height: 15vw;
     }
     .panel-home {
-      width: 130px;
-      height: 130px;
+      width: 167px;
+      height: 167px;
     }
   }
   @media (min-width: 992px) {
     .panel {
-      width: 11vw;
-      height: 11vw;
+      width: 14vw;
+      height: 14vw;
       max-width: 300px;
       max-height: 300px;
     }
     .panel-home {
-      width: 131px;
-      height: 131px;
+      width: 159px;
+      height: 159px;
     }
   }
   @media (min-width: 1200px) {
     .panel-home {
-      width: 170px;
-      height: 170px;
+      width: 208px;
+      height: 208px;
     }
   }
   .panel-background {

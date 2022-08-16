@@ -382,7 +382,7 @@ export class LetterNav extends LitElement {
                   @click="${(e: Event) => this._toggle('visual', e)}"
                   .checked=${this.settings?.visual}
                 />
-                Show visualisation on now playing screen:
+                Show visualisation on now playing screen
               </label>
             </p>
             <p>
@@ -395,7 +395,7 @@ export class LetterNav extends LitElement {
                           @click="${(e: Event) => this._toggle('smallArt', e)}"
                           .checked=${this.settings?.smallArt}
                         />
-                        Show smaller album art on now playing screen:
+                        Show smaller album art on now playing screen
                       </label>
                     `
                   : nothing
