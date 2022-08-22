@@ -13,6 +13,7 @@ import musicdb from '../musicdb';
 import './../app-link/app-link';
 @customElement('artists-nav')
 export class LetterNav extends LitElement {
+  @state()
   showJumpList: boolean;
   @property()
   activeroute: string;
@@ -30,13 +31,12 @@ export class LetterNav extends LitElement {
   }
   _handleJump = (e: any, l: string) => {
     e.preventDefault();
-    this.showJumpList = false;
     const scroller = this.shadowRoot?.querySelector('lit-virtualizer');
     const index = this.artists.findIndex(letter => letter.header === l);
     const offsetted = index === 0 ? 0 : index - 1;
     // @ts-ignore
     scroller.scrollToIndex(offsetted, 'start');
-    this.requestUpdate();
+    this.showJumpList = false;
   };
 
   _getArtists = () => {

@@ -181,16 +181,20 @@ export const getNewPlaylistForRadioPref = (playlist: any) => {
             } else {
               // use the preferences to get a related random track
               const randomHighRotationArtist = _shuffle(highRotation)[0];
-              const relatedArtists = await _getNextSimilarArtist(
-                randomHighRotationArtist,
-                mdb
-              );
-              const randomTrack = await _getRandomTrackFromArtists(
-                relatedArtists,
-                newPlaylist
-              );
-              // @ts-ignore
-              newPlaylist.tracks.push(randomTrack);
+              try {
+                const relatedArtists = await _getNextSimilarArtist(
+                  randomHighRotationArtist,
+                  mdb
+                );
+                const randomTrack = await _getRandomTrackFromArtists(
+                  relatedArtists,
+                  newPlaylist
+                );
+                // @ts-ignore
+                newPlaylist.tracks.push(randomTrack);
+              } catch (e) {
+                // no simialr artists, skip this track
+              }
             }
           }
           return resolve(newPlaylist);
@@ -364,6 +368,6 @@ const _getNextSimilarArtist = (artist: any, mdb: any): Promise<any> =>
       if (foundSimilar.length > 0) {
         resolve(foundSimilar);
       }
-      reject();
+      reject('no similair artist found');
     });
   });

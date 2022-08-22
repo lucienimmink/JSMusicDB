@@ -15,6 +15,7 @@ import musicdb from '../musicdb';
 @customElement('albums-nav')
 export class LetterNav extends LitElement {
   albums: Array<any>;
+  @state()
   showJumpList: boolean;
   @property()
   activeroute: string;
@@ -29,13 +30,12 @@ export class LetterNav extends LitElement {
   }
   _handleJump = (e: any, l: string) => {
     e.preventDefault();
-    this.showJumpList = false;
     const scroller = this.shadowRoot?.querySelector('lit-virtualizer');
     const index = this.albums.findIndex(letter => letter.id === l);
     const offsetted = index === 0 ? 0 : index - 1;
     // @ts-ignore
     scroller.scrollToIndex(offsetted, 'start');
-    this.requestUpdate();
+    this.showJumpList = false;
   };
   _getAlbums = () => {
     musicdb
