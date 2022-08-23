@@ -78,5 +78,6 @@ export default css`
     text-overflow: ellipsis;
     white-space: nowrap;
     color: white;
+    padding: 0 10px;
   }
 `;

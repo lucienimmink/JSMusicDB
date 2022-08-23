@@ -10,6 +10,7 @@ import years from '../../styles/years';
 import { global as EventBus } from '../../utils/EventBus';
 import { REFRESH } from '../../utils/musicdb';
 import { SWITCH_ROUTE } from '../../utils/router';
+import { handleScroll } from '../../utils/virtual-scroll';
 import '../app-link/app-link';
 import musicdb from '../musicdb';
 @customElement('years-nav')
@@ -31,10 +32,8 @@ export class LetterNav extends LitElement {
     e.preventDefault();
     const scroller = this.shadowRoot?.querySelector('lit-virtualizer');
     const index = this.albums.findIndex(letter => letter.header === y);
-    const offsetted = index === 0 ? 0 : index - 1;
-    // @ts-ignore
-    scroller.scrollToIndex(offsetted, 'start');
     this.showJumpList = false;
+    handleScroll(scroller, index);
   };
   _getAlbums = () => {
     musicdb.then((mdb: any) => {

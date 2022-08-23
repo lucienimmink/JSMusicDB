@@ -9,6 +9,7 @@ import virtualScroll from '../../styles/virtual-scroll';
 import { global as EventBus } from '../../utils/EventBus';
 import { REFRESH } from '../../utils/musicdb';
 import { SWITCH_ROUTE } from '../../utils/router';
+import { handleScroll } from '../../utils/virtual-scroll';
 import musicdb from '../musicdb';
 import './../app-link/app-link';
 @customElement('artists-nav')
@@ -33,10 +34,8 @@ export class LetterNav extends LitElement {
     e.preventDefault();
     const scroller = this.shadowRoot?.querySelector('lit-virtualizer');
     const index = this.artists.findIndex(letter => letter.header === l);
-    const offsetted = index === 0 ? 0 : index - 1;
-    // @ts-ignore
-    scroller.scrollToIndex(offsetted, 'start');
     this.showJumpList = false;
+    handleScroll(scroller, index);
   };
 
   _getArtists = () => {
