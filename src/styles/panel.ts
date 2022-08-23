@@ -74,10 +74,9 @@ export default css`
   }
   .panel-info > span {
     display: block;
-    font-size: 90%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    color: #fff;
+    color: white;
   }
 `;
