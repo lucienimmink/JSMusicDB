@@ -18,7 +18,6 @@ export class HomeNav extends LitElement {
   recenttracks: Array<any>;
   @state()
   recentAdded: Array<any>;
-  @state()
   counter: any;
   @state()
   active = false;
@@ -43,7 +42,8 @@ export class HomeNav extends LitElement {
     getLastFMUserName().then((name: any) => {
       if (name !== 'mdb-skipped') {
         this._setDummyData();
-        this._poll(name);
+        this._updateRecentlyPlayed(name);
+        if (this.counter === -1) this._poll(name);
       }
     });
   }
@@ -66,12 +66,14 @@ export class HomeNav extends LitElement {
       });
   }
   _poll(name: any) {
+    this.counter = setInterval(() => {
+      this._updateRecentlyPlayed(name);
+    }, this.INTERVAL);
+  }
+  _updateRecentlyPlayed(name: string) {
     getRecentlyListened(name).then(
       ({ recenttracks }: { recenttracks: any }) => {
         this.recenttracks = recenttracks?.track;
-        this.counter = setTimeout(() => {
-          this._poll(name);
-        }, this.INTERVAL);
       }
     );
   }
