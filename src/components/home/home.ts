@@ -22,7 +22,7 @@ export class HomeNav extends LitElement {
   @state()
   active = false;
 
-  private readonly INTERVAL = 1000 * 30;
+  private readonly INTERVAL = 1000 * 3;
   private readonly LATEST_ADDITIONS = 10;
 
   static get styles() {
@@ -43,7 +43,11 @@ export class HomeNav extends LitElement {
       if (name !== 'mdb-skipped') {
         this._setDummyData();
         this._updateRecentlyPlayed(name);
-        if (this.counter === -1) this._poll(name);
+        if (this.counter !== -1) {
+          clearInterval(this.counter);
+          this.counter = -1;
+        }
+        if (this.active) this._poll(name);
       }
     });
   }
