@@ -230,6 +230,9 @@ export class Album extends LitElement {
         (navigator as any).mediaSession.setActionHandler('pause', () => {
           this._togglePlayPause();
         });
+        (navigator as any).mediaSession.setActionHandler('stop', () => {
+          this._stop();
+        });
         (navigator as any).mediaSession.setActionHandler(
           'previoustrack',
           () => {
