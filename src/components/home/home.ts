@@ -7,7 +7,12 @@ import panel from '../../styles/panel';
 import smallMuted from '../../styles/small-muted';
 import { global as EventBus } from '../../utils/EventBus';
 import { getLastFMUserName, getRecentlyListened } from '../../utils/lastfm';
-import { DUMMY_TRACK, REFRESH } from '../../utils/musicdb';
+import {
+  DUMMY_TRACK,
+  getRecentlyPlayed,
+  REFRESH,
+  setRecentlyPlayed,
+} from '../../utils/musicdb';
 import { SWITCH_ROUTE } from '../../utils/router';
 import { cdSVG } from '../icons/cd';
 import musicdb from '../musicdb';
@@ -22,7 +27,7 @@ export class HomeNav extends LitElement {
   @state()
   active = false;
 
-  private readonly INTERVAL = 1000 * 3;
+  private readonly INTERVAL = 1000 * 9;
   private readonly LATEST_ADDITIONS = 10;
 
   static get styles() {
@@ -74,10 +79,12 @@ export class HomeNav extends LitElement {
       this._updateRecentlyPlayed(name);
     }, this.INTERVAL);
   }
-  _updateRecentlyPlayed(name: string) {
+  async _updateRecentlyPlayed(name: string) {
+    this.recenttracks = await getRecentlyPlayed();
     getRecentlyListened(name).then(
-      ({ recenttracks }: { recenttracks: any }) => {
-        this.recenttracks = recenttracks?.track;
+      async ({ recenttracks }: { recenttracks: any }) => {
+        await setRecentlyPlayed(recenttracks?.track);
+        this.recenttracks = await getRecentlyPlayed();
       }
     );
   }
