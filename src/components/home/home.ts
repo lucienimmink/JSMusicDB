@@ -81,12 +81,14 @@ export class HomeNav extends LitElement {
   }
   async _updateRecentlyPlayed(name: string) {
     this.recenttracks = await getRecentlyPlayed();
-    getRecentlyListened(name).then(
-      async ({ recenttracks }: { recenttracks: any }) => {
+    getRecentlyListened(name)
+      .then(async ({ recenttracks }: { recenttracks: any }) => {
         await setRecentlyPlayed(recenttracks?.track);
         this.recenttracks = await getRecentlyPlayed();
-      }
-    );
+      })
+      .catch(() => {
+        //
+      });
   }
   _setDummyData() {
     this.recenttracks = [];

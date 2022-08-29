@@ -1,4 +1,5 @@
 import { del, get, set } from 'idb-keyval';
+import { fetchWithTimeout } from './fetch';
 const MINIMALSTREAMVERSION = '4.0.0';
 const JWT = 'jwt';
 const SERVER = 'server';
@@ -14,7 +15,7 @@ export const canLogin = async (server: string) => {
 };
 
 export const getPublicKey = async (server: string) => {
-  const response = await fetch(`${server}/public-key`);
+  const response = await fetchWithTimeout(`${server}/public-key`);
   return response.json();
 };
 
@@ -24,7 +25,7 @@ export const getVersion = async (server: string) => {
 };
 
 export const authenticate = async (server: string, payload: ArrayBuffer) => {
-  const response = await fetch(`${server}/authenticate`, {
+  const response = await fetchWithTimeout(`${server}/authenticate`, {
     method: 'post',
     headers: {
       'content-type': 'application/json',
@@ -42,13 +43,17 @@ export const authenticate = async (server: string, payload: ArrayBuffer) => {
 
 export const getRescan = async (server: string, jwt: string) => {
   const ts = new Date().getTime();
-  const response = await fetch(`${server}/rescan?jwt=${jwt}&ts=${ts}`);
+  const response = await fetchWithTimeout(
+    `${server}/rescan?jwt=${jwt}&ts=${ts}`
+  );
   return response.text();
 };
 
 export const getProgress = async (server: string, jwt: string) => {
   const ts = new Date().getTime();
-  const response = await fetch(`${server}/progress?jwt=${jwt}&ts=${ts}`);
+  const response = await fetchWithTimeout(
+    `${server}/progress?jwt=${jwt}&ts=${ts}`
+  );
   if (response.status === 200) {
     return response.json();
   }
@@ -77,7 +82,7 @@ export const resetServer = async () => {
 };
 
 const _versionCheck = async (server: string) => {
-  const response = await fetch(`${server}/version`);
+  const response = await fetchWithTimeout(`${server}/version`);
   return response.json();
 };
 const _arrayBufferToBase64 = (buffer: ArrayBuffer) =>

@@ -2,6 +2,7 @@ declare const window: any;
 
 import { tinycolor } from '@thebespokepixel/es-tinycolor';
 import { FastAverageColor } from 'fast-average-color';
+import { fetchWithTimeout } from './fetch';
 import { getSettingByName, setSetting } from './settings';
 
 export const ACCENT_COLOR = 'accent-color';
@@ -192,8 +193,9 @@ export const updateSunriseData = async (useGPS = true) => {
       return navigator.geolocation.getCurrentPosition(async ({ coords }) => {
         const lat = coords.latitude;
         const lng = coords.longitude;
-        const response = await fetch(
-          `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`
+        const response = await fetchWithTimeout(
+          `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`,
+          { timeout: 10000 }
         );
         const { results } = await response.json();
         const sunset = new Date(results.sunset);

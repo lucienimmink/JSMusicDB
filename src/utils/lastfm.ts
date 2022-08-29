@@ -1,5 +1,6 @@
 import { del, get, set } from 'idb-keyval';
 import { Encryption } from './encryption';
+import { fetchWithTimeout } from './fetch';
 import { getScrobbleCache, getSettings, setScrobbleCache } from './settings';
 
 // @ts-ignore
@@ -21,11 +22,12 @@ export const getSimilairArtists = (artist: any) => {
   params.set('autocorrect', '1');
   params.set('method', 'artist.getSimilar');
   params.set('artist', artist);
-  return fetch(`https://ws.audioscrobbler.com/2.0/?${params.toString()}`).then(
-    response =>
-      response.json().catch(() => {
-        return {};
-      })
+  return fetchWithTimeout(
+    `https://ws.audioscrobbler.com/2.0/?${params.toString()}`
+  ).then(response =>
+    response.json().catch(() => {
+      return {};
+    })
   );
 };
 
@@ -36,11 +38,12 @@ export const getLovedTracks = (user: string) => {
   params.set('limit', '1000');
   params.set('method', 'user.getlovedtracks');
   params.set('user', user);
-  return fetch(`https://ws.audioscrobbler.com/2.0/?${params.toString()}`).then(
-    response =>
-      response.json().catch(() => {
-        return {};
-      })
+  return fetchWithTimeout(
+    `https://ws.audioscrobbler.com/2.0/?${params.toString()}`
+  ).then(response =>
+    response.json().catch(() => {
+      return {};
+    })
   );
 };
 
@@ -56,11 +59,12 @@ export const getTrackInfo = (track: any, user: string) => {
   params.set('api_key', LASTFMAPIKEY);
   params.set('format', 'json');
   params.set('user', user);
-  return fetch(`https://ws.audioscrobbler.com/2.0/?${params.toString()}`).then(
-    response =>
-      response.json().catch(() => {
-        return {};
-      })
+  return fetchWithTimeout(
+    `https://ws.audioscrobbler.com/2.0/?${params.toString()}`
+  ).then(response =>
+    response.json().catch(() => {
+      return {};
+    })
   );
 };
 
@@ -72,11 +76,12 @@ export const getTopArtists = (user: string) => {
   params.set('method', 'user.gettopartists');
   params.set('period', '1month');
   params.set('user', user);
-  return fetch(`https://ws.audioscrobbler.com/2.0/?${params.toString()}`).then(
-    response =>
-      response.json().catch(() => {
-        return {};
-      })
+  return fetchWithTimeout(
+    `https://ws.audioscrobbler.com/2.0/?${params.toString()}`
+  ).then(response =>
+    response.json().catch(() => {
+      return {};
+    })
   );
 };
 export const getRecentlyListened = (user: string) => {
@@ -86,11 +91,12 @@ export const getRecentlyListened = (user: string) => {
   params.set('limit', '6');
   params.set('method', 'user.getrecenttracks');
   params.set('user', user);
-  return fetch(`https://ws.audioscrobbler.com/2.0/?${params.toString()}`).then(
-    response =>
-      response.json().catch(() => {
-        return {};
-      })
+  return fetchWithTimeout(
+    `https://ws.audioscrobbler.com/2.0/?${params.toString()}`
+  ).then(response =>
+    response.json().catch(() => {
+      return {};
+    })
   );
 };
 export const getTopTracks = (user: string, max = 100, period = '3month') => {
@@ -101,11 +107,12 @@ export const getTopTracks = (user: string, max = 100, period = '3month') => {
   params.set('limit', max.toString());
   params.set('method', 'user.gettoptracks');
   params.set('user', user);
-  return fetch(`https://ws.audioscrobbler.com/2.0/?${params.toString()}`).then(
-    response =>
-      response.json().catch(() => {
-        return {};
-      })
+  return fetchWithTimeout(
+    `https://ws.audioscrobbler.com/2.0/?${params.toString()}`
+  ).then(response =>
+    response.json().catch(() => {
+      return {};
+    })
   );
 };
 export const getSK = () => {
@@ -155,7 +162,7 @@ export const toggleLoved = async (track: any, isLoved = true) => {
   params.set('album', track.album.name);
   params.set('track', track.title);
   params.set('sk', sk);
-  return fetch(`https://ws.audioscrobbler.com/2.0/`, {
+  return fetchWithTimeout(`https://ws.audioscrobbler.com/2.0/`, {
     method: 'post',
     headers: {
       'content-type': 'application/x-www-form-urlencoded',
@@ -176,7 +183,7 @@ export const authenticate = async ({
   params.set('format', 'json');
   params.set('username', username);
   params.set('password', password);
-  return fetch(
+  return fetchWithTimeout(
     `https://ws.audioscrobbler.com/2.0/?method=auth.getMobileSession`,
     {
       method: 'post',
@@ -225,7 +232,7 @@ export const announceNowPlaying = async (track: any) => {
   params.set('track', track.title);
   params.set('timestamp', timestamp.toString());
   params.set('sk', sk);
-  return fetch(`https://ws.audioscrobbler.com/2.0/`, {
+  return fetchWithTimeout(`https://ws.audioscrobbler.com/2.0/`, {
     method: 'post',
     headers: {
       'content-type': 'application/x-www-form-urlencoded',
@@ -290,7 +297,7 @@ export const scrobbleTrack = async (track: any) => {
   params.set('track', track.title);
   params.set('timestamp', timestamp.toString());
   params.set('sk', sk);
-  return fetch(`https://ws.audioscrobbler.com/2.0/`, {
+  return fetchWithTimeout(`https://ws.audioscrobbler.com/2.0/`, {
     method: 'post',
     headers: {
       'content-type': 'application/x-www-form-urlencoded',
