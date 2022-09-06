@@ -13,6 +13,7 @@ import {
   REFRESH,
   setRecentlyPlayed,
 } from '../../utils/musicdb';
+import { getJwt, getRSSFeed, getServer } from '../../utils/node-mp3stream';
 import { SWITCH_ROUTE } from '../../utils/router';
 import { cdSVG } from '../icons/cd';
 import musicdb from '../musicdb';
@@ -23,6 +24,7 @@ export class HomeNav extends LitElement {
   recenttracks: Array<any>;
   @state()
   recentAdded: Array<any>;
+  newReleases: Array<any>;
   counter: any;
   @state()
   active = false;
@@ -37,10 +39,11 @@ export class HomeNav extends LitElement {
     super();
     this.recenttracks = [];
     this.recentAdded = [];
+    this.newReleases = [];
     this.counter = -1;
     this._init();
   }
-  connectedCallback() {
+  async connectedCallback() {
     super.connectedCallback();
     EventBus.on(REFRESH, this._init, this);
     EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
@@ -55,6 +58,30 @@ export class HomeNav extends LitElement {
         if (this.active) this._poll(name);
       }
     });
+    const jwt: any = await getJwt();
+    const server: any = await getServer();
+    if (jwt && server) {
+      const list: any = [];
+      const feed = await getRSSFeed(
+        server,
+        jwt,
+        'https://en.metal-tracker.com/site/rss.html'
+      );
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(feed, 'application/xml');
+      const items = doc.querySelectorAll('item');
+      const mdb: any = await musicdb;
+      items.forEach(item => {
+        const release = item.querySelector('title')?.innerHTML;
+        const artist = release?.split('-')[0].trim();
+        const album = release?.split('-')[1].trim();
+        const mbdArtist = mdb.getArtistByName(artist);
+        if (mbdArtist) {
+          list.push({ artist, album });
+        }
+      });
+      this.newReleases = list;
+    }
   }
   isActiveRoute(event: Event, route: string) {
     this.active = route === 'home';
@@ -122,72 +149,97 @@ export class HomeNav extends LitElement {
   render() {
     return html`
       ${this.active
-        ? html` ${this.recenttracks?.length > 0
-            ? html`
-                <div class="container">
-                  <h2 class="header">Recently listened</h2>
+        ? html`
+            ${this.recenttracks?.length > 0
+              ? html`
+                  <div class="container">
+                    <h2 class="header">Recently listened</h2>
+                    <ol>
+                      ${this.recenttracks.map(
+                        (track: any) => html`
+                          <li class="${track.dummy ? 'dummy ' : ''}">
+                            <img
+                              src="${track.image[1]['#text']}"
+                              class="album-art"
+                              alt="${track.artist['#text']} • ${track.name}"
+                              @error="${(e: Event) => this._onError(e)}"
+                            />
+                            <span class="details">
+                              ${track.artist['#text']} • ${track.name}
+                              <span class="small muted"
+                                >${track.album['#text']}</span
+                              >
+                            </span>
+                            <span class="time">
+                              ${this._formatDate(track?.date?.uts || '0')}
+                            </span>
+                          </li>
+                        `
+                      )}
+                    </ol>
+                  </div>
+                `
+              : nothing}
+            ${this.recentAdded.length > 0
+              ? html`
+                  <div class="container">
+                    <h2 class="header">Recently added / updated</h2>
+                    <div class="grid">
+                      ${this.recentAdded.map(
+                        (album: any) => html`
+                          <app-link
+                            href="/letter/${album.artist.letter
+                              .escapedLetter}/artist/${album.artist
+                              .escapedName}/album/${album.escapedName}"
+                          >
+                            <div class="panel panel-home">
+                              <album-art
+                                artist="${album.artist.albumArtist ||
+                                album.artist.name}"
+                                album="${album.name}"
+                              ></album-art>
+                              <div class="panel-info color-type-primary-alt">
+                                <span>${album.name}</span>
+                                ${album.year === 0
+                                  ? nothing
+                                  : html`
+                                      <span class="small muted"
+                                        >Year: ${album.year}</span
+                                      >
+                                    `}
+                              </div>
+                            </div>
+                          </app-link>
+                        `
+                      )}
+                    </div>
+                  </div>
+                `
+              : nothing}
+            ${this.newReleases.length > 0
+              ? html` <div class="container">
+                  <h2 class="header">
+                    New releases
+                    <span class="small muted"
+                      >(${this.newReleases.length})</span
+                    >
+                  </h2>
                   <ol>
-                    ${this.recenttracks.map(
-                      (track: any) => html`
-                        <li class="${track.dummy ? 'dummy ' : ''}">
-                          <img
-                            src="${track.image[1]['#text']}"
-                            class="album-art"
-                            alt="${track.artist['#text']} • ${track.name}"
-                            @error="${(e: Event) => this._onError(e)}"
-                          />
-                          <span class="details">
-                            ${track.artist['#text']} • ${track.name}
-                            <span class="small muted"
-                              >${track.album['#text']}</span
-                            >
-                          </span>
-                          <span class="time">
-                            ${this._formatDate(track?.date?.uts || '0')}
-                          </span>
-                        </li>
-                      `
+                    ${this.newReleases.map(
+                      (release: any) => html` <li>
+                        <album-art
+                          artist="${release.artist}"
+                          album="${release.album}"
+                        ></album-art>
+                        <span class="details">
+                          ${release.artist} &bull; ${release.album}
+                        </span>
+                      </li>`
                     )}
                   </ol>
-                </div>
-              `
-            : nothing}
-          ${this.recentAdded.length > 0
-            ? html`
-                <div class="container">
-                  <h2 class="header">Recently added / updated</h2>
-                  <div class="grid">
-                    ${this.recentAdded.map(
-                      (album: any) => html`
-                        <app-link
-                          href="/letter/${album.artist.letter
-                            .escapedLetter}/artist/${album.artist
-                            .escapedName}/album/${album.escapedName}"
-                        >
-                          <div class="panel panel-home">
-                            <album-art
-                              artist="${album.artist.albumArtist ||
-                              album.artist.name}"
-                              album="${album.name}"
-                            ></album-art>
-                            <div class="panel-info color-type-primary-alt">
-                              <span>${album.name}</span>
-                              ${album.year === 0
-                                ? nothing
-                                : html`
-                                    <span class="small muted"
-                                      >Year: ${album.year}</span
-                                    >
-                                  `}
-                            </div>
-                          </div>
-                        </app-link>
-                      `
-                    )}
-                  </div>
-                </div>
-              `
-            : nothing}`
+                </div>`
+              : nothing}
+          `
         : nothing}
     `;
   }

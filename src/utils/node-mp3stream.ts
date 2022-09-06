@@ -24,6 +24,17 @@ export const getVersion = async (server: string) => {
   return serverVersion?.version;
 };
 
+export const getRSSFeed = async (
+  server: string,
+  jwt: string,
+  remote: string
+) => {
+  const response = await fetchWithTimeout(
+    `${server}/proxy?jwt=${jwt}&remote=${remote}`
+  );
+  return response.text();
+};
+
 export const authenticate = async (server: string, payload: ArrayBuffer) => {
   const response = await fetchWithTimeout(`${server}/authenticate`, {
     method: 'post',

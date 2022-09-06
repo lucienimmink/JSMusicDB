@@ -20,7 +20,8 @@ export default css`
     padding: 10px 1rem;
     transition: all 0.2s ease-in-out;
   }
-  li .album-art {
+  li .album-art,
+  li album-art {
     margin-right: 0.75rem;
     flex-grow: 0;
     width: 64px;
