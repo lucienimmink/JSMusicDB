@@ -78,6 +78,10 @@ export class HomeNav extends LitElement {
         const mbdArtist = mdb.getArtistByName(artist);
         if (mbdArtist) {
           list.push({ artist, album });
+        } else {
+          console.log(
+            `new release: ${artist} - ${album} found but not found in musicdb; skipping release`
+          );
         }
       });
       this.newReleases = list;

@@ -29,8 +29,10 @@ export const getRSSFeed = async (
   jwt: string,
   remote: string
 ) => {
+  // temp ts hack for cachebusting
+  const ts = new Date().getTime();
   const response = await fetchWithTimeout(
-    `${server}/proxy?jwt=${jwt}&remote=${remote}`
+    `${server}/proxy?jwt=${jwt}&remote=${remote}&ts=${ts}`
   );
   return response.text();
 };
