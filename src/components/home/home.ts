@@ -75,9 +75,10 @@ export class HomeNav extends LitElement {
         const release = item.querySelector('title')?.innerHTML;
         const artist = release?.split('-')[0].trim();
         const album = release?.split('-')[1].trim();
+        const link = item.querySelector('link')?.innerHTML;
         const mbdArtist = mdb.getArtistByName(artist);
         if (mbdArtist) {
-          list.push({ artist, album });
+          list.push({ artist, album, link });
         } else {
           console.log(
             `new release: ${artist} - ${album} found but not found in musicdb; skipping release`
@@ -231,13 +232,19 @@ export class HomeNav extends LitElement {
                   <ol>
                     ${this.newReleases.map(
                       (release: any) => html` <li>
-                        <album-art
-                          artist="${release.artist}"
-                          album="${release.album}"
-                        ></album-art>
-                        <span class="details">
-                          ${release.artist} &bull; ${release.album}
-                        </span>
+                        <a
+                          href="${release.link}"
+                          target="_blank"
+                          rel="noopener"
+                        >
+                          <album-art
+                            artist="${release.artist}"
+                            album="${release.album}"
+                          ></album-art>
+                          <span class="details">
+                            ${release.artist} &bull; ${release.album}
+                          </span>
+                        </a>
                       </li>`
                     )}
                   </ol>

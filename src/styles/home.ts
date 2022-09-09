@@ -57,6 +57,14 @@ export default css`
     filter: blur(4px);
     opacity: 0.8;
   }
+  li > a {
+    display: flex;
+    text-decoration: none;
+    color: var(--text-color);
+  }
+  li > a:hover {
+    color: var(--primary);
+  }
   .grid {
     display: flex;
     flex-wrap: wrap;
