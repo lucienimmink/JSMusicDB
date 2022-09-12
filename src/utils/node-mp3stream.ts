@@ -1,6 +1,7 @@
 import { del, get, set } from 'idb-keyval';
 import { fetchWithTimeout } from './fetch';
 const MINIMALSTREAMVERSION = '4.0.0';
+const MINIMALRSSFEEDVERSION = '5.4.2';
 const JWT = 'jwt';
 const SERVER = 'server';
 
@@ -22,6 +23,11 @@ export const getPublicKey = async (server: string) => {
 export const getVersion = async (server: string) => {
   const serverVersion = await _versionCheck(server);
   return serverVersion?.version;
+};
+
+export const canGetRSSFeed = async (server: string) => {
+  const serverVersion = await _versionCheck(server);
+  return _semver(serverVersion.version, MINIMALRSSFEEDVERSION);
 };
 
 export const getRSSFeed = async (
