@@ -158,6 +158,17 @@ export class LetterNav extends LitElement {
     this.settings = await getSettings();
     this.requestUpdate();
   }
+  async _setFeed(e: Event) {
+    // @ts-ignore
+    const value = e?.target?.value;
+    await setSetting('feed', value);
+    EventBus.emit(TOGGLE_SETTING, this, {
+      setting: 'feed',
+      value,
+    });
+    this.settings = await getSettings();
+    this.requestUpdate();
+  }
   async _reloadCollection() {
     const jwt: any = await getJwt();
     const server: any = await getServer();
@@ -402,6 +413,15 @@ export class LetterNav extends LitElement {
               }
             </p>
           </div>
+      </div>
+
+      <div class="container container-block">
+        <h2 class="header">RSS feed</h2>
+        <p>
+          <input type="url" placeholder="RSS feed URL for upcoming releases; leave empty for none" .value=${
+            this.settings?.feed || ''
+          } @change="${(e: Event) => this._setFeed(e)}">
+        </p>
       </div>
 
       <div class="container container-block">

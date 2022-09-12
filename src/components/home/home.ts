@@ -15,6 +15,7 @@ import {
 } from '../../utils/musicdb';
 import { getJwt, getRSSFeed, getServer } from '../../utils/node-mp3stream';
 import { SWITCH_ROUTE } from '../../utils/router';
+import { getSettingByName, TOGGLE_SETTING } from '../../utils/settings';
 import { cdSVG } from '../icons/cd';
 import musicdb from '../musicdb';
 
@@ -58,35 +59,7 @@ export class HomeNav extends LitElement {
         if (this.active) this._poll(name);
       }
     });
-    const jwt: any = await getJwt();
-    const server: any = await getServer();
-    if (jwt && server) {
-      const list: any = [];
-      const feed = await getRSSFeed(
-        server,
-        jwt,
-        'https://en.metal-tracker.com/site/rss.html'
-      );
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(feed, 'application/xml');
-      const items = doc.querySelectorAll('item');
-      const mdb: any = await musicdb;
-      items.forEach(item => {
-        const release = item.querySelector('title')?.innerHTML;
-        const artist = release?.split('-')[0].trim();
-        const album = release?.split('-')[1].trim();
-        const link = item.querySelector('link')?.innerHTML;
-        const mbdArtist = mdb.getArtistByName(artist);
-        if (mbdArtist) {
-          list.push({ artist, album, link });
-        } else {
-          console.log(
-            `new release: ${artist} - ${album} found but not found in musicdb; skipping release`
-          );
-        }
-      });
-      this.newReleases = list;
-    }
+    EventBus.on(TOGGLE_SETTING, this._updateFeed, this);
   }
   isActiveRoute(event: Event, route: string) {
     this.active = route === 'home';
@@ -95,6 +68,7 @@ export class HomeNav extends LitElement {
     super.disconnectedCallback();
     EventBus.off(REFRESH, this._init, this);
     EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
+    EventBus.off(TOGGLE_SETTING, this._updateFeed, this);
     clearInterval(this.counter);
   }
   _init() {
@@ -105,6 +79,40 @@ export class HomeNav extends LitElement {
       .catch((error: any) => {
         console.log(error);
       });
+  }
+  async _updateFeed() {
+    const feedURL = await getSettingByName('feed');
+    if (feedURL) {
+      const jwt: any = await getJwt();
+      const server: any = await getServer();
+      if (jwt && server) {
+        this.newReleases = [];
+        const list: any = [];
+        const feed = await getRSSFeed(server, jwt, feedURL);
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(feed, 'application/xml');
+        const items = doc.querySelectorAll('item');
+        const mdb: any = await musicdb;
+        items.forEach(item => {
+          const release = item.querySelector('title')?.innerHTML;
+          const splitted = release?.split('-');
+          const artist = splitted?.splice(0, 1)[0].trim();
+          const album = splitted?.join('-').trim();
+          const link = item.querySelector('link')?.innerHTML;
+          const mbdArtist = mdb.getArtistByName(artist);
+          if (mbdArtist) {
+            list.push({ artist, album, link });
+          } else {
+            console.log(
+              `new release: ${artist} - ${album} found but not found in musicdb; skipping release`
+            );
+          }
+        });
+        this.newReleases = list;
+      }
+    } else {
+      this.newReleases = [];
+    }
   }
   _poll(name: any) {
     this.counter = setInterval(() => {
