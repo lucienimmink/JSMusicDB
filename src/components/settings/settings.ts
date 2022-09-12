@@ -16,6 +16,7 @@ import {
 } from '../../utils/lastfm';
 import { REFRESH } from '../../utils/musicdb';
 import {
+  canGetRSSFeed,
   DONE_RELOADING,
   getJwt,
   getRescan,
@@ -50,6 +51,9 @@ export class LetterNav extends LitElement {
   showVersion: boolean;
   @state()
   active = false;
+  @state()
+  canGetRSSFeed = false;
+
   static get styles() {
     return [buttons, container, headers, smallMuted, responsive, settings];
   }
@@ -76,6 +80,7 @@ export class LetterNav extends LitElement {
       if (this.mp3stream && this.stats) {
         this.stats.mp3stream = await getVersion(this.mp3stream);
       }
+      this.canGetRSSFeed = await canGetRSSFeed(this.mp3stream);
       this.requestUpdate();
     });
   }
@@ -155,6 +160,17 @@ export class LetterNav extends LitElement {
     }
     await setSetting(prop, value);
     EventBus.emit(TOGGLE_SETTING, this, { setting: prop, value });
+    this.settings = await getSettings();
+    this.requestUpdate();
+  }
+  async _setFeed(e: Event) {
+    // @ts-ignore
+    const value = e?.target?.value;
+    await setSetting('feed', value);
+    EventBus.emit(TOGGLE_SETTING, this, {
+      setting: 'feed',
+      value,
+    });
     this.settings = await getSettings();
     this.requestUpdate();
   }
@@ -404,6 +420,24 @@ export class LetterNav extends LitElement {
           </div>
       </div>
 
+      ${
+        this.canGetRSSFeed
+          ? html`
+              <div class="container container-block">
+                <h2 class="header">RSS feed</h2>
+                <p>
+                  <input
+                    type="url"
+                    placeholder="RSS feed URL for new/upcoming releases; leave empty for none"
+                    .value=${this.settings?.feed || ''}
+                    @change="${(e: Event) => this._setFeed(e)}"
+                  />
+                </p>
+              </div>
+            `
+          : nothing
+      }
+      
       <div class="container container-block">
         <h2 class="header">Information</h2>
         <p>Artists: ${this.stats?.artists}</p>

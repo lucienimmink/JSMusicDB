@@ -26,4 +26,14 @@ export default css`
     accent-color: var(--primary);
     margin: 0 0.75rem 0 0;
   }
+  input[type='url'] {
+    accent-color: var(--primary);
+    background: var(--background3);
+    border: 0;
+    color: var(--text-color);
+    padding: 1em 2em;
+    font-size: 1em;
+    width: 100%;
+    transition: all 0.5s ease-in-out;
+  }
 `;
