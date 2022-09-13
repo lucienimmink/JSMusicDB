@@ -4,6 +4,7 @@ import { customElement } from 'lit/decorators.js';
 import './components/album-art/album-art';
 import './components/album/album';
 import './components/albums/albums';
+import './components/alerts/release-alert';
 import './components/app-link/app-link';
 import './components/app-main/app-main';
 import './components/artist/artist';
@@ -340,6 +341,9 @@ export class LitMusicdb extends LitElement {
                   <now-playing></now-playing>
                 </div>
                 <div route="artist">
+                  <release-alert
+                    artist="${this.params?.artist}"
+                  ></release-alert>
                   <albums-in-artist
                     artist="${this.params?.artist}"
                   ></albums-in-artist>
