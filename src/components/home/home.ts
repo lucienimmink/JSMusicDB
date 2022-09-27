@@ -75,6 +75,7 @@ export class HomeNav extends LitElement {
     musicdb
       .then((mdb: any) => {
         this.recentAdded = mdb.getLatestAdditions(this.LATEST_ADDITIONS);
+        this._updateFeed();
       })
       .catch((error: any) => {
         console.log(error);
@@ -102,10 +103,6 @@ export class HomeNav extends LitElement {
           const mbdArtist = mdb.getArtistByName(artist);
           if (mbdArtist) {
             list.push({ artist, album, link });
-          } else {
-            console.log(
-              `new release: ${artist} - ${album} found but not found in musicdb; skipping release`
-            );
           }
         });
         this.newReleases = list;
