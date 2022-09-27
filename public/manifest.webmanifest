@@ -2,7 +2,8 @@
   "name": "JSMusicDB",
   "short_name": "JSDB",
   "lang": "en-US",
-  "start_url": "/",
+  "start_url": "",
+  "id": "https://www.jsmusicdb.com/",
   "display": "standalone",
   "theme_color": "#0063B1",
   "background_color": "#000000",
@@ -57,22 +58,22 @@
     },
     {
       "src": "/assets/screenshot-3.webp",
-      "sizes": "1920x1040",
+      "sizes": "1920x1032",
       "type": "image/webp"
     },
     {
       "src": "/assets/screenshot-4.webp",
-      "sizes": "1920x1040",
+      "sizes": "1920x1032",
       "type": "image/webp"
     },
     {
       "src": "/assets/screenshot-5.webp",
-      "sizes": "1920x1040",
+      "sizes": "1920x1032",
       "type": "image/webp"
     },
     {
       "src": "/assets/screenshot-6.webp",
-      "sizes": "1920x1040",
+      "sizes": "1920x1032",
       "type": "image/webp"
     }
   ]

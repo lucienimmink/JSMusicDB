@@ -6,9 +6,9 @@ export default css`
     margin: 0;
     padding: 0;
     position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
+    left: env(titlebar-area-x, 0);
+    top: env(titlebar-area-y, 0);
+    width: env(titlebar-area-width, 100%);
     z-index: 4;
   }
   letter-nav {
