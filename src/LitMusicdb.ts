@@ -16,6 +16,7 @@ import './components/letter-nav/letter-nav';
 import './components/letter/letter';
 import './components/letters/letters';
 import './components/loading-indicator/loading-indicator';
+import './components/loading-indicator/progress-bar';
 import './components/loading-indicator/progress-spinner';
 import './components/mp3stream/login';
 import musicdb, { refresh, update } from './components/musicdb';

@@ -34,6 +34,10 @@ export class Header extends LitElement {
   progress: string;
   @state()
   titleData: any;
+  @state()
+  customWindowsControl: boolean;
+  @state()
+  progressInt: number;
 
   static get styles() {
     return [responsive, header];
@@ -44,8 +48,12 @@ export class Header extends LitElement {
     this.album = '';
     this.art = null;
     this.alb = null;
-    this.isReloading = true;
+    this.isReloading = false;
     this.progress = '';
+    this.progressInt = 0;
+    this.customWindowsControl =
+      // @ts-ignore
+      navigator?.windowControlsOverlay?.visible || false;
     getJwt().then((jwt: any) => {
       if (jwt) {
         getServer().then((server: any) => {
@@ -61,10 +69,26 @@ export class Header extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     EventBus.on(CHANGE_TITLE, this._doChangeTitle, this);
+    // @ts-ignore
+    if (navigator.windowControlsOverlay) {
+      // @ts-ignore
+      navigator.windowControlsOverlay.addEventListener(
+        'geometrychange',
+        this._changeCustomWindowControls
+      );
+    }
   }
   disconnectedCallback() {
     super.disconnectedCallback();
     EventBus.off(CHANGE_TITLE, this._doChangeTitle, this);
+    // @ts-ignore
+    if (navigator.windowControlsOverlay) {
+      // @ts-ignore
+      navigator.windowControlsOverlay.removeEventListener(
+        'geometrychange',
+        this._changeCustomWindowControls
+      );
+    }
   }
   _doChangeTitle(target: any, data: any) {
     this._changeTitle(data);
@@ -85,12 +109,18 @@ export class Header extends LitElement {
     }
     document.title = `${dynamic.join(' • ')}JSMusicDB`;
   };
+  _changeCustomWindowControls = () => {
+    this.customWindowsControl =
+      // @ts-ignore
+      navigator?.windowControlsOverlay?.visible || false;
+  };
   _poll = ({ server, jwt }: { server: any; jwt: any }) => {
     getProgress(server, jwt).then(
       ({ progress, status }: { progress: any; status: any }) => {
         if (status !== 'ready' && status !== 'error') {
           this.isReloading = true;
           this.progress = progress ? `${progress}%` : 'scan';
+          this.progressInt = parseInt(progress);
           this._changeTitle();
           EventBus.emit(IS_RELOADING, this);
         } else if (this.isReloading === true) {
@@ -135,7 +165,9 @@ export class Header extends LitElement {
     super.attributeChangedCallback(name, oldval, newval);
   }
   render() {
-    return html`<h1>
+    return html`<h1
+      class="${this.customWindowsControl ? 'customWindowControls' : ''}"
+    >
       <a href="#" @click=${this._toggleMenu} title="open menu">${barsIcon}</a>
       <div>
         ${this.alb
@@ -158,7 +190,11 @@ export class Header extends LitElement {
         ${!this.alb && !this.art ? html`JSMusicDB` : nothing}
       </div>
       ${this.isReloading
-        ? html`<progress-spinner>${this.progress}</progress-spinner>`
+        ? html`${!this.customWindowsControl
+            ? html`<progress-spinner>${this.progress}</progress-spinner>`
+            : html`<progress-bar progress="${this.progressInt}"
+                >${this.progress}</progress-bar
+              >`}`
         : nothing}
     </h1>`;
   }

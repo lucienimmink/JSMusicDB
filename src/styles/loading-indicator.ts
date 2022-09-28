@@ -151,3 +151,36 @@ export const progressSpinner = css`
     }
   }
 `;
+export const progressBar = css`
+  .progress {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 20px;
+    font-size: 0.75rem;
+    margin-top: env(titlebar-area-height, 30px);
+    width: calc(100vw - env(titlebar-area-width, 0));
+  }
+  .text {
+    width: 50px;
+    margin-left: 10px;
+    text-align: center;
+  }
+  .progress-bar {
+    height: 6px;
+    display: block;
+    position: relative;
+    background: transparent;
+    width: 100%;
+    flex-grow: 1;
+    background: var(--background);
+    position: relative;
+  }
+  .progress-bar div {
+    position: absolute;
+    height: 6px;
+    left: 0;
+    background: var(--primary);
+    transition: width 0.1s linear;
+  }
+`;

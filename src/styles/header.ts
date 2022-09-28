@@ -46,9 +46,9 @@ export default css`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: calc(
-      env(titlebar-area-width, 100%) - 125px
-    ); // think of using the negative space for progress bar?
+  }
+  h1.customWindowControls div {
+    max-width: calc(env(titlebar-area-width, 100%) - 60px);
   }
   progress-spinner {
     display: inline-block;
