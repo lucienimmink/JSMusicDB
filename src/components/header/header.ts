@@ -44,7 +44,7 @@ export class Header extends LitElement {
     this.album = '';
     this.art = null;
     this.alb = null;
-    this.isReloading = false;
+    this.isReloading = true;
     this.progress = '';
     getJwt().then((jwt: any) => {
       if (jwt) {

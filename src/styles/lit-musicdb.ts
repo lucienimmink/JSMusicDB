@@ -8,7 +8,7 @@ export default css`
     position: fixed;
     left: env(titlebar-area-x, 0);
     top: env(titlebar-area-y, 0);
-    width: env(titlebar-area-width, 100%);
+    width: 100%;
     z-index: 4;
   }
   letter-nav {

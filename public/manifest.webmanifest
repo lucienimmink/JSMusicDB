@@ -2,7 +2,7 @@
   "name": "JSMusicDB",
   "short_name": "JSDB",
   "lang": "en-US",
-  "start_url": "",
+  "start_url": "/",
   "id": "https://www.jsmusicdb.com/",
   "display": "standalone",
   "theme_color": "#0063B1",

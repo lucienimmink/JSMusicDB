@@ -46,6 +46,7 @@ export default css`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: calc(env(titlebar-area-width, 100%) - 58px);
   }
   progress-spinner {
     display: inline-block;
