@@ -40,6 +40,8 @@ export default css`
   app-link {
     color: var(--primary, #006ecd);
     transition: color 0.2s ease-in-out;
+    -webkit-app-region: no-drag;
+    app-region: no-drag;
   }
   div {
     flex-grow: 1;
@@ -49,6 +51,8 @@ export default css`
   }
   h1.customWindowControls div {
     max-width: calc(env(titlebar-area-width, 100%) - 60px);
+    -webkit-app-region: drag;
+    app-region: drag;
   }
   progress-spinner {
     display: inline-block;
