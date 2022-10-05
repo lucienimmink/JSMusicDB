@@ -38,6 +38,8 @@ export class Header extends LitElement {
   customWindowsControl: boolean;
   @state()
   progressInt: number;
+  @state()
+  dynamicTitle: string;
 
   static get styles() {
     return [responsive, header];
@@ -51,6 +53,7 @@ export class Header extends LitElement {
     this.isReloading = false;
     this.progress = '';
     this.progressInt = 0;
+    this.dynamicTitle = '';
     this.customWindowsControl =
       // @ts-ignore
       navigator?.windowControlsOverlay?.visible || false;
@@ -92,6 +95,7 @@ export class Header extends LitElement {
   }
   _doChangeTitle(target: any, data: any) {
     this._changeTitle(data);
+    if (!this.customWindowsControl) document.title = this.dynamicTitle;
   }
   _changeTitle = (data: any = {}) => {
     const dynamic = [];
@@ -107,12 +111,13 @@ export class Header extends LitElement {
     if (dynamic.length > 0) {
       dynamic.push(''); // for the trailing bullit
     }
-    document.title = `${dynamic.join(' • ')}JSMusicDB`;
+    this.dynamicTitle = `${dynamic.join(' • ')}JSMusicDB`;
   };
   _changeCustomWindowControls = () => {
     this.customWindowsControl =
       // @ts-ignore
       navigator?.windowControlsOverlay?.visible || false;
+    if (!this.customWindowsControl) document.title = this.dynamicTitle;
   };
   _poll = ({ server, jwt }: { server: any; jwt: any }) => {
     getProgress(server, jwt).then(

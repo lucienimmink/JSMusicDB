@@ -1,6 +1,6 @@
 import { router } from '@addasoft/lit-element-router';
 import { html, LitElement, nothing } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 import './components/album-art/album-art';
 import './components/album/album';
 import './components/albums/albums';
@@ -45,9 +45,6 @@ import timeSpan from './utils/timespan';
 @customElement('lit-musicdb')
 @router
 export class LitMusicdb extends LitElement {
-  route: string;
-  params: any;
-  query: any;
   letters: Array<any>;
   showPlayer: boolean;
   themeSwitchCycle: any;
@@ -55,15 +52,16 @@ export class LitMusicdb extends LitElement {
   hasData: boolean;
   hasSK: boolean;
   hasToken: boolean;
+
+  @state()
+  route: string;
+  @state()
+  params: any;
+  @state()
+  query: any;
+
   static get styles() {
     return [animationCSS, litMusicdb, scrollbar];
-  }
-  static get properties() {
-    return {
-      route: { type: String },
-      params: { type: Object },
-      query: { type: Object },
-    };
   }
 
   static get routes() {
