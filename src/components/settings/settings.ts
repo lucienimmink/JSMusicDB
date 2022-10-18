@@ -446,7 +446,11 @@ export class LetterNav extends LitElement {
         <p>Playing time: ${this.stats?.time}</p>
         <p>Parsing time: ${this.stats?.parsingTime}ms</p>
         <p>Last updated: ${this.stats?.parsed}</p>
-        ${this.showVersion ? html`<p>Build: [VI]{version}[/VI]</p>` : nothing}
+        ${
+          this.showVersion
+            ? html`<p>Build: ${import.meta.env.PACKAGE_VERSION}</p>`
+            : nothing
+        }
         ${
           this.stats?.mp3stream
             ? html` <p>Node-mp3stream: ${this.stats?.mp3stream}</p> `

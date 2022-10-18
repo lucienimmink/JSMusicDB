@@ -1,20 +1,14 @@
-import versionInjector from 'rollup-plugin-version-injector';
 import { defineConfig } from 'vite';
 import { chunkSplitPlugin } from 'vite-plugin-chunk-split';
+import loadVersion from 'vite-plugin-package-version';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
     entry: 'index.html',
-    rollupOptions: {
-      plugins: [
-        versionInjector({
-          logLevel: 'warn',
-        }),
-      ],
-    },
   },
   plugins: [
+    loadVersion.default(),
     chunkSplitPlugin({
       strategy: 'default',
       customSplitting: {
