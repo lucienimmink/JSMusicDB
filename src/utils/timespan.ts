@@ -29,7 +29,7 @@ export default function timeSpan(mseconds: number, humanize = false) {
     value.push(leftPad0(hours));
   }
   value.push(leftPad0(minutes));
-  value.push(leftPad0(Math.round(seconds % 60)));
+  value.push(leftPad0(Math.floor(seconds % 60)));
   if (days) {
     return `${getDays(days)}${value.join(':')}`;
   }
