@@ -1,3 +1,4 @@
+import timeSpan from '@addasoft/timespan';
 import '@lit-labs/virtualizer';
 import { html, LitElement, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -30,7 +31,6 @@ import {
 } from '../../utils/player';
 import { SWITCH_ROUTE } from '../../utils/router';
 import { getSettingByName, TOGGLE_SETTING } from '../../utils/settings';
-import timeSpan from '../../utils/timespan';
 import { albumsIcon } from '../icons/albums';
 import { artistsIcon } from '../icons/artists';
 import { chevronDownIcon } from '../icons/chevron-down';

@@ -1,4 +1,5 @@
 import { navigator } from '@addasoft/lit-element-router';
+import timeSpan from '@addasoft/timespan';
 import { html, LitElement, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import container from '../../styles/container';
@@ -9,7 +10,6 @@ import warn from '../../styles/warn';
 import { global as EventBus } from '../../utils/EventBus';
 import { REFRESH } from '../../utils/musicdb';
 import { SWITCH_ROUTE } from '../../utils/router';
-import timeSpan from '../../utils/timespan';
 import musicdb from '../musicdb';
 import './../app-link/app-link';
 

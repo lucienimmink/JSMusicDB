@@ -1,4 +1,5 @@
 import { router } from '@addasoft/lit-element-router';
+import timeSpan from '@addasoft/timespan';
 import { html, LitElement, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import './components/album-art/album-art';
@@ -40,7 +41,6 @@ import { DONE_RELOADING, getJwt, RESET_SERVER } from './utils/node-mp3stream';
 import { START_CURRENT_PLAYLIST, STOP_PLAYER } from './utils/player';
 import { SWITCH_ROUTE } from './utils/router';
 import { getSettingByName, TOGGLE_SETTING } from './utils/settings';
-import timeSpan from './utils/timespan';
 
 @customElement('lit-musicdb')
 @router

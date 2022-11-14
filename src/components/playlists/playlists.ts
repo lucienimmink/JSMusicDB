@@ -1,4 +1,5 @@
 import { navigator } from '@addasoft/lit-element-router';
+import timeSpan from '@addasoft/timespan';
 import '@lit-labs/virtualizer';
 import { html, LitElement, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -25,7 +26,6 @@ import {
   UPDATE_PLAYER,
 } from '../../utils/player';
 import { SWITCH_ROUTE } from '../../utils/router';
-import timeSpan from '../../utils/timespan';
 import { pauseIcon } from '../icons/pause';
 import { playIcon } from '../icons/play';
 import { redoIcon } from '../icons/redo';

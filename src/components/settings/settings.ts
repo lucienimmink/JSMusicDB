@@ -1,3 +1,4 @@
+import timeSpan from '@addasoft/timespan';
 import { clear, createStore } from 'idb-keyval';
 import { html, LitElement, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
@@ -33,7 +34,6 @@ import {
   setSetting,
   TOGGLE_SETTING,
 } from '../../utils/settings';
-import timeSpan from '../../utils/timespan';
 import { cloudDownloadIcon } from '../icons/cloudDownload';
 import { disconnectIcon } from '../icons/disconnect';
 import { syncIcon } from '../icons/sync';

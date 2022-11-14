@@ -1,10 +1,10 @@
+import timeSpan from '@addasoft/timespan';
 import { html, LitElement, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import smallMuted from '../../styles/small-muted';
 import trackNav from '../../styles/track-nav';
 import { global as EventBus } from '../../utils/EventBus';
 import { UPDATE_PLAYER } from '../../utils/player';
-import timeSpan from '../../utils/timespan';
 import { pauseIcon } from '../icons/pause';
 import { playIcon } from '../icons/play';
 
