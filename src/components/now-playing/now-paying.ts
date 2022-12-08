@@ -65,6 +65,8 @@ export class NowPlaying extends LitElement {
   @state()
   active = false;
 
+  readonly FRAMERATE = 1000 / 45;
+
   static get styles() {
     return [
       animationCSS,
@@ -209,8 +211,8 @@ export class NowPlaying extends LitElement {
   _draw() {
     setTimeout(() => {
       this.analyzer = window.requestAnimationFrame(this._draw.bind(this));
-      // 30 FPS
-    }, 1000 / 30);
+      // 45 FPS
+    }, this.FRAMERATE);
 
     // re-get canvas
     const canvas = this.shadowRoot?.querySelector('canvas');
