@@ -36,10 +36,16 @@
       "type": "image/png"
     },
     {
+      "src": "/assets/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
       "src": "/assets/maskable_icon.png",
       "sizes": "256x256",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "maskable"
     }
   ],
   "categories": ["entertainment", "music"],
