@@ -5,7 +5,6 @@ import loadVersion from 'vite-plugin-package-version';
 export default defineConfig({
   build: {
     entry: 'index.html',
-    emptyOutDir: true,
   },
   plugins: [
     loadVersion.default(),
