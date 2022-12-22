@@ -13,6 +13,7 @@ self.addEventListener('fetch', function (event) {
       event.request.url.indexOf('/rescan') !== -1 ||
       event.request.url.indexOf('/version') !== -1 ||
       event.request.url.indexOf('/public-key') !== -1 ||
+      event.request.url.indexOf('/stream') !== -1 ||
       event.request.url.indexOf('file://') !== -1
     ) {
       // nothing to see here, carry on

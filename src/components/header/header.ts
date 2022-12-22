@@ -4,12 +4,14 @@ import header from '../../styles/header';
 import responsive from '../../styles/responsive';
 import { global as EventBus } from '../../utils/EventBus';
 import {
+  canUseSSE,
   DONE_RELOADING,
   getJwt,
   getProgress,
   getServer,
   IS_RELOADING,
   POLL_INTERVALL,
+  setupStream,
 } from '../../utils/node-mp3stream';
 import { CHANGE_TITLE } from '../../utils/player';
 import { barsIcon } from '../icons/bars';
@@ -59,8 +61,13 @@ export class Header extends LitElement {
       navigator?.windowControlsOverlay?.visible || false;
     getJwt().then((jwt: any) => {
       if (jwt) {
-        getServer().then((server: any) => {
-          this._poll({ server, jwt });
+        getServer().then(async (server: any) => {
+          const capableOfSSE = (await canUseSSE(server)) && window.EventSource;
+          if (capableOfSSE) {
+            this._sse({ server, jwt });
+          } else {
+            this._poll({ server, jwt });
+          }
         });
       }
     });
@@ -119,20 +126,22 @@ export class Header extends LitElement {
       navigator?.windowControlsOverlay?.visible || false;
     if (!this.customWindowsControl) document.title = this.dynamicTitle;
   };
+  _sse = ({ server: server, jwt: jwt }: { server: any; jwt: any }) => {
+    setupStream(server, jwt).then((stream: any) => {
+      stream.onmessage = (event: any) => {
+        try {
+          const { progress, status } = JSON.parse(event.data);
+          this._updateProgress(progress, status);
+        } catch (e) {
+          // ignore
+        }
+      };
+    });
+  };
   _poll = ({ server, jwt }: { server: any; jwt: any }) => {
     getProgress(server, jwt).then(
       ({ progress, status }: { progress: any; status: any }) => {
-        if (status !== 'ready' && status !== 'error') {
-          this.isReloading = true;
-          this.progress = progress ? `${progress}%` : 'scan';
-          this.progressInt = parseInt(progress);
-          this._changeTitle();
-          EventBus.emit(IS_RELOADING, this);
-        } else if (this.isReloading === true) {
-          EventBus.emit(DONE_RELOADING, this);
-          this.isReloading = false;
-          this._changeTitle();
-        }
+        this._updateProgress(progress, status);
         if (status !== 'error') {
           setTimeout(() => {
             this._poll({ server, jwt });
@@ -140,6 +149,19 @@ export class Header extends LitElement {
         }
       }
     );
+  };
+  _updateProgress = (progress: string, status: string) => {
+    if (status !== 'ready' && status !== 'error') {
+      this.isReloading = true;
+      this.progress = progress ? `${progress}%` : 'scan';
+      this.progressInt = parseInt(progress);
+      this._changeTitle();
+      EventBus.emit(IS_RELOADING, this);
+    } else if (this.isReloading === true) {
+      EventBus.emit(DONE_RELOADING, this);
+      this.isReloading = false;
+      this._changeTitle();
+    }
   };
   attributeChangedCallback(name: any, oldval: any, newval: any) {
     musicdb

@@ -1,7 +1,9 @@
 import { del, get, set } from 'idb-keyval';
 import { fetchWithTimeout } from './fetch';
+
 const MINIMALSTREAMVERSION = '4.0.0';
 const MINIMALRSSFEEDVERSION = '5.4.2';
+const MINIMALSSEVERSION = '5.6.11';
 const JWT = 'jwt';
 const SERVER = 'server';
 
@@ -28,6 +30,11 @@ export const getVersion = async (server: string) => {
 export const canGetRSSFeed = async (server: string) => {
   const serverVersion = await _versionCheck(server);
   return _semver(serverVersion.version, MINIMALRSSFEEDVERSION);
+};
+
+export const canUseSSE = async (server: string) => {
+  const serverVersion = await _versionCheck(server);
+  return _semver(serverVersion.version, MINIMALSSEVERSION);
 };
 
 export const getRSSFeed = async (
@@ -80,6 +87,10 @@ export const getProgress = async (server: string, jwt: string) => {
     status: 'error',
     progres: 0,
   };
+};
+
+export const setupStream = async (server: string, jwt: string) => {
+  return new EventSource(`${server}/stream?jwt=${jwt}`);
 };
 
 export const getJwt = async () => {

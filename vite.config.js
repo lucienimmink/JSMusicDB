@@ -6,7 +6,5 @@ export default defineConfig({
   build: {
     entry: 'index.html',
   },
-  plugins: [
-    loadVersion.default(),
-  ],
+  plugins: [loadVersion.default()],
 });

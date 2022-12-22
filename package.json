@@ -9,6 +9,7 @@
     "build": "vite build . && npm run analyse",
     "preview": "vite preview .",
     "start": "vite && npm run analyse:watch",
+    "dev": "npm run start",
     "tsc:watch": "tsc --watch",
     "postversion": "git push && git push --tags",
     "prepare": "husky install",
