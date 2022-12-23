@@ -18,6 +18,7 @@ import {
 import { REFRESH } from '../../utils/musicdb';
 import {
   canGetRSSFeed,
+  canUseSSE,
   DONE_RELOADING,
   getJwt,
   getRescan,
@@ -103,21 +104,21 @@ export class LetterNav extends LitElement {
   }
   private _init() {
     musicdb
-      .then((mdb: any) => {
+      .then(async (mdb: any) => {
         this.stats.albums = mdb.totals.albums;
         this.stats.artists = mdb.totals.artists;
         this.stats.tracks = mdb.totals.tracks;
         this.stats.time = timeSpan(mdb.totals.playingTime, true);
         this.stats.parsingTime = mdb.totals.parsingTime;
-        getLastParsed().then((date: any) => {
-          const formatter = new Intl.DateTimeFormat('en-GB', {
-            // @ts-ignore
-            dateStyle: 'full',
-            timeStyle: 'medium',
-          });
-          this.stats.parsed = formatter.format(date);
-          this.requestUpdate();
+        const server = await getServer();
+        this.stats.isUsingSSE = (await canUseSSE(server)) && window.EventSource;
+        const date = await getLastParsed();
+        const formatter = new Intl.DateTimeFormat('en-GB', {
+          // @ts-ignore
+          dateStyle: 'full',
+          timeStyle: 'medium',
         });
+        this.stats.parsed = formatter.format(date);
         this.requestUpdate();
       })
       .catch((error: any) => {
@@ -456,6 +457,9 @@ export class LetterNav extends LitElement {
             ? html` <p>Node-mp3stream: ${this.stats?.mp3stream}</p> `
             : nothing
         }
+        <p>Using Server Sent Events: ${
+          this.stats?.isUsingSSE ? html`yes` : html`no`
+        }</p>
       </div>
     `;
   }
