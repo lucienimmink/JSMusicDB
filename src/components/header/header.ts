@@ -9,6 +9,7 @@ import {
   getJwt,
   getProgress,
   getServer,
+  HAS_SSE,
   IS_RELOADING,
   POLL_INTERVALL,
   setupStream,
@@ -135,6 +136,12 @@ export class Header extends LitElement {
         } catch (e) {
           // ignore
         }
+      };
+      stream.onopen = () => {
+        EventBus.emit(HAS_SSE, this, true);
+      };
+      stream.onerror = () => {
+        EventBus.emit(HAS_SSE, this, false);
       };
     });
   };

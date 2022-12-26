@@ -18,12 +18,12 @@ import {
 import { REFRESH } from '../../utils/musicdb';
 import {
   canGetRSSFeed,
-  canUseSSE,
   DONE_RELOADING,
   getJwt,
   getRescan,
   getServer,
   getVersion,
+  HAS_SSE,
   IS_RELOADING,
   resetServer,
   RESET_SERVER,
@@ -91,6 +91,7 @@ export class LetterNav extends LitElement {
     EventBus.on(IS_RELOADING, this._setIsReloadingTrue, this);
     EventBus.on(DONE_RELOADING, this._setIsReloadingFalse, this);
     EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
+    EventBus.on(HAS_SSE, this._updateSEE, this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
@@ -98,6 +99,7 @@ export class LetterNav extends LitElement {
     EventBus.off(IS_RELOADING, this._setIsReloadingTrue, this);
     EventBus.off(DONE_RELOADING, this._setIsReloadingFalse, this);
     EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
+    EventBus.off(HAS_SSE, this._updateSEE, this);
   }
   isActiveRoute(event: Event, route: string) {
     this.active = route === 'settings';
@@ -110,8 +112,6 @@ export class LetterNav extends LitElement {
         this.stats.tracks = mdb.totals.tracks;
         this.stats.time = timeSpan(mdb.totals.playingTime, true);
         this.stats.parsingTime = mdb.totals.parsingTime;
-        const server = await getServer();
-        this.stats.isUsingSSE = (await canUseSSE(server)) && window.EventSource;
         const date = await getLastParsed();
         const formatter = new Intl.DateTimeFormat('en-GB', {
           // @ts-ignore
@@ -132,6 +132,9 @@ export class LetterNav extends LitElement {
   private _setIsReloadingFalse() {
     this.isReloading = false;
     this.requestUpdate();
+  }
+  private _updateSEE(event: Event, value: boolean) {
+    this.stats.isUsingSSE = value;
   }
   _formatDate(date: any, fallback: string) {
     if (!date) {

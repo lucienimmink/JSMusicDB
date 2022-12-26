@@ -11,6 +11,7 @@ export const IS_RELOADING = 'is-reloading';
 export const DONE_RELOADING = 'done-reloading';
 export const POLL_INTERVALL = 5000;
 export const RESET_SERVER = 'reset-server';
+export const HAS_SSE = 'has-sse';
 
 export const canLogin = async (server: string) => {
   const serverVersion = await _versionCheck(server);
