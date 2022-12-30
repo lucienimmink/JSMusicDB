@@ -115,6 +115,7 @@ export class LitMusicdb extends LitElement {
         });
         this.hasData = true;
         this.requestUpdate();
+        this._getTheme();
         animateCSS(
           this.shadowRoot?.querySelector('.loading-wrapper'),
           'fadeOut'
