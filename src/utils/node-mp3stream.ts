@@ -108,8 +108,8 @@ export const setServer = async (server: string) => {
   return set(SERVER, server);
 };
 export const resetServer = async () => {
-  await del(SERVER);
-  return del(JWT);
+  // await del(SERVER);
+  return await del(JWT);
 };
 
 const _versionCheck = async (server: string) => {

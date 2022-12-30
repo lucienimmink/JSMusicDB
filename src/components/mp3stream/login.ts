@@ -11,6 +11,7 @@ import {
   canLogin,
   getJwt,
   getPublicKey,
+  getServer,
   setJwt,
   setServer,
 } from '../../utils/node-mp3stream';
@@ -32,13 +33,15 @@ export class LetterNav extends LitElement {
     super();
     this.username = '';
     this.password = '';
-    this.server = `${location.protocol}//${location.host}`;
     this.token = '';
+    this.server = '';
     this.hasError = false;
     this.showInfoModal = true;
 
-    getJwt().then((jwt: any) => {
+    getJwt().then(async (jwt: any) => {
       this.token = jwt;
+      this.server =
+        (await getServer()) || `${location.protocol}//${location.host}`;
       this.requestUpdate();
     });
   }
