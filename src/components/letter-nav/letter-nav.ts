@@ -39,18 +39,20 @@ export class LetterNav extends LitElement {
       });
   }
 
+  private _renderLetter(letter: any) {
+    return html`
+      <li class="${letter.escapedLetter === this.route ? 'active' : ''}">
+        <app-link href="/letter/${letter.escapedLetter}" letter
+          >${letter.letter}</app-link
+        >
+      </li>
+    `;
+  }
+
   render() {
     return html`
       <ul>
-        ${this.letters.map(
-          (letter: any) => html`
-            <li class="${letter.escapedLetter === this.route ? 'active' : ''}">
-              <app-link href="/letter/${letter.escapedLetter}" letter
-                >${letter.letter}</app-link
-              >
-            </li>
-          `
-        )}
+        ${this.letters.map((letter: any) => this._renderLetter(letter))}
       </ul>
     `;
   }

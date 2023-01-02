@@ -50,6 +50,19 @@ export class Track extends LitElement {
     EventBus.off(UPDATE_PLAYER, this._updatePlayer, this);
   }
 
+  private _renderTime() {
+    return html`${timeSpan(this.track?.duration)} <br />
+      ${this.track?.position > 0 && this.type === 'album'
+        ? html`
+            <span class="small muted if-active"
+              >${timeSpan(this.track?.position)}</span
+            >
+          `
+        : nothing}
+      ${this.type !== 'album'
+        ? html` <span class="small muted">${this.track?.type}</span> `
+        : nothing}`;
+  }
   render() {
     return html`
       <div
@@ -78,19 +91,7 @@ export class Track extends LitElement {
               : nothing}</span
           >
         </span>
-        <span class="time">
-          ${timeSpan(this.track?.duration)} <br />
-          ${this.track?.position > 0 && this.type === 'album'
-            ? html`
-                <span class="small muted if-active"
-                  >${timeSpan(this.track?.position)}</span
-                >
-              `
-            : nothing}
-          ${this.type !== 'album'
-            ? html` <span class="small muted">${this.track?.type}</span> `
-            : nothing}
-        </span>
+        <span class="time"> ${this._renderTime()} </span>
       </div>
     `;
   }

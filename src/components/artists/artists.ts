@@ -12,6 +12,7 @@ import { SWITCH_ROUTE } from '../../utils/router';
 import { handleScroll } from '../../utils/virtual-scroll';
 import musicdb from '../musicdb';
 import './../app-link/app-link';
+
 @customElement('artists-nav')
 export class LetterNav extends LitElement {
   @state()
@@ -82,81 +83,85 @@ export class LetterNav extends LitElement {
   isActiveRoute(event: Event, route: string) {
     this.active = route === 'artists';
   }
+
+  private _renderJumplist() {
+    return html`<ul
+      class="jumplist ${this.showJumpList ? 'show ' : ''} ${this
+        .hasVisiblePlayer
+        ? 'player'
+        : ''}"
+    >
+      ${this.letters.map(
+        (letter: any) => html`
+          <li>
+            <a
+              href="#"
+              @click="${(e: any) => {
+                this._handleJump(e, letter.letter);
+              }}"
+              >${letter.letter}</a
+            >
+          </li>
+        `
+      )}
+    </ul>`;
+  }
+
+  private _renderArtist(artist: any) {
+    return html`<li>
+      <app-link
+        flex
+        text
+        href="/letter/${artist.letter
+          .escapedLetter}/artist/${artist.escapedName}"
+      >
+        <album-art
+          artist="${artist.albumArtist || artist.name}"
+          dimension="50"
+        ></album-art>
+        <div class="details">
+          <span class="artist">${artist.albumArtist || artist.name}</span>
+          <span class="small muted">Albums: ${artist.albums.length}</span>
+        </div>
+      </app-link>
+    </li>`;
+  }
+  private _renderArtists(artist: any) {
+    return html`
+      ${artist.header
+        ? html`
+            <li
+              class="header"
+              @click="${() => {
+                this.showJumpList = true;
+                this.requestUpdate();
+              }}"
+            >
+              ${artist.header}
+              <span class="small muted">(${artist.artists})</span>
+            </li>
+          `
+        : this._renderArtist(artist)}
+    `;
+  }
+
+  private _renderList() {
+    return html` <lit-virtualizer
+      .scrollTarget=${window}
+      .items=${this.artists}
+      .renderItem=${(artist: any) => this._renderArtists(artist)}
+    >
+    </lit-virtualizer>`;
+  }
+
   render() {
     return html`
       ${this.active
         ? html`
-            <ul
-              class="jumplist ${this.showJumpList ? 'show ' : ''} ${this
-                .hasVisiblePlayer
-                ? 'player'
-                : ''}"
-            >
-              ${this.letters.map(
-                (letter: any) => html`
-                  <li>
-                    <a
-                      href="#"
-                      @click="${(e: any) => {
-                        this._handleJump(e, letter.letter);
-                      }}"
-                      >${letter.letter}</a
-                    >
-                  </li>
-                `
-              )}
-            </ul>
+            ${this._renderJumplist()}
             <div class="container">
               <ol class="virtual-scroll">
-                ${this.artists.length > 0
-                  ? html` <lit-virtualizer
-                      .scrollTarget=${window}
-                      .items=${this.artists}
-                      .renderItem=${(artist: any) => html`
-                        ${artist.header
-                          ? html`
-                              <li
-                                class="header"
-                                @click="${() => {
-                                  this.showJumpList = true;
-                                  this.requestUpdate();
-                                }}"
-                              >
-                                ${artist.header}
-                                <span class="small muted"
-                                  >(${artist.artists})</span
-                                >
-                              </li>
-                            `
-                          : html`
-                              <li>
-                                <app-link
-                                  flex
-                                  text
-                                  href="/letter/${artist.letter
-                                    .escapedLetter}/artist/${artist.escapedName}"
-                                >
-                                  <album-art
-                                    artist="${artist.albumArtist ||
-                                    artist.name}"
-                                    dimension="50"
-                                  ></album-art>
-                                  <div class="details">
-                                    <span class="artist"
-                                      >${artist.albumArtist ||
-                                      artist.name}</span
-                                    >
-                                    <span class="small muted"
-                                      >Albums: ${artist.albums.length}</span
-                                    >
-                                  </div>
-                                </app-link>
-                              </li>
-                            `}
-                      `}
-                    >
-                    </lit-virtualizer>`
-                  : nothing}
+                ${this.artists.length > 0 ? this._renderList() : nothing}
               </ol>
             </div>
           `

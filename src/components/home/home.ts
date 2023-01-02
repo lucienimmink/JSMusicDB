@@ -156,105 +156,107 @@ export class HomeNav extends LitElement {
     // @ts-ignore
     e.target.src = `data:image/svg+xml;base64,${btoa(cdSVG)}`;
   }
+
+  private _renderRecentTracks() {
+    return html`${this.recenttracks?.length > 0
+      ? html`
+          <div class="container">
+            <h2 class="header">Recently listened</h2>
+            <ol>
+              ${this.recenttracks.map(
+                (track: any) => html`
+                  <li class="${track.dummy ? 'dummy ' : ''}">
+                    <img
+                      src="${track.image[1]['#text']}"
+                      class="album-art"
+                      alt="${track.artist['#text']} • ${track.name}"
+                      @error="${(e: Event) => this._onError(e)}"
+                    />
+                    <span class="details">
+                      ${track.artist['#text']} • ${track.name}
+                      <span class="small muted">${track.album['#text']}</span>
+                    </span>
+                    <span class="time">
+                      ${this._formatDate(track?.date?.uts || '0')}
+                    </span>
+                  </li>
+                `
+              )}
+            </ol>
+          </div>
+        `
+      : nothing}`;
+  }
+  private _renderRecentlyAdded() {
+    return html`${this.recentAdded.length > 0
+      ? html`
+          <div class="container">
+            <h2 class="header">Recently added / updated</h2>
+            <div class="grid">
+              ${this.recentAdded.map(
+                (album: any) => html`
+                  <app-link
+                    href="/letter/${album.artist.letter
+                      .escapedLetter}/artist/${album.artist
+                      .escapedName}/album/${album.escapedName}"
+                  >
+                    <div class="panel panel-home">
+                      <album-art
+                        artist="${album.artist.albumArtist ||
+                        album.artist.name}"
+                        album="${album.name}"
+                      ></album-art>
+                      <div class="panel-info color-type-primary-alt">
+                        <span>${album.name}</span>
+                        ${album.year === 0
+                          ? nothing
+                          : html`
+                              <span class="small muted"
+                                >Year: ${album.year}</span
+                              >
+                            `}
+                      </div>
+                    </div>
+                  </app-link>
+                `
+              )}
+            </div>
+          </div>
+        `
+      : nothing}`;
+  }
+  private _renderNewReleases() {
+    return html`${this.newReleases.length > 0
+      ? html` <div class="container">
+          <h2 class="header">
+            New releases
+            <span class="small muted">(${this.newReleases.length})</span>
+          </h2>
+          <ol>
+            ${this.newReleases.map(
+              (release: any) => html` <li>
+                <a href="${release.link}" target="_blank" rel="noopener">
+                  <album-art
+                    artist="${release.artist}"
+                    album="${release.album}"
+                  ></album-art>
+                  <span class="details">
+                    ${release.artist} &bull; ${release.album}
+                  </span>
+                </a>
+              </li>`
+            )}
+          </ol>
+        </div>`
+      : nothing}`;
+  }
+
   render() {
     return html`
       ${this.active
         ? html`
-            ${this.recenttracks?.length > 0
-              ? html`
-                  <div class="container">
-                    <h2 class="header">Recently listened</h2>
-                    <ol>
-                      ${this.recenttracks.map(
-                        (track: any) => html`
-                          <li class="${track.dummy ? 'dummy ' : ''}">
-                            <img
-                              src="${track.image[1]['#text']}"
-                              class="album-art"
-                              alt="${track.artist['#text']} • ${track.name}"
-                              @error="${(e: Event) => this._onError(e)}"
-                            />
-                            <span class="details">
-                              ${track.artist['#text']} • ${track.name}
-                              <span class="small muted"
-                                >${track.album['#text']}</span
-                              >
-                            </span>
-                            <span class="time">
-                              ${this._formatDate(track?.date?.uts || '0')}
-                            </span>
-                          </li>
-                        `
-                      )}
-                    </ol>
-                  </div>
-                `
-              : nothing}
-            ${this.recentAdded.length > 0
-              ? html`
-                  <div class="container">
-                    <h2 class="header">Recently added / updated</h2>
-                    <div class="grid">
-                      ${this.recentAdded.map(
-                        (album: any) => html`
-                          <app-link
-                            href="/letter/${album.artist.letter
-                              .escapedLetter}/artist/${album.artist
-                              .escapedName}/album/${album.escapedName}"
-                          >
-                            <div class="panel panel-home">
-                              <album-art
-                                artist="${album.artist.albumArtist ||
-                                album.artist.name}"
-                                album="${album.name}"
-                              ></album-art>
-                              <div class="panel-info color-type-primary-alt">
-                                <span>${album.name}</span>
-                                ${album.year === 0
-                                  ? nothing
-                                  : html`
-                                      <span class="small muted"
-                                        >Year: ${album.year}</span
-                                      >
-                                    `}
-                              </div>
-                            </div>
-                          </app-link>
-                        `
-                      )}
-                    </div>
-                  </div>
-                `
-              : nothing}
-            ${this.newReleases.length > 0
-              ? html` <div class="container">
-                  <h2 class="header">
-                    New releases
-                    <span class="small muted"
-                      >(${this.newReleases.length})</span
-                    >
-                  </h2>
-                  <ol>
-                    ${this.newReleases.map(
-                      (release: any) => html` <li>
-                        <a
-                          href="${release.link}"
-                          target="_blank"
-                          rel="noopener"
-                        >
-                          <album-art
-                            artist="${release.artist}"
-                            album="${release.album}"
-                          ></album-art>
-                          <span class="details">
-                            ${release.artist} &bull; ${release.album}
-                          </span>
-                        </a>
-                      </li>`
-                    )}
-                  </ol>
-                </div>`
-              : nothing}
+            ${this._renderRecentTracks()} ${this._renderRecentlyAdded()}
+            ${this._renderNewReleases()}
           `
         : nothing}
     `;

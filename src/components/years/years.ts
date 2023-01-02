@@ -13,6 +13,7 @@ import { SWITCH_ROUTE } from '../../utils/router';
 import { handleScroll } from '../../utils/virtual-scroll';
 import '../app-link/app-link';
 import musicdb from '../musicdb';
+
 @customElement('years-nav')
 export class LetterNav extends LitElement {
   years: Array<any>;
@@ -85,78 +86,82 @@ export class LetterNav extends LitElement {
     this.hasVisiblePlayer = false;
     this._getAlbums();
   }
+  private _renderJumplist() {
+    return html`<ul
+      class="jumplist ${this.showJumpList ? 'show ' : ''} ${this
+        .hasVisiblePlayer
+        ? 'player'
+        : ''}"
+    >
+      ${this.years.map(
+        (year: any) => html`
+          <li>
+            <a
+              href="#"
+              @click="${(e: any) => {
+                this._handleJump(e, year.year);
+              }}"
+              >${year.year}</a
+            >
+          </li>
+        `
+      )}
+    </ul>`;
+  }
+  private _renderList() {
+    return html`<lit-virtualizer
+      .scrollTarget=${window}
+      .items=${this.albums}
+      .renderItem=${(album: any) => html`
+        ${album?.header
+          ? html`
+              <li
+                class="header"
+                @click="${() => {
+                  this.showJumpList = true;
+                  this.requestUpdate();
+                }}"
+              >
+                ${album.header}
+                <span class="small muted">(${album.albums})</span>
+              </li>
+            `
+          : html` ${album ? this._renderAlbum(album) : nothing}`}
+      `}
+    >
+    </lit-virtualizer>`;
+  }
+  private _renderAlbum(album: any) {
+    return html`
+      <li>
+        <app-link
+          flex
+          text
+          href="/letter/${album.artist.letter.escapedLetter}/artist/${album
+            .artist.escapedName}/album/${album.escapedName}"
+        >
+          <album-art
+            artist="${album.artist.albumArtist || album.artist.name}"
+            album="${album.name}"
+            dimension="50"
+          ></album-art>
+          <div class="details">
+            <span class="artist">${album.name}</span>
+            <span class="small muted"
+              >${album.artist.albumArtist || album.artist.name}</span
+            >
+          </div>
+        </app-link>
+      </li>
+    `;
+  }
   render() {
     return html`
       ${this.active
-        ? html` <ul
-              class="jumplist ${this.showJumpList ? 'show ' : ''} ${this
-                .hasVisiblePlayer
-                ? 'player'
-                : ''}"
-            >
-              ${this.years.map(
-                (year: any) => html`
-                  <li>
-                    <a
-                      href="#"
-                      @click="${(e: any) => {
-                        this._handleJump(e, year.year);
-                      }}"
-                      >${year.year}</a
-                    >
-                  </li>
-                `
-              )}
-            </ul>
+        ? html` ${this._renderJumplist()}
             <div class="container">
               <ol class="virtual-scroll">
-                <lit-virtualizer
-                  .scrollTarget=${window}
-                  .items=${this.albums}
-                  .renderItem=${(album: any) => html`
-                    ${album?.header
-                      ? html`
-                          <li
-                            class="header"
-                            @click="${() => {
-                              this.showJumpList = true;
-                              this.requestUpdate();
-                            }}"
-                          >
-                            ${album.header}
-                            <span class="small muted">(${album.albums})</span>
-                          </li>
-                        `
-                      : html` ${album
-                          ? html`
-                              <li>
-                                <app-link
-                                  flex
-                                  text
-                                  href="/letter/${album.artist.letter
-                                    .escapedLetter}/artist/${album.artist
-                                    .escapedName}/album/${album.escapedName}"
-                                >
-                                  <album-art
-                                    artist="${album.artist.albumArtist ||
-                                    album.artist.name}"
-                                    album="${album.name}"
-                                    dimension="50"
-                                  ></album-art>
-                                  <div class="details">
-                                    <span class="artist">${album.name}</span>
-                                    <span class="small muted"
-                                      >${album.artist.albumArtist ||
-                                      album.artist.name}</span
-                                    >
-                                  </div>
-                                </app-link>
-                              </li>
-                            `
-                          : nothing}`}
-                  `}
-                >
-                </lit-virtualizer>
+                ${this.albums.length > 0 ? this._renderList() : nothing}
               </ol>
             </div>`
         : nothing}

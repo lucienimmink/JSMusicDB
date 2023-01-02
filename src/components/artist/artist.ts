@@ -54,33 +54,32 @@ export class Artist extends LitElement {
         console.log(error);
       });
   }
+  private _renderAlbum(album: any) {
+    return html`
+      <app-link
+        href="/letter/${album.artist.letter.escapedLetter}/artist/${album.artist
+          .escapedName}/album/${album.escapedName}"
+      >
+        <div class="panel">
+          <album-art
+            artist="${album.artist.albumArtist || album.artist.name}"
+            album="${album.name}"
+          ></album-art>
+          <div class="panel-info color-type-primary-alt">
+            <span>${album.name}</span>
+            ${album.year === 0
+              ? nothing
+              : html` <span class="small muted">Year: ${album.year}</span> `}
+          </div>
+        </div>
+      </app-link>
+    `;
+  }
+
   render() {
     return html`
       ${this.active
-        ? html` ${this.albums.map(
-            (album: any) => html`
-              <app-link
-                href="/letter/${album.artist.letter
-                  .escapedLetter}/artist/${album.artist
-                  .escapedName}/album/${album.escapedName}"
-              >
-                <div class="panel">
-                  <album-art
-                    artist="${album.artist.albumArtist || album.artist.name}"
-                    album="${album.name}"
-                  ></album-art>
-                  <div class="panel-info color-type-primary-alt">
-                    <span>${album.name}</span>
-                    ${album.year === 0
-                      ? nothing
-                      : html`
-                          <span class="small muted">Year: ${album.year}</span>
-                        `}
-                  </div>
-                </div>
-              </app-link>
-            `
-          )}`
+        ? html` ${this.albums.map((album: any) => this._renderAlbum(album))}`
         : nothing}
     `;
   }

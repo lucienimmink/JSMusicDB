@@ -85,6 +85,38 @@ export class LetterNav extends LitElement {
     this.showInfoModal = !this.showInfoModal;
     this.requestUpdate();
   }
+
+  private _renderModal() {
+    return html`<div class="modal-wrapper">
+      <div class="modal-backdrop"></div>
+      <div class="modal">
+        <div class="modal-header">
+          <h2 class="header">What is this?</h2>
+          <button
+            class="btn btn-transparent btn-icon"
+            aria-label="toggle information"
+            @click=${this._toggleInfo}
+          >
+            ${timesIcon}
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Optionally you can connect JSMusicDB to your last.fm account</p>
+          <p>
+            Recently played tracks and playlists based on your last.fm account
+            become available, making it a personal experience!
+          </p>
+          <p>If you aren't interesed you can always just skip this step.</p>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-primary" @click=${this._toggleInfo}>
+            Dismiss
+          </button>
+        </div>
+      </div>
+    </div>`;
+  }
   render() {
     return html`
       ${!this.hasSK
@@ -146,41 +178,7 @@ export class LetterNav extends LitElement {
             </div>
           `
         : nothing}
-      ${this.showInfoModal
-        ? html`<div class="modal-wrapper">
-            <div class="modal-backdrop"></div>
-            <div class="modal">
-              <div class="modal-header">
-                <h2 class="header">What is this?</h2>
-                <button
-                  class="btn btn-transparent btn-icon"
-                  aria-label="toggle information"
-                  @click=${this._toggleInfo}
-                >
-                  ${timesIcon}
-                </button>
-              </div>
-              <div class="modal-body">
-                <p>
-                  Optionally you can connect JSMusicDB to your last.fm account
-                </p>
-                <p>
-                  Recently played tracks and playlists based on your last.fm
-                  account become available, making it a personal experience!
-                </p>
-                <p>
-                  If you aren't interesed you can always just skip this step.
-                </p>
-              </div>
-
-              <div class="modal-footer">
-                <button class="btn btn-primary" @click=${this._toggleInfo}>
-                  Dismiss
-                </button>
-              </div>
-            </div>
-          </div>`
-        : nothing}
+      ${this.showInfoModal ? this._renderModal() : nothing}
     `;
   }
 }

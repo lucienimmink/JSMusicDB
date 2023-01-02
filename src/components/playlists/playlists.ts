@@ -308,149 +308,204 @@ export class LetterNav extends LitElement {
     this.playlistId = '';
     this.currentPlaylistId = '';
   }
+  private _renderPlaylistSelector() {
+    return html`<div class="playlists">
+      <ul class="md-up">
+        <li class="header">Playlists</li>
+        ${this.current?.tracks?.length > 0
+          ? html`
+              <li>
+                <app-link href="/playlists/current" flex
+                  >Current playlist</app-link
+                >
+              </li>
+            `
+          : nothing}
+        ${this.lastFMUserName
+          ? html`
+              <li>
+                <app-link href="/playlists/loved" flex
+                  >Loved tracks on last.fm
+                  ${this.currentPlaylistId === 'loved'
+                    ? html`
+                        <button
+                          class="btn btn-small btn-primary btn-refresh"
+                          @click="${() => this._reloadPlaylist('loved')}"
+                        >
+                          <span class="icon">${redoIcon}</span>
+                        </button>
+                      `
+                    : nothing}</app-link
+                >
+              </li>
+            `
+          : nothing}
+        ${this.lastFMUserName
+          ? html`
+              <li>
+                <app-link href="/playlists/top" flex
+                  >Most played tracks by ${this.lastFMUserName}
+                  ${this.currentPlaylistId === 'top'
+                    ? html` <button
+                        class="btn btn-small btn-primary btn-refresh"
+                        @click="${() => this._reloadPlaylist('top')}"
+                      >
+                        <span class="icon">${redoIcon}</span>
+                      </button>`
+                    : nothing}
+                </app-link>
+              </li>
+            `
+          : nothing}
+        <li>
+          <app-link href="/playlists/random" flex
+            >${this.max} random tracks
+            ${this.currentPlaylistId === 'random'
+              ? html` <button
+                  class="btn btn-small btn-primary btn-refresh"
+                  @click="${() => this._reloadPlaylist('random')}"
+                >
+                  <span class="icon">${redoIcon}</span>
+                </button>`
+              : nothing}
+          </app-link>
+        </li>
+        ${this.lastFMUserName
+          ? html`
+              <li>
+                <app-link href="/playlists/random-pref" flex
+                  >${this.max} tracks by preference
+                  ${this.currentPlaylistId === 'random-pref'
+                    ? html` <button
+                        class="btn btn-small btn-primary btn-refresh"
+                        @click="${() => this._reloadPlaylist('random-pref')}"
+                      >
+                        <span class="icon">${redoIcon}</span>
+                      </button>`
+                    : nothing}
+                </app-link>
+              </li>
+            `
+          : nothing}
+        ${this.lastFMUserName
+          ? html`
+              <li>
+                <app-link href="/playlists/pref-radio" flex
+                  >Radio by preference
+                  ${this.currentPlaylistId === 'pref-radio'
+                    ? html` <button
+                        class="btn btn-small btn-primary btn-refresh"
+                        @click="${() => this._reloadPlaylist('pref-radio')}"
+                      >
+                        <span class="icon">${redoIcon}</span>
+                      </button>`
+                    : nothing}
+                </app-link>
+              </li>
+            `
+          : nothing}
+        <li>
+          <app-link href="/playlists/radio" flex>Artist radio</app-link>
+        </li>
+      </ul>
+      <select
+        class="sm-only"
+        @change=${(e: Event) => this._switchPlaylist(e)}
+        id="playlist-selector"
+      >
+        <option disabled selected>Choose a playlist</option>
+        ${this.current?.tracks?.length > 0
+          ? html` <option value="current">Current playlist</option> `
+          : nothing}
+        ${this.lastFMUserName
+          ? html` <option value="loved">Loved tracks on last.fm</option> `
+          : nothing}
+        ${this.lastFMUserName
+          ? html`
+              <option value="top">
+                Most played tracks by ${this.lastFMUserName}
+              </option>
+            `
+          : nothing}
+        <option value="random">${this.max} Random tracks</option>
+        ${this.lastFMUserName
+          ? html`
+              <option value="random-pref">
+                ${this.max} Random tracks by preference
+              </option>
+            `
+          : nothing}
+        ${this.lastFMUserName
+          ? html` <option value="pref-radio">Radio by preference</option> `
+          : nothing}
+        <option value="radio">Artist radio</option>
+      </select>
+    </div>`;
+  }
+  private _renderTrack(track: any) {
+    return html`
+      ${track
+        ? html`
+            <li
+              @click="${() => {
+                this.setPlaylist(track);
+              }}"
+              class="${track.isPlaying || track.isPaused ? 'active' : ''}"
+            >
+              <span class="title">
+                ${track.isPlaying || track.isPaused
+                  ? html`
+                      ${track.isPlaying
+                        ? html`${playIcon}`
+                        : html`${pauseIcon}`}
+                    `
+                  : nothing}
+                ${track.title} <br /><span class="small muted"
+                  >${track.trackArtist} &bull; ${track.album.name}</span
+                ></span
+              >
+              <span class="time"
+                >${timeSpan(track.duration)} <br />
+                ${track.position > 0 && (track.isPlaying || track.isPaused)
+                  ? html`
+                      <span class="small muted"
+                        >${timeSpan(track.position)}</span
+                      >
+                    `
+                  : html`
+                      <span class="small muted">${track.type}</span>
+                    `}</span
+              >
+            </li>
+          `
+        : nothing}
+    `;
+  }
+  private _renderArtistSelector() {
+    return html`
+      <div class="playlist">
+        <ul>
+          <li class="header">Create artist radio</li>
+          <li class="no-hover artist-selector">
+            <span class="md-up">Start with this artist: </span>
+            <select @change="${(e: Event) => this._generateArtistRadio(e)}">
+              <option disabled selected>Select an artist from the list</option>
+              ${this.artists.map(
+                (artist: any) => html` <option value="${artist.escapedName}">
+                  ${artist.name}
+                </option>`
+              )}
+            </select>
+          </li>
+        </ul>
+      </div>
+    `;
+  }
   render() {
     return html`
       ${this.active
         ? html` <div class="container">
-            <div class="playlists">
-              <ul class="md-up">
-                <li class="header">Playlists</li>
-                ${this.current?.tracks?.length > 0
-                  ? html`
-                      <li>
-                        <app-link href="/playlists/current" flex
-                          >Current playlist</app-link
-                        >
-                      </li>
-                    `
-                  : nothing}
-                ${this.lastFMUserName
-                  ? html`
-                      <li>
-                        <app-link href="/playlists/loved" flex
-                          >Loved tracks on last.fm
-                          ${this.currentPlaylistId === 'loved'
-                            ? html`
-                                <button
-                                  class="btn btn-small btn-primary btn-refresh"
-                                  @click="${() =>
-                                    this._reloadPlaylist('loved')}"
-                                >
-                                  <span class="icon">${redoIcon}</span>
-                                </button>
-                              `
-                            : nothing}</app-link
-                        >
-                      </li>
-                    `
-                  : nothing}
-                ${this.lastFMUserName
-                  ? html`
-                      <li>
-                        <app-link href="/playlists/top" flex
-                          >Most played tracks by ${this.lastFMUserName}
-                          ${this.currentPlaylistId === 'top'
-                            ? html` <button
-                                class="btn btn-small btn-primary btn-refresh"
-                                @click="${() => this._reloadPlaylist('top')}"
-                              >
-                                <span class="icon">${redoIcon}</span>
-                              </button>`
-                            : nothing}
-                        </app-link>
-                      </li>
-                    `
-                  : nothing}
-                <li>
-                  <app-link href="/playlists/random" flex
-                    >${this.max} random tracks
-                    ${this.currentPlaylistId === 'random'
-                      ? html` <button
-                          class="btn btn-small btn-primary btn-refresh"
-                          @click="${() => this._reloadPlaylist('random')}"
-                        >
-                          <span class="icon">${redoIcon}</span>
-                        </button>`
-                      : nothing}
-                  </app-link>
-                </li>
-                ${this.lastFMUserName
-                  ? html`
-                      <li>
-                        <app-link href="/playlists/random-pref" flex
-                          >${this.max} tracks by preference
-                          ${this.currentPlaylistId === 'random-pref'
-                            ? html` <button
-                                class="btn btn-small btn-primary btn-refresh"
-                                @click="${() =>
-                                  this._reloadPlaylist('random-pref')}"
-                              >
-                                <span class="icon">${redoIcon}</span>
-                              </button>`
-                            : nothing}
-                        </app-link>
-                      </li>
-                    `
-                  : nothing}
-                ${this.lastFMUserName
-                  ? html`
-                      <li>
-                        <app-link href="/playlists/pref-radio" flex
-                          >Radio by preference
-                          ${this.currentPlaylistId === 'pref-radio'
-                            ? html` <button
-                                class="btn btn-small btn-primary btn-refresh"
-                                @click="${() =>
-                                  this._reloadPlaylist('pref-radio')}"
-                              >
-                                <span class="icon">${redoIcon}</span>
-                              </button>`
-                            : nothing}
-                        </app-link>
-                      </li>
-                    `
-                  : nothing}
-                <li>
-                  <app-link href="/playlists/radio" flex>Artist radio</app-link>
-                </li>
-              </ul>
-              <select
-                class="sm-only"
-                @change=${(e: Event) => this._switchPlaylist(e)}
-                id="playlist-selector"
-              >
-                <option disabled selected>Choose a playlist</option>
-                ${this.current?.tracks?.length > 0
-                  ? html` <option value="current">Current playlist</option> `
-                  : nothing}
-                ${this.lastFMUserName
-                  ? html`
-                      <option value="loved">Loved tracks on last.fm</option>
-                    `
-                  : nothing}
-                ${this.lastFMUserName
-                  ? html`
-                      <option value="top">
-                        Most played tracks by ${this.lastFMUserName}
-                      </option>
-                    `
-                  : nothing}
-                <option value="random">${this.max} Random tracks</option>
-                ${this.lastFMUserName
-                  ? html`
-                      <option value="random-pref">
-                        ${this.max} Random tracks by preference
-                      </option>
-                    `
-                  : nothing}
-                ${this.lastFMUserName
-                  ? html`
-                      <option value="pref-radio">Radio by preference</option>
-                    `
-                  : nothing}
-                <option value="radio">Artist radio</option>
-              </select>
-            </div>
+            ${this._renderPlaylistSelector()}
             ${this.playlist
               ? html`
                   <div class="playlist">
@@ -464,50 +519,7 @@ export class LetterNav extends LitElement {
                       <lit-virtualizer
                         .scrollTarget=${window}
                         .items=${this.playlist.tracks}
-                        .renderItem=${(track: any) => html`
-                          ${track
-                            ? html`
-                                <li
-                                  @click="${() => {
-                                    this.setPlaylist(track);
-                                  }}"
-                                  class="${track.isPlaying || track.isPaused
-                                    ? 'active'
-                                    : ''}"
-                                >
-                                  <span class="title">
-                                    ${track.isPlaying || track.isPaused
-                                      ? html`
-                                          ${track.isPlaying
-                                            ? html`${playIcon}`
-                                            : html`${pauseIcon}`}
-                                        `
-                                      : nothing}
-                                    ${track.title} <br /><span
-                                      class="small muted"
-                                      >${track.trackArtist} &bull;
-                                      ${track.album.name}</span
-                                    ></span
-                                  >
-                                  <span class="time"
-                                    >${timeSpan(track.duration)} <br />
-                                    ${track.position > 0 &&
-                                    (track.isPlaying || track.isPaused)
-                                      ? html`
-                                          <span class="small muted"
-                                            >${timeSpan(track.position)}</span
-                                          >
-                                        `
-                                      : html`
-                                          <span class="small muted"
-                                            >${track.type}</span
-                                          >
-                                        `}</span
-                                  >
-                                </li>
-                              `
-                            : nothing}
-                        `}
+                        .renderItem=${(track: any) => this._renderTrack(track)}
                       >
                       </lit-virtualizer>
                     </ul>
@@ -515,31 +527,7 @@ export class LetterNav extends LitElement {
                 `
               : nothing}
             ${this.showStartArtistSelection
-              ? html`
-                  <div class="playlist">
-                    <ul>
-                      <li class="header">Create artist radio</li>
-                      <li class="no-hover artist-selector">
-                        <span class="md-up">Start with this artist: </span>
-                        <select
-                          @change="${(e: Event) =>
-                            this._generateArtistRadio(e)}"
-                        >
-                          <option disabled selected>
-                            Select an artist from the list
-                          </option>
-                          ${this.artists.map(
-                            (artist: any) => html` <option
-                              value="${artist.escapedName}"
-                            >
-                              ${artist.name}
-                            </option>`
-                          )}
-                        </select>
-                      </li>
-                    </ul>
-                  </div>
-                `
+              ? this._renderArtistSelector()
               : nothing}
             ${this.loading
               ? html` <loading-indicator>loading ...</loading-indicator> `

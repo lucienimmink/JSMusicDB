@@ -56,30 +56,25 @@ export class Letter extends LitElement {
   isActiveRoute(event: Event, route: string) {
     this.active = route === 'letter';
   }
-  render() {
+  private _renderArtist(artist: any) {
     return html`
-      ${this.active
-        ? html` ${this.artists.map(
-            (artist: any) => html`
-              <app-link
-                href="/letter/${artist.letter
-                  .escapedLetter}/artist/${artist.escapedName}"
-              >
-                <div class="panel">
-                  <album-art
-                    artist="${artist.albumArtist || artist.name}"
-                  ></album-art>
-                  <div class="panel-info color-type-primary-alt">
-                    <span>${artist.albumArtist || artist.name}</span>
-                    <span class="small muted"
-                      >Albums: ${artist.albums.length}</span
-                    >
-                  </div>
-                </div>
-              </app-link>
-            `
-          )}`
-        : nothing}
+      <app-link
+        href="/letter/${artist.letter
+          .escapedLetter}/artist/${artist.escapedName}"
+      >
+        <div class="panel">
+          <album-art artist="${artist.albumArtist || artist.name}"></album-art>
+          <div class="panel-info color-type-primary-alt">
+            <span>${artist.albumArtist || artist.name}</span>
+            <span class="small muted">Albums: ${artist.albums.length}</span>
+          </div>
+        </div>
+      </app-link>
     `;
+  }
+  render() {
+    return this.active
+      ? html` ${this.artists.map((artist: any) => this._renderArtist(artist))}`
+      : nothing;
   }
 }

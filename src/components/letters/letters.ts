@@ -51,7 +51,6 @@ export class LetterNav extends LitElement {
         console.log(error);
       });
   }
-
   render() {
     return html`
       ${this.active

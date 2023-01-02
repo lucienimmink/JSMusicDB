@@ -208,124 +208,122 @@ export class LetterNav extends LitElement {
   _clearImageCache() {
     clear(createStore('album-art-db', 'album-art-store'));
   }
-  render() {
-    return html`
-      <div class="container container-block">
-        <h2 class="header">User information</h2>
-        <p>
-          Linked to last.fm:
-          ${
-            this?.lastFMUsername !== 'mdb-skipped'
-              ? this.lastFMUsername
-              : 'false'
-          }
-          ${
-            this?.lastFMUsername
-              ? html`<button
-                  class="btn btn-secondary btn-small"
-                  @click=${this._resetLastfM}
-                >
-                  <span class="icon">${unlinkIcon}</span> ${this
-                    ?.lastFMUsername !== 'mdb-skipped'
-                    ? html`un`
-                    : html`re`}link
-                </button>`
-              : nothing
-          }
-        </p>
-        <p>
-          Connected to Node-mp3stream:
-          ${this.mp3stream ? this.mp3stream : 'false'}
-          ${
-            this.mp3stream
-              ? html`<button
-                  class="btn btn-secondary btn-small"
-                  @click=${this._resetmp3Stream}
-                >
-                  <span class="icon">${disconnectIcon}</span> disconnect
-                </button>`
-              : nothing
-          }
-        </p>
-      </div>
-      <div class="container container-block">
-        <h2 class="header">Collection settings</h2>
-        <p>
-          Collection:
-          <button
-            class="btn btn-secondary btn-small"
-            ?disabled="${!this.stats?.parsingTime}"
-            @click=${() => {
-              this._refreshCollection();
-            }}
-          >
-            <span class="icon">${syncIcon}</span> Refresh now
-          </button>
-          <button
-            class="btn btn-primary btn-small"
-            ?disabled="${this.isReloading}"
-            @click=${() => {
-              this._reloadCollection();
-            }}
-          >
-            <span class="icon">${cloudDownloadIcon}</span> Reload now
-          </button>
-        </p>
-        <p>
-          Purge image cache:
-          <button
-            class="btn btn-secondary btn-small"
-            @click=${this._clearImageCache}
-          >
-            <span class="icon">${trashIcon}</span> clear
-          </button>
-        </p>
-      </div>
-      <div class="container container-block">
-        <h2 class="header">Player settings</h2>
-        <p>
-          <label>
-            <input
-              type="checkbox"
-              ?checked=${this.settings?.playliststate}
-              @click="${(e: Event) => this._toggle('playliststate', e)}"
-            />
-            Save playliststate
-          </label>
-        </p>
-        <p>
-          <label>
-            <input
-              type="checkbox"
-              @click="${(e: Event) => this._toggle('manualScrobble', e)}"
-              ?checked=${this.settings?.manualScrobble}
-            />
-            Manual scrobbling
-          </label>
-        </p>
-        <p>
-          <label>
-            <input
-              type="checkbox"
-              @click="${(e: Event) => this._toggle('continues', e)}"
-              ?checked=${this.settings?.continues}
-            />
-            Continues play
-          </label>
-        </p>
-        <p>
-          <label>
-            <input
-              type="checkbox"
-              @click="${(e: Event) => this._toggle('replaygain', e)}"
-              ?checked=${this.settings?.replaygain}
-            />
-            Apply ReplayGain
-          </label>
-        </p>
-      </div>
-
-      <div class="container container-block">
+  private _renderUserInfo() {
+    return html`<div class="container container-block">
+      <h2 class="header">User information</h2>
+      <p>
+        Linked to last.fm:
+        ${this?.lastFMUsername !== 'mdb-skipped'
+          ? this.lastFMUsername
+          : 'false'}
+        ${this?.lastFMUsername
+          ? html`<button
+              class="btn btn-secondary btn-small"
+              @click=${this._resetLastfM}
+            >
+              <span class="icon">${unlinkIcon}</span> ${this?.lastFMUsername !==
+              'mdb-skipped'
+                ? html`un`
+                : html`re`}link
+            </button>`
+          : nothing}
+      </p>
+      <p>
+        Connected to Node-mp3stream:
+        ${this.mp3stream ? this.mp3stream : 'false'}
+        ${this.mp3stream
+          ? html`<button
+              class="btn btn-secondary btn-small"
+              @click=${this._resetmp3Stream}
+            >
+              <span class="icon">${disconnectIcon}</span> disconnect
+            </button>`
+          : nothing}
+      </p>
+    </div>`;
+  }
+  private _renderCollectionSettings() {
+    html`<div class="container container-block">
+      <h2 class="header">Collection settings</h2>
+      <p>
+        Collection:
+        <button
+          class="btn btn-secondary btn-small"
+          ?disabled="${!this.stats?.parsingTime}"
+          @click=${() => {
+            this._refreshCollection();
+          }}
+        >
+          <span class="icon">${syncIcon}</span> Refresh now
+        </button>
+        <button
+          class="btn btn-primary btn-small"
+          ?disabled="${this.isReloading}"
+          @click=${() => {
+            this._reloadCollection();
+          }}
+        >
+          <span class="icon">${cloudDownloadIcon}</span> Reload now
+        </button>
+      </p>
+      <p>
+        Purge image cache:
+        <button
+          class="btn btn-secondary btn-small"
+          @click=${this._clearImageCache}
+        >
+          <span class="icon">${trashIcon}</span> clear
+        </button>
+      </p>
+    </div>`;
+  }
+  private _renderPlayerSettings() {
+    return html`<div class="container container-block">
+      <h2 class="header">Player settings</h2>
+      <p>
+        <label>
+          <input
+            type="checkbox"
+            ?checked=${this.settings?.playliststate}
+            @click="${(e: Event) => this._toggle('playliststate', e)}"
+          />
+          Save playliststate
+        </label>
+      </p>
+      <p>
+        <label>
+          <input
+            type="checkbox"
+            @click="${(e: Event) => this._toggle('manualScrobble', e)}"
+            ?checked=${this.settings?.manualScrobble}
+          />
+          Manual scrobbling
+        </label>
+      </p>
+      <p>
+        <label>
+          <input
+            type="checkbox"
+            @click="${(e: Event) => this._toggle('continues', e)}"
+            ?checked=${this.settings?.continues}
+          />
+          Continues play
+        </label>
+      </p>
+      <p>
+        <label>
+          <input
+            type="checkbox"
+            @click="${(e: Event) => this._toggle('replaygain', e)}"
+            ?checked=${this.settings?.replaygain}
+          />
+          Apply ReplayGain
+        </label>
+      </p>
+    </div>`;
+  }
+  private _renderThemeSettings() {
+    return html`<div class="container container-block">
         <h2 class="header">Theme</h2>
         <p>
           <label>
@@ -422,48 +420,51 @@ export class LetterNav extends LitElement {
               }
             </p>
           </div>
-      </div>
-
-      ${
-        this.canGetRSSFeed
-          ? html`
-              <div class="container container-block">
-                <h2 class="header">RSS feed</h2>
-                <p>
-                  <input
-                    type="url"
-                    placeholder="RSS feed URL for new/upcoming releases; leave empty for none"
-                    .value=${this.settings?.feed || ''}
-                    @change="${(e: Event) => this._setFeed(e)}"
-                  />
-                </p>
-              </div>
-            `
-          : nothing
-      }
-      
-      <div class="container container-block">
-        <h2 class="header">Information</h2>
-        <p>Artists: ${this.stats?.artists}</p>
-        <p>Albums: ${this.stats?.albums}</p>
-        <p>Tracks: ${this.stats?.tracks}</p>
-        <p>Playing time: ${this.stats?.time}</p>
-        <p>Parsing time: ${this.stats?.parsingTime}ms</p>
-        <p>Last updated: ${this.stats?.parsed}</p>
-        ${
-          this.showVersion
-            ? html`<p>Build: ${import.meta.env.PACKAGE_VERSION}</p>`
-            : nothing
-        }
-        ${
-          this.stats?.mp3stream
-            ? html` <p>Node-mp3stream: ${this.stats?.mp3stream}</p> `
-            : nothing
-        }
-        <p>Using Server Sent Events: ${
-          this.stats?.isUsingSSE ? html`yes` : html`no`
-        }</p>
-      </div>
+      </div>`;
+  }
+  private _renderRSSFeedSettings() {
+    return html`${this.canGetRSSFeed
+      ? html`
+          <div class="container container-block">
+            <h2 class="header">RSS feed</h2>
+            <p>
+              <input
+                type="url"
+                placeholder="RSS feed URL for new/upcoming releases; leave empty for none"
+                .value=${this.settings?.feed || ''}
+                @change="${(e: Event) => this._setFeed(e)}"
+              />
+            </p>
+          </div>
+        `
+      : nothing}`;
+  }
+  private _renderInformation() {
+    return html`<div class="container container-block">
+      <h2 class="header">Information</h2>
+      <p>Artists: ${this.stats?.artists}</p>
+      <p>Albums: ${this.stats?.albums}</p>
+      <p>Tracks: ${this.stats?.tracks}</p>
+      <p>Playing time: ${this.stats?.time}</p>
+      <p>Parsing time: ${this.stats?.parsingTime}ms</p>
+      <p>Last updated: ${this.stats?.parsed}</p>
+      ${this.showVersion
+        ? html`<p>Build: ${import.meta.env.PACKAGE_VERSION}</p>`
+        : nothing}
+      ${this.stats?.mp3stream
+        ? html` <p>Node-mp3stream: ${this.stats?.mp3stream}</p> `
+        : nothing}
+      <p>
+        Using Server Sent Events:
+        ${this.stats?.isUsingSSE ? html`yes` : html`no`}
+      </p>
+    </div>`;
+  }
+  render() {
+    return html`
+      ${this._renderUserInfo()} ${this._renderCollectionSettings()}
+      ${this._renderPlayerSettings()} ${this._renderThemeSettings()}
+      ${this._renderRSSFeedSettings()} ${this._renderInformation()}
     `;
   }
 }

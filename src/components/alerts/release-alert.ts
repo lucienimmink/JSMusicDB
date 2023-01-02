@@ -59,16 +59,19 @@ export default class ReleaseAlert extends LitElement {
       this.newReleases = [];
     }
   }
+  private _renderRelease(release: any) {
+    return html`New release found:
+      <a .href="${release.link}" rel="noopener" target="_blank"
+        >${release.album}</a
+      >
+      <br />`;
+  }
   render() {
     return html` ${this.newReleases.length > 0
       ? html`
           <div class="alert alert-new-release">
             ${this.newReleases.map(
-              (release: any) => html`New release found:
-                <a .href="${release.link}" rel="noopener" target="_blank"
-                  >${release.album}</a
-                >
-                <br />`
+              (release: any) => html`${this._renderRelease(release)}`
             )}
           </div>
         `

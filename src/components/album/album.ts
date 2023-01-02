@@ -127,7 +127,7 @@ export class Album extends LitElement {
     delete currentPlaylist.album;
     await setCurrentPlaylist(currentPlaylist);
   }
-  _sort(album: any) {
+  private _sort(album: any) {
     album.tracks.sort((a: any, b: any): number => {
       if (a.disc < b.disc) {
         return -1;
@@ -142,6 +142,25 @@ export class Album extends LitElement {
       return 1;
     });
   }
+  private _renderTrack(track: any) {
+    return html`<track-in-list
+      @click=${(e: Event) => {
+        this._setPlaylist(e, track);
+      }}
+      .track=${track}
+      type="album"
+    ></track-in-list>`;
+  }
+  private _renderDisc(disc: any) {
+    return html`
+      <div class="album-details">
+        ${this.sortedDiscs.length > 1
+          ? html` <div class="header">Disc ${disc[0].disc}</div>`
+          : nothing}
+        ${disc.map((track: any) => this._renderTrack(track))}
+      </div>
+    `;
+  }
   render() {
     return html`
       ${this.active
@@ -152,26 +171,7 @@ export class Album extends LitElement {
               @queue=${(e: Event) => this._appendPlaylist(e)}
             ></album-details>
             <div class="container">
-              ${this.sortedDiscs.map(
-                (disc: any) => html`
-                  <div class="album-details">
-                    ${this.sortedDiscs.length > 1
-                      ? html` <div class="header">Disc ${disc[0].disc}</div>`
-                      : nothing}
-                    ${disc.map(
-                      (track: any) => html`
-                        <track-in-list
-                          @click=${(e: Event) => {
-                            this._setPlaylist(e, track);
-                          }}
-                          .track=${track}
-                          type="album"
-                        ></track-in-list>
-                      `
-                    )}
-                  </div>
-                `
-              )}
+              ${this.sortedDiscs.map((disc: any) => this._renderDisc(disc))}
             </div>`
         : nothing}
     `;

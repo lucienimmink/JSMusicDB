@@ -105,6 +105,51 @@ export class LetterNav extends LitElement {
     this.showInfoModal = !this.showInfoModal;
     this.requestUpdate();
   }
+  private _renderModal() {
+    return html`<div class="modal-wrapper">
+      <div class="modal-backdrop"></div>
+      <div class="modal">
+        <div class="modal-header">
+          <h2 class="header">What is this?</h2>
+          <button
+            class="btn btn-transparent btn-icon"
+            aria-label="toggle information"
+            @click=${this._toggleInfo}
+          >
+            ${timesIcon}
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Welcome to JSMusicDB!</p>
+          <p>
+            In order to use this music player you need to provide credentials to
+            the streamer back-end you would like to use.
+          </p>
+          <p>
+            JSMusicDB is compatible with
+            <a
+              href="https://github.com/lucienimmink/node-mp3stream"
+              target="_blank"
+              rel="noopener"
+              >node-mp3stream</a
+            >, a nodejs based music streamer that you can install and run from
+            your own pc or NAS.
+          </p>
+          <p>
+            Once installed just provide your username, password and streamer URL
+            as configured in node-mp3stream. We do not store your credentials
+            anywhere.
+          </p>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-primary" @click=${this._toggleInfo}>
+            Dismiss
+          </button>
+        </div>
+      </div>
+    </div>`;
+  }
   render() {
     return html`
       ${!this.token
@@ -170,51 +215,7 @@ export class LetterNav extends LitElement {
             </div>
           `
         : nothing}
-      ${this.showInfoModal
-        ? html`<div class="modal-wrapper">
-            <div class="modal-backdrop"></div>
-            <div class="modal">
-              <div class="modal-header">
-                <h2 class="header">What is this?</h2>
-                <button
-                  class="btn btn-transparent btn-icon"
-                  aria-label="toggle information"
-                  @click=${this._toggleInfo}
-                >
-                  ${timesIcon}
-                </button>
-              </div>
-              <div class="modal-body">
-                <p>Welcome to JSMusicDB!</p>
-                <p>
-                  In order to use this music player you need to provide
-                  credentials to the streamer back-end you would like to use.
-                </p>
-                <p>
-                  JSMusicDB is compatible with
-                  <a
-                    href="https://github.com/lucienimmink/node-mp3stream"
-                    target="_blank"
-                    rel="noopener"
-                    >node-mp3stream</a
-                  >, a nodejs based music streamer that you can install and run
-                  from your own pc or NAS.
-                </p>
-                <p>
-                  Once installed just provide your username, password and
-                  streamer URL as configured in node-mp3stream. We do not store
-                  your credentials anywhere.
-                </p>
-              </div>
-
-              <div class="modal-footer">
-                <button class="btn btn-primary" @click=${this._toggleInfo}>
-                  Dismiss
-                </button>
-              </div>
-            </div>
-          </div>`
-        : nothing}
+      ${this.showInfoModal ? this._renderModal() : nothing}
     `;
   }
 }

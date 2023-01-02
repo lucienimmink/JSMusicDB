@@ -107,6 +107,48 @@ export class AlbumDetails extends LitElement {
     e.preventDefault();
     this.dispatchEvent(new Event('queue'));
   }
+
+  private _renderButtons() {
+    return html`<h4>
+      <button class="btn btn-primary" @click=${(e: any) => this._playAlbum(e)}>
+        Play album
+      </button>
+      <button
+        class="btn btn-secondary"
+        @click=${(e: any) => this._queueAlbum(e)}
+      >
+        Queue album
+      </button>
+    </h4>`;
+  }
+  private _renderDetails() {
+    return html`<div class="details">
+      <h2>${this.albumDetails?.name}</h2>
+      <h3>
+        ${this.albumDetails?.artist?.albumArtist ||
+        this.albumDetails?.artist?.name}
+        ${this.albumDetails?.type === 'mp4' ||
+        this.albumDetails?.type === 'flac'
+          ? html`<span class="small muted">${hqIcon}</span>`
+          : nothing}
+      </h3>
+      <h4>
+        ${this.albumDetails?.year
+          ? html`${this.albumDetails?.year} •`
+          : nothing}
+        ${this.albumDetails?.tracks?.length}
+        song${this.albumDetails?.tracks?.length === '1' ? '' : 's'} •
+        ${this.calculateLength(this.albumDetails?.tracks)}
+        <span class="small muted md-up-inline">
+          • ${this.albumDetails?.type}
+          ${this.replayGainApplied && this.albumDetails?.albumGain !== 0
+            ? html` • album gain ${this.albumDetails?.albumGain} dB `
+            : nothing}
+        </span>
+      </h4>
+      ${this._renderButtons()}
+    </div>`;
+  }
   render() {
     return html`
       <div class="jumbotron ${this.shrinkFactor}">
@@ -117,45 +159,7 @@ export class AlbumDetails extends LitElement {
             album="${this.albumDetails?.name}"
             ?static=${true}
           ></album-art>
-          <div class="details">
-            <h2>${this.albumDetails?.name}</h2>
-            <h3>
-              ${this.albumDetails?.artist?.albumArtist ||
-              this.albumDetails?.artist?.name}
-              ${this.albumDetails?.type === 'mp4' ||
-              this.albumDetails?.type === 'flac'
-                ? html`<span class="small muted">${hqIcon}</span>`
-                : nothing}
-            </h3>
-            <h4>
-              ${this.albumDetails?.year
-                ? html`${this.albumDetails?.year} •`
-                : nothing}
-              ${this.albumDetails?.tracks?.length}
-              song${this.albumDetails?.tracks?.length === '1' ? '' : 's'} •
-              ${this.calculateLength(this.albumDetails?.tracks)}
-              <span class="small muted md-up-inline">
-                • ${this.albumDetails?.type}
-                ${this.replayGainApplied && this.albumDetails?.albumGain !== 0
-                  ? html` • album gain ${this.albumDetails?.albumGain} dB `
-                  : nothing}
-              </span>
-            </h4>
-            <h4>
-              <button
-                class="btn btn-primary"
-                @click=${(e: any) => this._playAlbum(e)}
-              >
-                Play album
-              </button>
-              <button
-                class="btn btn-secondary"
-                @click=${(e: any) => this._queueAlbum(e)}
-              >
-                Queue album
-              </button>
-            </h4>
-          </div>
+          ${this._renderDetails()}
         </div>
       </div>
     `;

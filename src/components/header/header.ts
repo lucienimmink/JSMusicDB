@@ -198,6 +198,15 @@ export class Header extends LitElement {
       });
     super.attributeChangedCallback(name, oldval, newval);
   }
+  private _renderReloading() {
+    return html`${this.isReloading
+      ? html`${!this.customWindowsControl
+          ? html`<progress-spinner>${this.progress}</progress-spinner>`
+          : html`<progress-bar progress="${this.progressInt}"
+              >${this.progress}</progress-bar
+            >`}`
+      : nothing}`;
+  }
   render() {
     return html`<h1
       class="${this.customWindowsControl ? 'customWindowControls' : ''}"
@@ -223,13 +232,7 @@ export class Header extends LitElement {
           : nothing}
         ${!this.alb && !this.art ? html`JSMusicDB` : nothing}
       </div>
-      ${this.isReloading
-        ? html`${!this.customWindowsControl
-            ? html`<progress-spinner>${this.progress}</progress-spinner>`
-            : html`<progress-bar progress="${this.progressInt}"
-                >${this.progress}</progress-bar
-              >`}`
-        : nothing}
+      ${this._renderReloading()}
     </h1>`;
   }
 }
