@@ -513,120 +513,126 @@ export class Album extends LitElement {
       }
     });
   }
+  private _renderControls() {
+    return html`<div class="controls">
+      <button
+        class="btn"
+        @click=${() => this._previous()}
+        aria-label="previous track"
+      >
+        ${previousIcon}
+      </button>
+      <button
+        class="btn"
+        @click=${() => this._togglePlayPause()}
+        aria-label="play or pause"
+      >
+        ${this.isPlaying ? pauseIcon : playIcon}
+      </button>
+      <button class="btn" @click=${() => this._next()} aria-label="next track">
+        ${nextIcon}
+      </button>
+      <button class="btn" style="display:none">${volumeIcon}</button>
+      <button
+        class="btn md-up ${this.isLoved ? 'active' : ''}"
+        @click=${() => this._toggleLoved()}
+        aria-label="love or unlove track"
+      >
+        ${heartIcon}
+      </button>
+      <button
+        class="btn md-up ${this.isShuffled ? 'active' : ''}"
+        @click=${() => this._toggleShuffled()}
+        aria-label="shuffle or unshuffle playlist"
+      >
+        ${randomIcon}
+      </button>
+    </div>`;
+  }
+  private _renderDetails() {
+    return html`<div class="details">
+      <h4>${this.track.title}</h4>
+      <h5>
+        <app-link
+          inline
+          href="/letter/${this.track.album.artist.letter
+            .escapedLetter}/artist/${this.track.album.artist.escapedName}"
+        >
+          ${this.track.trackArtist}
+        </app-link>
+        &bull;
+        <app-link
+          inline
+          href="/letter/${this.track.album.artist.letter
+            .escapedLetter}/artist/${this.track.album.artist
+            .escapedName}/album/${this.track.album.escapedName}"
+        >
+          ${this.track.album.name}
+        </app-link>
+        ${this._hasMoreDiscs()
+          ? html`<span class="small muted">(${this.track.disc})</span>`
+          : nothing}
+      </h5>
+    </div>`;
+  }
+  private _renderArt() {
+    return html`<app-link href="/now-playing" class="art">
+      <album-art
+        @art=${(e: any) => this._setArt(e)}
+        .artist=${this.track.album.artist.albumArtist ||
+        this.track.album.artist.name}
+        .album=${this.track.album.name}
+        dimension="75"
+      ></album-art>
+    </app-link>`;
+  }
+  private _renderErrorState() {
+    return html`<div class="error">Error loading music data</div>`;
+  }
+  private _renderProgressBar() {
+    return html`<div
+      class="progress"
+      @click=${(e: Event) => this._setPosition(e)}
+    >
+      <div
+        class="progress-bar ${this.isPlaying ? '' : 'paused'}"
+        style=${styleMap({
+          width: (this.track.position / this.track.duration) * 100 + '%',
+        })}
+      ></div>
+    </div>`;
+  }
+  private _renderAudioTag() {
+    return html`<audio
+      @ended=${() => {
+        this._onended();
+      }}
+      @timeupdate=${() => {
+        this._ontimeupdate();
+      }}
+      @play=${() => {
+        this._onplay();
+      }}
+      @pause=${() => {
+        this._onpause();
+      }}
+      @progress=${() => {
+        this._onprogress();
+      }}
+    ></audio>`;
+  }
   render() {
     return html`
-      <audio
-        @ended=${() => {
-          this._onended();
-        }}
-        @timeupdate=${() => {
-          this._ontimeupdate();
-        }}
-        @play=${() => {
-          this._onplay();
-        }}
-        @pause=${() => {
-          this._onpause();
-        }}
-        @progress=${() => {
-          this._onprogress();
-        }}
-      ></audio>
+      ${this._renderAudioTag()}
       ${this.track
         ? html`
             <div class="player">
-              <div
-                class="progress"
-                @click=${(e: Event) => this._setPosition(e)}
-              >
-                <div
-                  class="progress-bar ${this.isPlaying ? '' : 'paused'}"
-                  style=${styleMap({
-                    width:
-                      (this.track.position / this.track.duration) * 100 + '%',
-                  })}
-                ></div>
-              </div>
+              ${this._renderProgressBar()}
               <div class="row">
-                <app-link href="/now-playing" class="art">
-                  <album-art
-                    @art=${(e: any) => this._setArt(e)}
-                    .artist=${this.track.album.artist.albumArtist ||
-                    this.track.album.artist.name}
-                    .album=${this.track.album.name}
-                    dimension="75"
-                  ></album-art>
-                </app-link>
+                ${this._renderArt()}
                 ${this.hasErrorWhilePlaying
-                  ? html`<div class="error">Error loading music data</div>`
-                  : html` <div class="details">
-                        <h4>${this.track.title}</h4>
-                        <h5>
-                          <app-link
-                            inline
-                            href="/letter/${this.track.album.artist.letter
-                              .escapedLetter}/artist/${this.track.album.artist
-                              .escapedName}"
-                          >
-                            ${this.track.trackArtist}
-                          </app-link>
-                          &bull;
-                          <app-link
-                            inline
-                            href="/letter/${this.track.album.artist.letter
-                              .escapedLetter}/artist/${this.track.album.artist
-                              .escapedName}/album/${this.track.album
-                              .escapedName}"
-                          >
-                            ${this.track.album.name}
-                          </app-link>
-                          ${this._hasMoreDiscs()
-                            ? html`<span class="small muted"
-                                >(${this.track.disc})</span
-                              >`
-                            : nothing}
-                        </h5>
-                      </div>
-                      <div class="controls">
-                        <button
-                          class="btn"
-                          @click=${() => this._previous()}
-                          aria-label="previous track"
-                        >
-                          ${previousIcon}
-                        </button>
-                        <button
-                          class="btn"
-                          @click=${() => this._togglePlayPause()}
-                          aria-label="play or pause"
-                        >
-                          ${this.isPlaying ? pauseIcon : playIcon}
-                        </button>
-                        <button
-                          class="btn"
-                          @click=${() => this._next()}
-                          aria-label="next track"
-                        >
-                          ${nextIcon}
-                        </button>
-                        <button class="btn" style="display:none">
-                          ${volumeIcon}
-                        </button>
-                        <button
-                          class="btn md-up ${this.isLoved ? 'active' : ''}"
-                          @click=${() => this._toggleLoved()}
-                          aria-label="love or unlove track"
-                        >
-                          ${heartIcon}
-                        </button>
-                        <button
-                          class="btn md-up ${this.isShuffled ? 'active' : ''}"
-                          @click=${() => this._toggleShuffled()}
-                          aria-label="shuffle or unshuffle playlist"
-                        >
-                          ${randomIcon}
-                        </button>
-                      </div>`}
+                  ? this._renderErrorState()
+                  : html` ${this._renderDetails()} ${this._renderControls()}`}
               </div>
             </div>
           `
