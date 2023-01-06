@@ -243,7 +243,7 @@ export class LetterNav extends LitElement {
     </div>`;
   }
   private _renderCollectionSettings() {
-    html`<div class="container container-block">
+    return html`<div class="container container-block">
       <h2 class="header">Collection settings</h2>
       <p>
         Collection:
