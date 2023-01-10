@@ -3,7 +3,7 @@ self.addEventListener('activate', event => {
   event.waitUntil(self.clients.claim());
 });
 
-const CACHE_NAME = 'v1';
+const CACHE_NAME = 'v2'; // opaque image cache
 
 self.addEventListener('fetch', function (event) {
   // SKIP cachecheck if it's the streaming path
