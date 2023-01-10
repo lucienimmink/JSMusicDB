@@ -15,7 +15,7 @@ import {
   addCustomCss,
   currentBgColor,
   getColorsFromRGBWithBGColor,
-  getDominantColorByURL,
+  getDominantColor,
   LIGHT,
   removeCustomCss,
 } from '../../utils/colour';
@@ -444,11 +444,18 @@ export class Album extends LitElement {
     }
   }
   _setDynamicAccentColor() {
-    getDominantColorByURL(this.art, (rgba: any) => {
-      const colours = getColorsFromRGBWithBGColor(rgba, this.bgColor);
-      EventBus.emit(ACCENT_COLOR, this, colours.text);
-      addCustomCss(colours);
-    });
+    const image = this.shadowRoot
+      ?.querySelector('album-art')
+      ?.shadowRoot?.querySelector('img');
+    getDominantColor(
+      image,
+      (rgba: any) => {
+        const colours = getColorsFromRGBWithBGColor(rgba, this.bgColor);
+        EventBus.emit(ACCENT_COLOR, this, colours.text);
+        addCustomCss(colours);
+      },
+      false
+    );
   }
   async _toggleSetting({
     setting,

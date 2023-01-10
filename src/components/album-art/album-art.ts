@@ -96,6 +96,7 @@ export class AlbumArt extends LitElement {
           : ''}"
         width="${this.dimension}"
         height="${this.dimension}"
+        crossorigin="anonymous"
       />
     `;
   }

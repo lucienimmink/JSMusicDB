@@ -40,7 +40,26 @@ const getHighestContrast = (color: any): any => {
     : LIGHT;
 };
 export function getDominantColor(img: any, cb: any, override: any): any {
-  getDominantColorByURL(img.src, cb, override);
+  // getDominantColorByURL(img.src, cb, override);
+  const loaded = () => {
+    img.removeEventListener('load', loaded);
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    canvas.width = img.width;
+    canvas.height = img.height;
+    context?.drawImage(img, 0, 0);
+
+    const fac = new FastAverageColor();
+    const rgb = fac.getColor(canvas).value;
+    cb(
+      convertToStrict({
+        r: rgb[0],
+        g: rgb[1],
+        b: rgb[2],
+      })
+    );
+  };
+  img?.addEventListener('load', loaded);
 }
 export function getDominantColorByURL(
   url: any,
