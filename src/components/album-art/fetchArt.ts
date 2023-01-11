@@ -22,7 +22,11 @@ const fetchArtForAlbum = async ({
   artist: string;
   album: string;
 }) => {
-  const id = { artist, album };
+  const json = await getMetaInfo({ artist, album });
+  const {
+    album: { mbid },
+  } = json;
+  const id = { artist, album, mbid };
   return await Promise.any(populate(id, albumConfig));
 };
 

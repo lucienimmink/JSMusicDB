@@ -79,7 +79,7 @@ export function getDominantColorByURL(
       },
       false
     );
-    clone.src = url;
+    clone.src = `${url}#no-sw-cache`;
   }
 }
 export function getColorsFromRGBWithBGColor(rgba: any, bgColor: string): any {

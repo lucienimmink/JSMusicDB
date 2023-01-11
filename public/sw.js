@@ -14,7 +14,8 @@ self.addEventListener('fetch', function (event) {
       event.request.url.indexOf('/version') !== -1 ||
       event.request.url.indexOf('/public-key') !== -1 ||
       event.request.url.indexOf('/stream') !== -1 ||
-      event.request.url.indexOf('file://') !== -1
+      event.request.url.indexOf('file://') !== -1 ||
+      event.request.url.indexOf('#no-sw-cache') !== -1
     ) {
       // nothing to see here, carry on
     } else if (event.request.url.indexOf('music.json') !== -1) {
