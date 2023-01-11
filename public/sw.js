@@ -58,10 +58,12 @@ self.addEventListener('fetch', function (event) {
             // as well as the cache consuming the response, we need
             // to clone it so we have two streams.
             var responseToCache = response.clone();
-
-            caches.open(CACHE_NAME).then(function (cache) {
-              cache.put(event.request, responseToCache);
-            });
+            if (responseToCache.status === 200) {
+              // only cache if the response is ok
+              caches.open(CACHE_NAME).then(function (cache) {
+                cache.put(event.request, responseToCache);
+              });
+            }
 
             return response;
           });
