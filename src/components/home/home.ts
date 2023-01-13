@@ -205,6 +205,7 @@ export class HomeNav extends LitElement {
                         artist="${album.artist.albumArtist ||
                         album.artist.name}"
                         album="${album.name}"
+                        no-lazy
                       ></album-art>
                       <div class="panel-info color-type-primary-alt">
                         <span>${album.name}</span>

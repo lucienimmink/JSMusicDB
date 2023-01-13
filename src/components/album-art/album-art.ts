@@ -1,6 +1,6 @@
 import { createStore, get, set } from 'idb-keyval';
 import { html, LitElement } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import albumArt from '../../styles/album-art';
 import { defaultAlbum, defaultArtist, defaultPixel } from './defaultart';
 import { fetchArtForAlbum, fetchArtForArtist } from './fetchArt';
@@ -23,29 +23,27 @@ const resizeObserver = new ResizeObserver((entries: any) => {
 
 @customElement('album-art')
 export class AlbumArt extends LitElement {
+  @property()
   art: any;
+  @property({ type: Object })
   customStore: any;
+  @property()
   objectFit: string;
+  @property()
   album: any;
+  @property()
   artist: any;
+  @property({ type: Boolean })
   static: boolean;
+  @property({ type: Boolean })
   transparent: boolean;
   isDefault = false;
+  @property({ type: Number })
   dimension: number;
+  @property({ type: Boolean, attribute: 'no-lazy' })
+  noLazy: boolean;
   ARTBASE = `https://res.cloudinary.com/jsmusicdb-com/image/fetch/f_auto,q_auto`;
 
-  static get properties() {
-    return {
-      artist: { type: String },
-      album: { type: String },
-      art: { type: String },
-      customStore: { type: Object },
-      _cache: { type: Object },
-      objectFit: { type: String },
-      transparent: { type: Boolean },
-      static: { type: Boolean },
-    };
-  }
   static get styles() {
     return [albumArt];
   }
@@ -57,6 +55,7 @@ export class AlbumArt extends LitElement {
     this.transparent = false;
     this.dimension = 300;
     this.static = false;
+    this.noLazy = false;
   }
   public getDimensions() {
     this.dimension =
@@ -90,7 +89,7 @@ export class AlbumArt extends LitElement {
             e.target.src = defaultArtist;
           }
         }}
-        loading="lazy"
+        loading="${this.noLazy ? 'eager' : 'lazy'}"
         class="${this.transparent ? 'transparent ' : ''} ${this.isDefault
           ? 'default'
           : ''}"
