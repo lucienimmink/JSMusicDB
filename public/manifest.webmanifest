@@ -10,6 +10,40 @@
   "orientation": "portrait-primary",
   "description": "Music database and player built with webtechnology",
   "display_override": ["window-controls-overlay"],
+  "shortcuts": [
+    {
+      "name": "Home",
+      "url": "/",
+      "description": "Home page"
+    },
+    {
+      "name": "Artists",
+      "url": "/artists",
+      "description": "All artists"
+    },
+    {
+      "name": "Albums",
+      "url": "/albums",
+      "description": "All albums"
+    },
+    {
+      "name": "Years",
+      "url": "/years",
+      "description": "All years"
+    },
+    {
+      "name": "playlists",
+      "url": "/playlists",
+      "description": "All playlists"
+    },
+    {
+      "name": "now playing",
+      "url": "now-playing",
+      "description": "Now playing window with optional visualization"
+    }
+  ],
+  "dir": "ltr",
+  "scope": "https://www.jsmusicdb.com/",
   "icons": [
     {
       "src": "/assets/android-chrome-48x48.png",
