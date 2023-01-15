@@ -32,14 +32,19 @@
       "description": "All years"
     },
     {
-      "name": "playlists",
+      "name": "Playlists",
       "url": "/playlists",
       "description": "All playlists"
     },
     {
-      "name": "now playing",
-      "url": "now-playing",
+      "name": "Now playing",
+      "url": "/now-playing",
       "description": "Now playing window with optional visualization"
+    },
+    {
+      "name": "Settings",
+      "url": "/settings",
+      "description": "Various settings for JSMusicDB"
     }
   ],
   "dir": "ltr",
