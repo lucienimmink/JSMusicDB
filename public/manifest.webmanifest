@@ -10,6 +10,9 @@
   "orientation": "portrait-primary",
   "description": "Music database and player built with webtechnology",
   "display_override": ["window-controls-overlay"],
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
   "shortcuts": [
     {
       "name": "Home",
