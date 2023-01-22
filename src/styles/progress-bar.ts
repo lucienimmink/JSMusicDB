@@ -20,6 +20,10 @@ export default css`
   .progress-buffered-bar {
     opacity: 0.3;
   }
+  .progress .text {
+    font-variant-numeric: tabular-nums;
+    font-family: system-ui;
+  }
   @keyframes pulsate-animation {
     0% {
       opacity: 0.5;
