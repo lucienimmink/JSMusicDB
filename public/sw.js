@@ -20,7 +20,6 @@ self.addEventListener('fetch', function (event) {
       event.request.url.indexOf('#no-sw-cache') !== -1
     ) {
       // nothing to see here, carry on
-      console.log(`don't cache this request, in skip list`, event.request.url);
     } else if (event.request.url.indexOf('music.json') !== -1) {
       // send back from the cache but always update the cache with the networks version.
       event.respondWith(fromCache(event.request));
