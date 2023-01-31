@@ -15,9 +15,12 @@ self.addEventListener('fetch', function (event) {
       event.request.url.indexOf('/public-key') !== -1 ||
       event.request.url.indexOf('/stream') !== -1 ||
       event.request.url.indexOf('file://') !== -1 ||
+      event.request.url.indexOf('//localhost') !== -1 ||
+      event.request.url.indexOf('ws.audioscrobbler.com') !== -1 ||
       event.request.url.indexOf('#no-sw-cache') !== -1
     ) {
       // nothing to see here, carry on
+      console.log(`don't cache this request, in skip list`, event.request.url);
     } else if (event.request.url.indexOf('music.json') !== -1) {
       // send back from the cache but always update the cache with the networks version.
       event.respondWith(fromCache(event.request));
@@ -46,32 +49,24 @@ self.addEventListener('fetch', function (event) {
             if (!response) {
               return response;
             }
-            if (
-              fetchRequest.url.indexOf('/data/') === -1 &&
-              fetchRequest.url.indexOf('lastfm-img2') === -1
-            ) {
-              return response;
-            }
-
             // IMPORTANT: Clone the response. A response is a stream
             // and because we want the browser to consume the response
             // as well as the cache consuming the response, we need
             // to clone it so we have two streams.
             var responseToCache = response.clone();
-            if (responseToCache.status === 200) {
+            if (responseToCache.status === 200 || responseToCache.type === 'opaque') {
               // only cache if the response is ok
               caches.open(CACHE_NAME).then(function (cache) {
                 cache.put(event.request, responseToCache);
               });
             }
-
             return response;
           });
         })
       );
     }
   } catch (e) {
-    console.log(e);
+    console.log(`error while fetching using the service worker`, e);
   }
 });
 
