@@ -1,4 +1,4 @@
-import { router } from '@addasoft/lit-element-router';
+import { navigator, router } from '@addasoft/lit-element-router';
 import timeSpan from '@addasoft/timespan';
 import { html, LitElement, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
@@ -36,6 +36,7 @@ import { animateCSS, animationCSS } from './utils/animations';
 import { getCurrentTheme, updateSunriseData } from './utils/colour';
 import { global as EventBus } from './utils/EventBus';
 import { getSK, RESET_LASTFM } from './utils/lastfm';
+import { launchQueue } from './utils/launch-queue';
 import { REFRESH } from './utils/musicdb';
 import { DONE_RELOADING, getJwt, RESET_SERVER } from './utils/node-mp3stream';
 import { START_CURRENT_PLAYLIST, STOP_PLAYER } from './utils/player';
@@ -171,6 +172,7 @@ export class LitMusicdb extends LitElement {
         this._getTheme();
       });
     });
+    launchQueue();
   }
   connectedCallback() {
     super.connectedCallback();

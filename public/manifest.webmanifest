@@ -11,43 +11,41 @@
   "description": "Music database and player built with webtechnology",
   "display_override": ["window-controls-overlay"],
   "launch_handler": {
-    "client_mode": "navigate-existing"
+    "client_mode": "focus-existing"
   },
   "shortcuts": [
     {
-      "name": "Home",
-      "url": "/",
-      "description": "Home page"
+      "name": "Previous track",
+      "url": "/?nav=prev",
+      "description": "Previous track in playlist",
+      "icons": [
+        {
+          "src": "/assets/shortcut_previous.png",
+          "sizes": "96x96"
+        }
+      ]
     },
     {
-      "name": "Artists",
-      "url": "/artists",
-      "description": "All artists"
+      "name": "Play or Pause",
+      "url": "/?nav=playpause",
+      "description": "Play or pause current track",
+      "icons": [
+        {
+          "src": "/assets/shortcut_playpause.png",
+          "sizes": "96x96"
+        }
+      ]
     },
     {
-      "name": "Albums",
-      "url": "/albums",
-      "description": "All albums"
-    },
-    {
-      "name": "Years",
-      "url": "/years",
-      "description": "All years"
-    },
-    {
-      "name": "Playlists",
-      "url": "/playlists",
-      "description": "All playlists"
-    },
-    {
-      "name": "Now playing",
-      "url": "/now-playing",
-      "description": "Now playing window with optional visualization"
-    },
-    {
-      "name": "Settings",
-      "url": "/settings",
-      "description": "Various settings for JSMusicDB"
+      "name": "Next track",
+      "url": "/?nav=next",
+      "description": "Next track in playlist",
+      "icons": [
+        {
+          "src": "/assets/shortcut_next.png",
+          "sizes": "96x96"
+        }
+      ]
     }
   ],
   "dir": "ltr",
