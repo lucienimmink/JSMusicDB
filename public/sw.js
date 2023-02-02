@@ -16,7 +16,7 @@ self.addEventListener('fetch', function (event) {
       event.request.url.indexOf('/stream') !== -1 ||
       event.request.url.indexOf('file://') !== -1 ||
       event.request.url.indexOf('//localhost') !== -1 ||
-      event.request.url.indexOf('ws.audioscrobbler.com') !== -1 ||
+      event.request.url.indexOf('//ws.audioscrobbler.com') !== -1 ||
       event.request.url.indexOf('#no-sw-cache') !== -1
     ) {
       // nothing to see here, carry on
