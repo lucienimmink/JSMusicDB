@@ -20,7 +20,7 @@ self.addEventListener('fetch', function (event) {
       event.request.url.indexOf('#no-sw-cache') !== -1
     ) {
       // nothing to see here, carry on
-    } else if (event.request.url.indexOf('music.json') !== -1) {
+    } else if (event.request.url.indexOf('music.json') !== -1 && event.request.url.indexOf('?ts=') === -1) {
       // send back from the cache but always update the cache with the networks version.
       event.respondWith(fromCache(event.request));
       event.waitUntil(update(event.request).then(refresh));
