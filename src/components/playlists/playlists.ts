@@ -1,6 +1,7 @@
 import { navigator } from '@addasoft/lit-element-router';
 import timeSpan from '@addasoft/timespan';
 import '@lit-labs/virtualizer';
+import { localized, t } from '@weavedev/lit-i18next';
 import { html, LitElement, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import buttons from '../../styles/buttons';
@@ -33,6 +34,7 @@ import '../loading-indicator/loading-indicator';
 import musicdb from '../musicdb';
 
 @customElement('playlists-nav')
+@localized()
 @navigator
 export class LetterNav extends LitElement {
   @property()
@@ -311,12 +313,12 @@ export class LetterNav extends LitElement {
   private _renderPlaylistSelector() {
     return html`<div class="playlists">
       <ul class="md-up">
-        <li class="header">Playlists</li>
+        <li class="header">${t('headers.playlists')}</li>
         ${this.current?.tracks?.length > 0
           ? html`
               <li>
                 <app-link href="/playlists/current" flex
-                  >Current playlist</app-link
+                  >${t('links.current-playlist')}</app-link
                 >
               </li>
             `
@@ -325,7 +327,7 @@ export class LetterNav extends LitElement {
           ? html`
               <li>
                 <app-link href="/playlists/loved" flex
-                  >Loved tracks on last.fm
+                  >${t('links.loved-playlist')}
                   ${this.currentPlaylistId === 'loved'
                     ? html`
                         <button
@@ -344,7 +346,7 @@ export class LetterNav extends LitElement {
           ? html`
               <li>
                 <app-link href="/playlists/top" flex
-                  >Most played tracks by ${this.lastFMUserName}
+                  >${t('links.most-played-playlist')} ${this.lastFMUserName}
                   ${this.currentPlaylistId === 'top'
                     ? html` <button
                         class="btn btn-small btn-primary btn-refresh"
@@ -359,7 +361,7 @@ export class LetterNav extends LitElement {
           : nothing}
         <li>
           <app-link href="/playlists/random" flex
-            >${this.max} random tracks
+            >${this.max} ${t('links.random-playlist')}
             ${this.currentPlaylistId === 'random'
               ? html` <button
                   class="btn btn-small btn-primary btn-refresh"
@@ -374,7 +376,7 @@ export class LetterNav extends LitElement {
           ? html`
               <li>
                 <app-link href="/playlists/random-pref" flex
-                  >${this.max} tracks by preference
+                  >${this.max} ${t('links.preference-playlist')}
                   ${this.currentPlaylistId === 'random-pref'
                     ? html` <button
                         class="btn btn-small btn-primary btn-refresh"
@@ -391,7 +393,7 @@ export class LetterNav extends LitElement {
           ? html`
               <li>
                 <app-link href="/playlists/pref-radio" flex
-                  >Radio by preference
+                  >>${t('links.preference-radio')}
                   ${this.currentPlaylistId === 'pref-radio'
                     ? html` <button
                         class="btn btn-small btn-primary btn-refresh"
@@ -405,7 +407,9 @@ export class LetterNav extends LitElement {
             `
           : nothing}
         <li>
-          <app-link href="/playlists/radio" flex>Artist radio</app-link>
+          <app-link href="/playlists/radio" flex
+            >${t('links.artist-radio')}</app-link
+          >
         </li>
       </ul>
       <select
@@ -413,32 +417,38 @@ export class LetterNav extends LitElement {
         @change=${(e: Event) => this._switchPlaylist(e)}
         id="playlist-selector"
       >
-        <option disabled selected>Choose a playlist</option>
+        <option disabled selected>${t('links.choose-playlist')}</option>
         ${this.current?.tracks?.length > 0
-          ? html` <option value="current">Current playlist</option> `
+          ? html`
+              <option value="current">${t('links.current-playlist')}</option>
+            `
           : nothing}
         ${this.lastFMUserName
-          ? html` <option value="loved">Loved tracks on last.fm</option> `
+          ? html` <option value="loved">${t('links.loved-playlist')}</option> `
           : nothing}
         ${this.lastFMUserName
           ? html`
               <option value="top">
-                Most played tracks by ${this.lastFMUserName}
+                ${t('links.most-played-playlist')} ${this.lastFMUserName}
               </option>
             `
           : nothing}
-        <option value="random">${this.max} Random tracks</option>
+        <option value="random">
+          ${this.max} ${t('links.random-playlist')}
+        </option>
         ${this.lastFMUserName
           ? html`
               <option value="random-pref">
-                ${this.max} Random tracks by preference
+                ${this.max} ${t('links.preference-playlist')}
               </option>
             `
           : nothing}
         ${this.lastFMUserName
-          ? html` <option value="pref-radio">Radio by preference</option> `
+          ? html`
+              <option value="pref-radio">${t('links.preference-radio')}</option>
+            `
           : nothing}
-        <option value="radio">Artist radio</option>
+        <option value="radio">${t('links.artist-radio')}</option>
       </select>
     </div>`;
   }
@@ -485,11 +495,11 @@ export class LetterNav extends LitElement {
     return html`
       <div class="playlist">
         <ul>
-          <li class="header">Create artist radio</li>
+          <li class="header">${t('headers.create-radio')}</li>
           <li class="no-hover artist-selector">
-            <span class="md-up">Start with this artist: </span>
+            <span class="md-up">${t('labels.start-artist')}: </span>
             <select @change="${(e: Event) => this._generateArtistRadio(e)}">
-              <option disabled selected>Select an artist from the list</option>
+              <option disabled selected>${t('labels.select-artist')}</option>
               ${this.artists.map(
                 (artist: any) => html` <option value="${artist.escapedName}">
                   ${artist.name}
@@ -530,7 +540,9 @@ export class LetterNav extends LitElement {
               ? this._renderArtistSelector()
               : nothing}
             ${this.loading
-              ? html` <loading-indicator>loading ...</loading-indicator> `
+              ? html`
+                  <loading-indicator>${t('labels.loading')}</loading-indicator>
+                `
               : nothing}
           </div>`
         : nothing}

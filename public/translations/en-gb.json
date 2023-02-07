@@ -3,17 +3,37 @@
     "recently-listened": "Recently Listened",
     "recently-added": "Recently Added",
     "new-releases": "New Releases",
+    "playlists": "Playlists",
+    "create-radio": "Create artist radio",
+    "artists": "Artists",
+    "albums": "Albums",
+    "tracks": "Tracks",
     "login": {
       "lastfm": "Login to last.fm",
+      "mp3stream": "Login to node-mp3stream",
       "whats-this": "What's this?"
     }
   },
   "buttons": {
     "login": "Login",
     "skip": "Skip",
-    "dismiss": "Dismiss"
+    "dismiss": "Dismiss",
+    "submit": "Submit"
+  },
+  "links": {
+    "current-playlist": "Current playlist",
+    "loved-playlist": "Loved tracks on last.fm",
+    "most-played-playlist": "Most played tracks by",
+    "random-playlist": "random tracks",
+    "preference-playlist": "tracks by preference",
+    "preference-radio": "Radio by preference",
+    "artist-radio": "Artist radio",
+    "choose-playlist": "Choose a playlist"
   },
   "labels": {
+    "start-artist": "Start with this artist",
+    "select-artist": "Select an artist from the list",
+    "loading": "loading ...",
     "albums": "albums",
     "disc": "disc",
     "year": "year",
@@ -25,9 +45,11 @@
     "queue-album": "Queue album",
     "username": "Username:",
     "password": "Password:",
+    "server": "Server:",
     "placeholders": {
       "username": "John Doe",
-      "password": "•••••••••"
+      "password": "•••••••••",
+      "server": "http://localhost"
     }
   },
   "content": {
@@ -35,9 +57,17 @@
       "p1": "Optionally you can connect JSMusicDB to your last.fm account",
       "p2": "Recently played tracks and playlists based on your last.fm account become available, making it a personal experience!",
       "p3": "If you aren't interesed you can always just skip this step."
+    },
+    "mp3stream": {
+      "p1": "Welcome to JSMusicDB!",
+      "p2": "In order to use this music player you need to provide credentials to the streamer back-end you would like to use.",
+      "p3": "JSMusicDB is compatible with <a href=\"https://github.com/lucienimmink/node-mp3stream\" target=\"_blank\" rel=\"noopener\">node-mp3stream</a>, a nodejs based music streamer that you can install and run from your own pc or NAS.",
+      "p4": "Once installed just provide your username, password and streamer URL as configured in node-mp3stream. We do not store your credentials anywhere."
     }
   },
   "errors": {
-    "username-password": "Please check your username and password"
+    "username-password": "Please check your username and password",
+    "data": "Error loading music data",
+    "too-many-results": "Your search yielded over <strong>{{count}}</strong> results. Only the first {{count}} are shown. Please try to refine your search query"
   }
 }

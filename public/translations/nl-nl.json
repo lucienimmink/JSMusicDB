@@ -3,17 +3,37 @@
     "recently-listened": "Recent geluisterd",
     "recently-added": "Recent toegevoegd",
     "new-releases": "Nieuwe uitgaven",
+    "playlists": "Speellijsten",
+    "create-radio": "Creëer artiesten radio",
+    "artists": "Artiesten",
+    "albums": "Albums",
+    "tracks": "Nummers",
     "login": {
       "lastfm": "Log in met Last.fm",
+      "mp3stream": "Log in op node-mp3stream",
       "whats-this": "Wat is dit?"
     }
   },
   "buttons": {
     "login": "Inloggen",
     "skip": "Overslaan",
-    "dismiss": "Sluiten"
+    "dismiss": "Sluiten",
+    "submit": "Versturen"
+  },
+  "links": {
+    "current-playlist": "Huidige speellijst",
+    "loved-playlist": "Geliefde nummers op last.fm",
+    "most-played-playlist": "Meest gespeelde nummers door",
+    "random-playlist": "willekeurige nummers",
+    "preference-playlist": "nummers met voorkeur",
+    "preference-radio": "Radio met voorkeur",
+    "artist-radio": "Artisten radio",
+    "choose-playlist": "Kies een speellijst"
   },
   "labels": {
+    "start-artist": "Start met deze artiest",
+    "select-artist": "Selecteer een artiest uit de lijst",
+    "loading": "Bezig met laden...",
     "albums": "albums",
     "disc": "schijf",
     "year": "jaar",
@@ -25,9 +45,11 @@
     "queue-album": "Album aan wachtwij toevoegen",
     "username": "Gebruikersnaam:",
     "password": "Wachtwoord:",
+    "server": "Server:",
     "placeholders": {
       "username": "Klaas Vaak",
-      "password": "•••••••••"
+      "password": "•••••••••",
+      "server": "http://localhost"
     }
   },
   "content": {
@@ -35,9 +57,17 @@
       "p1": "Je kan JSMusicDB koppelen aan je Last.fm account als je dat wilt.",
       "p2": "Recent gespeelde nummer en speellijsten op basis van je last.fm account komen dan beschikbaar en geven een persoonnlijke ervaring.",
       "p3": "Als je hier geen interesse in hebt kan je deze stap ook overslaan"
+    },
+    "mp3stream": {
+      "p1": "Welkom bij JSMusicDB!",
+      "p2": "Om met deze muziek speler te werken moet je eerst je gegevens verstrekken.",
+      "p3": "JSMusicDB kan samenwerken met <a href=\"https://github.com/lucienimmink/node-mp3stream\" target=\"_blank\" rel=\"noopener\">node-mp3stream</a>, een op nodejs gebaseerde muziek streamer je zelf kan installeren op je computer of bijvoorbeeld NAS.",
+      "p4": "Eenmaal geïnstalleerd kan je inloggen door je de URL, je gebruikersnaam en wachtwoord op te geven. Deze gegevens worden nergens opgeslagen."
     }
   },
   "errors": {
-    "username-password": "Controleer je gebruikersnaam en wachtwoord"
+    "username-password": "Controleer je gebruikersnaam en wachtwoord",
+    "data": "Fout tijdens het laden",
+    "too-many-results": "Meer dan <strong>{{count}}</strong> resultaten gevonden. De eerste {{count}} resultaten worden getoond. Probeer de zoekterm te verfijnen."
   }
 }

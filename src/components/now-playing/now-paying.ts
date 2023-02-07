@@ -1,5 +1,6 @@
 import timeSpan from '@addasoft/timespan';
 import '@lit-labs/virtualizer';
+import { localized, t } from '@weavedev/lit-i18next';
 import { html, LitElement, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
@@ -45,6 +46,7 @@ import { randomIcon } from '../icons/random';
 import { volumeIcon } from '../icons/volume';
 
 @customElement('now-playing')
+@localized()
 export class NowPlaying extends LitElement {
   @property()
   route: string;
@@ -377,7 +379,7 @@ export class NowPlaying extends LitElement {
     </div>`;
   }
   private _renderErrorState() {
-    return html`<div class="error">Error loading music data</div>`;
+    return html`<div class="error">${t('errors.data')}</div>`;
   }
   private _renderTimeControls() {
     return html`<div class="time-controls">
