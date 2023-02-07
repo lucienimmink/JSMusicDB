@@ -1,3 +1,4 @@
+import { localized, t } from '@weavedev/lit-i18next';
 import { html, LitElement, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import alert from '../../styles/alert';
@@ -7,6 +8,7 @@ import { getSettingByName, TOGGLE_SETTING } from '../../utils/settings';
 import musicdb from '../musicdb';
 
 @customElement('release-alert')
+@localized()
 export default class ReleaseAlert extends LitElement {
   @property()
   artist: string;
@@ -60,7 +62,7 @@ export default class ReleaseAlert extends LitElement {
     }
   }
   private _renderRelease(release: any) {
-    return html`New release found:
+    return html`${t('labels.new-release')}:
       <a .href="${release.link}" rel="noopener" target="_blank"
         >${release.album}</a
       >

@@ -1,3 +1,4 @@
+import { localized, t } from '@weavedev/lit-i18next';
 import { html, LitElement, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import album from '../../styles/album';
@@ -17,6 +18,7 @@ import '../track/track';
 import './album-details';
 
 @customElement('tracks-in-album')
+@localized()
 export class Album extends LitElement {
   @property()
   artist: string;
@@ -155,7 +157,7 @@ export class Album extends LitElement {
     return html`
       <div class="album-details">
         ${this.sortedDiscs.length > 1
-          ? html` <div class="header">Disc ${disc[0].disc}</div>`
+          ? html` <div class="header">${t('labels.disc')} ${disc[0].disc}</div>`
           : nothing}
         ${disc.map((track: any) => this._renderTrack(track))}
       </div>

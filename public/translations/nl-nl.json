@@ -2,14 +2,42 @@
   "headers": {
     "recently-listened": "Recent geluisterd",
     "recently-added": "Recent toegevoegd",
-    "new-releases": "Nieuwe uitgaven"
+    "new-releases": "Nieuwe uitgaven",
+    "login": {
+      "lastfm": "Log in met Last.fm",
+      "whats-this": "Wat is dit?"
+    }
+  },
+  "buttons": {
+    "login": "Inloggen",
+    "skip": "Overslaan",
+    "dismiss": "Sluiten"
   },
   "labels": {
-    "year": "Jaar",
+    "albums": "albums",
+    "disc": "schijf",
+    "year": "jaar",
     "songs_one": "nummer",
     "songs_other": "nummers",
     "album-gain": "album versterking",
     "play-album": "Speel album",
-    "queue-album": "Album aan wachtwij toevoegen"
+    "new-release": "Nieuwe uitgave gevonden",
+    "queue-album": "Album aan wachtwij toevoegen",
+    "username": "Gebruikersnaam:",
+    "password": "Wachtwoord:",
+    "placeholders": {
+      "username": "Klaas Vaak",
+      "password": "•••••••••"
+    }
+  },
+  "content": {
+    "lastfm": {
+      "p1": "Je kan JSMusicDB koppelen aan je Last.fm account als je dat wilt.",
+      "p2": "Recent gespeelde nummer en speellijsten op basis van je last.fm account komen dan beschikbaar en geven een persoonnlijke ervaring.",
+      "p3": "Als je hier geen interesse in hebt kan je deze stap ook overslaan"
+    }
+  },
+  "errors": {
+    "username-password": "Controleer je gebruikersnaam en wachtwoord"
   }
 }

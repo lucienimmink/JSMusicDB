@@ -2,14 +2,42 @@
   "headers": {
     "recently-listened": "Recently Listened",
     "recently-added": "Recently Added",
-    "new-releases": "New Releases"
+    "new-releases": "New Releases",
+    "login": {
+      "lastfm": "Login to last.fm",
+      "whats-this": "What's this?"
+    }
+  },
+  "buttons": {
+    "login": "Login",
+    "skip": "Skip",
+    "dismiss": "Dismiss"
   },
   "labels": {
-    "year": "Year",
+    "albums": "albums",
+    "disc": "disc",
+    "year": "year",
     "songs_one": "song",
     "songs_other": "songs",
     "album-gain": "album gain",
     "play-album": "Play album",
-    "queue-album": "Queue album"
+    "new-release": "New release found",
+    "queue-album": "Queue album",
+    "username": "Username:",
+    "password": "Password:",
+    "placeholders": {
+      "username": "John Doe",
+      "password": "•••••••••"
+    }
+  },
+  "content": {
+    "lastfm": {
+      "p1": "Optionally you can connect JSMusicDB to your last.fm account",
+      "p2": "Recently played tracks and playlists based on your last.fm account become available, making it a personal experience!",
+      "p3": "If you aren't interesed you can always just skip this step."
+    }
+  },
+  "errors": {
+    "username-password": "Please check your username and password"
   }
 }
