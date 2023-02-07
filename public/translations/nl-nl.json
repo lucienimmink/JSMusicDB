@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "recently-listened": "Recent geluisterd",
+    "recently-added": "Recent toegevoegd",
+    "new-releases": "Nieuwe uitgaven"
+  },
+  "labels": {
+    "year": "Jaar",
+    "songs_one": "nummer",
+    "songs_other": "nummers",
+    "album-gain": "album versterking",
+    "play-album": "Speel album",
+    "queue-album": "Album aan wachtwij toevoegen"
+  }
+}

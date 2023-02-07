@@ -35,6 +35,7 @@ import { dark, light, system } from './styles/themes';
 import { animateCSS, animationCSS } from './utils/animations';
 import { getCurrentTheme, updateSunriseData } from './utils/colour';
 import { global as EventBus } from './utils/EventBus';
+import { i18nInit } from './utils/i18next';
 import { getSK, RESET_LASTFM } from './utils/lastfm';
 import { launchQueue } from './utils/launch-queue';
 import { REFRESH } from './utils/musicdb';
@@ -182,6 +183,7 @@ export class LitMusicdb extends LitElement {
     EventBus.on(TOGGLE_SETTING, this._doToggleSetting, this);
     EventBus.on(RESET_SERVER, this._resetServer, this);
     EventBus.on(RESET_LASTFM, this._resetLastFM, this);
+    i18nInit();
   }
   disconnectedCallback() {
     super.disconnectedCallback();

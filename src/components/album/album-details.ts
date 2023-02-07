@@ -1,4 +1,5 @@
 import timeSpan from '@addasoft/timespan';
+import { localized, t } from '@weavedev/lit-i18next';
 import { html, LitElement, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import albumDetails from '../../styles/album-details';
@@ -13,6 +14,7 @@ import musicdb from '../musicdb';
 import '../track/track';
 
 @customElement('album-details')
+@localized()
 export class AlbumDetails extends LitElement {
   @property()
   artist: string;
@@ -111,13 +113,13 @@ export class AlbumDetails extends LitElement {
   private _renderButtons() {
     return html`<h4>
       <button class="btn btn-primary" @click=${(e: any) => this._playAlbum(e)}>
-        Play album
+        ${t('labels.play-album')}
       </button>
       <button
         class="btn btn-secondary"
         @click=${(e: any) => this._queueAlbum(e)}
       >
-        Queue album
+        ${t('labels.queue-album')}
       </button>
     </h4>`;
   }
@@ -137,12 +139,14 @@ export class AlbumDetails extends LitElement {
           ? html`${this.albumDetails?.year} •`
           : nothing}
         ${this.albumDetails?.tracks?.length}
-        song${this.albumDetails?.tracks?.length === '1' ? '' : 's'} •
+        ${t('labels.songs', { count: this.albumDetails?.tracks?.length })} •
         ${this.calculateLength(this.albumDetails?.tracks)}
         <span class="small muted md-up-inline">
           • ${this.albumDetails?.type}
           ${this.replayGainApplied && this.albumDetails?.albumGain !== 0
-            ? html` • album gain ${this.albumDetails?.albumGain} dB `
+            ? html`
+                • ${t('labels.album-gain')} ${this.albumDetails?.albumGain} dB
+              `
             : nothing}
         </span>
       </h4>

@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "recently-listened": "Recently Listened",
+    "recently-added": "Recently Added",
+    "new-releases": "New Releases"
+  },
+  "labels": {
+    "year": "Year",
+    "songs_one": "song",
+    "songs_other": "songs",
+    "album-gain": "album gain",
+    "play-album": "Play album",
+    "queue-album": "Queue album"
+  }
+}

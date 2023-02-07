@@ -15,7 +15,7 @@ const NON_CACHEABLE = [
   '//localhost',
   '//ws.audioscrobbler.com',
   '#no-sw-cache',
-  '?ts='
+  '?ts=',
 ];
 const CACHE_AND_UPDATE = [/\/node-music\.json$/];
 
@@ -44,7 +44,11 @@ self.addEventListener('fetch', function (event) {
               return response;
             }
             var responseToCache = response.clone();
-            if (fetchRequest.method === 'GET' && (responseToCache.status === 200 || responseToCache.type === 'opaque')) {
+            if (
+              fetchRequest.method === 'GET' &&
+              (responseToCache.status === 200 ||
+                responseToCache.type === 'opaque')
+            ) {
               caches.open(CACHE_NAME).then(function (cache) {
                 cache.put(event.request, responseToCache);
               });

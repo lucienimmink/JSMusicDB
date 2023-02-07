@@ -1,3 +1,4 @@
+import { localized, t } from '@weavedev/lit-i18next';
 import { html, LitElement, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import container from '../../styles/container';
@@ -20,6 +21,7 @@ import { cdSVG } from '../icons/cd';
 import musicdb from '../musicdb';
 
 @customElement('home-nav')
+@localized()
 export class HomeNav extends LitElement {
   @state()
   recenttracks: Array<any>;
@@ -161,7 +163,7 @@ export class HomeNav extends LitElement {
     return html`${this.recenttracks?.length > 0
       ? html`
           <div class="container">
-            <h2 class="header">Recently listened</h2>
+            <h2 class="header">${t('headers.recently-listened')}</h2>
             <ol>
               ${this.recenttracks.map(
                 (track: any) => html`
@@ -191,7 +193,7 @@ export class HomeNav extends LitElement {
     return html`${this.recentAdded.length > 0
       ? html`
           <div class="container">
-            <h2 class="header">Recently added / updated</h2>
+            <h2 class="header">${t('headers.recently-added')}</h2>
             <div class="grid">
               ${this.recentAdded.map(
                 (album: any) => html`
@@ -213,7 +215,7 @@ export class HomeNav extends LitElement {
                           ? nothing
                           : html`
                               <span class="small muted"
-                                >Year: ${album.year}</span
+                                >${t('labels.year')}: ${album.year}</span
                               >
                             `}
                       </div>
@@ -230,7 +232,7 @@ export class HomeNav extends LitElement {
     return html`${this.newReleases.length > 0
       ? html` <div class="container">
           <h2 class="header">
-            New releases
+            ${t('headers.new-releases')}
             <span class="small muted">(${this.newReleases.length})</span>
           </h2>
           <ol>
