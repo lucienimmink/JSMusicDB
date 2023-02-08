@@ -12,13 +12,22 @@
       "lastfm": "Login to last.fm",
       "mp3stream": "Login to node-mp3stream",
       "whats-this": "What's this?"
-    }
+    },
+    "user-info": "User information",
+    "collection-info": "Collection information",
+    "player-settings": "Player settings"
   },
   "buttons": {
     "login": "Login",
     "skip": "Skip",
     "dismiss": "Dismiss",
-    "submit": "Submit"
+    "submit": "Submit",
+    "unlink": "Unlink",
+    "relink": "Relink",
+    "disconnect": "Disconnect",
+    "refresh": "Refresh",
+    "reload": "Reload",
+    "clear": "Clear"
   },
   "links": {
     "current-playlist": "Current playlist",
@@ -34,7 +43,7 @@
     "start-artist": "Start with this artist",
     "select-artist": "Select an artist from the list",
     "loading": "loading ...",
-    "albums": "albums",
+    "albums": "Albums",
     "disc": "disc",
     "year": "year",
     "songs_one": "song",
@@ -50,7 +59,24 @@
       "username": "John Doe",
       "password": "•••••••••",
       "server": "http://localhost"
-    }
+    },
+    "close-menu": "Close menu",
+    "search": "Search for",
+    "home": "Home",
+    "artists": "Artists",
+    "years": "Years",
+    "playlists": "Playlists",
+    "now-playing": "Now playing",
+    "settings": "Settings",
+    "linked-to-lastfm": "Linked to last.fm account:",
+    "linked-to-mp3stream": "linked to node-mp3stream server:",
+    "unlinked": "unlinked",
+    "collection": "Collection",
+    "purge-cache": "Purge image cache",
+    "save-playlist-state": "Save playlist state",
+    "manual-scrobbling": "Manual scrobbling",
+    "continues-play": "Continues play",
+    "apply-replaygain": "Apply ReplayGain"
   },
   "content": {
     "lastfm": {

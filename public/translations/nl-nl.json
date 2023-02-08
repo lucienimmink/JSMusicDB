@@ -12,13 +12,22 @@
       "lastfm": "Log in met Last.fm",
       "mp3stream": "Log in op node-mp3stream",
       "whats-this": "Wat is dit?"
-    }
+    },
+    "user-info": "Gebruikersinformatie",
+    "collection-info": "Collectie informatie",
+    "player-settings": "Speler instellingen"
   },
   "buttons": {
     "login": "Inloggen",
     "skip": "Overslaan",
     "dismiss": "Sluiten",
-    "submit": "Versturen"
+    "submit": "Versturen",
+    "unlink": "Ontkoppelen",
+    "relink": "Opnieuw koppelen",
+    "disconnect": "Verbinding verbreken",
+    "refresh": "Verversen",
+    "reload": "Herladen",
+    "clear": "Wissen"
   },
   "links": {
     "current-playlist": "Huidige speellijst",
@@ -34,7 +43,7 @@
     "start-artist": "Start met deze artiest",
     "select-artist": "Selecteer een artiest uit de lijst",
     "loading": "Bezig met laden...",
-    "albums": "albums",
+    "albums": "Albums",
     "disc": "schijf",
     "year": "jaar",
     "songs_one": "nummer",
@@ -50,7 +59,24 @@
       "username": "Klaas Vaak",
       "password": "•••••••••",
       "server": "http://localhost"
-    }
+    },
+    "close-menu": "Sluit menu",
+    "search": "Zoek naar",
+    "home": "Start",
+    "artists": "Artiesten",
+    "years": "Jaren",
+    "playlists": "Speellijsten",
+    "now-playing": "Nu aan het spelen",
+    "settings": "Instellingen",
+    "linked-to-lastfm": "Gekoppeld aan Last.fm account:",
+    "linked-to-mp3stream": "Gekoppeld aan node-mp3stream server:",
+    "unlinked": "niet gekoppeld",
+    "collection": "Collectie",
+    "purge-cache": "Wis plaatjes cache",
+    "save-playlist-state": "Bewaar speellijst status",
+    "manual-scrobbling": "Handmatig scrobbelen",
+    "continues-play": "Speelt oneindig door",
+    "apply-replaygain": "Pas ReplayGain toe"
   },
   "content": {
     "lastfm": {

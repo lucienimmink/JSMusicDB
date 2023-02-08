@@ -1,4 +1,5 @@
 import timeSpan from '@addasoft/timespan';
+import { localized, t } from '@weavedev/lit-i18next';
 import { clear, createStore } from 'idb-keyval';
 import { html, LitElement, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
@@ -43,6 +44,7 @@ import { unlinkIcon } from '../icons/unlink';
 import musicdb, { updateAndRefresh } from '../musicdb';
 
 @customElement('settings-nav')
+@localized()
 export class LetterNav extends LitElement {
   settings: any;
   stats: any;
@@ -210,12 +212,12 @@ export class LetterNav extends LitElement {
   }
   private _renderUserInfo() {
     return html`<div class="container container-block">
-      <h2 class="header">User information</h2>
+      <h2 class="header">${t('headers.user-info')}</h2>
       <p>
-        Linked to last.fm:
+        ${t('labels.linked-to-lastfm')}
         ${this?.lastFMUsername !== 'mdb-skipped'
           ? this.lastFMUsername
-          : 'false'}
+          : t('labels.unlinked')}
         ${this?.lastFMUsername
           ? html`<button
               class="btn btn-secondary btn-small"
@@ -223,20 +225,22 @@ export class LetterNav extends LitElement {
             >
               <span class="icon">${unlinkIcon}</span> ${this?.lastFMUsername !==
               'mdb-skipped'
-                ? html`un`
-                : html`re`}link
+                ? html`${t('buttons.unlink')}`
+                : html`${t('buttons.relink')}`}
             </button>`
           : nothing}
       </p>
       <p>
-        Connected to Node-mp3stream:
+        ${t('labels.linked-to-mp3stream')}
         ${this.mp3stream ? this.mp3stream : 'false'}
         ${this.mp3stream
           ? html`<button
               class="btn btn-secondary btn-small"
               @click=${this._resetmp3Stream}
             >
-              <span class="icon">${disconnectIcon}</span> disconnect
+              <span class="icon">${disconnectIcon}</span> ${t(
+                'buttons.disconnect'
+              )}
             </button>`
           : nothing}
       </p>
@@ -244,9 +248,9 @@ export class LetterNav extends LitElement {
   }
   private _renderCollectionSettings() {
     return html`<div class="container container-block">
-      <h2 class="header">Collection settings</h2>
+      <h2 class="header">${t('headers.collection-info')}</h2>
       <p>
-        Collection:
+        ${t('labels.collection')}:
         <button
           class="btn btn-secondary btn-small"
           ?disabled="${!this.stats?.parsingTime}"
@@ -254,7 +258,7 @@ export class LetterNav extends LitElement {
             this._refreshCollection();
           }}
         >
-          <span class="icon">${syncIcon}</span> Refresh now
+          <span class="icon">${syncIcon}</span> ${t('buttons.refresh')}
         </button>
         <button
           class="btn btn-primary btn-small"
@@ -263,23 +267,23 @@ export class LetterNav extends LitElement {
             this._reloadCollection();
           }}
         >
-          <span class="icon">${cloudDownloadIcon}</span> Reload now
+          <span class="icon">${cloudDownloadIcon}</span> ${t('buttons.reload')}
         </button>
       </p>
       <p>
-        Purge image cache:
+        ${t('labels.purge-cache')}:
         <button
           class="btn btn-secondary btn-small"
           @click=${this._clearImageCache}
         >
-          <span class="icon">${trashIcon}</span> clear
+          <span class="icon">${trashIcon}</span> ${t('buttons.clear')}
         </button>
       </p>
     </div>`;
   }
   private _renderPlayerSettings() {
     return html`<div class="container container-block">
-      <h2 class="header">Player settings</h2>
+      <h2 class="header">${t('headers.player-settings')}</h2>
       <p>
         <label>
           <input
@@ -287,7 +291,7 @@ export class LetterNav extends LitElement {
             ?checked=${this.settings?.playliststate}
             @click="${(e: Event) => this._toggle('playliststate', e)}"
           />
-          Save playliststate
+          ${t('labels.save-playlist-state')}
         </label>
       </p>
       <p>
@@ -297,7 +301,7 @@ export class LetterNav extends LitElement {
             @click="${(e: Event) => this._toggle('manualScrobble', e)}"
             ?checked=${this.settings?.manualScrobble}
           />
-          Manual scrobbling
+          ${t('labels.manual-scrobbling')}
         </label>
       </p>
       <p>
@@ -307,7 +311,7 @@ export class LetterNav extends LitElement {
             @click="${(e: Event) => this._toggle('continues', e)}"
             ?checked=${this.settings?.continues}
           />
-          Continues play
+          ${t('labels.continues-play')}
         </label>
       </p>
       <p>
@@ -317,7 +321,7 @@ export class LetterNav extends LitElement {
             @click="${(e: Event) => this._toggle('replaygain', e)}"
             ?checked=${this.settings?.replaygain}
           />
-          Apply ReplayGain
+          ${t('labels.apply-replaygain')}
         </label>
       </p>
     </div>`;

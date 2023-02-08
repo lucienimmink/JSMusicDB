@@ -1,5 +1,6 @@
 import { navigator, router } from '@addasoft/lit-element-router';
 import timeSpan from '@addasoft/timespan';
+import { localized, t } from '@weavedev/lit-i18next';
 import { html, LitElement, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import './components/album-art/album-art';
@@ -45,6 +46,7 @@ import { SWITCH_ROUTE } from './utils/router';
 import { getSettingByName, TOGGLE_SETTING } from './utils/settings';
 
 @customElement('lit-musicdb')
+@localized()
 @router
 export class LitMusicdb extends LitElement {
   letters: Array<any>;
@@ -373,7 +375,7 @@ export class LitMusicdb extends LitElement {
         ${!this.hasToken ? html`<mp3stream-login></mp3stream-login>` : nothing}
         ${this.loading
           ? html`<div class="loading-wrapper">
-              Loading
+              ${t('labels.loading')}
               <loading-indicator></loading-indicator>
             </div>`
           : nothing}
