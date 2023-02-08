@@ -1,8 +1,9 @@
 import timeSpan from '@addasoft/timespan';
-import { localized, t } from '@weavedev/lit-i18next';
+import { i18next, localized, t } from '@weavedev/lit-i18next';
 import { clear, createStore } from 'idb-keyval';
 import { html, LitElement, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import buttons from '../../styles/buttons';
 import container from '../../styles/container';
 import headers from '../../styles/headers';
@@ -106,20 +107,32 @@ export class LetterNav extends LitElement {
   isActiveRoute(event: Event, route: string) {
     this.active = route === 'settings';
   }
+  private _toLocale(i18nLocale: string) {
+    if (!i18nLocale) return 'en-GB';
+    const t = i18nLocale.split('-');
+    return `${t[0]}-${t[1].toUpperCase()}`;
+  }
   private _init() {
     musicdb
       .then(async (mdb: any) => {
         this.stats.albums = mdb.totals.albums;
         this.stats.artists = mdb.totals.artists;
         this.stats.tracks = mdb.totals.tracks;
-        this.stats.time = timeSpan(mdb.totals.playingTime, true);
+        this.stats.time = timeSpan(
+          mdb.totals.playingTime,
+          true,
+          this._toLocale(i18next.language)
+        );
         this.stats.parsingTime = mdb.totals.parsingTime;
         const date = await getLastParsed();
-        const formatter = new Intl.DateTimeFormat('en-GB', {
-          // @ts-ignore
-          dateStyle: 'full',
-          timeStyle: 'medium',
-        });
+        const formatter = new Intl.DateTimeFormat(
+          this._toLocale(i18next.language),
+          {
+            // @ts-ignore
+            dateStyle: 'full',
+            timeStyle: 'medium',
+          }
+        );
         this.stats.parsed = formatter.format(date);
         this.requestUpdate();
       })
@@ -328,7 +341,7 @@ export class LetterNav extends LitElement {
   }
   private _renderThemeSettings() {
     return html`<div class="container container-block">
-        <h2 class="header">Theme</h2>
+        <h2 class="header">${t('headers.theme-settings')}</h2>
         <p>
           <label>
             <input
@@ -336,7 +349,7 @@ export class LetterNav extends LitElement {
               @click="${(e: Event) => this._toggle('dynamicTheme', e)}"
               ?checked=${this.settings?.dynamicTheme}
             />
-            Dynamic accent colour
+            ${t('labels.dynamic-accent-color')}
           </label>
         </p>
         <p class="radio-group">
@@ -346,7 +359,7 @@ export class LetterNav extends LitElement {
               @click="${(e: Event) => this._toggle('theme', e, 'light')}"
               .checked=${this.settings?.theme === 'light'}
             />
-            Light theme
+            ${t('labels.light-theme')}
           </label>
           <label>
             <input
@@ -354,7 +367,7 @@ export class LetterNav extends LitElement {
               @click="${(e: Event) => this._toggle('theme', e, 'dark')}"
               .checked=${this.settings?.theme === 'dark'}
             />
-            Dark theme
+            ${t('labels.dark-theme')}
           </label>
           <label>
             <input
@@ -362,7 +375,7 @@ export class LetterNav extends LitElement {
               @click="${(e: Event) => this._toggle('theme', e, 'system')}"
               .checked=${this.settings?.theme === 'system'}
             />
-            System theme
+            ${t('labels.system-theme')}
           </label>
           <label>
             <input
@@ -370,11 +383,12 @@ export class LetterNav extends LitElement {
               @click="${(e: Event) => this._toggle('theme', e, 'auto')}"
               .checked=${this.settings?.theme === 'auto'}
             />
-            Dynamic theme&nbsp;
+            ${t('labels.dynamic-theme')}&nbsp;
             <span class="small muted"
-              >Dark mode between
-              ${this._formatDate(this.settings?.start, '21:00:00')} and
-              ${this._formatDate(this.settings?.stop, '09:00:00')}</span
+              >${t('labels.dark-mode-between', {
+                start: this._formatDate(this.settings?.start, '21:00:00'),
+                end: this._formatDate(this.settings?.stop, '09:00:00'),
+              })}</span
             >
           </label>
         </p>
@@ -388,7 +402,7 @@ export class LetterNav extends LitElement {
                       @click="${(e: Event) => this._toggle('gps', e)}"
                       ?checked=${this.settings?.gps}
                     />
-                    Track location for more accurate theme switching
+                    ${t('labels.track-location')}
                   </label>
                 </p>
               `
@@ -396,7 +410,7 @@ export class LetterNav extends LitElement {
         }
         </div>
         <div class="container container-block md-up">
-          <h2 class="header">Now playing screen</h2>
+          <h2 class="header">${t('headers.now-playing-screen')}</h2>
             <p>
               <label>
                 <input
@@ -404,7 +418,7 @@ export class LetterNav extends LitElement {
                   @click="${(e: Event) => this._toggle('visual', e)}"
                   .checked=${this.settings?.visual}
                 />
-                Show visualisation on now playing screen
+                ${t('labels.show-visualization')}
               </label>
             </p>
             <p>
@@ -417,7 +431,7 @@ export class LetterNav extends LitElement {
                           @click="${(e: Event) => this._toggle('smallArt', e)}"
                           .checked=${this.settings?.smallArt}
                         />
-                        Show smaller album art on now playing screen
+                        ${t('labels.show-small-album-art')}
                       </label>
                     `
                   : nothing
@@ -430,11 +444,15 @@ export class LetterNav extends LitElement {
     return html`${this.canGetRSSFeed
       ? html`
           <div class="container container-block">
-            <h2 class="header">RSS feed</h2>
+            <h2 class="header">${t('headers.rss-feed')}</h2>
             <p>
               <input
                 type="url"
-                placeholder="RSS feed URL for new/upcoming releases; leave empty for none"
+                placeholder="${ifDefined(
+                  t('labels.rss-feed-placeholder') === null
+                    ? undefined
+                    : t('labels.rss-feed-placeholder')
+                )}"
                 .value=${this.settings?.feed || ''}
                 @change="${(e: Event) => this._setFeed(e)}"
               />
@@ -445,22 +463,24 @@ export class LetterNav extends LitElement {
   }
   private _renderInformation() {
     return html`<div class="container container-block">
-      <h2 class="header">Information</h2>
-      <p>Artists: ${this.stats?.artists}</p>
-      <p>Albums: ${this.stats?.albums}</p>
-      <p>Tracks: ${this.stats?.tracks}</p>
-      <p>Playing time: ${this.stats?.time}</p>
-      <p>Parsing time: ${this.stats?.parsingTime}ms</p>
-      <p>Last updated: ${this.stats?.parsed}</p>
+      <h2 class="header">${t('headers.info')}</h2>
+      <p>${t('labels.artists')}: ${this.stats?.artists}</p>
+      <p>${t('labels.albums')}: ${this.stats?.albums}</p>
+      <p>${t('labels.tracks')}: ${this.stats?.tracks}</p>
+      <p>${t('labels.playing-time')}: ${this.stats?.time}</p>
+      <p>${t('labels.parsing-time')}: ${this.stats?.parsingTime}ms</p>
+      <p>${t('labels.last-updated')}: ${this.stats?.parsed}</p>
       ${this.showVersion
-        ? html`<p>Build: ${import.meta.env.PACKAGE_VERSION}</p>`
+        ? html`<p>${t('labels.build')}: ${import.meta.env.PACKAGE_VERSION}</p>`
         : nothing}
       ${this.stats?.mp3stream
-        ? html` <p>Node-mp3stream: ${this.stats?.mp3stream}</p> `
+        ? html` <p>${t('labels.node-mp3stream')}: ${this.stats?.mp3stream}</p> `
         : nothing}
       <p>
-        Using Server Sent Events:
-        ${this.stats?.isUsingSSE ? html`yes` : html`no`}
+        ${t('labels.SSE')}:
+        ${this.stats?.isUsingSSE
+          ? html`${t('labels.yes')}`
+          : html`${t('labels.no')}`}
       </p>
     </div>`;
   }

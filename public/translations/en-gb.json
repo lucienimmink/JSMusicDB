@@ -14,8 +14,12 @@
       "whats-this": "What's this?"
     },
     "user-info": "User information",
-    "collection-info": "Collection information",
-    "player-settings": "Player settings"
+    "collection-info": "Collection settings",
+    "player-settings": "Player settings",
+    "theme-settings": "Theme settings",
+    "now-playing-screen": "Now playing screen settings",
+    "rss-feed": "RSS feed",
+    "info": "Information"
   },
   "buttons": {
     "login": "Login",
@@ -76,7 +80,26 @@
     "save-playlist-state": "Save playlist state",
     "manual-scrobbling": "Manual scrobbling",
     "continues-play": "Continues play",
-    "apply-replaygain": "Apply ReplayGain"
+    "apply-replaygain": "Apply ReplayGain",
+    "dynamic-accent-color": "Dynamische accentkleur",
+    "light-theme": "Light theme",
+    "dark-theme": "Dark theme",
+    "system-theme": "System theme",
+    "dynamic-theme": "Dynamic theme",
+    "dark-mode-between": "Dark theme between {{start}} and {{end}}",
+    "track-location": "Track location to precisly determine when to switch to dark theme",
+    "show-visualization": "Show visualization during playback",
+    "show-small-album-art": "Show smaller album art",
+    "rss-feed-placeholder": "RSS feed URL for upcoming releases. Leave empty to disable.",
+    "tracks": "Tracks",
+    "playing-time": "Playing time",
+    "parsing-time": "Parsing time",
+    "last-updated": "Last updated",
+    "build": "Version",
+    "node-mp3stream": "Node-mp3stream",
+    "SSE": "Uses Server-Sent Events (SSE)",
+    "yes": "yes",
+    "no": "no"
   },
   "content": {
     "lastfm": {

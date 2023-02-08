@@ -14,8 +14,12 @@
       "whats-this": "Wat is dit?"
     },
     "user-info": "Gebruikersinformatie",
-    "collection-info": "Collectie informatie",
-    "player-settings": "Speler instellingen"
+    "collection-info": "Collectie instellingen",
+    "player-settings": "Speler instellingen",
+    "theme-settings": "Thema instellingen",
+    "now-playing-screen": "Nu aan het spelen scherm",
+    "rss-feed": "RSS feed",
+    "info": "Informatie"
   },
   "buttons": {
     "login": "Inloggen",
@@ -76,7 +80,26 @@
     "save-playlist-state": "Bewaar speellijst status",
     "manual-scrobbling": "Handmatig scrobbelen",
     "continues-play": "Speelt oneindig door",
-    "apply-replaygain": "Pas ReplayGain toe"
+    "apply-replaygain": "Pas ReplayGain toe",
+    "dynamic-accent-color": "Dynamische accentkleur",
+    "light-theme": "Licht thema",
+    "dark-theme": "Donker thema",
+    "system-theme": "Systeem thema",
+    "dynamic-theme": "Dynamisch thema",
+    "dark-mode-between": "Donkere modus tussen {{start}} en {{end}}",
+    "track-location": "Locatie bijhouden voor het beter kunnen bepalen wanneer er geschakelt moet worden tussen licht en donker thema",
+    "show-visualization": "Visualisatie tonen tijdens het spelen",
+    "show-small-album-art": "Toon kleine album afbeelding",
+    "rss-feed-placeholder": "RSS feed URL voor aankomende uitgaven. Laat leeg om uit te schakelen.",
+    "tracks": "Nummers",
+    "playing-time": "Speeltijd",
+    "parsing-time": "Analyseertijd",
+    "last-updated": "Laatst bijgewerkt",
+    "build": "Versie",
+    "node-mp3stream": "Node-mp3stream",
+    "SSE": "Maakt gebruik van Server-Sent Events (SSE)",
+    "yes": "ja",
+    "no": "nee"
   },
   "content": {
     "lastfm": {
