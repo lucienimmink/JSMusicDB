@@ -20,8 +20,6 @@ export default css`
   }
   .playlists select {
     width: calc(100% - 1rem);
-    padding: 0.5rem;
-    border: 1px solid var(--primary, #006ecd);
     box-sizing: border-box;
     margin: 0.5rem;
   }
@@ -113,12 +111,19 @@ export default css`
     align-items: center;
   }
   .playlist .artist-selector select {
-    border-color: var(--primary, #006ecd);
-    padding: 0.5rem 1rem;
+    width: 100%;
   }
   loading-indicator {
     width: 180px;
     margin: 4rem auto 0;
+  }
+  select {
+    background: var(--background3);
+    padding: 0.3rem 0.5rem;
+    color: var(--text-color);
+  }
+  select:focus {
+    outline: 2px solid var(--primary);
   }
   @media (min-width: 768px) {
     .playlist .artist-selector select {

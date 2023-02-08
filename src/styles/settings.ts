@@ -38,9 +38,11 @@ export default css`
   }
   select {
     background: var(--background3);
-    border: 0;
+    padding: 0.3rem 0.5rem;
     color: var(--text-color);
-    padding: 0.2em;
     margin-inline-start: 0.5em;
+  }
+  select:focus {
+    outline: 2px solid var(--primary);
   }
 `;
