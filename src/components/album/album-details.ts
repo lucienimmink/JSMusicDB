@@ -1,5 +1,5 @@
 import timeSpan from '@addasoft/timespan';
-import { localized, t } from '@weavedev/lit-i18next';
+import { i18next, localized, t } from '@weavedev/lit-i18next';
 import { html, LitElement, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import albumDetails from '../../styles/album-details';
@@ -91,13 +91,18 @@ export class AlbumDetails extends LitElement {
         console.log(error);
       });
   }
+  private _toLocale(i18nLocale: string) {
+    if (!i18nLocale) return 'en-GB';
+    const t = i18nLocale.split('-');
+    return `${t[0]}-${t[1].toUpperCase()}`;
+  }
   calculateLength(tracks: Array<any>) {
     let duration = 0;
     if (tracks) {
       tracks.forEach(track => {
         duration += track.duration;
       });
-      return timeSpan(duration, true);
+      return timeSpan(duration, true, this._toLocale(i18next.language));
     }
     return 0;
   }
