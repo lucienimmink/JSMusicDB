@@ -52,6 +52,7 @@ export class SettingsNav extends LitElement {
   lastFMUsername: any;
   mp3stream: any;
   mdb: any;
+  @state()
   isReloading: boolean;
   showVersion: boolean;
   @state()
@@ -127,11 +128,10 @@ export class SettingsNav extends LitElement {
   }
   private _setIsReloadingTrue() {
     this.isReloading = true;
-    this.requestUpdate();
   }
-  private _setIsReloadingFalse() {
+  private async _setIsReloadingFalse() {
     this.isReloading = false;
-    this.requestUpdate();
+    await this._refreshCollection();
   }
   private _updateSEE(event: Event, value: boolean) {
     this.stats.isUsingSSE = value;
