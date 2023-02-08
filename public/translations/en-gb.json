@@ -13,7 +13,7 @@
       "mp3stream": "Login to node-mp3stream",
       "whats-this": "What's this?"
     },
-    "user-info": "User information",
+    "user-info": "User settings",
     "collection-info": "Collection settings",
     "player-settings": "Player settings",
     "theme-settings": "Theme settings",
@@ -100,7 +100,11 @@
     "node-mp3stream": "Node-mp3stream",
     "SSE": "Uses Server-Sent Events (SSE)",
     "yes": "yes",
-    "no": "no"
+    "no": "no",
+    "language": "Language",
+    "select-language": "Select a language",
+    "english": "English",
+    "dutch": "Nederlands"
   },
   "content": {
     "lastfm": {

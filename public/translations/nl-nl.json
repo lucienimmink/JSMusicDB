@@ -13,7 +13,7 @@
       "mp3stream": "Log in op node-mp3stream",
       "whats-this": "Wat is dit?"
     },
-    "user-info": "Gebruikersinformatie",
+    "user-info": "Gebruikers instellingen",
     "collection-info": "Collectie instellingen",
     "player-settings": "Speler instellingen",
     "theme-settings": "Thema instellingen",
@@ -103,7 +103,11 @@
     "no": "nee",
     "artist": "artiest",
     "album": "album",
-    "playlist": "speellijst"
+    "playlist": "speellijst",
+    "language": "Taal",
+    "select-language": "Selecteer een taal",
+    "english": "English",
+    "dutch": "Nederlands"
   },
   "content": {
     "lastfm": {

@@ -46,11 +46,12 @@ import musicdb, { updateAndRefresh } from '../musicdb';
 
 @customElement('settings-nav')
 @localized()
-export class LetterNav extends LitElement {
+export class SettingsNav extends LitElement {
   settings: any;
   stats: any;
   lastFMUsername: any;
   mp3stream: any;
+  mdb: any;
   isReloading: boolean;
   showVersion: boolean;
   @state()
@@ -65,6 +66,7 @@ export class LetterNav extends LitElement {
     super();
     this.settings = {};
     this.stats = {};
+    this.mdb = null;
     this.lastFMUsername = '';
     this.mp3stream = '';
     this.isReloading = false;
@@ -115,25 +117,8 @@ export class LetterNav extends LitElement {
   private _init() {
     musicdb
       .then(async (mdb: any) => {
-        this.stats.albums = mdb.totals.albums;
-        this.stats.artists = mdb.totals.artists;
-        this.stats.tracks = mdb.totals.tracks;
-        this.stats.time = timeSpan(
-          mdb.totals.playingTime,
-          true,
-          this._toLocale(i18next.language)
-        );
-        this.stats.parsingTime = mdb.totals.parsingTime;
-        const date = await getLastParsed();
-        const formatter = new Intl.DateTimeFormat(
-          this._toLocale(i18next.language),
-          {
-            // @ts-ignore
-            dateStyle: 'full',
-            timeStyle: 'medium',
-          }
-        );
-        this.stats.parsed = formatter.format(date);
+        this.mdb = mdb;
+        this._populateStats();
         this.requestUpdate();
       })
       .catch((error: any) => {
@@ -155,11 +140,32 @@ export class LetterNav extends LitElement {
     if (!date) {
       return fallback;
     }
-    const formatter = new Intl.DateTimeFormat('en-GB', {
+    const formatter = new Intl.DateTimeFormat(i18next.language || 'en-GB', {
       // @ts-ignore
       timeStyle: 'medium',
     });
     return formatter.format(date);
+  }
+  private async _populateStats() {
+    this.stats.albums = this.mdb.totals.albums;
+    this.stats.artists = this.mdb.totals.artists;
+    this.stats.tracks = this.mdb.totals.tracks;
+    this.stats.time = timeSpan(
+      this.mdb.totals.playingTime,
+      true,
+      this._toLocale(i18next.language)
+    );
+    this.stats.parsingTime = this.mdb.totals.parsingTime;
+    const date = await getLastParsed();
+    const formatter = new Intl.DateTimeFormat(
+      this._toLocale(i18next.language),
+      {
+        // @ts-ignore
+        dateStyle: 'full',
+        timeStyle: 'medium',
+      }
+    );
+    this.stats.parsed = formatter.format(date);
   }
   async _toggle(prop: string, e: Event, value: any = null) {
     // e.preventDefault();
@@ -176,6 +182,11 @@ export class LetterNav extends LitElement {
         setting: 'smallArt',
         value: false,
       });
+    }
+    if (prop === 'language') {
+      i18next.changeLanguage(value);
+      this._populateStats();
+      this.requestUpdate();
     }
     await setSetting(prop, value);
     EventBus.emit(TOGGLE_SETTING, this, { setting: prop, value });
@@ -256,6 +267,19 @@ export class LetterNav extends LitElement {
               )}
             </button>`
           : nothing}
+      </p>
+      <p>
+        ${t('labels.language')}:
+        <select
+          @change="${(e: Event) =>
+            this._toggle('language', e, e.target?.value)}"
+          .value="${this.settings?.language ||
+          this._toLocale(i18next.language)}"
+        >
+          <option disabled>${t('labels.select-language')}</option>
+          <option value="en-gb">${t('labels.english')}</option>
+          <option value="nl-nl">${t('labels.dutch')}</option>
+        </select>
       </p>
     </div>`;
   }

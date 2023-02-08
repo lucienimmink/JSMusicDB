@@ -36,4 +36,11 @@ export default css`
     width: 100%;
     transition: all 0.5s ease-in-out;
   }
+  select {
+    background: var(--background3);
+    border: 0;
+    color: var(--text-color);
+    padding: 0.2em;
+    margin-inline-start: 0.5em;
+  }
 `;
