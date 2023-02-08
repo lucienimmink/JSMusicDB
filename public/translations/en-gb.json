@@ -19,7 +19,8 @@
     "theme-settings": "Theme settings",
     "now-playing-screen": "Now playing screen settings",
     "rss-feed": "RSS feed",
-    "info": "Information"
+    "info": "Information",
+    "nothing-playing": "Nothing is playing"
   },
   "buttons": {
     "login": "Login",
@@ -49,7 +50,7 @@
     "loading": "loading ...",
     "albums": "Albums",
     "disc": "disc",
-    "year": "year",
+    "year": "Year",
     "songs_one": "song",
     "songs_other": "songs",
     "album-gain": "album gain",
@@ -112,11 +113,29 @@
       "p2": "In order to use this music player you need to provide credentials to the streamer back-end you would like to use.",
       "p3": "JSMusicDB is compatible with <a href=\"https://github.com/lucienimmink/node-mp3stream\" target=\"_blank\" rel=\"noopener\">node-mp3stream</a>, a nodejs based music streamer that you can install and run from your own pc or NAS.",
       "p4": "Once installed just provide your username, password and streamer URL as configured in node-mp3stream. We do not store your credentials anywhere."
+    },
+    "now-playing": {
+      "p1": "This is where you can see what's currently playing and what is coming up next.",
+      "p2": {
+        "1": "Find an",
+        "2": "or",
+        "3": "that you want to play. Or explore a"
+      }
     }
   },
   "errors": {
     "username-password": "Please check your username and password",
     "data": "Error loading music data",
     "too-many-results": "Your search yielded over <strong>{{count}}</strong> results. Only the first {{count}} are shown. Please try to refine your search query"
+  },
+  "playlists": {
+    "name": {
+      "random": "{{count}} random tracks",
+      "preference": "Random tracks based on the recently listened tracks by {{username}}",
+      "loved": "Loved tracks by {{username}}",
+      "preference-radio": "Radio based on the recently listened tracks by {{username}}",
+      "artist-radio": "Artist radio",
+      "most-played": "Most listened tracks by {{username}} in the past 3 months"
+    }
   }
 }

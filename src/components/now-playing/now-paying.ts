@@ -513,22 +513,25 @@ export class NowPlaying extends LitElement {
   private _renderNothingPlaying() {
     return html`
       <div class="container p-1">
-        <h3>Nothing is playing</h3>
+        <h3>${t('headers.nothing-playing')}</h3>
+        <p>${t('content.now-playing.p1')}</p>
         <p>
-          This is where you'll see the song you're playing and songs that are
-          coming up.
-        </p>
-        <p>
-          Find an
+          ${t('content.now-playing.p2.1')}
           <app-link href="/artists" inline
-            ><span class="icon">${artistsIcon}</span> artist</app-link
+            ><span class="icon">${artistsIcon}</span>${t(
+              'labels.artist'
+            )}</app-link
           >
-          or
+          ${t('content.now-playing.p2.2')}
           <app-link href="/albums" inline
-            ><span class="icon">${albumsIcon}</span>album</app-link
-          >that you want to play; or setup a
+            ><span class="icon">${albumsIcon}</span>${t(
+              'labels.album'
+            )}</app-link
+          >${t('content.now-playing.p2.3')}
           <app-link href="/playlists" inline
-            ><span class="icon">${playlistsIcon}</span>playlist</app-link
+            ><span class="icon">${playlistsIcon}</span>${t(
+              'labels.playlist'
+            )}</app-link
           >
         </p>
       </div>

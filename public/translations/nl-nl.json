@@ -19,7 +19,8 @@
     "theme-settings": "Thema instellingen",
     "now-playing-screen": "Nu aan het spelen scherm",
     "rss-feed": "RSS feed",
-    "info": "Informatie"
+    "info": "Informatie",
+    "nothing-playing": "Er is niets aan het spelen"
   },
   "buttons": {
     "login": "Inloggen",
@@ -49,7 +50,7 @@
     "loading": "Bezig met laden...",
     "albums": "Albums",
     "disc": "schijf",
-    "year": "jaar",
+    "year": "Jaar",
     "songs_one": "nummer",
     "songs_other": "nummers",
     "album-gain": "album versterking",
@@ -99,7 +100,10 @@
     "node-mp3stream": "Node-mp3stream",
     "SSE": "Maakt gebruik van Server-Sent Events (SSE)",
     "yes": "ja",
-    "no": "nee"
+    "no": "nee",
+    "artist": "artiest",
+    "album": "album",
+    "playlist": "speellijst"
   },
   "content": {
     "lastfm": {
@@ -112,11 +116,29 @@
       "p2": "Om met deze muziek speler te werken moet je eerst je gegevens verstrekken.",
       "p3": "JSMusicDB kan samenwerken met <a href=\"https://github.com/lucienimmink/node-mp3stream\" target=\"_blank\" rel=\"noopener\">node-mp3stream</a>, een op nodejs gebaseerde muziek streamer je zelf kan installeren op je computer of bijvoorbeeld NAS.",
       "p4": "Eenmaal geïnstalleerd kan je inloggen door je de URL, je gebruikersnaam en wachtwoord op te geven. Deze gegevens worden nergens opgeslagen."
+    },
+    "now-playing": {
+      "p1": "Hier zie je welk nummer er nu aan het spelen is en welke in de wachtrij staan.",
+      "p2": {
+        "1": "Vind een",
+        "2": "of",
+        "3": "dat je wilt spelen. Of verken een"
+      }
     }
   },
   "errors": {
     "username-password": "Controleer je gebruikersnaam en wachtwoord",
     "data": "Fout tijdens het laden",
     "too-many-results": "Meer dan <strong>{{count}}</strong> resultaten gevonden. De eerste {{count}} resultaten worden getoond. Probeer de zoekterm te verfijnen."
+  },
+  "playlists": {
+    "name": {
+      "random": "{{count}} willekeurige nummers",
+      "preference": "Willekeurige nummers gebaseerd op de recent geluisterde nummers door {{username}}",
+      "loved": "Geliefde nummers door {{username}}",
+      "preference-radio": "Radio gebaseerd op de recent geluisterde nummers door {{username}}",
+      "artist-radio": "Artiesten radio",
+      "most-played": "Meest geluisterde nummers door {{username}} in de afgelopen 3 maanden"
+    }
   }
 }

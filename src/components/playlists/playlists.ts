@@ -393,7 +393,7 @@ export class LetterNav extends LitElement {
           ? html`
               <li>
                 <app-link href="/playlists/pref-radio" flex
-                  >>${t('links.preference-radio')}
+                  >${t('links.preference-radio')}
                   ${this.currentPlaylistId === 'pref-radio'
                     ? html` <button
                         class="btn btn-small btn-primary btn-refresh"
@@ -521,7 +521,12 @@ export class LetterNav extends LitElement {
                   <div class="playlist">
                     <ul>
                       <li class="header">
-                        ${this.playlist.name}
+                        ${this.playlist.i18name
+                          ? t(this.playlist.i18name, {
+                              username: this.lastFMUserName,
+                              count: this.playlist.tracks.length,
+                            })
+                          : this.playlist.name}
                         <span class="small muted"
                           >(${this.playlist.tracks.length})</span
                         >
