@@ -139,7 +139,8 @@
       "loved": "Loved tracks by {{username}}",
       "preference-radio": "Radio based on the recently listened tracks by {{username}}",
       "artist-radio": "Artist radio",
-      "most-played": "Most listened tracks by {{username}} in the past 3 months"
+      "most-played": "Most listened tracks by {{username}} in the past 3 months",
+      "queued": "Queued albums"
     }
   }
 }

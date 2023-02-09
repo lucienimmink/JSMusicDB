@@ -120,6 +120,7 @@ export class Album extends LitElement {
     e.preventDefault();
     const currentPlaylist = (await getCurrentPlaylist()) || {};
     currentPlaylist.name = 'queued albums';
+    currentPlaylist.i18name = 'playlists.name.queued';
     currentPlaylist.tracks = [
       ...currentPlaylist.tracks,
       ...this.albumDetails.tracks,

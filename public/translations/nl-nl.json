@@ -142,7 +142,8 @@
       "loved": "Geliefde nummers door {{username}}",
       "preference-radio": "Radio gebaseerd op de recent geluisterde nummers door {{username}}",
       "artist-radio": "Artiesten radio",
-      "most-played": "Meest geluisterde nummers door {{username}} in de afgelopen 3 maanden"
+      "most-played": "Meest geluisterde nummers door {{username}} in de afgelopen 3 maanden",
+      "queued": "Album wachtrij"
     }
   }
 }
