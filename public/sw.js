@@ -3,7 +3,7 @@ self.addEventListener('activate', event => {
   event.waitUntil(self.clients.claim());
 });
 
-const CACHE_NAME = 'v1';
+const CACHE_NAME = 'v2';
 
 const NON_CACHEABLE = [
   '/listen',
@@ -15,7 +15,9 @@ const NON_CACHEABLE = [
   '//localhost',
   '//ws.audioscrobbler.com',
   '#no-sw-cache',
-  '?ts=',
+  'ts=',
+  '/proxy',
+  'https://www.jsmusicdb.com/', // don't cache palayer resources.
 ];
 const CACHE_AND_UPDATE = [/\/node-music\.json$/];
 
