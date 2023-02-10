@@ -104,7 +104,8 @@
     "language": "Language",
     "select-language": "Select a language",
     "english": "English",
-    "dutch": "Nederlands"
+    "dutch": "Nederlands",
+    "letters": "Letters"
   },
   "content": {
     "lastfm": {
