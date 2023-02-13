@@ -97,9 +97,7 @@ export class LitMusicdb extends LitElement {
         passive: true,
       }
     );
-    //@ts-ignore
     if ('serviceWorker' in window.navigator) {
-      // @ts-ignore
       window.navigator.serviceWorker.addEventListener(
         'message',
         async (e: MessageEvent) => {
