@@ -98,16 +98,22 @@ export class LitMusicdb extends LitElement {
       }
     );
     if ('serviceWorker' in navigator) {
+      console.log('has serviceWorker');
+      // @ts-ignore
       navigator.serviceWorker.addEventListener(
         'message',
         async (e: MessageEvent) => {
+          console.log({ e });
           const { type } = e.data;
           if (type === 'refresh') {
             await update();
+            console.log('received refresh event from service worker');
             EventBus.emit(REFRESH, this);
           }
         }
       );
+    } else {
+      console.log(navigator?.serviceWorker?.controller);
     }
     this._getTheme();
     musicdb

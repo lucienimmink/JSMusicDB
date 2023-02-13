@@ -1,10 +1,35 @@
 /* eslint-disable no-undef */
+// time to rewrite this once and for all using
+// https://jakearchibald.com/2014/offline-cookbook/
+
+// I have 4 types of requests
+// 1. requests that should not be cached at all; always fetch
+// 2. requests that should come from the cache, returned and updated in the background (node-music.json?update)
+// 3. requests that should come from the network and cached in the background (node-music.json)
+// 4. requests that should be cached and returned from the cache (everything else)
+
+const CACHE_NAME = 'v3';
+
+// step 0: clean-up old caches
 self.addEventListener('activate', event => {
-  event.waitUntil(self.clients.claim());
+  event.waitUntil(
+    (async function () {
+      const cacheNames = await caches.keys();
+      await Promise.all(
+        cacheNames
+          .filter(cacheName => {
+            if (cacheName === CACHE_NAME) {
+              return false;
+            }
+            return true;
+          })
+          .map(cacheName => caches.delete(cacheName))
+      );
+    })()
+  );
 });
 
-const CACHE_NAME = 'v2';
-
+// step 1: define a list of files that should not be cached
 const NON_CACHEABLE = [
   '/listen',
   '/rescan',
@@ -12,74 +37,71 @@ const NON_CACHEABLE = [
   '/public-key',
   '/stream',
   'file://',
-  '//localhost',
   '//ws.audioscrobbler.com',
+  '//localhost',
   '#no-sw-cache',
   'ts=',
   '/proxy',
-  'https://www.jsmusicdb.com/', // don't cache palayer resources.
 ];
+
+// step 2: define a list of files that should come from cache and updated in the background
 const CACHE_AND_UPDATE = [/\/node-music\.json$/];
 
-self.addEventListener('fetch', function (event) {
+// step 3: define a list of files that should come from network and update cache in the background
+const UPDATE_AND_CACHE = [/\/node-music\.json\?update$/];
+
+// step 1.1 handle these requests
+self.addEventListener('fetch', async event => {
   try {
-    if (NON_CACHEABLE.some(url => event.request.url.indexOf(url) !== -1)) {
-      // nothing to see here, carry on
+    if (
+      event.request.destination === 'document' ||
+      NON_CACHEABLE.some(url => event.request.url.includes(url)) ||
+      event.request.method !== 'GET'
+    ) {
+      return;
     } else if (CACHE_AND_UPDATE.some(url => event.request.url.match(url))) {
-      event.respondWith(fromCache(event.request));
-      event.waitUntil(update(event.request).then(refresh));
+      return await cacheAndNetwork(event);
+    } else if (UPDATE_AND_CACHE.some(url => event.request.url.match(url))) {
+      return await updateCache(event);
     } else {
-      event.respondWith(
-        caches.match(event.request).then(function (response) {
-          if (response) {
-            return response;
-          }
-          var fetchRequest = event.request.clone();
-          if (
-            fetchRequest.cache === 'only-if-cached' &&
-            fetchRequest.mode !== 'same-origin'
-          ) {
-            return;
-          }
-          return fetch(fetchRequest).then(function (response) {
-            if (!response) {
-              return response;
-            }
-            var responseToCache = response.clone();
-            if (
-              fetchRequest.method === 'GET' &&
-              (responseToCache.status === 200 ||
-                responseToCache.type === 'opaque')
-            ) {
-              caches.open(CACHE_NAME).then(function (cache) {
-                cache.put(event.request, responseToCache);
-              });
-            }
-            return response;
-          });
-        })
-      );
+      return await cacheFirst(event);
     }
   } catch (e) {
     console.log(`error while fetching using the service worker`, e);
   }
 });
 
-function fromCache(request) {
-  return caches.open(CACHE_NAME).then(function (cache) {
-    return cache.match(request);
-  });
-}
+// get from cache but get from network and update cache if not found in cache
+const cacheFirst = async function (event) {
+  const cache = await caches.open(CACHE_NAME);
+  const response = await cache.match(event.request);
+  if (response) {
+    return response;
+  } else {
+    const networkResponse = await fetch(event.request);
+    cache.put(event.request, networkResponse.clone());
+    return response || networkResponse;
+  }
+};
 
-function update(request) {
-  return caches.open(CACHE_NAME).then(function (cache) {
-    return fetch(request).then(function (response) {
-      return cache.put(request, response.clone()).then(function () {
-        return response;
-      });
-    });
-  });
-}
+const cacheAndNetwork = async function (event) {
+  const cache = await caches.open(CACHE_NAME);
+  const response = await cache.match(event.request);
+  const networkResponse = await fetch(event.request);
+  cache.put(event.request, networkResponse.clone());
+  // tell clients it's updated
+  refresh(networkResponse);
+  return response || networkResponse;
+};
+
+const updateCache = async function (event) {
+  const cache = await caches.open(CACHE_NAME);
+  const networkResponse = await fetch(event.request);
+  cache.put(event.request, networkResponse.clone());
+  // tell clients it's updated
+  refresh(networkResponse);
+  return networkResponse;
+};
 
 let db;
 
