@@ -30,7 +30,7 @@ self.addEventListener('activate', event => {
 });
 
 // step 0.5: Force cache the translations
-self.addEventListener('install', (event) => {
+self.addEventListener('install', event => {
   event.waitUntil(
     (async function () {
       const cache = await caches.open(CACHE_NAME);
@@ -38,7 +38,7 @@ self.addEventListener('install', (event) => {
         '/translations/en-gb.json',
         '/translations/nl-nl.json',
       ]);
-    })(),
+    })()
   );
 });
 
@@ -73,46 +73,57 @@ self.addEventListener('fetch', async event => {
     ) {
       return;
     } else if (CACHE_AND_UPDATE.some(url => event.request.url.match(url))) {
-      return await cacheAndNetwork(event);
+      event.respondWith(
+        (async function () {
+          const cache = await caches.open(CACHE_NAME);
+          const cachedResponse = await cache.match(event.request);
+          const networkResponsePromise = fetch(event.request);
+
+          event.waitUntil(
+            (async function () {
+              const networkResponse = await networkResponsePromise;
+              await cache.put(event.request, networkResponse.clone());
+            })()
+          );
+          const finalRespone =
+            (await cachedResponse) || (await networkResponsePromise);
+          refresh(finalRespone.clone());
+          // Returned the cached response if we have one, otherwise return the network response.
+          return finalRespone;
+        })()
+      );
     } else if (UPDATE_AND_CACHE.some(url => event.request.url.match(url))) {
       return await updateCache(event);
     } else {
-      return await cacheFirst(event);
+      event.respondWith(
+        (async function () {
+          const cache = await caches.open(CACHE_NAME);
+          const cachedResponse = await cache.match(event.request);
+          const networkResponsePromise = fetch(event.request);
+
+          event.waitUntil(
+            (async function () {
+              const networkResponse = await networkResponsePromise;
+              await cache.put(event.request, networkResponse.clone());
+            })()
+          );
+
+          // Returned the cached response if we have one, otherwise return the network response.
+          return cachedResponse || networkResponsePromise;
+        })()
+      );
     }
   } catch (e) {
     console.log(`error while fetching using the service worker`, e);
   }
 });
 
-// get from cache but get from network and update cache if not found in cache
-const cacheFirst = async function (event) {
-  const cache = await caches.open(CACHE_NAME);
-  const response = await cache.match(event.request);
-  if (response) {
-    return response;
-  } else {
-    const networkResponse = await fetch(event.request);
-    cache.put(event.request, networkResponse.clone());
-    return response || networkResponse;
-  }
-};
-
-const cacheAndNetwork = async function (event) {
-  const cache = await caches.open(CACHE_NAME);
-  const response = await cache.match(event.request);
-  const networkResponse = await fetch(event.request);
-  cache.put(event.request, networkResponse.clone());
-  // tell clients it's updated
-  refresh(networkResponse);
-  return response || networkResponse;
-};
-
 const updateCache = async function (event) {
   const cache = await caches.open(CACHE_NAME);
   const networkResponse = await fetch(event.request);
   cache.put(event.request, networkResponse.clone());
   // tell clients it's updated
-  refresh(networkResponse);
+  refresh(networkResponse.clone());
   return networkResponse;
 };
 
