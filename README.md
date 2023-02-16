@@ -1,6 +1,6 @@
 # JSMusicDB
 
-A web standards based music database and player written using Lit and TypeScript. Using modern JavaScript to reduce the normal framework overhead JSMusicDB is less then 80KB while zipped.
+A music player and database written using LIT and TypeScript. Using modern JavaScript to reduce the normal framework overhead JSMusicDB is less than 120KB while zipped.
 
 ## Screenshots
 
@@ -14,11 +14,11 @@ A web standards based music database and player written using Lit and TypeScript
 
 ![Screenshot of JSMusicDB in dark mode](https://www.jsmusicdb.com/assets/screenshot-2.webp 'Screenshot of JSMusicDB in dark mode')
 
-#### Now playing screen with spectrum analyser
+#### Now playing screen with a spectrum analyzer
 
 ![Screenshot of JSMusicDB showing the now-playing screen](https://www.jsmusicdb.com/assets/screenshot-3.webp 'Screenshot of JSMusicDB showing the now-playing screen')
 
-#### All artists starting the the same letter
+#### All artists starting with the same letter
 
 ![Screenshot of JSMusicDB letter view](https://www.jsmusicdb.com/assets/screenshot-4.webp 'Screenshot of JSMusicDB letter view')
 
@@ -39,9 +39,13 @@ A web standards based music database and player written using Lit and TypeScript
 ![Screenshot of JSMusicDB albums vies](https://www.jsmusicdb.com/assets/screenshot-5-xs.webp 'Screenshot of JSMusicDB albums view')
 ![Screenshot of JSMusicDB playlist view](https://www.jsmusicdb.com/assets/screenshot-6-xs.webp 'Screenshot of JSMusicDB playlist view')
 
+## Translations
+
+The application is fully translatable using i18next. Dutch and English are provided by [Lucien Immink](https://github.com/lucienimmink). New languages can be added by creating a [pull request](https://github.com/lucienimmink/JSMusicDB/pulls). See `/public/translations/` for the key-value files.
+
 ## API keys
 
-Add the following to your local `.env` file in order to use last.fm and fanart
+Add the following to your local `.env` file to use last.fm and fanart
 
 ```ruby
 LASTFM_APIKEY=[your key]
@@ -61,4 +65,4 @@ Run `npm run build` to build the project. The build artifacts will be stored in 
 
 ![Build and deploy](https://github.com/lucienimmink/JSMusicDB/workflows/Build%20and%20deploy/badge.svg)
 
-Use [jsmusicdb](https://www.jsmusicdb.com) as front-end if you don't want to host your own version.
+Use [jsmusicdb](https://www.jsmusicdb.com) as frontend if you don't want to host your version.
