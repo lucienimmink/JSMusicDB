@@ -106,8 +106,7 @@
     "playlist": "speellijst",
     "language": "Taal",
     "select-language": "Selecteer een taal",
-    "english": "English",
-    "dutch": "Nederlands"
+    "letters": "Letters"
   },
   "content": {
     "lastfm": {

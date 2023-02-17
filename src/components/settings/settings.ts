@@ -59,6 +59,8 @@ export class SettingsNav extends LitElement {
   active = false;
   @state()
   canGetRSSFeed = false;
+  @state()
+  languages = [];
 
   static get styles() {
     return [buttons, container, headers, smallMuted, responsive, settings];
@@ -72,6 +74,7 @@ export class SettingsNav extends LitElement {
     this.mp3stream = '';
     this.isReloading = false;
     this.showVersion = true;
+    this.languages = [];
     this._init();
     getSettings().then(async (setting: any) => {
       this.settings = setting;
@@ -88,6 +91,7 @@ export class SettingsNav extends LitElement {
         this.stats.mp3stream = await getVersion(this.mp3stream);
       }
       this.canGetRSSFeed = await canGetRSSFeed(this.mp3stream);
+      this.languages = await this._readLanguages();
       this.requestUpdate();
     });
   }
@@ -125,6 +129,9 @@ export class SettingsNav extends LitElement {
       .catch((error: any) => {
         console.log(error);
       });
+  }
+  private async _readLanguages() {
+    return await (await fetch('/translations/languages.json'))?.json();
   }
   private _setIsReloadingTrue() {
     this.isReloading = true;
@@ -277,8 +284,15 @@ export class SettingsNav extends LitElement {
           this._toLocale(i18next.language)}"
         >
           <option disabled>${t('labels.select-language')}</option>
-          <option value="en-gb">${t('labels.english')}</option>
-          <option value="nl-nl">${t('labels.dutch')}</option>
+          ${this.languages?.map((lang: any) => {
+            return html`<option
+              value="${lang.locale}"
+              .selected=${this.settings?.language ||
+              this._toLocale(i18next.language) === lang.locale}
+            >
+              ${lang.name}
+            </option>`;
+          })}
         </select>
       </p>
     </div>`;
