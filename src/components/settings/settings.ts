@@ -224,7 +224,6 @@ export class SettingsNav extends LitElement {
     this.stats.parsingTime = 0;
     this.requestUpdate();
     await updateAndRefresh();
-    this._init();
   }
   async _resetmp3Stream() {
     await resetServer();
@@ -287,7 +286,7 @@ export class SettingsNav extends LitElement {
           ${this.languages?.map((lang: any) => {
             return html`<option
               value="${lang.locale}"
-              .selected=${this.settings?.language ||
+              .selected=${this.settings?.language === lang.locale ||
               this._toLocale(i18next.language) === lang.locale}
             >
               ${lang.name}
