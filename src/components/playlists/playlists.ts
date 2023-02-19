@@ -275,9 +275,10 @@ export class LetterNav extends LitElement {
   async _loadedPlaylist() {
     this.loading = false;
     this.playlist = await getCurrentPlaylist();
-    const target = this.shadowRoot?.querySelector('#playlist-selector');
+    const target = this.shadowRoot?.querySelector(
+      '#playlist-selector'
+    ) as HTMLSelectElement;
     if (target) {
-      // @ts-ignore
       target.value = 'current';
     }
     this.requestUpdate();
