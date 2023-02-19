@@ -276,7 +276,7 @@ export class LetterNav extends LitElement {
     this.loading = false;
     this.playlist = await getCurrentPlaylist();
     // @ts-ignore
-    this.shadowRoot.querySelector('#playlist-selector').value = 'current';
+    this.shadowRoot.querySelector('#playlist-selector')?.value = 'current';
     this.requestUpdate();
   }
   connectedCallback() {
