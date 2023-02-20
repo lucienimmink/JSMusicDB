@@ -99,19 +99,23 @@ export class SettingsNav extends LitElement {
   }
   connectedCallback() {
     super.connectedCallback();
-    EventBus.on(REFRESH, this._init, this);
-    EventBus.on(IS_RELOADING, this._setIsReloadingTrue, this);
-    EventBus.on(DONE_RELOADING, this._setIsReloadingFalse, this);
     EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
-    EventBus.on(HAS_SSE, this._updateSEE, this);
+    EventBus.on(REFRESH, this._init, this);
+    if (this.active) {
+      EventBus.on(IS_RELOADING, this._setIsReloadingTrue, this);
+      EventBus.on(DONE_RELOADING, this._setIsReloadingFalse, this);
+      EventBus.on(HAS_SSE, this._updateSEE, this);
+    }
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    EventBus.off(REFRESH, this._init, this);
-    EventBus.off(IS_RELOADING, this._setIsReloadingTrue, this);
-    EventBus.off(DONE_RELOADING, this._setIsReloadingFalse, this);
-    EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
-    EventBus.off(HAS_SSE, this._updateSEE, this);
+    if (!this.active) {
+      EventBus.off(REFRESH, this._init, this);
+      EventBus.off(IS_RELOADING, this._setIsReloadingTrue, this);
+      EventBus.off(DONE_RELOADING, this._setIsReloadingFalse, this);
+      EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
+      EventBus.off(HAS_SSE, this._updateSEE, this);
+    }
   }
   isActiveRoute(event: Event, route: string) {
     this.active = route === 'settings';
@@ -174,6 +178,7 @@ export class SettingsNav extends LitElement {
       }
     );
     this.stats.parsed = formatter.format(date);
+    this.requestUpdate();
   }
   async _toggle(prop: string, e: Event, value: any = null) {
     // e.preventDefault();
@@ -221,6 +226,7 @@ export class SettingsNav extends LitElement {
     this.stats.parsingTime = 0;
     this.requestUpdate();
     await updateAndRefresh();
+    this._populateStats();
   }
   async _resetmp3Stream() {
     await resetServer();

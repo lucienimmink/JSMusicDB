@@ -29,13 +29,17 @@ export class Artist extends LitElement {
   }
   connectedCallback() {
     super.connectedCallback();
-    EventBus.on(REFRESH, this._getAlbums, this);
     EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
+    if (this.active) {
+      EventBus.on(REFRESH, this._getAlbums, this);
+    }
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    EventBus.off(REFRESH, this._getAlbums, this);
-    EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
+    if (!this.active) {
+      EventBus.off(REFRESH, this._getAlbums, this);
+      EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
+    }
   }
   isActiveRoute(event: Event, route: string) {
     this.active = route === 'artist';

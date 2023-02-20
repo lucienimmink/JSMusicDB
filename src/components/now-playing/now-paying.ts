@@ -114,23 +114,35 @@ export class NowPlaying extends LitElement {
   }
   connectedCallback() {
     super.connectedCallback();
-    EventBus.on(UPDATE_PLAYER, this._doUpdate, this);
-    EventBus.on(TOGGLE_LOVED_UPDATED, this._doUpdate, this);
+    // these events are needed on the background as well
+    EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
     EventBus.on(TOGGLE_SHUFFLE_UPDATED, this._doToggleShuffleUpdated, this);
     EventBus.on(ACCENT_COLOR, this._doAccentColor, this);
-    EventBus.on(TOGGLE_SETTING, this._doToggleSetting, this);
-    EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
     EventBus.on(PLAYER_ERROR, this._doHasError, this);
+    if (this.active) {
+      // these events are only needed when the player is active
+      EventBus.on(UPDATE_PLAYER, this._doUpdate, this);
+      EventBus.on(TOGGLE_SETTING, this._doToggleSetting, this);
+
+      getSettingByName('visual').then((hasVisual: any) => {
+        this.hasCanvas = !!hasVisual;
+      });
+      getSettingByName('smallArt').then((smallArt: any) => {
+        this.smallArt = !!smallArt;
+      });
+    }
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    EventBus.off(UPDATE_PLAYER, this._doUpdate, this);
-    EventBus.off(TOGGLE_LOVED_UPDATED, this._doUpdate, this);
-    EventBus.off(TOGGLE_SHUFFLE_UPDATED, this._doToggleShuffleUpdated, this);
-    EventBus.off(ACCENT_COLOR, this._doAccentColor, this);
-    EventBus.off(TOGGLE_SETTING, this._doToggleSetting, this);
-    EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
-    EventBus.off(PLAYER_ERROR, this._doHasError, this);
+    if (!this.active) {
+      EventBus.off(UPDATE_PLAYER, this._doUpdate, this);
+      EventBus.off(TOGGLE_LOVED_UPDATED, this._doUpdate, this);
+      EventBus.off(TOGGLE_SHUFFLE_UPDATED, this._doToggleShuffleUpdated, this);
+      EventBus.off(ACCENT_COLOR, this._doAccentColor, this);
+      EventBus.off(TOGGLE_SETTING, this._doToggleSetting, this);
+      EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
+      EventBus.off(PLAYER_ERROR, this._doHasError, this);
+    }
   }
   isActiveRoute(event: Event, route: string) {
     this.active = route === 'now-playing';
@@ -264,6 +276,7 @@ export class NowPlaying extends LitElement {
       playlist.tracks = tracks;
       this.playlist = playlist;
     }
+    this.requestUpdate();
   }
   _resetTrack(track: any) {
     const tmp = track;

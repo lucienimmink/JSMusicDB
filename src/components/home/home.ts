@@ -49,30 +49,36 @@ export class HomeNav extends LitElement {
   }
   async connectedCallback() {
     super.connectedCallback();
-    EventBus.on(REFRESH, this._init, this);
     EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
-    getLastFMUserName().then((name: any) => {
-      if (name !== 'mdb-skipped') {
-        this._setDummyData();
-        this._updateRecentlyPlayed(name);
-        if (this.counter !== -1) {
-          clearInterval(this.counter);
-          this.counter = -1;
+    if (this.active) {
+      EventBus.on(REFRESH, this._init, this);
+      EventBus.on(TOGGLE_SETTING, this._updateFeed, this);
+
+      getLastFMUserName().then((name: any) => {
+        if (name !== 'mdb-skipped') {
+          this._setDummyData();
+          this._updateRecentlyPlayed(name);
+          if (this.counter !== -1) {
+            clearInterval(this.counter);
+            this.counter = -1;
+          }
+          if (this.active) this._poll(name);
         }
-        if (this.active) this._poll(name);
-      }
-    });
-    EventBus.on(TOGGLE_SETTING, this._updateFeed, this);
+      });
+      this._updateFeed();
+    }
   }
   isActiveRoute(event: Event, route: string) {
     this.active = route === 'home';
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    EventBus.off(REFRESH, this._init, this);
-    EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
-    EventBus.off(TOGGLE_SETTING, this._updateFeed, this);
-    clearInterval(this.counter);
+    if (!this.active) {
+      EventBus.off(REFRESH, this._init, this);
+      EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
+      EventBus.off(TOGGLE_SETTING, this._updateFeed, this);
+      clearInterval(this.counter);
+    }
   }
   _init() {
     musicdb

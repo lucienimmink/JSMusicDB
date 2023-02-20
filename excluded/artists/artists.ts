@@ -65,13 +65,17 @@ export class LetterNav extends LitElement {
   };
   connectedCallback() {
     super.connectedCallback();
-    EventBus.on(REFRESH, this._getArtists, this);
     EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
+    if (this.active) {
+      EventBus.on(REFRESH, this._getArtists, this);
+    }
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    EventBus.off(REFRESH, this._getArtists, this);
-    EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
+    if (!this.active) {
+      EventBus.off(REFRESH, this._getArtists, this);
+      EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
+    }
   }
   constructor() {
     super();
