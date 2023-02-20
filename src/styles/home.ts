@@ -53,17 +53,20 @@ export default css`
     color: var(--primary, #006ecd);
     transition: color 0.2s ease-in-out;
   }
+  li > div {
+    position: relative;
+  }
   li .heart {
     display: inline-block;
     border-radius: 50%;
-    width: 18px;
-    height: 18px;
-    padding: 7px;
+    width: 17px;
+    height: 17px;
+    padding: 5px;
     color: var(--letter-color, #fff);
     background: var(--primary, #006ecd);
     position: absolute;
-    margin-left: 8px;
-    margin-top: -4px;
+    top: -14px;
+    right: -1px;
   }
   li.dummy {
     filter: blur(4px);

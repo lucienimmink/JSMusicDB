@@ -169,18 +169,21 @@ export class HomeNav extends LitElement {
               ${this.recenttracks.map(
                 (track: any) => html`
                   <li class="${track.dummy ? 'dummy ' : ''}">
-                    <img
-                      src="${track.image[1]['#text']}"
-                      class="album-art"
-                      alt="${track.artist['#text']} • ${track.name}"
-                      @error="${(e: Event) => this._onError(e)}"
-                    />
+                    <div>
+                      <img
+                        src="${track.image[1]['#text']}"
+                        class="album-art"
+                        alt="${track.artist['#text']} • ${track.name}"
+                        @error="${(e: Event) => this._onError(e)}"
+                      />
+                      ${track.loved === '1'
+                        ? html`<span class="heart">${heartIcon}</span>`
+                        : nothing}
+                    </div>
                     <span class="details">
                       <span
                         >${track.artist.name} • ${track.name}
-                        ${track.loved === '1'
-                          ? html`<span class="heart">${heartIcon}</span>`
-                          : nothing} <br />
+                        <br />
                         <span class="small muted">${track.album['#text']}</span>
                       </span>
                     </span>
