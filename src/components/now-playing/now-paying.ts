@@ -52,12 +52,17 @@ export class NowPlaying extends LitElement {
   route: string;
   @property({ type: Boolean })
   hasError: boolean;
+  @state()
   track: any;
+  @state()
   isShuffled: boolean;
+  @state()
   hasCanvas: boolean;
+  @state()
   smallArt: boolean;
   analyzer: any;
   accentColor: any;
+  @state()
   isBottomShown: boolean;
   playlist: any;
   _analyzer: any;
@@ -103,11 +108,9 @@ export class NowPlaying extends LitElement {
     );
     getSettingByName('visual').then((hasVisual: any) => {
       this.hasCanvas = !!hasVisual;
-      this.requestUpdate();
     });
     getSettingByName('smallArt').then((smallArt: any) => {
       this.smallArt = !!smallArt;
-      this.requestUpdate();
     });
   }
   connectedCallback() {
@@ -138,7 +141,6 @@ export class NowPlaying extends LitElement {
   }
   _doToggleShuffleUpdated(target: any, isShuffled: boolean) {
     this.isShuffled = isShuffled;
-    this.requestUpdate();
   }
   _doAccentColor(target: any, accentColor: string) {
     this.accentColor = accentColor;
@@ -146,14 +148,12 @@ export class NowPlaying extends LitElement {
   _doToggleSetting(target: any, setting: any) {
     if (setting.setting === 'smallArt') {
       this.smallArt = setting.value;
-      this.requestUpdate();
     }
     if (setting.setting === 'visual') {
       this.hasCanvas = setting.value;
       if (this.hasCanvas && !this._analyzer) {
         this._visualize();
       }
-      this.requestUpdate();
     }
   }
   _doHasError(target: any, error: any) {
@@ -264,9 +264,7 @@ export class NowPlaying extends LitElement {
       });
       playlist.tracks = tracks;
       this.playlist = playlist;
-      this.requestUpdate();
     }
-    this.requestUpdate();
   }
   _resetTrack(track: any) {
     const tmp = track;
@@ -314,8 +312,8 @@ export class NowPlaying extends LitElement {
     });
     this.playlist.index = startIndex;
     await setCurrentPlaylist(this.playlist);
-    this.requestUpdate();
     EventBus.emit(START_CURRENT_PLAYLIST, this);
+    this.requestUpdate();
   }
   _toggleLoved() {
     EventBus.emit(TOGGLE_LOVED, this);
@@ -325,7 +323,6 @@ export class NowPlaying extends LitElement {
   }
   _toggleView() {
     this.isBottomShown = !this.isBottomShown;
-    this.requestUpdate();
   }
   _hasMoreDiscs() {
     return Object.keys(this.track.album.discs).length > 1;

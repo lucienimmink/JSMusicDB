@@ -47,9 +47,12 @@ import musicdb, { updateAndRefresh } from '../musicdb';
 @customElement('settings-nav')
 @localized()
 export class SettingsNav extends LitElement {
+  @state()
   settings: any;
   stats: any;
+  @state()
   lastFMUsername: any;
+  @state()
   mp3stream: any;
   mdb: any;
   @state()
@@ -92,7 +95,6 @@ export class SettingsNav extends LitElement {
       }
       this.canGetRSSFeed = await canGetRSSFeed(this.mp3stream);
       this.languages = await this._readLanguages();
-      this.requestUpdate();
     });
   }
   connectedCallback() {
@@ -124,7 +126,6 @@ export class SettingsNav extends LitElement {
       .then(async (mdb: any) => {
         this.mdb = mdb;
         this._populateStats();
-        this.requestUpdate();
       })
       .catch((error: any) => {
         console.log(error);
@@ -193,12 +194,10 @@ export class SettingsNav extends LitElement {
     if (prop === 'language') {
       i18next.changeLanguage(value);
       this._populateStats();
-      this.requestUpdate();
     }
     await setSetting(prop, value);
     EventBus.emit(TOGGLE_SETTING, this, { setting: prop, value });
     this.settings = await getSettings();
-    this.requestUpdate();
   }
   async _setFeed(e: Event) {
     // @ts-ignore
@@ -209,7 +208,6 @@ export class SettingsNav extends LitElement {
       value,
     });
     this.settings = await getSettings();
-    this.requestUpdate();
   }
   async _reloadCollection() {
     const jwt: any = await getJwt();
@@ -217,7 +215,6 @@ export class SettingsNav extends LitElement {
     if (jwt && server) {
       getRescan(server, jwt);
       this.isReloading = true;
-      this.requestUpdate();
     }
   }
   async _refreshCollection() {
@@ -229,13 +226,11 @@ export class SettingsNav extends LitElement {
     await resetServer();
     this.mp3stream = null;
     EventBus.emit(RESET_SERVER, this);
-    this.requestUpdate();
   }
   async _resetLastfM() {
     await removeLastFMLink();
     this.lastFMUsername = null;
     EventBus.emit(RESET_LASTFM, this);
-    this.requestUpdate();
   }
   _clearImageCache() {
     clear(createStore('album-art-db', 'album-art-store'));

@@ -191,7 +191,6 @@ export class Header extends LitElement {
             }
             break;
         }
-        this.requestUpdate();
       })
       .catch((error: any) => {
         console.log(error);

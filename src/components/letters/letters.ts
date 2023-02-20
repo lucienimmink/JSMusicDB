@@ -45,7 +45,6 @@ export class LetterNav extends LitElement {
     musicdb
       .then((mdb: any) => {
         this.letters = mdb.sortedLetters;
-        this.requestUpdate();
       })
       .catch((error: any) => {
         console.log(error);

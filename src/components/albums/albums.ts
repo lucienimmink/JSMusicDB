@@ -144,7 +144,6 @@ export class LetterNav extends LitElement {
                 class="header"
                 @click="${() => {
                   this.showJumpList = true;
-                  this.requestUpdate();
                 }}"
               >
                 ${album.header}

@@ -1,7 +1,7 @@
 import { navigator } from '@addasoft/lit-element-router';
 import { localized, t } from '@weavedev/lit-i18next';
 import { html, LitElement, nothing } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import responsive from '../../styles/responsive';
 import sideNav from '../../styles/side-nav';
@@ -30,8 +30,10 @@ export class SideNav extends LitElement {
   full: boolean;
   @property({ type: Boolean })
   hasVisiblePlayer: boolean;
+  @state()
   open: boolean;
   hasFocus: boolean;
+  @state()
   hasScrobbleCache: boolean;
   query: string;
   static get styles() {
@@ -61,7 +63,6 @@ export class SideNav extends LitElement {
   _getScrobbleCache = () => {
     getScrobbleCache().then((cachedTracks: any) => {
       this.hasScrobbleCache = cachedTracks?.length > 0 || false;
-      this.requestUpdate();
     });
   };
   _handleEvent = (state: string) => {
@@ -78,14 +79,12 @@ export class SideNav extends LitElement {
       } else {
         this.removeEventListener('click', this._handleDocumentClick);
       }
-      this.requestUpdate();
     }
   };
   _handleDocumentClick = (e: any) => {
     const target = e.target as HTMLElement;
     if (target && !this.hasFocus) {
       this.open = false;
-      this.requestUpdate();
     }
   };
   _handleClick = (e: any) => {

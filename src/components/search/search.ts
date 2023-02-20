@@ -25,8 +25,11 @@ export class SearchNav extends LitElement {
   activeroute: string;
   @property()
   query: string;
+  @state()
   artists: any;
+  @state()
   albums: any;
+  @state()
   tracks: any;
   @state()
   active = false;
@@ -48,7 +51,6 @@ export class SearchNav extends LitElement {
       this.albums = null;
       this.tracks = null;
     }
-    this.requestUpdate();
     super.attributeChangedCallback(name, oldval, newval);
   }
   connectedCallback() {
@@ -72,7 +74,6 @@ export class SearchNav extends LitElement {
           this.albums = this._spliceList(mdb.searchAlbum(this.query), MAX);
           this.tracks = this._spliceList(mdb.searchTrack(this.query), MAX);
         }
-        this.requestUpdate();
       })
       .catch((error: any) => {
         console.log(error);

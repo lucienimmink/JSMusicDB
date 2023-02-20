@@ -1,6 +1,6 @@
 import { localized, t } from '@weavedev/lit-i18next';
 import { html, LitElement, nothing } from 'lit';
-import { customElement } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import buttons from '../../styles/buttons';
 import container from '../../styles/container';
@@ -22,8 +22,11 @@ import { timesIcon } from '../icons/times';
 export class LetterNav extends LitElement {
   username: string;
   password: string;
+  @state()
   hasSK: boolean;
+  @state()
   hasError: boolean;
+  @state()
   showInfoModal: boolean;
   static get styles() {
     return [animationCSS, container, headers, login, buttons, modals];
@@ -38,7 +41,6 @@ export class LetterNav extends LitElement {
     getSK()
       .then((sk: unknown) => {
         this.hasSK = !!sk;
-        this.requestUpdate();
       })
       .catch(() => {
         this.hasSK = false;
@@ -64,7 +66,6 @@ export class LetterNav extends LitElement {
       })
       .catch(() => {
         this.hasError = true;
-        this.requestUpdate();
       });
   }
   _onSkip(e: Event) {
@@ -86,7 +87,6 @@ export class LetterNav extends LitElement {
       );
     }
     this.showInfoModal = !this.showInfoModal;
-    this.requestUpdate();
   }
 
   private _renderModal() {

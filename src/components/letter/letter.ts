@@ -15,6 +15,7 @@ import './../app-link/app-link';
 export class Letter extends LitElement {
   @property()
   letter: string;
+  @state()
   artists: Array<any>;
   @state()
   active = false;
@@ -33,7 +34,6 @@ export class Letter extends LitElement {
         const activeLetter: any = mdb.letters[l];
         this.artists =
           activeLetter?.sortAndReturnArtistsBy('sortName', 'asc') || [];
-        this.requestUpdate();
       })
       .catch((error: any) => {
         console.log(error);

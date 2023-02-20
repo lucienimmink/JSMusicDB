@@ -32,13 +32,11 @@ export class Track extends LitElement {
   _update(track: any) {
     if (track?.id === this.track?.id) {
       this.track = { ...track };
-      this.requestUpdate();
       return;
     }
     if (this.track) {
       this.track.isPlaying = false;
       this.track.isPaused = false;
-      this.requestUpdate();
     }
   }
   connectedCallback() {

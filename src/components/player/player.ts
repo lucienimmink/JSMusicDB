@@ -75,13 +75,18 @@ const TARGET_VOLUME = 0.89;
 @customElement('lit-player')
 @localized()
 export class Album extends LitElement {
+  @state()
   playlist: any;
   track: any;
+  @state()
   isPlaying: boolean;
+  @state()
   timePlayed: number;
   hasScrobbled: boolean;
+  @state()
   isLoved: boolean;
   art: any;
+  @state()
   isShuffled: boolean;
   bgColor: string;
   useDynamicAccentColor: boolean;
@@ -117,7 +122,6 @@ export class Album extends LitElement {
       this.playlist = playlist;
       getCurrentTime().then((time: any) => {
         this._play(Number(time || 0));
-        this.requestUpdate();
       });
     });
 
@@ -168,7 +172,6 @@ export class Album extends LitElement {
     getCurrentPlaylist().then((playlist: any) => {
       this.playlist = playlist;
       this._play(startPosition);
-      this.requestUpdate();
     });
   }
   _doSetPosition(target: any, position: any) {
@@ -213,7 +216,6 @@ export class Album extends LitElement {
             this.isLoved = true;
           }
           this.track.isLoved = this.isLoved;
-          this.requestUpdate();
         })
         .catch(() => {
           this.hasErrorWhilePlaying = true;
@@ -252,7 +254,6 @@ export class Album extends LitElement {
     } else {
       console.warn('no player found :(');
     }
-    this.requestUpdate();
   }
   _onended() {
     this.hasScrobbled = false;
@@ -271,7 +272,6 @@ export class Album extends LitElement {
       if (!this.hasScrobbled && this.timePlayed > ONEMINUTE) {
         this._scrobble();
       }
-      this.requestUpdate();
     }
   }
   _scrobble() {
@@ -300,7 +300,6 @@ export class Album extends LitElement {
       artist: this.track.trackArtist,
     });
     animateCSS(this.shadowRoot?.querySelectorAll('h4,h5'), 'slideInUp');
-    this.requestUpdate();
   }
   _onpause() {
     this.isPlaying = false;
@@ -314,7 +313,6 @@ export class Album extends LitElement {
       (navigator as any).mediaSession.playbackState = 'paused';
     }
     EventBus.emit(CHANGE_TITLE, this, { title: null, artist: null });
-    this.requestUpdate();
   }
   _onprogress() {
     const player = this.shadowRoot?.querySelector('audio');
@@ -383,7 +381,6 @@ export class Album extends LitElement {
         await setCurrentPlaylist(this.playlist);
         EventBus.emit(LOADED_PLAYLIST, this);
         this._play();
-        this.requestUpdate();
         return;
       }
       EventBus.emit(CHANGE_TITLE, this, { title: null, artist: null });
@@ -413,7 +410,6 @@ export class Album extends LitElement {
       player.pause();
     }
     EventBus.emit(STOP_PLAYER, this);
-    this.requestUpdate();
   }
   _setPosition(e: any) {
     const clientX = e.clientX || e.changedTouches[0].clientX;
@@ -430,14 +426,12 @@ export class Album extends LitElement {
         current: this.track,
         type: TOGGLE_LOVED_UPDATED,
       });
-      this.requestUpdate();
     });
   }
   _toggleShuffled() {
     this.isShuffled = !this.isShuffled;
     EventBus.emit(TOGGLE_SHUFFLE_UPDATED, this, this.isShuffled);
     setIsShuffled(this.isShuffled);
-    this.requestUpdate();
   }
   _setArt(e: any) {
     this.art = e.detail.art;

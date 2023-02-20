@@ -74,12 +74,10 @@ export class LetterNav extends LitElement {
     const playlist = await getCurrentPlaylist();
     if (playlist) {
       this.current = playlist;
-      this.requestUpdate();
     }
     const username = await getLastFMUserName();
     if (username !== 'mdb-skipped') {
       this.lastFMUserName = username;
-      this.requestUpdate();
     }
   };
   setPlaylist = async (track: any) => {
@@ -92,7 +90,6 @@ export class LetterNav extends LitElement {
     this.playlist.index = startIndex;
     await setCurrentPlaylist(this.playlist).then(() => {
       this.current = this.playlist;
-      this.requestUpdate();
     });
     startPlaylist(this);
   };
@@ -102,8 +99,6 @@ export class LetterNav extends LitElement {
     if (name === 'current') {
       this.playlist = this.current;
     }
-
-    this.requestUpdate();
   };
   _getLovedTracks = () => {
     this.loading = true;
@@ -163,7 +158,6 @@ export class LetterNav extends LitElement {
     this.loading = true;
     this.playlist = null;
     this.showStartArtistSelection = false;
-    this.requestUpdate();
     getTopTracksForUser({
       username: this.lastFMUserName,
       max: this.max,
@@ -176,7 +170,6 @@ export class LetterNav extends LitElement {
   _startArtistRadio = () => {
     this.showStartArtistSelection = true;
     this.playlist = null;
-    this.requestUpdate();
   };
   _populateArtists = () => {
     musicdb.then((mdb: any) => {
@@ -194,7 +187,6 @@ export class LetterNav extends LitElement {
   _generateArtistRadio = (e: Event) => {
     this.loading = true;
     this.playlist = null;
-    this.requestUpdate();
     // @ts-ignore
     const startArtistID = e.target.value;
     this.showStartArtistSelection = false;
@@ -270,18 +262,16 @@ export class LetterNav extends LitElement {
   _loadPlaylist() {
     this.loading = true;
     this.playlist = null;
-    this.requestUpdate();
   }
   async _loadedPlaylist() {
     this.loading = false;
-    this.playlist = await getCurrentPlaylist();
     const target = this.shadowRoot?.querySelector(
       '#playlist-selector'
     ) as HTMLSelectElement;
     if (target) {
       target.value = 'current';
     }
-    this.requestUpdate();
+    this.playlist = await getCurrentPlaylist();
   }
   connectedCallback() {
     super.connectedCallback();

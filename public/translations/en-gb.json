@@ -47,7 +47,7 @@
   "labels": {
     "start-artist": "Start with this artist",
     "select-artist": "Select an artist from the list",
-    "loading": "loading ...",
+    "loading": "Loading ...",
     "albums": "Albums",
     "disc": "disc",
     "year": "Year",

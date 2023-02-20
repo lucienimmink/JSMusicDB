@@ -115,13 +115,7 @@ export class LetterNav extends LitElement {
       .renderItem=${(album: any) => html`
         ${album?.header
           ? html`
-              <li
-                class="header"
-                @click="${() => {
-                  this.showJumpList = true;
-                  this.requestUpdate();
-                }}"
-              >
+              <li class="header" @click="${() => (this.showJumpList = true)}">
                 ${album.header}
                 <span class="small muted">(${album.albums})</span>
               </li>

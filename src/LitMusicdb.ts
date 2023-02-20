@@ -50,11 +50,16 @@ import { getSettingByName, TOGGLE_SETTING } from './utils/settings';
 @router
 export class LitMusicdb extends LitElement {
   letters: Array<any>;
+  @state()
   showPlayer: boolean;
   themeSwitchCycle: any;
+  @state()
   loading: boolean;
+  @state()
   hasData: boolean;
+  @state()
   hasSK: boolean;
+  @state()
   hasToken: boolean;
 
   @state()
@@ -118,14 +123,12 @@ export class LitMusicdb extends LitElement {
           }
         });
         this.hasData = true;
-        this.requestUpdate();
         this._getTheme();
         animateCSS(
           this.shadowRoot?.querySelector('.loading-wrapper'),
           'fadeOut'
         ).then(() => {
           this.loading = false;
-          this.requestUpdate();
         });
       })
       .catch((error: any) => {
@@ -133,7 +136,6 @@ export class LitMusicdb extends LitElement {
         // TODO: initiate data rescan
         this.hasData = true;
         this.loading = false;
-        this.requestUpdate();
       });
 
     getSK()
@@ -145,10 +147,8 @@ export class LitMusicdb extends LitElement {
             'fadeOut'
           ).then(() => {
             this.loading = false;
-            this.requestUpdate();
           });
         }
-        this.requestUpdate();
       })
       .catch(() => {
         this.hasSK = false;
@@ -162,10 +162,8 @@ export class LitMusicdb extends LitElement {
             'fadeOut'
           ).then(() => {
             this.loading = false;
-            this.requestUpdate();
           });
         }
-        this.requestUpdate();
       })
       .catch(() => {
         this.hasToken = false;
@@ -212,11 +210,9 @@ export class LitMusicdb extends LitElement {
   };
   _startCurrentPlaylist = () => {
     this.showPlayer = true;
-    this.requestUpdate();
   };
   _stopPlayer() {
     this.showPlayer = false;
-    this.requestUpdate();
   }
   async _getTheme() {
     const theme = await getSettingByName('theme');
@@ -287,11 +283,9 @@ export class LitMusicdb extends LitElement {
   }
   _resetServer() {
     this.hasToken = false;
-    this.requestUpdate();
   }
   _resetLastFM() {
     this.hasSK = false;
-    this.requestUpdate();
   }
   render() {
     return html`

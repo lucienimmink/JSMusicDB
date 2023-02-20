@@ -302,6 +302,5 @@ export class AlbumArt extends LitElement {
       this.art = art || defaultAlbum;
     }
     this.dispatch();
-    this.requestUpdate();
   }
 }
