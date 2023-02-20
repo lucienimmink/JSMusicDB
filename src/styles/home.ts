@@ -65,7 +65,7 @@ export default css`
     color: var(--letter-color, #fff);
     background: var(--primary, #006ecd);
     position: absolute;
-    top: -14px;
+    top: -8px;
     right: -1px;
   }
   li.dummy {
