@@ -38,6 +38,7 @@ export class Track extends LitElement {
       this.track.isPlaying = false;
       this.track.isPaused = false;
     }
+    this.requestUpdate();
   }
   connectedCallback() {
     super.connectedCallback();

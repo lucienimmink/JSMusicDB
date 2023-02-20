@@ -93,7 +93,6 @@ export class Album extends LitElement {
       });
   }
   async _setPlaylist(e: Event, track = { id: undefined }) {
-    e.preventDefault();
     let startIndex = 0;
     if (track?.id) {
       this.albumDetails.tracks.map((t: any, index: number) => {
