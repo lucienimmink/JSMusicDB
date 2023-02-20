@@ -82,7 +82,9 @@ self.addEventListener('fetch', async event => {
           event.waitUntil(
             (async function () {
               const networkResponse = await networkResponsePromise;
-              await cache.put(event.request, networkResponse.clone());
+              if (networkResponse) {
+                await cache.put(event.request, networkResponse.clone());
+              }
             })()
           );
           const finalRespone =
@@ -104,7 +106,9 @@ self.addEventListener('fetch', async event => {
           event.waitUntil(
             (async function () {
               const networkResponse = await networkResponsePromise;
-              await cache.put(event.request, networkResponse.clone());
+              if (networkResponse) {
+                await cache.put(event.request, networkResponse.clone());
+              }
             })()
           );
 
