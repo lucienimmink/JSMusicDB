@@ -53,6 +53,18 @@ export default css`
     color: var(--primary, #006ecd);
     transition: color 0.2s ease-in-out;
   }
+  li .heart {
+    display: inline-block;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    padding: 7px;
+    color: var(--letter-color, #fff);
+    background: var(--primary, #006ecd);
+    position: absolute;
+    margin-left: 8px;
+    margin-top: -4px;
+  }
   li.dummy {
     filter: blur(4px);
     opacity: 0.8;

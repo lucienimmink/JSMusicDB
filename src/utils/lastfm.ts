@@ -83,6 +83,7 @@ export const getRecentlyListened = (user: string) => {
   params.set('format', 'json');
   params.set('limit', '6');
   params.set('method', 'user.getrecenttracks');
+  params.set('extended', 'true');
   params.set('user', user);
   return fetchWithTimeout(
     `https://ws.audioscrobbler.com/2.0/?${params.toString()}`

@@ -18,6 +18,7 @@ import { getJwt, getRSSFeed, getServer } from '../../utils/node-mp3stream';
 import { SWITCH_ROUTE } from '../../utils/router';
 import { getSettingByName, TOGGLE_SETTING } from '../../utils/settings';
 import { cdSVG } from '../icons/cd';
+import { heartIcon } from '../icons/heart';
 import musicdb from '../musicdb';
 
 @customElement('home-nav')
@@ -175,8 +176,13 @@ export class HomeNav extends LitElement {
                       @error="${(e: Event) => this._onError(e)}"
                     />
                     <span class="details">
-                      ${track.artist['#text']} • ${track.name}
-                      <span class="small muted">${track.album['#text']}</span>
+                      <span
+                        >${track.artist.name} • ${track.name}
+                        ${track.loved === '1'
+                          ? html`<span class="heart">${heartIcon}</span>`
+                          : nothing} <br />
+                        <span class="small muted">${track.album['#text']}</span>
+                      </span>
                     </span>
                     <span class="time">
                       ${this._formatDate(track?.date?.uts || '0')}
