@@ -185,12 +185,12 @@ export class SideNav extends LitElement {
                 </li>
               `
             : nothing}
-          <li class="${this.route === 'artists' ? 'active' : ''}">
+          <!-- <li class="${this.route === 'artists' ? 'active' : ''}">
             <app-link
               href="/artists"
               title="${ifDefined(
-                t('labels.artists') === null ? undefined : t('labels.artists')
-              )}"
+            t('labels.artists') === null ? undefined : t('labels.artists')
+          )}"
               menu
               flex
               >${artistsIcon} <span>${t('labels.artists')}</span></app-link
@@ -200,8 +200,8 @@ export class SideNav extends LitElement {
             <app-link
               href="/albums"
               title="${ifDefined(
-                t('labels.albums') === null ? undefined : t('labels.albums')
-              )}"
+            t('labels.albums') === null ? undefined : t('labels.albums')
+          )}"
               menu
               flex
               >${albumsIcon} <span>${t('labels.albums')}</span></app-link
@@ -211,13 +211,13 @@ export class SideNav extends LitElement {
             <app-link
               href="/years"
               title="${ifDefined(
-                t('labels.years') === null ? undefined : t('labels.years')
-              )}"
+            t('labels.years') === null ? undefined : t('labels.years')
+          )}"
               menu
               flex
               >${yearsIcon} <span>${t('labels.years')}</span></app-link
             >
-          </li>
+          </li> -->
           <li
             class="${this.route === 'playlists' || this.route === 'playlist'
               ? 'active'
