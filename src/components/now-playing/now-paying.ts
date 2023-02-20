@@ -1,5 +1,4 @@
 import timeSpan from '@addasoft/timespan';
-import '@lit-labs/virtualizer';
 import { localized, t } from '@weavedev/lit-i18next';
 import { html, LitElement, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -492,7 +491,18 @@ export class NowPlaying extends LitElement {
   }
   private _renderBottom() {
     return html`<div class="bottom">
-      <lit-virtualizer
+      <div class="playlist">
+        ${this.playlist?.tracks.map(track => {
+          return html`<track-in-list
+            .track=${track}
+            .type=${this.playlist.type}
+            ?showAlbum=${true}
+            @click=${() => {
+              this._setPlaylist(track);
+            }}
+          ></track-in-list>`;
+        })}
+        <!-- <lit-virtualizer
         .items=${this.playlist?.tracks}
         .renderItem=${(track: any) => html`
           <track-in-list
@@ -504,7 +514,8 @@ export class NowPlaying extends LitElement {
             }}
           ></track-in-list>
         `}
-      ></lit-virtualizer>
+      ></lit-virtualizer> -->
+      </div>
     </div>`;
   }
   private _renderNothingPlaying() {

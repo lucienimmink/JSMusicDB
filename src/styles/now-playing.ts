@@ -182,10 +182,10 @@ export default css`
   .floating-text-details app-link {
     transition: all 0.2s ease-in-out 0s;
   }
-  .bottom lit-virtualizer {
+  .bottom .playlist {
     height: calc(100vh - 155px);
   }
-  .bottom lit-virtualizer track-in-list {
+  .bottom .playlist track-in-list {
     width: 100%;
     cursor: pointer;
   }
@@ -271,10 +271,10 @@ export default css`
     .smallArt .text-details {
       opacity: 0;
     }
-    .bottom lit-virtualizer {
+    .bottom .playlist {
       padding: 0 10vw;
     }
-    .bottom lit-virtualizer track-in-list {
+    .bottom .playlist track-in-list {
       width: 80vw;
     }
   }
