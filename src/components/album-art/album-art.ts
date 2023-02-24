@@ -99,6 +99,11 @@ export class AlbumArt extends LitElement {
       changedProperties.get('artist') !== this.artist
     ) {
       this.initArt();
+    } else if (
+      changedProperties.get('album') &&
+      changedProperties.get('album') !== this.album
+    ) {
+      this.initArt();
     }
   }
   defaultArt() {
