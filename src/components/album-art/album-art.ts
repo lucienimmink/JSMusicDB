@@ -1,6 +1,6 @@
 import { createStore, get, set } from 'idb-keyval';
-import { html, LitElement } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { html, LitElement, PropertyValues } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
 import albumArt from '../../styles/album-art';
 import { defaultAlbum, defaultArtist, defaultPixel } from './defaultart';
 import { fetchArtForAlbum, fetchArtForArtist } from './fetchArt';
@@ -20,6 +20,8 @@ const resizeObserver = new ResizeObserver((entries: any) => {
     element.dispatchEvent(new CustomEvent('resize', { bubbles: true }));
   }
 });
+
+let intersectionObserver: IntersectionObserver;
 
 @customElement('album-art')
 export class AlbumArt extends LitElement {
@@ -42,6 +44,11 @@ export class AlbumArt extends LitElement {
   dimension: number;
   @property({ type: Boolean, attribute: 'no-lazy' })
   noLazy: boolean;
+  @property()
+  visible: string;
+  @state()
+  loading: boolean;
+
   ARTBASE = `https://res.cloudinary.com/jsmusicdb-com/image/fetch/f_auto,q_auto`;
 
   static get styles() {
@@ -56,6 +63,19 @@ export class AlbumArt extends LitElement {
     this.dimension = 300;
     this.static = false;
     this.noLazy = false;
+    this.visible = 'false';
+    this.loading = false;
+
+    intersectionObserver = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          entry.target.setAttribute('visible', entry.isIntersecting.toString());
+        });
+      },
+      {
+        rootMargin: '250px 0px',
+      }
+    );
   }
   public getDimensions() {
     this.dimension =
@@ -67,36 +87,46 @@ export class AlbumArt extends LitElement {
       .replace(/w_\d+/g, `w_${dimension}`)
       .replace(/h_\d+/g, `h_${dimension}`);
   }
+  async willUpdate(changedProperties: PropertyValues<this>) {
+    if (this.visible === 'true' && !changedProperties.get('loading') === true) {
+      this.initArt();
+    }
+    if (
+      changedProperties.get('artist') &&
+      changedProperties.get('artist') !== this.artist
+    ) {
+      this.initArt();
+    }
+  }
+  defaultArt() {
+    if (this.album) {
+      return defaultAlbum;
+    }
+    return defaultArtist;
+  }
   render() {
     return html`
       <img
         src="${this.art}"
         alt="${this.artist}${this.album ? ` - ${this.album}` : ''}"
         style="object-fit: ${this.objectFit}"
-        @load=${(e: Event) => {
-          // @ts-ignore
-          e.target.classList.remove('loading');
-        }}
         @error=${(e: Event) => {
           // @ts-ignore
-          e.target.classList.remove('loading');
-
-          if (this.album) {
-            // @ts-ignore
-            e.target.src = defaultAlbum;
-          } else {
-            // @ts-ignore
-            e.target.src = defaultArtist;
-          }
+          e.target.src = this.defaultArt();
         }}
-        loading="${this.noLazy ? 'eager' : 'lazy'}"
         class="${this.transparent ? 'transparent ' : ''} ${this.isDefault
           ? 'default'
-          : ''}"
+          : ''} ${this.loading ? 'loading' : ''}"
         width="${this.dimension}"
         height="${this.dimension}"
       />
     `;
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    // @ts-ignore
+    resizeObserver.unobserve(this);
+    intersectionObserver.disconnect();
   }
   async connectedCallback() {
     super.connectedCallback();
@@ -105,7 +135,21 @@ export class AlbumArt extends LitElement {
     if (!this.artist) {
       return;
     }
-    await this.updateComplete;
+    if (!this.static) {
+      resizeObserver.observe(this);
+    }
+    intersectionObserver.observe(this);
+  }
+  dispatch() {
+    const evt = new CustomEvent('art', {
+      detail: { art: this.art },
+      bubbles: true,
+      composed: true,
+    });
+    this.dispatchEvent(evt);
+  }
+  async initArt() {
+    // this.loading = true;
     this.getDimensions();
     const key = {
       artist: this.artist,
@@ -117,8 +161,6 @@ export class AlbumArt extends LitElement {
       cacheKey = `${this.artist}`;
     }
     if (!this.static) {
-      // @ts-ignore
-      resizeObserver.observe(this.shadowRoot?.querySelector('img'));
       this.shadowRoot
         ?.querySelector('img')
         ?.addEventListener('resize', async () => {
@@ -130,24 +172,15 @@ export class AlbumArt extends LitElement {
           if (!key.album) {
             cacheKey = `${this.artist}`;
           }
-          if (sharedCache[cacheKey]) {
-            this.art = this.replaceDimensions(
-              sharedCache[cacheKey],
-              this.dimension
-            );
-            this.dispatch();
-            return;
-          }
-          const cache = await this.getArt(key);
-          if (cache) {
-            sharedCache[cacheKey] = cache;
-            this.art = this.replaceDimensions(cache, this.dimension);
-            this.dispatch();
-          } else {
-            this.updateArt(key);
-          }
+          await this.updateCache(cacheKey, key);
         });
     }
+    await this.updateCache(cacheKey, key);
+  }
+  async updateCache(
+    cacheKey: string | number,
+    key: { artist: string; album: string; dimension: number }
+  ) {
     if (sharedCache[cacheKey]) {
       this.art = this.replaceDimensions(sharedCache[cacheKey], this.dimension);
       this.dispatch();
@@ -160,55 +193,6 @@ export class AlbumArt extends LitElement {
       this.dispatch();
     } else {
       this.updateArt(key);
-    }
-  }
-  dispatch() {
-    const evt = new CustomEvent('art', {
-      detail: { art: this.art },
-      bubbles: true,
-      composed: true,
-    });
-    this.dispatchEvent(evt);
-  }
-  async updated(changedProperties: Map<string | number | symbol, unknown>) {
-    let needToCheck = false;
-    changedProperties.forEach((value, key) => {
-      if (key === 'artist' || key === 'album') {
-        needToCheck = true;
-      }
-    });
-
-    if (needToCheck) {
-      this.art = defaultPixel;
-      this.getDimensions();
-      this.shadowRoot?.querySelector('img')?.classList.add('loading');
-      let cacheKey = `${this.artist}-${this.album}`;
-      this.isDefault = false;
-      if (!this.album) {
-        cacheKey = `${this.artist}`;
-      }
-      if (sharedCache[cacheKey]) {
-        this.art = this.replaceDimensions(
-          sharedCache[cacheKey],
-          this.dimension
-        );
-        this.dispatch();
-        return;
-      } else {
-        const key = {
-          artist: this.artist,
-          album: this.album,
-          dimension: this.dimension,
-        };
-        const cache = await this.getArt(key);
-        if (cache) {
-          sharedCache[cacheKey] = cache;
-          this.art = this.replaceDimensions(cache, this.dimension);
-          this.dispatch();
-        } else {
-          this.updateArt(key);
-        }
-      }
     }
   }
   isEmptyArt(art: string) {
