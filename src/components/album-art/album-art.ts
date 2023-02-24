@@ -87,11 +87,14 @@ export class AlbumArt extends LitElement {
       .replace(/w_\d+/g, `w_${dimension}`)
       .replace(/h_\d+/g, `h_${dimension}`);
   }
-  async willUpdate(changedProperties: PropertyValues<this>) {
-    if (this.visible === 'true' && !changedProperties.get('loading') === true) {
-      this.initArt();
-    }
+  async willUpdate(changedProperties: PropertyValues) {
+    const cached = await this.getCachedUrl();
     if (
+      (this.visible === 'true' || changedProperties.get('visible')) &&
+      this.art !== cached
+    ) {
+      this.initArt();
+    } else if (
       changedProperties.get('artist') &&
       changedProperties.get('artist') !== this.artist
     ) {
@@ -110,7 +113,11 @@ export class AlbumArt extends LitElement {
         src="${this.art}"
         alt="${this.artist}${this.album ? ` - ${this.album}` : ''}"
         style="object-fit: ${this.objectFit}"
+        @load=${() => {
+          this.loading = false;
+        }}
         @error=${(e: Event) => {
+          this.loading = false;
           // @ts-ignore
           e.target.src = this.defaultArt();
         }}
@@ -149,7 +156,7 @@ export class AlbumArt extends LitElement {
     this.dispatchEvent(evt);
   }
   async initArt() {
-    // this.loading = true;
+    this.loading = true;
     this.getDimensions();
     const key = {
       artist: this.artist,
@@ -193,6 +200,15 @@ export class AlbumArt extends LitElement {
       this.dispatch();
     } else {
       this.updateArt(key);
+    }
+  }
+  async getCachedUrl() {
+    let cacheKey = `${this.artist}-${this.album}`;
+    if (!this.album) {
+      cacheKey = `${this.artist}`;
+    }
+    if (sharedCache[cacheKey]) {
+      return this.replaceDimensions(sharedCache[cacheKey], this.dimension);
     }
   }
   isEmptyArt(art: string) {
