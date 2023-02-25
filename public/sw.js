@@ -50,7 +50,6 @@ const NON_CACHEABLE = [
   '/public-key',
   '/stream',
   'file://',
-  '//ws.audioscrobbler.com',
   '//localhost',
   '#no-sw-cache',
   'ts=',

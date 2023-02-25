@@ -88,6 +88,7 @@ export class AlbumArt extends LitElement {
       .replace(/h_\d+/g, `h_${dimension}`);
   }
   async willUpdate(changedProperties: PropertyValues) {
+    await sleep(10);
     const cached = await this.getCachedUrl();
     if (
       (this.visible === 'true' || changedProperties.get('visible')) &&
@@ -104,6 +105,9 @@ export class AlbumArt extends LitElement {
       changedProperties.get('album') !== this.album
     ) {
       this.initArt();
+    } else {
+      // still have an on-sometimes it does not load bug; but why?
+      // console.log('no change needed?', changedProperties);
     }
   }
   defaultArt() {
@@ -308,4 +312,7 @@ export class AlbumArt extends LitElement {
     }
     this.dispatch();
   }
+}
+function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
