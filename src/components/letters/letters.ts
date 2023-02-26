@@ -1,4 +1,4 @@
-import { html, LitElement, nothing } from 'lit';
+import { html, LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import jumplist from '../../styles/jumplist';
 import { global as EventBus } from '../../utils/EventBus';
@@ -55,24 +55,18 @@ export class LetterNav extends LitElement {
       });
   }
   render() {
-    return html`
-      ${this.active
-        ? html` <ul
-            class="jumplist show ${this.hasVisiblePlayer ? 'player' : ''}"
-          >
-            ${this.letters.map(
-              (letter: any) => html`
-                <li
-                  class="${letter.escapedLetter === this.route ? 'active' : ''}"
-                >
-                  <app-link href="/letter/${letter.escapedLetter}"
-                    >${letter.letter}</app-link
-                  >
-                </li>
-              `
-            )}
-          </ul>`
-        : nothing}
-    `;
+    return html` <ul
+      class="jumplist show ${this.hasVisiblePlayer ? 'player' : ''}"
+    >
+      ${this.letters.map(
+        (letter: any) => html`
+          <li class="${letter.escapedLetter === this.route ? 'active' : ''}">
+            <app-link href="/letter/${letter.escapedLetter}"
+              >${letter.letter}</app-link
+            >
+          </li>
+        `
+      )}
+    </ul>`;
   }
 }

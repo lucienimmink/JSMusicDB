@@ -1,11 +1,11 @@
-import { navigator } from '@addasoft/lit-element-router';
 import { html, LitElement } from 'lit';
 import { ifDefined } from 'lit-html/directives/if-defined.js';
 import { customElement, property } from 'lit/decorators.js';
 import appLink from '../../styles/app-link';
+import { global as EventBus } from '../../utils/EventBus';
+import { CHANGE_URL } from '../../utils/router';
 
 @customElement('app-link')
-@navigator
 export default class Link extends LitElement {
   @property()
   href: string;
@@ -55,9 +55,7 @@ export default class Link extends LitElement {
   }
   linkClick(event: { preventDefault: () => void }) {
     event.preventDefault();
-    this.navigate(this.href);
-  }
-  navigate(href: any) {
-    throw new Error(`Method not implemented. ${href}`);
+    window.history.pushState({ path: this.href }, '', this.href);
+    EventBus.emit(CHANGE_URL, this, this.href);
   }
 }

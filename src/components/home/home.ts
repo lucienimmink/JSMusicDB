@@ -271,12 +271,8 @@ export class HomeNav extends LitElement {
 
   render() {
     return html`
-      ${this.active
-        ? html`
-            ${this._renderRecentTracks()} ${this._renderRecentlyAdded()}
-            ${this._renderNewReleases()}
-          `
-        : nothing}
+      ${this._renderRecentTracks()} ${this._renderRecentlyAdded()}
+      ${this._renderNewReleases()}
     `;
   }
 }

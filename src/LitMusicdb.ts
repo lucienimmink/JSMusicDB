@@ -1,35 +1,20 @@
-import { router } from '@addasoft/lit-element-router';
 import timeSpan from '@addasoft/timespan';
 import { localized, t } from '@weavedev/lit-i18next';
 import { html, LitElement, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import './components/album-art/album-art';
-import './components/album/album';
-// import './components/albums/albums';
-import './components/alerts/release-alert';
 import './components/app-link/app-link';
 import './components/app-main/app-main';
-import './components/artist/artist';
-// import './components/artists/artists';
 import './components/header/header';
-import './components/home/home';
 import './components/last-fm/login';
 import './components/letter-nav/letter-nav';
-import './components/letter/letter';
-import './components/letters/letters';
 import './components/loading-indicator/loading-indicator';
 import './components/loading-indicator/progress-bar';
 import './components/loading-indicator/progress-spinner';
 import './components/mp3stream/login';
 import musicdb, { refresh, update } from './components/musicdb';
-import './components/now-playing/now-paying';
 import './components/player/player';
-import './components/playlists/playlists';
-import './components/search/search';
-import './components/settings/settings';
-import * as sideNav from './components/side-nav/side-nav';
-// import './components/years/years';
-import routes from './routes';
+import router from './routes';
 import litMusicdb from './styles/lit-musicdb';
 import scrollbar from './styles/scrollbar';
 import { dark, light, system } from './styles/themes';
@@ -42,12 +27,11 @@ import { launchQueue } from './utils/launch-queue';
 import { REFRESH } from './utils/musicdb';
 import { DONE_RELOADING, getJwt, RESET_SERVER } from './utils/node-mp3stream';
 import { START_CURRENT_PLAYLIST, STOP_PLAYER } from './utils/player';
-import { SWITCH_ROUTE } from './utils/router';
+import { CHANGE_URL, SWITCH_ROUTE } from './utils/router';
 import { getSettingByName, TOGGLE_SETTING } from './utils/settings';
 
 @customElement('lit-musicdb')
 @localized()
-@router
 export class LitMusicdb extends LitElement {
   letters: Array<any>;
   @state()
@@ -69,12 +53,10 @@ export class LitMusicdb extends LitElement {
   @state()
   query: any;
 
+  appRouter: any;
+
   static get styles() {
     return [animationCSS, litMusicdb, scrollbar];
-  }
-
-  static get routes() {
-    return routes;
   }
 
   constructor() {
@@ -89,6 +71,8 @@ export class LitMusicdb extends LitElement {
     this.hasData = false;
     this.hasSK = true;
     this.hasToken = true;
+
+    this.appRouter = router(this);
 
     this.addEventListener(
       '_player',
@@ -174,6 +158,10 @@ export class LitMusicdb extends LitElement {
       });
     });
     launchQueue();
+
+    window.onpopstate = (e: any) => {
+      this._changeUrl(this, e?.state?.path);
+    };
   }
   connectedCallback() {
     super.connectedCallback();
@@ -183,6 +171,7 @@ export class LitMusicdb extends LitElement {
     EventBus.on(TOGGLE_SETTING, this._doToggleSetting, this);
     EventBus.on(RESET_SERVER, this._resetServer, this);
     EventBus.on(RESET_LASTFM, this._resetLastFM, this);
+    EventBus.on(CHANGE_URL, this._changeUrl, this);
     i18nInit();
   }
   disconnectedCallback() {
@@ -193,9 +182,16 @@ export class LitMusicdb extends LitElement {
     EventBus.off(TOGGLE_SETTING, this._doToggleSetting, this);
     EventBus.off(RESET_SERVER, this._resetServer, this);
     EventBus.off(RESET_LASTFM, this._resetLastFM, this);
+    EventBus.off(CHANGE_URL, this._changeUrl, this);
   }
   updated() {
     EventBus.emit(SWITCH_ROUTE, this, this.route);
+  }
+  firstUpdated() {
+    this.appRouter.goto(window.location.pathname);
+  }
+  protected async _changeUrl(target: any, url = '/') {
+    this.appRouter.goto(url);
   }
   _doRefresh() {
     refresh().then(() => {
@@ -266,21 +262,6 @@ export class LitMusicdb extends LitElement {
       this._getTheme();
     }
   }
-  async router(route: string, params: any, query: unknown) {
-    this.route = route;
-    this.params = params;
-    this.query = query;
-    window.scrollTo(0, 0);
-    EventBus.emit(sideNav.TOGGLE_MENU, this, 'close');
-    EventBus.emit(SWITCH_ROUTE, this, route);
-    if (route === 'now-playing') {
-      document.querySelector('html')?.classList.add('noscroll');
-      return;
-    }
-    document.querySelector('html')?.classList.remove('noscroll');
-    if (this.route !== 'playlist')
-      await animateCSS(this.shadowRoot?.querySelector('app-main'), 'slideInUp');
-  }
   _resetServer() {
     this.hasToken = false;
   }
@@ -301,65 +282,8 @@ export class LitMusicdb extends LitElement {
                 route="${this.route}"
                 .hasVisiblePlayer=${this.showPlayer}
               ></side-nav>
-              <app-main
-                active-route="${this.route}"
-                class="${this.showPlayer ? 'player' : ''}"
-              >
-                <div route="home">
-                  <home-nav></home-nav>
-                </div>
-                <div route="letters">
-                  <letters-nav
-                    .hasVisiblePlayer=${this.showPlayer}
-                  ></letters-nav>
-                </div>
-                <div route="letter">
-                  <artists-in-letter
-                    letter="${this.params?.letter}"
-                  ></artists-in-letter>
-                </div>
-                <div route="artists">
-                  <artists-nav
-                    .hasVisiblePlayer=${this.showPlayer}
-                  ></artists-nav>
-                </div>
-                <div route="albums">
-                  <albums-nav .hasVisiblePlayer=${this.showPlayer}></albums-nav>
-                </div>
-                <div route="years">
-                  <years-nav .hasVisiblePlayer=${this.showPlayer}></years-nav>
-                </div>
-                <div route="playlists">
-                  <playlists-nav></playlists-nav>
-                </div>
-                <div route="playlist">
-                  <playlists-nav
-                    playlist-id="${this.params?.playlist}"
-                  ></playlists-nav>
-                </div>
-                <div route="now-playing">
-                  <now-playing></now-playing>
-                </div>
-                <div route="artist">
-                  <release-alert
-                    artist="${this.params?.artist}"
-                  ></release-alert>
-                  <albums-in-artist
-                    artist="${this.params?.artist}"
-                  ></albums-in-artist>
-                </div>
-                <div route="album">
-                  <tracks-in-album
-                    artist="${this.params?.artist}"
-                    album="${this.params?.album}"
-                  ></tracks-in-album>
-                </div>
-                <div route="settings">
-                  <settings-nav></settings-nav>
-                </div>
-                <div route="search">
-                  <search-nav query="${this.query?.q}"></search-nav>
-                </div>
+              <app-main class="${this.showPlayer ? 'player' : ''}">
+                ${this.appRouter.outlet()}
               </app-main>
               ${this.showPlayer ? html` <lit-player></lit-player> ` : nothing}
               <side-nav route="${this.route}" ?full=${true}></side-nav>

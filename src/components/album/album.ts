@@ -168,18 +168,14 @@ export class Album extends LitElement {
     `;
   }
   render() {
-    return html`
-      ${this.active
-        ? html` <album-details
-              artist="${this.artist}"
-              album="${this.album}"
-              @play=${(e: Event) => this._setPlaylist(e)}
-              @queue=${(e: Event) => this._appendPlaylist(e)}
-            ></album-details>
-            <div class="container">
-              ${this.sortedDiscs.map((disc: any) => this._renderDisc(disc))}
-            </div>`
-        : nothing}
-    `;
+    return html` <album-details
+        artist="${this.artist}"
+        album="${this.album}"
+        @play=${(e: Event) => this._setPlaylist(e)}
+        @queue=${(e: Event) => this._appendPlaylist(e)}
+      ></album-details>
+      <div class="container">
+        ${this.sortedDiscs.map((disc: any) => this._renderDisc(disc))}
+      </div>`;
   }
 }

@@ -523,14 +523,10 @@ export class SettingsNav extends LitElement {
     </div>`;
   }
   render() {
-    if (this.active) {
-      return html`
-        ${this._renderUserInfo()} ${this._renderCollectionSettings()}
-        ${this._renderPlayerSettings()} ${this._renderThemeSettings()}
-        ${this._renderRSSFeedSettings()} ${this._renderInformation()}
-      `;
-    } else {
-      return nothing;
-    }
+    return html`
+      ${this._renderUserInfo()} ${this._renderCollectionSettings()}
+      ${this._renderPlayerSettings()} ${this._renderThemeSettings()}
+      ${this._renderRSSFeedSettings()} ${this._renderInformation()}
+    `;
   }
 }

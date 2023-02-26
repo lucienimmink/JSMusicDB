@@ -87,10 +87,6 @@ export class Artist extends LitElement {
   }
 
   render() {
-    return html`
-      ${this.active
-        ? html` ${this.albums.map((album: any) => this._renderAlbum(album))}`
-        : nothing}
-    `;
+    return html` ${this.albums.map((album: any) => this._renderAlbum(album))}`;
   }
 }

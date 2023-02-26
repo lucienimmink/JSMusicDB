@@ -1,5 +1,5 @@
 import { localized, t } from '@weavedev/lit-i18next';
-import { html, LitElement, nothing } from 'lit';
+import { html, LitElement } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import musicdb from '../../components/musicdb';
 import grid from '../../styles/grid';
@@ -81,8 +81,8 @@ export class Letter extends LitElement {
     `;
   }
   render() {
-    return this.active
-      ? html` ${this.artists.map((artist: any) => this._renderArtist(artist))}`
-      : nothing;
+    return html` ${this.artists.map((artist: any) =>
+      this._renderArtist(artist)
+    )}`;
   }
 }

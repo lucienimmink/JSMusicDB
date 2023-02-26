@@ -515,19 +515,6 @@ export class NowPlaying extends LitElement {
             }}
           ></track-in-list>`;
         })}
-        <!-- <lit-virtualizer
-        .items=${this.playlist?.tracks}
-        .renderItem=${(track: any) => html`
-          <track-in-list
-            .track=${track}
-            .type=${this.playlist.type}
-            ?showAlbum=${true}
-            @click=${() => {
-              this._setPlaylist(track);
-            }}
-          ></track-in-list>
-        `}
-      ></lit-virtualizer> -->
       </div>
     </div>`;
   }
@@ -559,22 +546,19 @@ export class NowPlaying extends LitElement {
     `;
   }
   render() {
-    return html`
-      ${this.active
-        ? html` ${this.track
-            ? html`
-                <div
-                  class="wrapper ${this.smallArt ? 'smallArt ' : ''} ${this
-                    .isBottomShown
-                    ? 'bottomShown '
-                    : ''}"
-                >
-                  ${this._renderBackdrop()} ${this._renderTop()}
-                  ${this._renderBottom()}
-                </div>
-              `
-            : this._renderNothingPlaying()}`
-        : nothing}
-    `;
+    if (this.track) {
+      return html`
+        <div
+          class="wrapper ${this.smallArt ? 'smallArt ' : ''} ${this
+            .isBottomShown
+            ? 'bottomShown '
+            : ''}"
+        >
+          ${this._renderBackdrop()} ${this._renderTop()} ${this._renderBottom()}
+        </div>
+      `;
+    } else {
+      return this._renderNothingPlaying();
+    }
   }
 }

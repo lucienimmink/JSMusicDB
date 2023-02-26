@@ -509,48 +509,34 @@ export class LetterNav extends LitElement {
     `;
   }
   render() {
-    return html`
-      ${this.active
-        ? html` <div class="container">
-            ${this._renderPlaylistSelector()}
-            ${this.playlist
-              ? html`
-                  <div class="playlist">
-                    <ul>
-                      <li class="header">
-                        ${this.playlist.i18name
-                          ? t(this.playlist.i18name, {
-                              username: this.lastFMUserName,
-                              count: this.playlist.tracks.length,
-                            })
-                          : this.playlist.name}
-                        <span class="small muted"
-                          >(${this.playlist.tracks.length})</span
-                        >
-                      </li>
-                      ${this.playlist.tracks.map((track: any) =>
-                        this._renderTrack(track)
-                      )}
-                      <!-- <lit-virtualizer
-                        .scrollTarget=${window}
-                        .items=${this.playlist.tracks}
-                        .renderItem=${(track: any) => this._renderTrack(track)}
-                      >
-                      </lit-virtualizer> -->
-                    </ul>
-                  </div>
-                `
-              : nothing}
-            ${this.showStartArtistSelection
-              ? this._renderArtistSelector()
-              : nothing}
-            ${this.loading
-              ? html`
-                  <loading-indicator>${t('labels.loading')}</loading-indicator>
-                `
-              : nothing}
-          </div>`
+    return html` <div class="container">
+      ${this._renderPlaylistSelector()}
+      ${this.playlist
+        ? html`
+            <div class="playlist">
+              <ul>
+                <li class="header">
+                  ${this.playlist.i18name
+                    ? t(this.playlist.i18name, {
+                        username: this.lastFMUserName,
+                        count: this.playlist.tracks.length,
+                      })
+                    : this.playlist.name}
+                  <span class="small muted"
+                    >(${this.playlist.tracks.length})</span
+                  >
+                </li>
+                ${this.playlist.tracks.map((track: any) =>
+                  this._renderTrack(track)
+                )}
+              </ul>
+            </div>
+          `
         : nothing}
-    `;
+      ${this.showStartArtistSelection ? this._renderArtistSelector() : nothing}
+      ${this.loading
+        ? html` <loading-indicator>${t('labels.loading')}</loading-indicator> `
+        : nothing}
+    </div>`;
   }
 }

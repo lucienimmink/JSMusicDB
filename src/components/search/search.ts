@@ -228,14 +228,12 @@ export class SearchNav extends LitElement {
     `;
   }
   render() {
-    return html` ${this.active
-      ? html`
-          ${this.active && this.artists?.list.length > 0
-            ? this._renderArtists()
-            : nothing}
-          ${this.albums?.list.length > 0 ? this._renderAlbums() : nothing}
-          ${this.tracks?.list.length > 0 ? this._renderTracks() : nothing}
-        `
-      : nothing}`;
+    return html`
+      ${this.active && this.artists?.list.length > 0
+        ? this._renderArtists()
+        : nothing}
+      ${this.albums?.list.length > 0 ? this._renderAlbums() : nothing}
+      ${this.tracks?.list.length > 0 ? this._renderTracks() : nothing}
+    `;
   }
 }

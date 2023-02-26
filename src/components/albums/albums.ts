@@ -160,15 +160,11 @@ export class LetterNav extends LitElement {
     </lit-virtualizer>`;
   }
   render() {
-    return html`
-      ${this.active
-        ? html` ${this._renderJumplist()}
-            <div class="container">
-              <ol class="virtual-scroll">
-                ${this.albums.length > 0 ? this._renderList() : nothing}
-              </ol>
-            </div>`
-        : nothing}
-    `;
+    return html` ${this._renderJumplist()}
+      <div class="container">
+        <ol class="virtual-scroll">
+          ${this.albums.length > 0 ? this._renderList() : nothing}
+        </ol>
+      </div>`;
   }
 }
