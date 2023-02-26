@@ -111,6 +111,7 @@ export class LetterNav extends LitElement {
           artist="${album.artist.albumArtist || album.artist.name}"
           album="${album.name}"
           dimension="50"
+          no-lazy="true"
         ></album-art>
         <div class="details">
           <span class="album">${album.name}</span>
@@ -125,25 +126,26 @@ export class LetterNav extends LitElement {
       </app-link>
     </li>`;
   }
+  private _rendderAlbums(album: any) {
+    return html`${album?.header
+      ? html`
+          <li
+            class="header"
+            @click="${() => {
+              this.showJumpList = true;
+            }}"
+          >
+            ${album.header}
+            <span class="small muted">(${album.albums})</span>
+          </li>
+        `
+      : this._renderAlbum(album)}`;
+  }
   private _renderList() {
     return html`<lit-virtualizer
       .scrollTarget=${window}
       .items=${this.albums}
-      .renderItem=${(album: any) => html`
-        ${album?.header
-          ? html`
-              <li
-                class="header"
-                @click="${() => {
-                  this.showJumpList = true;
-                }}"
-              >
-                ${album.header}
-                <span class="small muted">(${album.albums})</span>
-              </li>
-            `
-          : this._renderAlbum(album)}
-      `}
+      .renderItem=${(album: any) => this._rendderAlbums(album)}
     >
     </lit-virtualizer>`;
   }

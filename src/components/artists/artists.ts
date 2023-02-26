@@ -113,6 +113,7 @@ export class LetterNav extends LitElement {
         <album-art
           artist="${artist.albumArtist || artist.name}"
           dimension="50"
+          no-lazy="true"
         ></album-art>
         <div class="details">
           <span class="artist">${artist.albumArtist || artist.name}</span>

@@ -89,24 +89,25 @@ export class AlbumArt extends LitElement {
   }
   async willUpdate(changedProperties: PropertyValues) {
     const cached = await this.getCachedUrl();
-    if (
-      (this.visible === 'true' || changedProperties.get('visible')) &&
-      this.art !== cached
-    ) {
-      this.initArt();
-    } else if (
-      changedProperties.get('artist') &&
-      changedProperties.get('artist') !== this.artist
-    ) {
-      this.initArt();
-    } else if (
-      changedProperties.get('album') &&
-      changedProperties.get('album') !== this.album
-    ) {
-      this.initArt();
+    if (!this.noLazy) {
+      if (
+        (this.visible === 'true' || changedProperties.get('visible')) &&
+        this.art !== cached
+      ) {
+        this.initArt();
+      } else if (
+        changedProperties.get('artist') &&
+        changedProperties.get('artist') !== this.artist
+      ) {
+        this.initArt();
+      } else if (
+        changedProperties.get('album') &&
+        changedProperties.get('album') !== this.album
+      ) {
+        this.initArt();
+      }
     } else {
-      // still have an on-sometimes it does not load bug; but why?
-      // console.log('no change needed?', changedProperties);
+      this.initArt();
     }
   }
   defaultArt() {
@@ -164,7 +165,7 @@ export class AlbumArt extends LitElement {
     this.dispatchEvent(evt);
   }
   async initArt() {
-    this.loading = true;
+    if (!this.noLazy) this.loading = true;
     this.getDimensions();
     const key = {
       artist: this.artist,
