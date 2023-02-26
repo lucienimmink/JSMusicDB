@@ -4,7 +4,6 @@ import { html, LitElement, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import './components/album-art/album-art';
 import './components/app-link/app-link';
-import './components/app-main/app-main';
 import './components/header/header';
 import './components/last-fm/login';
 import './components/letter-nav/letter-nav';
@@ -282,9 +281,9 @@ export class LitMusicdb extends LitElement {
                 route="${this.route}"
                 .hasVisiblePlayer=${this.showPlayer}
               ></side-nav>
-              <app-main class="${this.showPlayer ? 'player' : ''}">
+              <div id="outlet" class="${this.showPlayer ? 'player' : ''}">
                 ${this.appRouter.outlet()}
-              </app-main>
+              </div>
               ${this.showPlayer ? html` <lit-player></lit-player> ` : nothing}
               <side-nav route="${this.route}" ?full=${true}></side-nav>
             `

@@ -1,4 +1,3 @@
-import { navigator } from '@addasoft/lit-element-router';
 import timeSpan from '@addasoft/timespan';
 import { localized, t } from '@weavedev/lit-i18next';
 import { html, LitElement, nothing } from 'lit';
@@ -11,6 +10,7 @@ import smallMuted from '../../styles/small-muted';
 import warn from '../../styles/warn';
 import { global as EventBus } from '../../utils/EventBus';
 import { REFRESH } from '../../utils/musicdb';
+import { CHANGE_URL } from '../../utils/router';
 import musicdb from '../musicdb';
 import './../app-link/app-link';
 
@@ -18,7 +18,6 @@ const MAX = 100;
 
 @customElement('search-nav')
 @localized()
-@navigator
 export class SearchNav extends LitElement {
   @property()
   activeroute: string;
@@ -86,12 +85,9 @@ export class SearchNav extends LitElement {
   }
   _handleTrackClick(e: Event, track: any) {
     e.preventDefault();
-    this.navigate(
-      `/letter/${track.album.artist.letter.escapedLetter}/artist/${track.album.artist.escapedName}/album/${track.album.escapedName}`
-    );
-  }
-  navigate(href: any) {
-    throw new Error(`Method not implemented. ${href}`);
+    const path = `/letter/${track.album.artist.letter.escapedLetter}/artist/${track.album.artist.escapedName}/album/${track.album.escapedName}`;
+    window.history.pushState({ path }, '', path);
+    EventBus.emit(CHANGE_URL, this, path);
   }
   private _renderOverflow() {
     return html`

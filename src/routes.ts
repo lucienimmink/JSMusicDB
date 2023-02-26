@@ -13,7 +13,7 @@ const renderCallback = (html: any, url: string, controller: HTMLElement) => {
   }
   document.querySelector('html')?.classList.remove('noscroll');
   if (!url.includes('/playlists/'))
-    animateCSS(controller.shadowRoot?.querySelector('app-main'), 'slideInUp');
+    animateCSS(controller.shadowRoot?.querySelector('#outlet'), 'slideInUp');
   return html;
 };
 

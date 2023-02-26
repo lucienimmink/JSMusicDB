@@ -1,4 +1,3 @@
-import { navigator } from '@addasoft/lit-element-router';
 import timeSpan from '@addasoft/timespan';
 import { localized, t } from '@weavedev/lit-i18next';
 import { html, LitElement, nothing } from 'lit';
@@ -25,6 +24,7 @@ import {
   startPlaylist,
   UPDATE_PLAYER,
 } from '../../utils/player';
+import { CHANGE_URL } from '../../utils/router';
 import { pauseIcon } from '../icons/pause';
 import { playIcon } from '../icons/play';
 import { redoIcon } from '../icons/redo';
@@ -33,7 +33,6 @@ import musicdb from '../musicdb';
 
 @customElement('playlists-nav')
 @localized()
-@navigator
 export class LetterNav extends LitElement {
   @property()
   activeroute: string;
@@ -214,10 +213,9 @@ export class LetterNav extends LitElement {
     e.preventDefault();
     // @ts-ignore
     const switchTo = e?.target?.value;
-    this.navigate(`/playlists/${switchTo}`);
-  }
-  navigate(href: any) {
-    throw new Error(`Method not implemented. ${href}`);
+    const path = `/playlists/${switchTo}`;
+    window.history.pushState({ path }, '', path);
+    EventBus.emit(CHANGE_URL, this, path);
   }
   _reloadPlaylist(id: string) {
     this._doSwitchPlaylist(id);

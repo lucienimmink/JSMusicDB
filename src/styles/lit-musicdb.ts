@@ -25,12 +25,12 @@ export default css`
   side-nav[full] {
     display: block;
   }
-  app-main {
+  #outlet {
     margin-top: 50px;
     display: block;
     padding-bottom: 50px;
   }
-  app-main.player {
+  #outlet.player {
     padding-bottom: 90px;
   }
   lit-player {
@@ -60,7 +60,7 @@ export default css`
     side-nav {
       display: block;
     }
-    app-main {
+    #outlet {
       margin-top: 100px;
       margin-left: 75px;
     }
