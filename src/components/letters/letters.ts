@@ -1,9 +1,8 @@
 import { html, LitElement } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { customElement, property } from 'lit/decorators.js';
 import jumplist from '../../styles/jumplist';
 import { global as EventBus } from '../../utils/EventBus';
 import { REFRESH } from '../../utils/musicdb';
-import { SWITCH_ROUTE } from '../../utils/router';
 import musicdb from '../musicdb';
 import './../app-link/app-link';
 
@@ -15,8 +14,6 @@ export class LetterNav extends LitElement {
   hasVisiblePlayer: boolean;
   @property({ type: Array })
   letters: Array<any>;
-  @state()
-  active = false;
 
   static get styles() {
     return [jumplist];
@@ -30,20 +27,11 @@ export class LetterNav extends LitElement {
   }
   connectedCallback() {
     super.connectedCallback();
-    EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
-    if (this.active) {
-      EventBus.on(REFRESH, this._init, this);
-    }
+    EventBus.on(REFRESH, this._init, this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    if (!this.active) {
-      EventBus.off(REFRESH, this._init, this);
-      EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
-    }
-  }
-  isActiveRoute(event: Event, route: string) {
-    this.active = route === 'letters';
+    EventBus.off(REFRESH, this._init, this);
   }
   private _init() {
     musicdb

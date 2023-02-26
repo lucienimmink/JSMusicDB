@@ -3,12 +3,10 @@ import { html } from 'lit';
 import { TOGGLE_MENU } from './components/side-nav/side-nav.js';
 import { animateCSS } from './utils/animations.js';
 import { global as EventBus } from './utils/EventBus';
-import { SWITCH_ROUTE } from './utils/router.js';
 
 const renderCallback = (html: any, url: string, controller: HTMLElement) => {
   window.scrollTo(0, 0);
   EventBus.emit(TOGGLE_MENU, {}, 'close');
-  EventBus.emit(SWITCH_ROUTE, {}, url);
   if (url === '/now-playing') {
     document.querySelector('html')?.classList.add('noscroll');
     return;

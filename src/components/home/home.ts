@@ -15,7 +15,6 @@ import {
   setRecentlyPlayed,
 } from '../../utils/musicdb';
 import { getJwt, getRSSFeed, getServer } from '../../utils/node-mp3stream';
-import { SWITCH_ROUTE } from '../../utils/router';
 import { getSettingByName, TOGGLE_SETTING } from '../../utils/settings';
 import { cdSVG } from '../icons/cd';
 import { heartIcon } from '../icons/heart';
@@ -30,8 +29,6 @@ export class HomeNav extends LitElement {
   recentAdded: Array<any>;
   newReleases: Array<any>;
   counter: any;
-  @state()
-  active = false;
 
   private readonly INTERVAL = 1000 * 9;
   private readonly LATEST_ADDITIONS = 10;
@@ -49,36 +46,28 @@ export class HomeNav extends LitElement {
   }
   async connectedCallback() {
     super.connectedCallback();
-    EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
-    if (this.active) {
-      EventBus.on(REFRESH, this._init, this);
-      EventBus.on(TOGGLE_SETTING, this._updateFeed, this);
 
-      getLastFMUserName().then((name: any) => {
-        if (name !== 'mdb-skipped') {
-          this._setDummyData();
-          this._updateRecentlyPlayed(name);
-          if (this.counter !== -1) {
-            clearInterval(this.counter);
-            this.counter = -1;
-          }
-          if (this.active) this._poll(name);
+    EventBus.on(REFRESH, this._init, this);
+    EventBus.on(TOGGLE_SETTING, this._updateFeed, this);
+
+    getLastFMUserName().then((name: any) => {
+      if (name !== 'mdb-skipped') {
+        this._setDummyData();
+        this._updateRecentlyPlayed(name);
+        if (this.counter !== -1) {
+          clearInterval(this.counter);
+          this.counter = -1;
         }
-      });
-      this._updateFeed();
-    }
-  }
-  isActiveRoute(event: Event, route: string) {
-    this.active = route === 'home';
+        this._poll(name);
+      }
+    });
+    this._updateFeed();
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    if (!this.active) {
-      EventBus.off(REFRESH, this._init, this);
-      EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
-      EventBus.off(TOGGLE_SETTING, this._updateFeed, this);
-      clearInterval(this.counter);
-    }
+    EventBus.off(REFRESH, this._init, this);
+    EventBus.off(TOGGLE_SETTING, this._updateFeed, this);
+    clearInterval(this.counter);
   }
   _init() {
     musicdb

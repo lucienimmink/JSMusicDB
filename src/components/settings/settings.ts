@@ -30,7 +30,6 @@ import {
   resetServer,
   RESET_SERVER,
 } from '../../utils/node-mp3stream';
-import { SWITCH_ROUTE } from '../../utils/router';
 import {
   getLastParsed,
   getSettings,
@@ -58,8 +57,6 @@ export class SettingsNav extends LitElement {
   @state()
   isReloading: boolean;
   showVersion: boolean;
-  @state()
-  active = false;
   @state()
   canGetRSSFeed = false;
   @state()
@@ -99,26 +96,17 @@ export class SettingsNav extends LitElement {
   }
   connectedCallback() {
     super.connectedCallback();
-    EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
     EventBus.on(REFRESH, this._init, this);
-    if (this.active) {
-      EventBus.on(IS_RELOADING, this._setIsReloadingTrue, this);
-      EventBus.on(DONE_RELOADING, this._setIsReloadingFalse, this);
-      EventBus.on(HAS_SSE, this._updateSEE, this);
-    }
+    EventBus.on(IS_RELOADING, this._setIsReloadingTrue, this);
+    EventBus.on(DONE_RELOADING, this._setIsReloadingFalse, this);
+    EventBus.on(HAS_SSE, this._updateSEE, this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    if (!this.active) {
-      EventBus.off(REFRESH, this._init, this);
-      EventBus.off(IS_RELOADING, this._setIsReloadingTrue, this);
-      EventBus.off(DONE_RELOADING, this._setIsReloadingFalse, this);
-      EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
-      EventBus.off(HAS_SSE, this._updateSEE, this);
-    }
-  }
-  isActiveRoute(event: Event, route: string) {
-    this.active = route === 'settings';
+    EventBus.off(REFRESH, this._init, this);
+    EventBus.off(IS_RELOADING, this._setIsReloadingTrue, this);
+    EventBus.off(DONE_RELOADING, this._setIsReloadingFalse, this);
+    EventBus.off(HAS_SSE, this._updateSEE, this);
   }
   private _toLocale(i18nLocale: string) {
     if (!i18nLocale) return 'en-GB';

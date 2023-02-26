@@ -7,7 +7,6 @@ import panel from '../../styles/panel';
 import smallMuted from '../../styles/small-muted';
 import { global as EventBus } from '../../utils/EventBus';
 import { REFRESH } from '../../utils/musicdb';
-import { SWITCH_ROUTE } from '../../utils/router';
 import '../app-link/app-link';
 
 @customElement('albums-in-artist')
@@ -29,20 +28,11 @@ export class Artist extends LitElement {
   }
   connectedCallback() {
     super.connectedCallback();
-    EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
-    if (this.active) {
-      EventBus.on(REFRESH, this._getAlbums, this);
-    }
+    EventBus.on(REFRESH, this._getAlbums, this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    if (!this.active) {
-      EventBus.off(REFRESH, this._getAlbums, this);
-      EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
-    }
-  }
-  isActiveRoute(event: Event, route: string) {
-    this.active = route === 'artist';
+    EventBus.off(REFRESH, this._getAlbums, this);
   }
   attributeChangedCallback(name: any, oldval: any, newval: any) {
     if (name === 'artist') {

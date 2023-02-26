@@ -27,7 +27,7 @@ import { launchQueue } from './utils/launch-queue';
 import { REFRESH } from './utils/musicdb';
 import { DONE_RELOADING, getJwt, RESET_SERVER } from './utils/node-mp3stream';
 import { START_CURRENT_PLAYLIST, STOP_PLAYER } from './utils/player';
-import { CHANGE_URL, SWITCH_ROUTE } from './utils/router';
+import { CHANGE_URL } from './utils/router';
 import { getSettingByName, TOGGLE_SETTING } from './utils/settings';
 
 @customElement('lit-musicdb')
@@ -183,9 +183,6 @@ export class LitMusicdb extends LitElement {
     EventBus.off(RESET_SERVER, this._resetServer, this);
     EventBus.off(RESET_LASTFM, this._resetLastFM, this);
     EventBus.off(CHANGE_URL, this._changeUrl, this);
-  }
-  updated() {
-    EventBus.emit(SWITCH_ROUTE, this, this.route);
   }
   firstUpdated() {
     this.appRouter.goto(window.location.pathname);

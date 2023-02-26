@@ -12,7 +12,6 @@ import {
   setCurrentTime,
   startPlaylist,
 } from '../../utils/player';
-import { SWITCH_ROUTE } from '../../utils/router';
 import musicdb from '../musicdb';
 import '../track/track';
 import './album-details';
@@ -29,8 +28,6 @@ export class Album extends LitElement {
   albumDetails: any;
   @state()
   sortedDiscs: Array<any>;
-  @state()
-  active = false;
 
   static get styles() {
     return [container, headers, album];
@@ -50,20 +47,11 @@ export class Album extends LitElement {
   }
   connectedCallback() {
     super.connectedCallback();
-    EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
-    if (this.active) {
-      EventBus.on(REFRESH, this._getTracks, this);
-    }
+    EventBus.on(REFRESH, this._getTracks, this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    if (!this.active) {
-      EventBus.off(REFRESH, this._getTracks, this);
-      EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
-    }
-  }
-  isActiveRoute(event: Event, route: string) {
-    this.active = route === 'album';
+    EventBus.off(REFRESH, this._getTracks, this);
   }
   _getTracks(artist: any = this.artist, album = this.album) {
     if (artist instanceof Object) {

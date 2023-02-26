@@ -29,7 +29,6 @@ import {
   TOGGLE_SHUFFLE_UPDATED,
   UPDATE_PLAYER,
 } from '../../utils/player';
-import { SWITCH_ROUTE } from '../../utils/router';
 import { getSettingByName, TOGGLE_SETTING } from '../../utils/settings';
 import { albumsIcon } from '../icons/albums';
 import { artistsIcon } from '../icons/artists';
@@ -68,8 +67,6 @@ export class NowPlaying extends LitElement {
   _dataArray: any;
   _hearableBars: any;
   _player: any;
-  @state()
-  active = false;
 
   readonly FRAMERATE = 1000 / 45;
 
@@ -115,37 +112,27 @@ export class NowPlaying extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     // these events are needed on the background as well
-    EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
     EventBus.on(TOGGLE_SHUFFLE_UPDATED, this._doToggleShuffleUpdated, this);
     EventBus.on(ACCENT_COLOR, this._doAccentColor, this);
     EventBus.on(PLAYER_ERROR, this._doHasError, this);
-    if (this.active) {
-      // these events are only needed when the player is active
-      EventBus.on(UPDATE_PLAYER, this._doUpdate, this);
-      EventBus.on(TOGGLE_SETTING, this._doToggleSetting, this);
+    EventBus.on(UPDATE_PLAYER, this._doUpdate, this);
+    EventBus.on(TOGGLE_SETTING, this._doToggleSetting, this);
 
-      getSettingByName('visual').then((hasVisual: any) => {
-        this.hasCanvas = !!hasVisual;
-      });
-      getSettingByName('smallArt').then((smallArt: any) => {
-        this.smallArt = !!smallArt;
-      });
-    }
+    getSettingByName('visual').then((hasVisual: any) => {
+      this.hasCanvas = !!hasVisual;
+    });
+    getSettingByName('smallArt').then((smallArt: any) => {
+      this.smallArt = !!smallArt;
+    });
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    if (!this.active) {
-      EventBus.off(UPDATE_PLAYER, this._doUpdate, this);
-      EventBus.off(TOGGLE_LOVED_UPDATED, this._doUpdate, this);
-      EventBus.off(TOGGLE_SHUFFLE_UPDATED, this._doToggleShuffleUpdated, this);
-      EventBus.off(ACCENT_COLOR, this._doAccentColor, this);
-      EventBus.off(TOGGLE_SETTING, this._doToggleSetting, this);
-      EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
-      EventBus.off(PLAYER_ERROR, this._doHasError, this);
-    }
-  }
-  isActiveRoute(event: Event, route: string) {
-    this.active = route === 'now-playing';
+    EventBus.off(UPDATE_PLAYER, this._doUpdate, this);
+    EventBus.off(TOGGLE_LOVED_UPDATED, this._doUpdate, this);
+    EventBus.off(TOGGLE_SHUFFLE_UPDATED, this._doToggleShuffleUpdated, this);
+    EventBus.off(ACCENT_COLOR, this._doAccentColor, this);
+    EventBus.off(TOGGLE_SETTING, this._doToggleSetting, this);
+    EventBus.off(PLAYER_ERROR, this._doHasError, this);
   }
   _doUpdate(target: any, data: any) {
     this._update(data);

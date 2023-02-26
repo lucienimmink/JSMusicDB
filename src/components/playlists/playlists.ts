@@ -25,7 +25,6 @@ import {
   startPlaylist,
   UPDATE_PLAYER,
 } from '../../utils/player';
-import { SWITCH_ROUTE } from '../../utils/router';
 import { pauseIcon } from '../icons/pause';
 import { playIcon } from '../icons/play';
 import { redoIcon } from '../icons/redo';
@@ -53,8 +52,7 @@ export class LetterNav extends LitElement {
   @state()
   loading: boolean;
   currentPlaylistId: string;
-  @state()
-  active = false;
+
   static get styles() {
     return [headers, container, smallMuted, responsive, playlists, buttons];
   }
@@ -274,25 +272,16 @@ export class LetterNav extends LitElement {
   }
   connectedCallback() {
     super.connectedCallback();
-    EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
-    if (this.active) {
-      EventBus.on(UPDATE_PLAYER, this._update, this);
-      EventBus.on(LOAD_PLAYLIST, this._loadPlaylist, this);
-      EventBus.on(LOADED_PLAYLIST, this._loadedPlaylist, this);
-      this._getPlaylists();
-    }
+    EventBus.on(UPDATE_PLAYER, this._update, this);
+    EventBus.on(LOAD_PLAYLIST, this._loadPlaylist, this);
+    EventBus.on(LOADED_PLAYLIST, this._loadedPlaylist, this);
+    this._getPlaylists();
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    if (!this.active) {
-      EventBus.off(UPDATE_PLAYER, this._update, this);
-      EventBus.off(LOAD_PLAYLIST, this._loadPlaylist, this);
-      EventBus.off(LOADED_PLAYLIST, this._loadedPlaylist, this);
-      EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
-    }
-  }
-  isActiveRoute(event: Event, route: string) {
-    this.active = route === 'playlists' || route === 'playlist';
+    EventBus.off(UPDATE_PLAYER, this._update, this);
+    EventBus.off(LOAD_PLAYLIST, this._loadPlaylist, this);
+    EventBus.off(LOADED_PLAYLIST, this._loadedPlaylist, this);
   }
   constructor() {
     super();

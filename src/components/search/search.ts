@@ -11,7 +11,6 @@ import smallMuted from '../../styles/small-muted';
 import warn from '../../styles/warn';
 import { global as EventBus } from '../../utils/EventBus';
 import { REFRESH } from '../../utils/musicdb';
-import { SWITCH_ROUTE } from '../../utils/router';
 import musicdb from '../musicdb';
 import './../app-link/app-link';
 
@@ -31,8 +30,7 @@ export class SearchNav extends LitElement {
   albums: any;
   @state()
   tracks: any;
-  @state()
-  active = false;
+
   static get styles() {
     return [container, headers, smallMuted, warn, search];
   }
@@ -55,20 +53,11 @@ export class SearchNav extends LitElement {
   }
   connectedCallback() {
     super.connectedCallback();
-    EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
-    if (this.active) {
-      EventBus.on(REFRESH, this._doSearch, this);
-    }
+    EventBus.on(REFRESH, this._doSearch, this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    if (!this.active) {
-      EventBus.off(REFRESH, this._doSearch, this);
-      EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
-    }
-  }
-  isActiveRoute(event: Event, route: string) {
-    this.active = route === 'search';
+    EventBus.off(REFRESH, this._doSearch, this);
   }
   _doSearch() {
     musicdb
@@ -229,9 +218,7 @@ export class SearchNav extends LitElement {
   }
   render() {
     return html`
-      ${this.active && this.artists?.list.length > 0
-        ? this._renderArtists()
-        : nothing}
+      ${this.artists?.list.length > 0 ? this._renderArtists() : nothing}
       ${this.albums?.list.length > 0 ? this._renderAlbums() : nothing}
       ${this.tracks?.list.length > 0 ? this._renderTracks() : nothing}
     `;

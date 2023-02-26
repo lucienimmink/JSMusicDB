@@ -9,7 +9,6 @@ import smallMuted from '../../styles/small-muted';
 import virtualScroll from '../../styles/virtual-scroll';
 import { global as EventBus } from '../../utils/EventBus';
 import { REFRESH } from '../../utils/musicdb';
-import { SWITCH_ROUTE } from '../../utils/router';
 import { handleScroll } from '../../utils/virtual-scroll';
 import '../app-link/app-link';
 import musicdb from '../musicdb';
@@ -26,8 +25,6 @@ export class LetterNav extends LitElement {
   hasVisiblePlayer: boolean;
   @state()
   letters: Array<any>;
-  @state()
-  active = false;
   static get styles() {
     return [container, headers, jumplist, smallMuted, virtualScroll];
   }
@@ -65,20 +62,11 @@ export class LetterNav extends LitElement {
   };
   connectedCallback() {
     super.connectedCallback();
-    EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
-    if (this.active) {
-      EventBus.on(REFRESH, this._getAlbums, this);
-    }
+    EventBus.on(REFRESH, this._getAlbums, this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    if (!this.active) {
-      EventBus.off(REFRESH, this._getAlbums, this);
-      EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
-    }
-  }
-  isActiveRoute(event: Event, route: string) {
-    this.active = route === 'albums';
+    EventBus.off(REFRESH, this._getAlbums, this);
   }
   constructor() {
     super();

@@ -9,7 +9,6 @@ import smallMuted from '../../styles/small-muted';
 import virtualScroll from '../../styles/virtual-scroll';
 import { global as EventBus } from '../../utils/EventBus';
 import { REFRESH } from '../../utils/musicdb';
-import { SWITCH_ROUTE } from '../../utils/router';
 import { handleScroll } from '../../utils/virtual-scroll';
 import musicdb from '../musicdb';
 import './../app-link/app-link';
@@ -65,17 +64,11 @@ export class LetterNav extends LitElement {
   };
   connectedCallback() {
     super.connectedCallback();
-    EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
-    if (this.active) {
-      EventBus.on(REFRESH, this._getArtists, this);
-    }
+    EventBus.on(REFRESH, this._getArtists, this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    if (!this.active) {
-      EventBus.off(REFRESH, this._getArtists, this);
-      EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
-    }
+    EventBus.off(REFRESH, this._getArtists, this);
   }
   constructor() {
     super();
@@ -86,10 +79,6 @@ export class LetterNav extends LitElement {
     this.hasVisiblePlayer = false;
     this._getArtists();
   }
-  isActiveRoute(event: Event, route: string) {
-    this.active = route === 'artists';
-  }
-
   private _renderJumplist() {
     return html`<ul
       class="jumplist ${this.showJumpList ? 'show ' : ''} ${this

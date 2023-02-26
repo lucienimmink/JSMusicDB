@@ -7,7 +7,6 @@ import panel from '../../styles/panel';
 import smallMuted from '../../styles/small-muted';
 import { global as EventBus } from '../../utils/EventBus';
 import { REFRESH } from '../../utils/musicdb';
-import { SWITCH_ROUTE } from '../../utils/router';
 import './../app-link/app-link';
 
 @customElement('artists-in-letter')
@@ -17,8 +16,7 @@ export class Letter extends LitElement {
   letter: string;
   @state()
   artists: Array<any>;
-  @state()
-  active = false;
+
   static get styles() {
     return [smallMuted, panel, grid];
   }
@@ -47,20 +45,11 @@ export class Letter extends LitElement {
   }
   connectedCallback() {
     super.connectedCallback();
-    EventBus.on(SWITCH_ROUTE, this.isActiveRoute, this);
-    if (this.active) {
-      EventBus.on(REFRESH, this.getArtists, this);
-    }
+    EventBus.on(REFRESH, this.getArtists, this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    if (!this.active) {
-      EventBus.off(REFRESH, this.getArtists, this);
-      EventBus.off(SWITCH_ROUTE, this.isActiveRoute, this);
-    }
-  }
-  isActiveRoute(event: Event, route: string) {
-    this.active = route === 'letter';
+    EventBus.off(REFRESH, this.getArtists, this);
   }
   private _renderArtist(artist: any) {
     return html`
