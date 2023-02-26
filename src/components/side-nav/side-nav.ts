@@ -154,7 +154,7 @@ export class SideNav extends LitElement {
                 </li>
               `
             : nothing}
-          <li class="${this.route === 'home' ? 'active' : ''}">
+          <li class="${this.route === '/' ? 'active' : ''}">
             <app-link
               href="/"
               title="${ifDefined(
@@ -167,7 +167,9 @@ export class SideNav extends LitElement {
           </li>
           ${this.full
             ? html`
-                <li class="md-down ${this.route === 'letters' ? 'active' : ''}">
+                <li
+                  class="md-down ${this.route === '/letters' ? 'active' : ''}"
+                >
                   <app-link
                     href="/letters"
                     title="${ifDefined(
@@ -183,7 +185,7 @@ export class SideNav extends LitElement {
                 </li>
               `
             : nothing}
-          <li class="${this.route === 'artists' ? 'active' : ''}">
+          <li class="${this.route === '/artists' ? 'active' : ''}">
             <app-link
               href="/artists"
               title="${ifDefined(
@@ -194,7 +196,7 @@ export class SideNav extends LitElement {
               >${artistsIcon} <span>${t('labels.artists')}</span></app-link
             >
           </li>
-          <li class="${this.route === 'albums' ? 'active' : ''}">
+          <li class="${this.route === '/albums' ? 'active' : ''}">
             <app-link
               href="/albums"
               title="${ifDefined(
@@ -205,7 +207,7 @@ export class SideNav extends LitElement {
               >${albumsIcon} <span>${t('labels.albums')}</span></app-link
             >
           </li>
-          <li class="${this.route === 'years' ? 'active' : ''}">
+          <li class="${this.route === '/years' ? 'active' : ''}">
             <app-link
               href="/years"
               title="${ifDefined(
@@ -216,11 +218,7 @@ export class SideNav extends LitElement {
               >${yearsIcon} <span>${t('labels.years')}</span></app-link
             >
           </li>
-          <li
-            class="${this.route === 'playlists' || this.route === 'playlist'
-              ? 'active'
-              : ''}"
-          >
+          <li class="${this.route.includes('/playlists') ? 'active' : ''}">
             <app-link
               href="/playlists"
               title="${ifDefined(
@@ -233,7 +231,7 @@ export class SideNav extends LitElement {
               >${playlistsIcon} <span>${t('labels.playlists')}</span></app-link
             >
           </li>
-          <li class="${this.route === 'now-playing' ? 'active' : ''}">
+          <li class="${this.route === '/now-playing' ? 'active' : ''}">
             <app-link
               href="/now-playing"
               title="${ifDefined(
@@ -249,7 +247,7 @@ export class SideNav extends LitElement {
           </li>
           ${this.hasScrobbleCache
             ? html`
-                <li class="${this.route === 'scrobble-cache' ? 'active' : ''}">
+                <li class="${this.route === '/scrobble-cache' ? 'active' : ''}">
                   <app-link
                     href="/scrobble-cache"
                     title="${ifDefined(
@@ -265,7 +263,7 @@ export class SideNav extends LitElement {
                 </li>
               `
             : nothing}
-          <li class="${this.route === 'settings' ? 'active' : ''}">
+          <li class="${this.route === '/settings' ? 'active' : ''}">
             <app-link
               href="/settings"
               title="${ifDefined(

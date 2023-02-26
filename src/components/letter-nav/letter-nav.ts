@@ -9,7 +9,7 @@ import './../app-link/app-link';
 @customElement('letter-nav')
 export class LetterNav extends LitElement {
   @property()
-  route: string;
+  letter: string;
   @property({ type: Array })
   letters: Array<any>;
   static get styles() {
@@ -17,7 +17,7 @@ export class LetterNav extends LitElement {
   }
   constructor() {
     super();
-    this.route = '';
+    this.letter = '';
     this.letters = [];
     this._init();
   }
@@ -41,7 +41,7 @@ export class LetterNav extends LitElement {
 
   private _renderLetter(letter: any) {
     return html`
-      <li class="${letter.escapedLetter === this.route ? 'active' : ''}">
+      <li class="${letter.escapedLetter === this.letter ? 'active' : ''}">
         <app-link href="/letter/${letter.escapedLetter}" letter
           >${letter.letter}</app-link
         >

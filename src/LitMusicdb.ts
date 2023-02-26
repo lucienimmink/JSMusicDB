@@ -53,6 +53,13 @@ export class LitMusicdb extends LitElement {
   @state()
   query: any;
 
+  @state()
+  letter: any;
+  @state()
+  artist: any;
+  @state()
+  album: any;
+
   appRouter: any;
 
   static get styles() {
@@ -71,6 +78,10 @@ export class LitMusicdb extends LitElement {
     this.hasData = false;
     this.hasSK = true;
     this.hasToken = true;
+
+    this.letter = '';
+    this.artist = '';
+    this.album = '';
 
     this.appRouter = router(this);
 
@@ -185,9 +196,13 @@ export class LitMusicdb extends LitElement {
     EventBus.off(CHANGE_URL, this._changeUrl, this);
   }
   firstUpdated() {
-    this.appRouter.goto(window.location.pathname);
+    this._changeUrl(this, window.location.pathname);
   }
-  protected async _changeUrl(target: any, url = '/') {
+  protected _changeUrl(target: any, url = '/') {
+    this.route = url;
+    this.letter = url.split('/letter/')?.[1]?.split('/')[0];
+    this.artist = url.split('/artist/')?.[1]?.split('/')[0];
+    this.album = url.split('/album/')?.[1]?.split('/')[0];
     this.appRouter.goto(url);
   }
   _doRefresh() {
@@ -271,10 +286,10 @@ export class LitMusicdb extends LitElement {
         ${this.hasToken && this.hasData
           ? html`
               <main-header
-                artist="${this.params.artist}"
-                album="${this.params.album}"
+                artist="${this.artist}"
+                album="${this.album}"
               ></main-header>
-              <letter-nav route="${this.params.letter}"></letter-nav>
+              <letter-nav letter="${this.letter}"></letter-nav>
               <side-nav
                 route="${this.route}"
                 .hasVisiblePlayer=${this.showPlayer}
