@@ -61,6 +61,7 @@ export class LitMusicdb extends LitElement {
   album: any;
 
   appRouter: any;
+  _player: any;
 
   static get styles() {
     return [animationCSS, litMusicdb, scrollbar];
@@ -83,20 +84,10 @@ export class LitMusicdb extends LitElement {
     this.artist = '';
     this.album = '';
 
+    this._player = null;
+
     this.appRouter = router(this);
 
-    this.addEventListener(
-      '_player',
-      (e: any) => {
-        const nowPlaying = this.shadowRoot?.querySelector('now-playing');
-        nowPlaying?.dispatchEvent(
-          new CustomEvent('_player', { detail: e.detail })
-        );
-      },
-      {
-        passive: true,
-      }
-    );
     if ('serviceWorker' in window.navigator) {
       window.navigator.serviceWorker.addEventListener(
         'message',
@@ -213,9 +204,6 @@ export class LitMusicdb extends LitElement {
   _doToggleSetting(target: any, setting: any) {
     if (target.target !== this) this._toggleSetting(setting);
   }
-  _relay = (type: string, method = '') => {
-    this.dispatchEvent(new CustomEvent(type, { detail: method }));
-  };
   _startCurrentPlaylist = () => {
     this.showPlayer = true;
   };

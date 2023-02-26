@@ -42,6 +42,7 @@ import { playlistsIcon } from '../icons/playlists';
 import { previousIcon } from '../icons/previous';
 import { randomIcon } from '../icons/random';
 import { volumeIcon } from '../icons/volume';
+import('./../track/track.js');
 
 @customElement('now-playing')
 @localized()
@@ -91,39 +92,30 @@ export class NowPlaying extends LitElement {
     this.accentColor = '';
     this.playlist = null;
     this.hasError = false;
-    this.addEventListener(
-      '_player',
-      (e: any) => {
-        this._player = e.detail;
-        this._visualize();
-      },
-      {
-        passive: true,
-        once: true,
-      }
-    );
-    getSettingByName('visual').then((hasVisual: any) => {
+    this.track = window._track;
+    getSettingByName('visual').then(async (hasVisual: any) => {
       this.hasCanvas = !!hasVisual;
+      await this.sleep(120);
+      this._player = window._player;
+      this.accentColor = window._accentColour;
+      this._visualize();
+      this._updatePlaylist();
     });
     getSettingByName('smallArt').then((smallArt: any) => {
       this.smallArt = !!smallArt;
     });
   }
-  connectedCallback() {
+  async sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+  async connectedCallback() {
     super.connectedCallback();
-    // these events are needed on the background as well
     EventBus.on(TOGGLE_SHUFFLE_UPDATED, this._doToggleShuffleUpdated, this);
     EventBus.on(ACCENT_COLOR, this._doAccentColor, this);
     EventBus.on(PLAYER_ERROR, this._doHasError, this);
     EventBus.on(UPDATE_PLAYER, this._doUpdate, this);
     EventBus.on(TOGGLE_SETTING, this._doToggleSetting, this);
-
-    getSettingByName('visual').then((hasVisual: any) => {
-      this.hasCanvas = !!hasVisual;
-    });
-    getSettingByName('smallArt').then((smallArt: any) => {
-      this.smallArt = !!smallArt;
-    });
+    this.track = window._track;
   }
   disconnectedCallback() {
     super.disconnectedCallback();
@@ -163,10 +155,23 @@ export class NowPlaying extends LitElement {
       navigator.userAgent.indexOf('Mobi') === -1 &&
       this._player
     ) {
-      const audioCtx = new ((window as any).AudioContext ||
-        (window as any).webkitAudioContext)();
-      this._analyzer = audioCtx.createAnalyser();
-      const source = audioCtx.createMediaElementSource(this._player);
+      let audioCtx;
+      let source;
+      let analyser;
+      if (window._audioCtx) {
+        audioCtx = window._audioCtx;
+        source = window._source;
+        analyser = window._analyser;
+      } else {
+        audioCtx = new AudioContext();
+        analyser = audioCtx.createAnalyser();
+        source = audioCtx.createMediaElementSource(this._player);
+        // store in window so we can access it later
+        window._audioCtx = audioCtx;
+        window._source = source;
+        window._analyser = analyser;
+      }
+      this._analyzer = analyser;
       const sampleRate = audioCtx.sampleRate;
       this._analyzer.fftSize = this._calculateFft(sampleRate);
       this._hearableBars = this._getHearableBars(
@@ -250,18 +255,22 @@ export class NowPlaying extends LitElement {
       }
     }
   }
+  async _updatePlaylist() {
+    const playlist: any = await getCurrentPlaylist();
+    const tracks = playlist?.tracks.map((t: any) => {
+      if (t.id === this.track.id) {
+        return this.track;
+      }
+      return this._resetTrack(t);
+    });
+    playlist.tracks = tracks;
+    this.playlist = playlist;
+    this.requestUpdate();
+  }
   async _update({ current, type }: { current: any; type: string }) {
     this.track = current;
     if (type === PLAY_PLAYER_START || type === PAUSE_PLAYER) {
-      const playlist: any = await getCurrentPlaylist();
-      const tracks = playlist?.tracks.map((t: any) => {
-        if (t.id === current.id) {
-          return current;
-        }
-        return this._resetTrack(t);
-      });
-      playlist.tracks = tracks;
-      this.playlist = playlist;
+      await this._updatePlaylist();
     }
     this.requestUpdate();
   }
@@ -495,7 +504,7 @@ export class NowPlaying extends LitElement {
         ${this.playlist?.tracks.map(track => {
           return html`<track-in-list
             .track=${track}
-            .type=${this.playlist.type}
+            type=${this.playlist.type}
             ?showAlbum=${true}
             @click=${() => {
               this._setPlaylist(track);

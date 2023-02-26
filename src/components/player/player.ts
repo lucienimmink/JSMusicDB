@@ -248,9 +248,7 @@ export class Album extends LitElement {
         });
       }
       // share player
-      document
-        .querySelector('lit-musicdb')
-        ?.dispatchEvent(new CustomEvent('_player', { detail: player }));
+      window._player = player;
     } else {
       console.warn('no player found :(');
     }
@@ -268,6 +266,7 @@ export class Album extends LitElement {
         current: this.track,
         type: PLAY_PLAYER,
       });
+      window._track = this.track;
       this.timePlayed = Math.floor(performance.now());
       if (!this.hasScrobbled && this.timePlayed > ONEMINUTE) {
         this._scrobble();
@@ -292,6 +291,7 @@ export class Album extends LitElement {
       current: this.track,
       type: PLAY_PLAYER_START,
     });
+    window._track = this.track;
     if ('mediaSession' in navigator) {
       (navigator as any).mediaSession.playbackState = 'playing';
     }
@@ -309,6 +309,7 @@ export class Album extends LitElement {
       current: this.track,
       type: PAUSE_PLAYER,
     });
+    window._track = this.track;
     if ('mediaSession' in navigator) {
       (navigator as any).mediaSession.playbackState = 'paused';
     }
@@ -325,6 +326,7 @@ export class Album extends LitElement {
         this.track.buffered.end =
           buffered.end(buffered.length !== 0 ? buffered.length - 1 : 0) * 1000;
         EventBus.emit(UPDATE_PLAYER, this, { current: this.track });
+        window._track = this.track;
       }
     }
   }
@@ -442,6 +444,7 @@ export class Album extends LitElement {
   _setDynamicAccentColor() {
     getDominantColorByURL(this.art, (rgba: any) => {
       const colours = getColorsFromRGBWithBGColor(rgba, this.bgColor);
+      window._accentColour = colours.text;
       EventBus.emit(ACCENT_COLOR, this, colours.text);
       addCustomCss(colours);
     });

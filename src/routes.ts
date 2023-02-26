@@ -225,6 +225,10 @@ export default (controller: any) =>
       name: 'playing',
       path: '/playing',
       render: () => {
+        const nowPlaying = controller.shadowRoot?.querySelector('now-playing');
+        nowPlaying?.dispatchEvent(
+          new CustomEvent('_player', { detail: controller._player })
+        );
         return renderCallback(
           html`<now-playing></now-playing>`,
           '/',
