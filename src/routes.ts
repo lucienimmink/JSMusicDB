@@ -7,7 +7,7 @@ import { global as EventBus } from './utils/EventBus';
 const renderCallback = (html: any, url: string, controller: HTMLElement) => {
   window.scrollTo(0, 0);
   EventBus.emit(TOGGLE_MENU, {}, 'close');
-  if (url === '/now-playing') {
+  if (url === '/playing') {
     document.querySelector('html')?.classList.add('noscroll');
     return;
   }
@@ -222,18 +222,18 @@ export default (controller: any) =>
       },
     },
     {
-      name: 'now-playing',
-      path: '/now-playing',
+      name: 'playing',
+      path: '/playing',
       render: () => {
         return renderCallback(
           html`<now-playing></now-playing>`,
-          '/now-playing',
+          '/',
           controller
         );
       },
       // @ts-ignore
       enter: async () => {
-        await import('./components/now-playing/now-playing');
+        await import('./components/now-playing/now-playing.js');
       },
     },
   ]);

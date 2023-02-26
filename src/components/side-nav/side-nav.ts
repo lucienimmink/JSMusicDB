@@ -231,9 +231,9 @@ export class SideNav extends LitElement {
               >${playlistsIcon} <span>${t('labels.playlists')}</span></app-link
             >
           </li>
-          <li class="${this.route === '/now-playing' ? 'active' : ''}">
+          <li class="${this.route === '/playing' ? 'active' : ''}">
             <app-link
-              href="/now-playing"
+              href="/playing"
               title="${ifDefined(
                 t('labels.now-playing') === null
                   ? undefined
