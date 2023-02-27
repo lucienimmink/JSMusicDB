@@ -87,79 +87,6 @@ export class LitMusicdb extends LitElement {
 
     this.appRouter = router(this);
 
-    if ('serviceWorker' in window.navigator) {
-      window.navigator.serviceWorker.addEventListener(
-        'message',
-        async (e: MessageEvent) => {
-          const { type } = e.data;
-          if (type === 'refresh') {
-            await update();
-            EventBus.emit(REFRESH, this);
-          }
-        }
-      );
-    }
-    this._getTheme();
-    musicdb
-      .then(() => {
-        getSettingByName('playliststate').then((start: any) => {
-          if (start) {
-            this._startCurrentPlaylist();
-          }
-        });
-        this.hasData = true;
-        this._getTheme();
-        animateCSS(
-          this.shadowRoot?.querySelector('.loading-wrapper'),
-          'fadeOut'
-        ).then(() => {
-          this.loading = false;
-        });
-      })
-      .catch((error: any) => {
-        console.log(error);
-        // TODO: initiate data rescan
-        this.hasData = true;
-        this.loading = false;
-      });
-
-    getSK()
-      .then((sk: unknown) => {
-        this.hasSK = !!sk;
-        if (!this.hasSK) {
-          animateCSS(
-            this.shadowRoot?.querySelector('.loading-wrapper'),
-            'fadeOut'
-          ).then(() => {
-            this.loading = false;
-          });
-        }
-      })
-      .catch(() => {
-        this.hasSK = false;
-      });
-    getJwt()
-      .then((jwt: any) => {
-        this.hasToken = !!jwt;
-        if (!this.hasToken) {
-          animateCSS(
-            this.shadowRoot?.querySelector('.loading-wrapper'),
-            'fadeOut'
-          ).then(() => {
-            this.loading = false;
-          });
-        }
-      })
-      .catch(() => {
-        this.hasToken = false;
-      });
-    getSettingByName('gps').then((useGPS: any) => {
-      updateSunriseData(useGPS || false).then(() => {
-        this._getTheme();
-      });
-    });
-    launchQueue();
-
     window.onpopstate = (e: any) => {
       this._changeUrl(this, e?.state?.path);
     };
@@ -173,7 +100,7 @@ export class LitMusicdb extends LitElement {
     EventBus.on(RESET_SERVER, this._resetServer, this);
     EventBus.on(RESET_LASTFM, this._resetLastFM, this);
     EventBus.on(CHANGE_URL, this._changeUrl, this);
-    i18nInit();
+    this._init();
   }
   disconnectedCallback() {
     super.disconnectedCallback();
@@ -185,8 +112,78 @@ export class LitMusicdb extends LitElement {
     EventBus.off(RESET_LASTFM, this._resetLastFM, this);
     EventBus.off(CHANGE_URL, this._changeUrl, this);
   }
-  firstUpdated() {
+  private _initServiceWorkerRefresh() {
+    if ('serviceWorker' in window.navigator) {
+      window.navigator.serviceWorker.addEventListener(
+        'message',
+        async (e: MessageEvent) => {
+          const { type } = e.data;
+          if (type === 'refresh') {
+            await update();
+            EventBus.emit(REFRESH, this);
+          }
+        }
+      );
+    }
+  }
+  private async initMusicDB() {
+    try {
+      await musicdb;
+      this.hasData = true;
+    } catch (error) {
+      console.log(error);
+      this.hasData = true;
+      this.loading = false;
+    }
+  }
+  private async _initSettingsAndThemes() {
+    const start = await getSettingByName('playliststate');
+    if (start) {
+      this._startCurrentPlaylist();
+      await this._getTheme();
+    }
+    const useGPS = await getSettingByName('gps');
+    await updateSunriseData(useGPS || false);
+    await this._getTheme();
+  }
+  private async _initLastFM() {
+    const sk = await getSK();
+    this.hasSK = !!sk;
+    if (!this.hasSK) {
+      animateCSS(
+        this.shadowRoot?.querySelector('.loading-wrapper'),
+        'fadeOut'
+      ).then(() => {
+        this.loading = false;
+      });
+    }
+  }
+  private async _initToken() {
+    const jwt = await getJwt();
+    this.hasToken = !!jwt;
+    if (!this.hasToken) {
+      animateCSS(
+        this.shadowRoot?.querySelector('.loading-wrapper'),
+        'fadeOut'
+      ).then(() => {
+        this.loading = false;
+      });
+    }
+  }
+  private async _init() {
+    this._initServiceWorkerRefresh();
+    await this.initMusicDB();
+    await this._initSettingsAndThemes();
+    await this._initLastFM();
+    await this._initToken();
+    launchQueue();
+    i18nInit();
     this._changeUrl(this, window.location.pathname);
+    this.loading = false;
+    await animateCSS(
+      this.shadowRoot?.querySelector('.loading-wrapper'),
+      'fadeOut'
+    );
   }
   protected _changeUrl(target: any, url = '/') {
     this.route = url;
@@ -195,10 +192,9 @@ export class LitMusicdb extends LitElement {
     this.album = url.split('/album/')?.[1]?.split('/')[0];
     this.appRouter.goto(url);
   }
-  _doRefresh() {
-    refresh().then(() => {
-      this.requestUpdate();
-    });
+  async _doRefresh() {
+    await refresh();
+    this.requestUpdate();
   }
   _doToggleSetting(target: any, setting: any) {
     if (target.target !== this) this._toggleSetting(setting);
