@@ -38,7 +38,7 @@ export default css`
     transition: color 0.5s ease-in-out, background-color 0.5s ease-in-out;
   }
   h1 div {
-    margin-top: -6px;
+    line-height: 1;
   }
   app-link {
     color: var(--primary, #006ecd);
