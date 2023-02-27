@@ -1,5 +1,5 @@
 import { localized, t } from '@weavedev/lit-i18next';
-import { html, LitElement, nothing } from 'lit';
+import { html, LitElement, nothing, PropertyValueMap } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import musicdb from '../../components/musicdb';
 import grid from '../../styles/grid';
@@ -34,11 +34,12 @@ export class Artist extends LitElement {
     super.disconnectedCallback();
     EventBus.off(REFRESH, this._getAlbums, this);
   }
-  attributeChangedCallback(name: any, oldval: any, newval: any) {
-    if (name === 'artist') {
-      this._getAlbums(newval);
+  protected willUpdate(
+    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+  ): void {
+    if (_changedProperties.has('artist')) {
+      this._getAlbums(this.artist);
     }
-    super.attributeChangedCallback(name, oldval, newval);
   }
   _getAlbums(artist = this.artist) {
     musicdb

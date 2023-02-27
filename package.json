@@ -74,7 +74,8 @@
     "fuse.js": "^6.5.3",
     "i18next-browser-languagedetector": "^7.0.1",
     "idb-keyval": "^6.2.0",
-    "lit": "^2.2.7"
+    "lit": "^2.2.7",
+    "urlpattern-polyfill": "^6.0.2"
   },
   "volta": {
     "node": "18.14.2",

@@ -1,6 +1,6 @@
 import timeSpan from '@addasoft/timespan';
 import { localized, t } from '@weavedev/lit-i18next';
-import { html, LitElement, nothing } from 'lit';
+import { html, LitElement, nothing, PropertyValueMap } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import container from '../../styles/container';
@@ -39,16 +39,12 @@ export class SearchNav extends LitElement {
     this.query = '';
     this._doSearch();
   }
-  attributeChangedCallback(name: any, oldval: any, newval: any) {
-    if (name === 'query') {
+  protected willUpdate(
+    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+  ): void {
+    if (_changedProperties.has('query')) {
       this._doSearch();
     }
-    if (name === 'activeroute' && newval !== 'search') {
-      this.artists = null;
-      this.albums = null;
-      this.tracks = null;
-    }
-    super.attributeChangedCallback(name, oldval, newval);
   }
   connectedCallback() {
     super.connectedCallback();

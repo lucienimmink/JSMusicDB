@@ -1,6 +1,6 @@
 import timeSpan from '@addasoft/timespan';
 import { localized, t } from '@weavedev/lit-i18next';
-import { html, LitElement, nothing } from 'lit';
+import { html, LitElement, nothing, PropertyValueMap } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import buttons from '../../styles/buttons';
 import container from '../../styles/container';
@@ -41,7 +41,7 @@ export class LetterNav extends LitElement {
   current: any;
   @property()
   lastFMUserName: string;
-  @property({ attribute: 'playlist-id' })
+  @property()
   playlistId: string;
   showStartArtistSelection: boolean;
   @state()
@@ -55,14 +55,16 @@ export class LetterNav extends LitElement {
   static get styles() {
     return [headers, container, smallMuted, responsive, playlists, buttons];
   }
-  async attributeChangedCallback(name: any, oldval: any, newval: any) {
-    if (name === 'playlist-id') {
+  protected async willUpdate(
+    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+  ): Promise<void> {
+    if (_changedProperties.has('playlistId')) {
       await this._getPlaylists();
-      if (newval === 'radio') {
+      if (this.playlistId === 'radio') {
         this.artists = [];
         this._populateArtists();
       }
-      this._doSwitchPlaylist(decodeURIComponent(newval));
+      this._doSwitchPlaylist(decodeURIComponent(this.playlistId));
     }
   }
   _getPlaylists = async () => {

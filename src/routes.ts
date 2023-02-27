@@ -4,14 +4,19 @@ import { TOGGLE_MENU } from './components/side-nav/side-nav.js';
 import { animateCSS } from './utils/animations.js';
 import { global as EventBus } from './utils/EventBus';
 
+// @ts-ignore: Property 'UrlPattern' does not exist
+if (!globalThis.URLPattern) {
+  await import('urlpattern-polyfill');
+}
+
 const renderCallback = (html: any, url: string, controller: HTMLElement) => {
   window.scrollTo(0, 0);
   EventBus.emit(TOGGLE_MENU, {}, 'close');
   if (url === '/playing') {
     document.querySelector('html')?.classList.add('noscroll');
-    return;
+  } else {
+    document.querySelector('html')?.classList.remove('noscroll');
   }
-  document.querySelector('html')?.classList.remove('noscroll');
   if (!url.includes('/playlists/'))
     animateCSS(controller.shadowRoot?.querySelector('#outlet'), 'slideInUp');
   return html;
@@ -25,9 +30,9 @@ export default (controller: any) =>
       render: () => {
         return renderCallback(html`<home-nav></home-nav>`, '/', controller);
       },
-      // @ts-ignore
       enter: async () => {
         await import('./components/home/home.js');
+        return true;
       },
     },
     {
@@ -36,15 +41,15 @@ export default (controller: any) =>
       render: props => {
         return renderCallback(
           html`<artists-in-letter
-            letter="${props?.letter}"
+            .letter="${props?.letter}"
           ></artists-in-letter>`,
           '/letter/:letter',
           controller
         );
       },
-      // @ts-ignore
       enter: async () => {
         await import('./components/letter/letter');
+        return true;
       },
     },
     {
@@ -55,15 +60,15 @@ export default (controller: any) =>
       }),
       render: props => {
         return renderCallback(
-          html`<release-alert artist="${props.artist}"></release-alert>
-            <albums-in-artist artist="${props.artist}"></albums-in-artist>`,
+          html`<release-alert .artist="${props.artist}"></release-alert>
+            <albums-in-artist .artist="${props.artist}"></albums-in-artist>`,
           '/letter/:letter/artist/:artist',
           controller
         );
       },
-      // @ts-ignore
       enter: async () => {
         await import('./components/artist/artist');
+        return true;
       },
     },
     {
@@ -75,16 +80,16 @@ export default (controller: any) =>
       render: props => {
         return renderCallback(
           html`<tracks-in-album
-            artist="${props.artist}"
-            album="${props.album}"
+            .artist="${props.artist}"
+            .album="${props.album}"
           ></tracks-in-album>`,
           '/letter/:letter/artist/:artist/album/:album',
           controller
         );
       },
-      // @ts-ignore
       enter: async () => {
         await import('./components/album/album');
+        return true;
       },
     },
     {
@@ -97,9 +102,9 @@ export default (controller: any) =>
           controller
         );
       },
-      // @ts-ignore
       enter: async () => {
         await import('./components/settings/settings');
+        return true;
       },
     },
     {
@@ -114,9 +119,9 @@ export default (controller: any) =>
           controller
         );
       },
-      // @ts-ignore
       enter: async () => {
         await import('./components/years/years');
+        return true;
       },
     },
     {
@@ -131,9 +136,9 @@ export default (controller: any) =>
           controller
         );
       },
-      // @ts-ignore
       enter: async () => {
         await import('./components/artists/artists');
+        return true;
       },
     },
     {
@@ -148,9 +153,9 @@ export default (controller: any) =>
           controller
         );
       },
-      // @ts-ignore
       enter: async () => {
         await import('./components/albums/albums');
+        return true;
       },
     },
     {
@@ -165,9 +170,9 @@ export default (controller: any) =>
           controller
         );
       },
-      // @ts-ignore
       enter: async () => {
         await import('./components/letters/letters');
+        return true;
       },
     },
     {
@@ -180,9 +185,9 @@ export default (controller: any) =>
           controller
         );
       },
-      // @ts-ignore
       enter: async () => {
         await import('./components/playlists/playlists');
+        return true;
       },
     },
     {
@@ -193,14 +198,14 @@ export default (controller: any) =>
       }),
       render: props => {
         return renderCallback(
-          html`<playlists-nav playlist-id="${props.playlist}"></playlists-nav>`,
+          html`<playlists-nav .playlistId="${props.playlist}"></playlists-nav>`,
           '/playlists/:playlist',
           controller
         );
       },
-      // @ts-ignore
       enter: async () => {
         await import('./components/playlists/playlists');
+        return true;
       },
     },
     {
@@ -211,14 +216,14 @@ export default (controller: any) =>
       }),
       render: props => {
         return renderCallback(
-          html`<search-nav query="${props?.query}"></search-nav>`,
+          html`<search-nav .query="${props?.query}"></search-nav>`,
           '/search/:query',
           controller
         );
       },
-      // @ts-ignore
       enter: async () => {
         await import('./components/search/search');
+        return true;
       },
     },
     {
@@ -235,9 +240,9 @@ export default (controller: any) =>
           controller
         );
       },
-      // @ts-ignore
       enter: async () => {
         await import('./components/now-playing/now-playing.js');
+        return true;
       },
     },
   ]);

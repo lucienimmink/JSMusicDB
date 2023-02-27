@@ -1,5 +1,5 @@
 import { localized, t } from '@weavedev/lit-i18next';
-import { html, LitElement, nothing } from 'lit';
+import { html, LitElement, nothing, PropertyValueMap } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import alert from '../../styles/alert';
 import { global as EventBus } from '../../utils/EventBus';
@@ -67,6 +67,13 @@ export default class ReleaseAlert extends LitElement {
         >${release.album}</a
       >
       <br />`;
+  }
+  protected willUpdate(
+    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+  ): void {
+    if (_changedProperties.has('artist')) {
+      this._updateFeed();
+    }
   }
   render() {
     return html` ${this.newReleases.length > 0

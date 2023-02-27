@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2021",
+    "target": "esnext",
     "module": "ESNext",
     "moduleResolution": "node",
     "noEmitOnError": true,
