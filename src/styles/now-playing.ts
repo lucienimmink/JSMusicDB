@@ -103,7 +103,7 @@ export default css`
     margin: 0 0.5rem;
   }
   h4 {
-    font-weight: 300;
+    font-weight: normal;
     font-size: 1.3rem;
     margin: 0;
     white-space: nowrap;
@@ -111,7 +111,7 @@ export default css`
     overflow: hidden;
   }
   h5 {
-    font-weight: 300;
+    font-weight: normal;
     font-size: 1.1rem;
     margin: 0;
     white-space: nowrap;
@@ -128,7 +128,7 @@ export default css`
   }
   .controls .btn-toggle {
     position: absolute;
-    bottom: -16px;
+    bottom: -23px;
     height: 25px;
     padding-left: 5px;
   }
@@ -173,11 +173,11 @@ export default css`
   }
   .floating-text-details h4 {
     font-size: 3rem;
-    font-weight: 300;
+    font-weight: normal;
   }
   .floating-text-details h5 {
     font-size: 2rem;
-    font-weight: 300;
+    font-weight: normal;
   }
   .floating-text-details app-link {
     transition: all 0.2s ease-in-out 0s;
@@ -225,7 +225,7 @@ export default css`
       width: 1.5rem;
     }
     .controls .btn-toggle {
-      bottom: -10px;
+      bottom: -17px;
       height: 25px;
       padding-left: 17px;
     }
@@ -280,8 +280,7 @@ export default css`
   }
   /* notihng is playing */
   h3 {
-    padding-top: 1.5rem;
-    font-weight: 300;
+    font-weight: normal;
   }
   app-link {
     color: var(--primary, #006ecd);
@@ -303,5 +302,10 @@ export default css`
   }
   ::-webkit-scrollbar-thumb {
     background-color: var(--progress, #006ecd);
+  }
+  @media (min-width: 576px) {
+    h3 {
+      padding-top: 1.5rem;
+    }
   }
 `;

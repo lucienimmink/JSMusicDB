@@ -19,9 +19,9 @@ export default css`
     width: 100%;
   }
   .playlists select {
-    width: calc(100% - 1rem);
+    width: calc(100% - 2rem);
     box-sizing: border-box;
-    margin: 0.5rem;
+    margin: 1.85rem 1rem 0.5rem;
   }
   .playlists li {
     display: flex;

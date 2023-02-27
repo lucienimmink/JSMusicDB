@@ -36,7 +36,7 @@ export default css`
     text-overflow: ellipsis;
     margin: 0;
     flex-grow: 0;
-    font-weight: 300;
+    font-weight: normal;
   }
   h2 {
     margin-top: -5px;
@@ -48,6 +48,9 @@ export default css`
   }
   h4 {
     font-size: 1rem;
+  }
+  h4 + h4 {
+    margin-top: 0.3rem;
   }
   h3 {
     flex-grow: 1;

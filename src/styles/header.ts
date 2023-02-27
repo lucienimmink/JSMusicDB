@@ -33,9 +33,12 @@ export default css`
     display: flex;
     align-items: center;
     height: 50px;
-    font-weight: 300;
+    font-weight: normal;
     padding-left: 1rem;
     transition: color 0.5s ease-in-out, background-color 0.5s ease-in-out;
+  }
+  h1 div {
+    margin-top: -6px;
   }
   app-link {
     color: var(--primary, #006ecd);

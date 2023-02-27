@@ -122,7 +122,7 @@ export class SideNav extends LitElement {
                       }}
                       >${timesIcon}</a
                     >
-                    JSMusicDB
+                    <div>JSMusicDB</div>
                   </h1>
                 </li>
                 <li>
