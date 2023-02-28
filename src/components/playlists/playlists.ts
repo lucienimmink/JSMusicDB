@@ -25,6 +25,7 @@ import {
   UPDATE_PLAYER,
 } from '../../utils/player';
 import { CHANGE_URL } from '../../utils/router';
+import { nowPlayingIcon } from '../icons/now-playing';
 import { pauseIcon } from '../icons/pause';
 import { playIcon } from '../icons/play';
 import { redoIcon } from '../icons/redo';
@@ -224,36 +225,32 @@ export class LetterNav extends LitElement {
   }
   _doSwitchPlaylist(switchTo: string) {
     this.currentPlaylistId = switchTo;
+    this.showStartArtistSelection = false;
     switch (switchTo) {
       case 'current':
-        this.showStartArtistSelection = false;
         this._setActivePlaylist('current');
         break;
       case 'loved':
-        this.showStartArtistSelection = false;
         this._getLovedTracks();
         break;
       case 'random':
-        this.showStartArtistSelection = false;
         this._generateRandom();
         break;
       case 'random-pref':
-        this.showStartArtistSelection = false;
         this._generateRandomByPreference();
         break;
       case 'pref-radio':
-        this.showStartArtistSelection = false;
         this._generateRadioByPreference();
         break;
       case 'top':
-        this.showStartArtistSelection = false;
         this._getTopTracks();
         break;
       case 'radio':
+        this.showStartArtistSelection = true;
         this._startArtistRadio();
         break;
       default:
-        this._setActivePlaylist('current');
+      // this._setActivePlaylist('current');
     }
   }
   _loadPlaylist() {
@@ -302,18 +299,22 @@ export class LetterNav extends LitElement {
         <li class="header">${t('headers.playlists')}</li>
         ${this.current?.tracks?.length > 0
           ? html`
-              <li>
+              <li class="${this.playlistId === 'current' ? 'active' : ''}">
                 <app-link href="/playlists/current" flex
-                  >${t('links.current-playlist')}</app-link
+                  >${t('links.current-playlist')}<span class="icon-note"
+                    >${nowPlayingIcon}</span
+                  ></app-link
                 >
               </li>
             `
           : nothing}
         ${this.lastFMUserName
           ? html`
-              <li>
+              <li class="${this.playlistId === 'loved' ? 'active' : ''}">
                 <app-link href="/playlists/loved" flex
-                  >${t('links.loved-playlist')}
+                  >${t('links.loved-playlist')}<span class="icon-note"
+                    >${nowPlayingIcon}</span
+                  >
                   ${this.currentPlaylistId === 'loved'
                     ? html`
                         <button
@@ -330,9 +331,12 @@ export class LetterNav extends LitElement {
           : nothing}
         ${this.lastFMUserName
           ? html`
-              <li>
+              <li class="${this.playlistId === 'top' ? 'active' : ''}">
                 <app-link href="/playlists/top" flex
-                  >${t('links.most-played-playlist')} ${this.lastFMUserName}
+                  >${t('links.most-played-playlist')}
+                  ${this.lastFMUserName}<span class="icon-note"
+                    >${nowPlayingIcon}</span
+                  >
                   ${this.currentPlaylistId === 'top'
                     ? html` <button
                         class="btn btn-small btn-primary btn-refresh"
@@ -345,9 +349,11 @@ export class LetterNav extends LitElement {
               </li>
             `
           : nothing}
-        <li>
+        <li class="${this.playlistId === 'random' ? 'active' : ''}">
           <app-link href="/playlists/random" flex
-            >${this.max} ${t('links.random-playlist')}
+            >${this.max} ${t('links.random-playlist')}<span class="icon-note"
+              >${nowPlayingIcon}</span
+            >
             ${this.currentPlaylistId === 'random'
               ? html` <button
                   class="btn btn-small btn-primary btn-refresh"
@@ -360,9 +366,12 @@ export class LetterNav extends LitElement {
         </li>
         ${this.lastFMUserName
           ? html`
-              <li>
+              <li class="${this.playlistId === 'random-pref' ? 'active' : ''}">
                 <app-link href="/playlists/random-pref" flex
-                  >${this.max} ${t('links.preference-playlist')}
+                  >${this.max} ${t('links.preference-playlist')}<span
+                    class="icon-note"
+                    >${nowPlayingIcon}</span
+                  >
                   ${this.currentPlaylistId === 'random-pref'
                     ? html` <button
                         class="btn btn-small btn-primary btn-refresh"
@@ -377,9 +386,11 @@ export class LetterNav extends LitElement {
           : nothing}
         ${this.lastFMUserName
           ? html`
-              <li>
+              <li class="${this.playlistId === 'pref-radio' ? 'active' : ''}">
                 <app-link href="/playlists/pref-radio" flex
-                  >${t('links.preference-radio')}
+                  >${t('links.preference-radio')}<span class="icon-note"
+                    >${nowPlayingIcon}</span
+                  >
                   ${this.currentPlaylistId === 'pref-radio'
                     ? html` <button
                         class="btn btn-small btn-primary btn-refresh"
@@ -392,9 +403,11 @@ export class LetterNav extends LitElement {
               </li>
             `
           : nothing}
-        <li>
+        <li class="${this.playlistId === 'radio' ? 'active' : ''}">
           <app-link href="/playlists/radio" flex
-            >${t('links.artist-radio')}</app-link
+            >${t('links.artist-radio')}<span class="icon-note"
+              >${nowPlayingIcon}</span
+            ></app-link
           >
         </li>
       </ul>

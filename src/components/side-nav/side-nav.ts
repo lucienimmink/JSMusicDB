@@ -220,7 +220,7 @@ export class SideNav extends LitElement {
           </li>
           <li class="${this.route.includes('/playlists') ? 'active' : ''}">
             <app-link
-              href="/playlists"
+              href="/playlists/current"
               title="${ifDefined(
                 t('labels.playlists') === null
                   ? undefined

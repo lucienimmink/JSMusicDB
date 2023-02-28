@@ -2,7 +2,7 @@ import { css } from 'lit';
 
 export default css`
   .playlists .header {
-    height: 61px;
+    height: 60px;
   }
   ul {
     margin: 0;
@@ -61,6 +61,19 @@ export default css`
   .playlists li app-link:hover .btn-refresh {
     opacity: 1;
     pointer-events: all;
+  }
+  .playlists li app-link .icon-note svg {
+    width: 16px;
+    display: inline-block;
+    margin-left: 16px;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+  }
+  .playlists li.active app-link {
+    background: var(--background2);
+  }
+  .playlists li.active app-link .icon-note svg {
+    opacity: 1;
   }
   .playlist li {
     display: flex;
