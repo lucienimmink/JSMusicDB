@@ -22,6 +22,8 @@ const musicdb = new Promise((resolve, reject) => {
         .catch(() => {
           reject('music data file not found');
         });
+    } else {
+      reject('server not set');
     }
   });
 });

@@ -131,7 +131,6 @@ export class LitMusicdb extends LitElement {
       await musicdb;
       this.hasData = true;
     } catch (error) {
-      console.log(error);
       this.hasData = true;
       this.loading = false;
     }
@@ -172,10 +171,10 @@ export class LitMusicdb extends LitElement {
   }
   private async _init() {
     this._initServiceWorkerRefresh();
-    await this.initMusicDB();
-    await this._initSettingsAndThemes();
     await this._initLastFM();
     await this._initToken();
+    await this.initMusicDB();
+    await this._initSettingsAndThemes();
     launchQueue();
     i18nInit();
     this._changeUrl(this, window.location.pathname);
