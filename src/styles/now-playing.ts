@@ -168,7 +168,7 @@ export default css`
     bottom: 9px;
     background: var(--background-floating-text);
     backdrop-filter: blur(10px);
-    padding: 0 10px;
+    padding: 0 10px 5px;
     max-width: calc(100vw - 250px);
   }
   .floating-text-details h4 {
