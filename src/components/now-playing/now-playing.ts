@@ -1,4 +1,5 @@
 import timeSpan from '@addasoft/timespan';
+import '@lit-labs/virtualizer';
 import { localized, t } from '@weavedev/lit-i18next';
 import { html, LitElement, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -258,7 +259,7 @@ export class NowPlaying extends LitElement {
   async _updatePlaylist() {
     const playlist: any = await getCurrentPlaylist();
     const tracks = playlist?.tracks.map((t: any) => {
-      if (t.id === this.track.id) {
+      if (t.id === this.track?.id) {
         return this.track;
       }
       return this._resetTrack(t);
@@ -498,19 +499,28 @@ export class NowPlaying extends LitElement {
                     </div>`}
     </div>`;
   }
+  private _renderTrack(track: any) {
+    return html`<track-in-list
+      .track=${track}
+      type=${this.playlist.type}
+      ?showAlbum=${true}
+      @click=${() => {
+        this._setPlaylist(track);
+      }}
+    ></track-in-list>`;
+  }
   private _renderBottom() {
     return html`<div class="bottom">
       <div class="playlist">
-        ${this.playlist?.tracks.map(track => {
-          return html`<track-in-list
-            .track=${track}
-            type=${this.playlist.type}
-            ?showAlbum=${true}
-            @click=${() => {
-              this._setPlaylist(track);
-            }}
-          ></track-in-list>`;
-        })}
+        <!-- ${this.playlist?.tracks.map(track => {
+          this._renderTrack(track);
+        })} -->
+        <lit-virtualizer
+          .scrollTarget=${window}
+          .items=${this.playlist?.tracks}
+          .renderItem=${(track: any) => this._renderTrack(track)}
+        >
+        </lit-virtualizer>
       </div>
     </div>`;
   }

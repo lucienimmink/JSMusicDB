@@ -1,4 +1,5 @@
 import timeSpan from '@addasoft/timespan';
+import '@lit-labs/virtualizer';
 import { localized, t } from '@weavedev/lit-i18next';
 import { html, LitElement, nothing, PropertyValueMap } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -528,9 +529,15 @@ export class LetterNav extends LitElement {
                     >(${this.playlist.tracks.length})</span
                   >
                 </li>
-                ${this.playlist.tracks.map((track: any) =>
+                <!-- ${this.playlist.tracks.map((track: any) =>
                   this._renderTrack(track)
-                )}
+                )} -->
+                <lit-virtualizer
+                  .scrollTarget=${window}
+                  .items=${this.playlist.tracks}
+                  .renderItem=${(track: any) => this._renderTrack(track)}
+                >
+                </lit-virtualizer>
               </ul>
             </div>
           `

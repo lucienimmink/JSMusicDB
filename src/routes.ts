@@ -1,6 +1,7 @@
 import { Routes } from '@lit-labs/router';
 import { html } from 'lit';
 import { TOGGLE_MENU } from './components/side-nav/side-nav.js';
+import { LitMusicdb } from './LitMusicdb.js';
 import { animateCSS } from './utils/animations.js';
 import { global as EventBus } from './utils/EventBus';
 
@@ -9,7 +10,9 @@ if (!globalThis.URLPattern) {
   await import('urlpattern-polyfill');
 }
 
-const renderCallback = (html: any, url: string, controller: HTMLElement) => {
+const renderCallback = (html: any, url: string, controller: LitMusicdb) => {
+  const pattern = new URLPattern({ pathname: url });
+  if (!pattern.test(controller?.route, location.origin)) return; // only do the lifting if needed
   window.scrollTo(0, 0);
   EventBus.emit(TOGGLE_MENU, {}, 'close');
   if (url === '/playing') {
@@ -236,7 +239,7 @@ export default (controller: any) =>
         );
         return renderCallback(
           html`<now-playing></now-playing>`,
-          '/',
+          '/playing',
           controller
         );
       },
