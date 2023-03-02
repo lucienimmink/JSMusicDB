@@ -25,7 +25,7 @@ export default css`
     color: var(--text-color);
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     flex-grow: 1;
     flex-shrink: 0;
     width: calc(100% - 75px - 145px);
@@ -46,15 +46,17 @@ export default css`
   h4 {
     font-weight: normal;
     font-size: 1.3rem;
-    margin: 8px 0px 0px;
+    margin: 0px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    line-height: 1.3;
   }
   h5 {
     font-weight: normal;
     font-size: 1.1rem;
-    margin: 0;
+    margin: 3px 0 0;
+    line-height: 1.3;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -69,17 +71,10 @@ export default css`
       margin-right: 1rem;
     }
     h4 {
-      font-weight: normal;
       font-size: 1.5rem;
-      white-space: nowrap;
-      text-overflow: ellipsis;
     }
     h5 {
-      font-weight: normal;
       font-size: 1.2rem;
-      margin: 0;
-      white-space: nowrap;
-      text-overflow: ellipsis;
     }
     .details {
       width: calc(100% - 400px);
