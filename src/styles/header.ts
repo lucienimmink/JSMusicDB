@@ -60,6 +60,7 @@ export default css`
   progress-spinner {
     display: inline-block;
     flex-grow: 0;
+    line-height: 1.3;
     margin: 23px -14px 0px 0px;
     font-size: 0.8rem;
   }

@@ -175,6 +175,7 @@ export const progressBar = css`
     flex-grow: 1;
     background: var(--background);
     position: relative;
+    line-height: 1.3;
   }
   .progress-bar div {
     position: absolute;
