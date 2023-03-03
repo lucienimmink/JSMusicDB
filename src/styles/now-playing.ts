@@ -18,7 +18,7 @@ export default css`
     margin-top: calc((100vh - 100vw) / 2);
   }
   .top {
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(5px);
     background: var(--background-seethrough, #f8f9fa);
     z-index: 2;
     display: flex;
@@ -28,7 +28,7 @@ export default css`
     transition: transform 0.2s ease-in-out;
   }
   .bottom {
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(5px);
     background: var(--background-seethrough, #f8f9fa);
     z-index: 1;
     display: block;

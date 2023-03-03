@@ -71,5 +71,9 @@ export default css`
     h1 {
       background: var(--background3, #e9ecef);
     }
+    h1.playing {
+      background: var(--background3-seethrough, #e9ecef);
+      backdrop-filter: blur(5px);
+    }
   }
 `;

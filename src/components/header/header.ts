@@ -26,6 +26,8 @@ export class Header extends LitElement {
   artist: string;
   @property()
   album: string;
+  @property()
+  route: string;
 
   @state()
   art: any;
@@ -51,6 +53,7 @@ export class Header extends LitElement {
     super();
     this.artist = '';
     this.album = '';
+    this.route = '';
     this.art = null;
     this.alb = null;
     this.isReloading = false;
@@ -208,7 +211,10 @@ export class Header extends LitElement {
   }
   render() {
     return html`<h1
-      class="${this.customWindowsControl ? 'customWindowControls' : ''}"
+      class="${this.customWindowsControl ? 'customWindowControls' : ''} ${this
+        .route === '/playing'
+        ? 'playing'
+        : ''}"
     >
       <a href="#" @click=${this._toggleMenu} title="open menu">${barsIcon}</a>
       <div>

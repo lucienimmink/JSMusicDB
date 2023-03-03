@@ -543,7 +543,7 @@ export class NowPlaying extends LitElement {
               'labels.album'
             )}</app-link
           >${t('content.now-playing.p2.3')}
-          <app-link href="/playlists" inline
+          <app-link href="/playlists/current" inline
             ><span class="icon">${playlistsIcon}</span>${t(
               'labels.playlist'
             )}</app-link

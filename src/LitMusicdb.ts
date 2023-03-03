@@ -270,6 +270,7 @@ export class LitMusicdb extends LitElement {
               <main-header
                 artist="${this.artist}"
                 album="${this.album}"
+                route="${this.route}"
               ></main-header>
               <letter-nav letter="${this.letter}"></letter-nav>
               <side-nav
