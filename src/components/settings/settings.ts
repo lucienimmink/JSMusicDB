@@ -502,12 +502,6 @@ export class SettingsNav extends LitElement {
       ${this.stats?.mp3stream
         ? html` <p>${t('labels.node-mp3stream')}: ${this.stats?.mp3stream}</p> `
         : nothing}
-      <p>
-        ${t('labels.SSE')}:
-        ${this.stats?.isUsingSSE
-          ? html`${t('labels.yes')}`
-          : html`${t('labels.no')}`}
-      </p>
     </div>`;
   }
   render() {

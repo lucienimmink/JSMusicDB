@@ -14,8 +14,18 @@ export default css`
   }
   .backdrop {
     position: fixed;
-    width: 100%;
-    margin-top: calc((100vh - 100vw) / 2);
+  }
+  @media (orientation: landscape) {
+    .backdrop {
+      width: 100%;
+      margin-top: calc((100vh - 100vw) / 4);
+    }
+  }
+  @media (orientation: portrait) {
+    .backdrop {
+      height: 100%;
+      margin-left: calc((100vw - 100vh) / 4);
+    }
   }
   .top {
     backdrop-filter: blur(5px);

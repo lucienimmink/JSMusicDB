@@ -339,7 +339,7 @@ export class NowPlaying extends LitElement {
   private _renderBackdrop() {
     return html`<div class="backdrop">
       <album-art
-        objectFit="contain"
+        objectFit="cover"
         transparent
         no-lazy
         .album=${this.track.album.name}
