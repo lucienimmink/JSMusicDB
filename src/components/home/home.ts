@@ -166,7 +166,7 @@ export class HomeNav extends LitElement {
                   <li class="${track.dummy ? 'dummy ' : ''}">
                     <div>
                       <img
-                        src="${track.image[1]['#text']}"
+                        src="${track.image[2]['#text']}"
                         class="album-art"
                         alt="${track.artist['#text']} • ${track.name}"
                         @error="${(e: Event) => this._onError(e)}"
