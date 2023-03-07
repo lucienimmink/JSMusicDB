@@ -22,11 +22,10 @@ export default css`
   }
   li .album-art,
   li album-art {
-    margin-right: 0.75rem;
+    margin-right: 1rem;
     flex-grow: 0;
-    width: 87px;
-    min-width: 87px;
-    height: 87px;
+    width: 70px;
+    aspect-ratio: 1 / 1;
     border: 1px solid var(--background3, #f3f4f5);
     box-shadow: 0px 0px 1px var(--primary, #006ecd);
     background: rgba(255, 255, 255, 0.85);
