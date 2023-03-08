@@ -54,6 +54,9 @@ export default css`
   }
   li > div {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   li .heart {
     display: inline-block;
