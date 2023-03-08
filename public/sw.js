@@ -60,7 +60,10 @@ const NON_CACHEABLE = [
 const CACHE_AND_UPDATE = [/\/node-music\.json$/];
 
 // step 3: define a list of files that should come from network and update cache in the background
-const UPDATE_AND_CACHE = [/\/node-music\.json\?update$/];
+const UPDATE_AND_CACHE = [
+  /\/node-music\.json\?update$/,
+  /user\.getrecenttracks/,
+];
 
 // step 1.1 handle these requests
 self.addEventListener('fetch', async event => {

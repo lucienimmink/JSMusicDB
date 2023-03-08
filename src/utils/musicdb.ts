@@ -20,7 +20,12 @@ export const getRecentlyPlayed = async () => {
 };
 
 export const DUMMY_TRACK = {
-  image: [null, { '#text': null }],
+  image: [
+    { '#text': null },
+    { '#text': null },
+    { '#text': null },
+    { '#text': null },
+  ],
   album: { '#text': 'dummy' },
   artist: { '#text': 'dummy' },
   name: 'dummy',
