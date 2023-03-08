@@ -91,7 +91,7 @@ self.addEventListener('fetch', async event => {
           );
           const finalRespone =
             (await cachedResponse) || (await networkResponsePromise);
-          refresh(finalRespone.clone());
+          refresh(event.request.url, finalRespone.clone());
           // Returned the cached response if we have one, otherwise return the network response.
           return finalRespone;
         })()
@@ -129,7 +129,7 @@ const updateCache = async function (event) {
   const networkResponse = await fetch(event.request);
   cache.put(event.request, networkResponse.clone());
   // tell clients it's updated
-  refresh(networkResponse.clone());
+  refresh(event.request.url, networkResponse.clone());
   return networkResponse;
 };
 
@@ -163,26 +163,29 @@ async function withStore(type, callback) {
     callback(transaction.objectStore('keyval'));
   });
 }
-function refresh(response) {
+function refresh(request, response) {
   return self.clients.matchAll().then(function (clients) {
     clients.forEach(function (client) {
       var message = {
         type: 'refresh',
+        request: request,
         url: response.url,
       };
       var responseToCache = response.clone();
       // once updated let the client know it's updated
-      responseToCache
-        .json()
-        .then(async musicdb => {
-          withStore('readwrite', store => {
-            store.put(musicdb, 'musicdb');
+      if (request.includes('node-music.json')) {
+        responseToCache
+          .json()
+          .then(async data => {
+            withStore('readwrite', store => {
+              store.put(data, 'musicdb');
+            });
+            client.postMessage(message);
+          })
+          .catch(() => {
+            console.log('error parsing response');
           });
-          client.postMessage(message);
-        })
-        .catch(() => {
-          console.log('error parsing response');
-        });
+      }
     });
   });
 }
