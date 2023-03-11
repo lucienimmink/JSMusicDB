@@ -14,13 +14,20 @@
   <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png" />
   <link rel="apple-touch-icon" href="assets/android-chrome-192x192.png" />
   <style>
+    @font-face {
+      font-family: 'barlowregular';
+      src: url('/Barlow-Regular.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+
+    }
     html,
     body {
       margin: 0;
       padding: 0;
       background: var(--background, #f8f9fa);
       color: var(--text-color, #212529);
-      font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      font-family: barlowregular, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
       font-variant-ligatures: no-common-ligatures;
       font-size: 1rem;
       transition: color 0.5s ease-in-out, background 0.5s ease-in-out;
