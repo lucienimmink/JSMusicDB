@@ -39,6 +39,7 @@ export default css`
   }
   h1 div {
     height: 100%;
+    vertical-align: middle;
   }
   app-link {
     color: var(--primary, #006ecd);

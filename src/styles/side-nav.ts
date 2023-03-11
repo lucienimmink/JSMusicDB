@@ -101,6 +101,7 @@ export default css`
   }
   h1 div {
     height: 100%;
+    vertical-align: middle;
   }
   h1 a {
     text-decoration: none;
