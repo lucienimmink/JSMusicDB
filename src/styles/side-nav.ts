@@ -100,7 +100,7 @@ export default css`
     align-items: center;
   }
   h1 div {
-    line-height: 1;
+    height: 100%;
   }
   h1 a {
     text-decoration: none;
