@@ -39,6 +39,7 @@ export class AlbumArt extends LitElement {
   static: boolean;
   @property({ type: Boolean })
   transparent: boolean;
+  @state()
   isDefault = false;
   @property({ type: Number })
   dimension: number;
