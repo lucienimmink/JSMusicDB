@@ -39,8 +39,6 @@ export class AlbumArt extends LitElement {
   static: boolean;
   @property({ type: Boolean })
   transparent: boolean;
-  @state()
-  isDefault = false;
   @property({ type: Number })
   dimension: number;
   @property({ type: Boolean, attribute: 'no-lazy' })
@@ -49,6 +47,8 @@ export class AlbumArt extends LitElement {
   visible: string;
   @state()
   loading: boolean;
+  @state()
+  isDefault: boolean;
 
   ARTBASE = `https://res.cloudinary.com/jsmusicdb-com/image/fetch/f_auto,q_auto`;
 
@@ -66,6 +66,7 @@ export class AlbumArt extends LitElement {
     this.noLazy = false;
     this.visible = 'false';
     this.loading = false;
+    this.isDefault = false;
 
     intersectionObserver = new IntersectionObserver(
       entries => {
@@ -256,7 +257,6 @@ export class AlbumArt extends LitElement {
     dimension: number;
   }) {
     let art = this.ARTBASE;
-    this.isDefault = false;
     if (!album) {
       // let's resize those larger artist arts we get; using face detection to crop to their faces
       art += `,w_${dimension},h_${dimension},c_thumb,g_faces/`;
