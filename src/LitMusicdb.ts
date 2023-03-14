@@ -118,7 +118,7 @@ export class LitMusicdb extends LitElement {
         'message',
         async (e: MessageEvent) => {
           const { type, request } = e.data;
-          if (type === 'refresh' && request.includes('node-music.json')) {
+          if (type === 'refresh' && request?.includes('node-music.json')) {
             await update();
             EventBus.emit(REFRESH, this);
           }
