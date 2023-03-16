@@ -46,7 +46,6 @@ export const dark = css`
     --background3: rgb(60, 60, 60);
     --background3-seethrough: rgba(60, 60, 60, 0.9);
     --background-floating-text: rgba(30, 30, 30, 0.25);
-    --album-art-filter: invert(0.9);
     --primary-hover: var(--lighten);
   }
 `;
