@@ -136,6 +136,23 @@ export class Album extends LitElement {
         this._toggleShuffled();
       }
     });
+    if ('mediaSession' in navigator) {
+      (navigator as any).mediaSession.setActionHandler('play', () => {
+        this._togglePlayPause();
+      });
+      (navigator as any).mediaSession.setActionHandler('pause', () => {
+        this._togglePlayPause();
+      });
+      (navigator as any).mediaSession.setActionHandler('stop', () => {
+        this._stop();
+      });
+      (navigator as any).mediaSession.setActionHandler('previoustrack', () => {
+        this._previous();
+      });
+      (navigator as any).mediaSession.setActionHandler('nexttrack', () => {
+        this._next();
+      });
+    }
   }
   _shuffleCollection() {
     if (!this.playlist.shuffledIndices) {
@@ -228,24 +245,6 @@ export class Album extends LitElement {
           album: this.track.album.name,
           artwork: [{ src: this.art, sizes: '500x500', type: 'image/png' }],
         });
-        (navigator as any).mediaSession.setActionHandler('play', () => {
-          this._togglePlayPause();
-        });
-        (navigator as any).mediaSession.setActionHandler('pause', () => {
-          this._togglePlayPause();
-        });
-        (navigator as any).mediaSession.setActionHandler('stop', () => {
-          this._stop();
-        });
-        (navigator as any).mediaSession.setActionHandler(
-          'previoustrack',
-          () => {
-            this._previous();
-          }
-        );
-        (navigator as any).mediaSession.setActionHandler('nexttrack', () => {
-          this._next();
-        });
       }
       // share player
       window._player = player;
@@ -291,7 +290,6 @@ export class Album extends LitElement {
       current: this.track,
       type: PLAY_PLAYER_START,
     });
-    window._track = this.track;
     if ('mediaSession' in navigator) {
       (navigator as any).mediaSession.playbackState = 'playing';
     }
@@ -309,7 +307,6 @@ export class Album extends LitElement {
       current: this.track,
       type: PAUSE_PLAYER,
     });
-    window._track = this.track;
     if ('mediaSession' in navigator) {
       (navigator as any).mediaSession.playbackState = 'paused';
     }
@@ -326,7 +323,6 @@ export class Album extends LitElement {
         this.track.buffered.end =
           buffered.end(buffered.length !== 0 ? buffered.length - 1 : 0) * 1000;
         EventBus.emit(UPDATE_PLAYER, this, { current: this.track });
-        window._track = this.track;
       }
     }
   }
