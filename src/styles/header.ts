@@ -38,9 +38,8 @@ export default css`
     transition: color 0.5s ease-in-out, background-color 0.5s ease-in-out;
   }
   h1 div {
-    line-height: 1.3;
     height: 100%;
-    padding-top: 3px;
+    padding-top: 8px;
   }
   app-link {
     color: var(--primary, #006ecd);
@@ -63,8 +62,8 @@ export default css`
     display: inline-block;
     flex-grow: 0;
     line-height: 1.3;
-    margin: 23px -14px 0px 0px;
-    font-size: 0.8rem;
+    margin: 25px -14px 0px 0px;
+    font-size: 0.9rem;
   }
   @media (min-width: 576px) {
     .md-up {

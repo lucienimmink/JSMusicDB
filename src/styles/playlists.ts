@@ -33,7 +33,7 @@ export default css`
   }
   .playlist li.header {
     display: block;
-    padding-top: 1.45rem;
+    padding: 1.85rem 1rem 0px;
     border-top: 0;
     height: auto;
   }

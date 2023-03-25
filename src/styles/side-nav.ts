@@ -100,9 +100,8 @@ export default css`
     align-items: center;
   }
   h1 div {
-    line-height: 1.3;
     height: 100%;
-    padding-top: 3px;
+    padding-top: 8px;
   }
   h1 a {
     text-decoration: none;
