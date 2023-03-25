@@ -182,12 +182,10 @@ export default css`
     max-width: calc(100vw - 250px);
   }
   .floating-text-details h4 {
-    font-size: 3rem;
-    font-weight: normal;
+    font-size: 4rem;
   }
   .floating-text-details h5 {
     font-size: 2rem;
-    font-weight: normal;
   }
   .floating-text-details app-link {
     transition: all 0.2s ease-in-out 0s;

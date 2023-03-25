@@ -370,7 +370,7 @@ export class NowPlaying extends LitElement {
         >
           ${this.track.trackArtist}
         </app-link>
-        &bull;
+        <span class="muted">&bull;</span>
         <app-link
           inline
           href="/letter/${this.track.album.artist.letter

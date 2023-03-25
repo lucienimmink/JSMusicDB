@@ -555,7 +555,7 @@ export class Album extends LitElement {
         >
           ${this.track.trackArtist}
         </app-link>
-        <span class="muted">&nbsp;&bull;&nbsp;</span>
+        <span class="muted">&bull;</span>
         <app-link
           inline
           href="/letter/${this.track.album.artist.letter
