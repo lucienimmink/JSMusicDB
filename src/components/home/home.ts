@@ -203,8 +203,8 @@ export class HomeNav extends LitElement {
                 (album: any) => html`
                   <app-link
                     href="/letter/${album.artist.letter
-                      .escapedLetter}/artist/${album.artist
-                      .escapedName}/album/${album.escapedName}"
+                      ?.escapedLetter}/artist/${album.artist
+                      ?.escapedName}/album/${album.escapedName}"
                   >
                     <div class="panel panel-home">
                       <album-art
