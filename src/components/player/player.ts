@@ -238,14 +238,6 @@ export class Album extends LitElement {
           this.hasErrorWhilePlaying = true;
           EventBus.emit(PLAYER_ERROR, this, true);
         });
-      if ('mediaSession' in navigator) {
-        (navigator as any).mediaSession.metadata = new MediaMetadata({
-          title: this.track.title,
-          artist: this.track.trackArtist,
-          album: this.track.album.name,
-          artwork: [{ src: this.art, sizes: '500x500', type: 'image/png' }],
-        });
-      }
       // share player
       window._player = player;
     } else {
@@ -435,6 +427,21 @@ export class Album extends LitElement {
     this.art = e.detail.art;
     if (this.useDynamicAccentColor) {
       this._setDynamicAccentColor();
+    }
+    // now that we have the art, we can set the media session
+    if ('mediaSession' in navigator) {
+      (navigator as any).mediaSession.metadata = new MediaMetadata({
+        title: this.track.title,
+        artist: this.track.trackArtist,
+        album: this.track.album.name,
+        artwork: [
+          {
+            src: this.art,
+            sizes: '512x512',
+            type: 'image/png',
+          },
+        ],
+      });
     }
   }
   _setDynamicAccentColor() {
