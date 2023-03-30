@@ -44,19 +44,17 @@ export default css`
     background: rgba(255, 255, 255, 0.85);
   }
   h4 {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 1.3rem;
     margin: 0px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    line-height: 1.3;
   }
   h5 {
-    font-weight: normal;
+    font-weight: 300;
     font-size: 1.1rem;
     margin: 3px 0 0;
-    line-height: 1.3;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;

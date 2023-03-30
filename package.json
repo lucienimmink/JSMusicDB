@@ -64,7 +64,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@addasoft/musicdbcore": "^1.8.0",
+    "@addasoft/musicdbcore": "^1.9.0",
     "@addasoft/timespan": "^1.0.3",
     "@lit-labs/router": "^0.1.1",
     "@lit-labs/virtualizer": "^2.0.0",
