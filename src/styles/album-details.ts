@@ -36,12 +36,11 @@ export default css`
     text-overflow: ellipsis;
     margin: 0;
     flex-grow: 0;
-    font-weight: normal;
+    font-weight: 300;
   }
   h2 {
     margin-top: -5px;
     font-size: 1.5rem;
-    line-height: 1.3;
   }
   h3 {
     font-size: 1.2rem;

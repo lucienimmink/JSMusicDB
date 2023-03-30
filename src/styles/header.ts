@@ -33,7 +33,7 @@ export default css`
     display: flex;
     align-items: center;
     height: 50px;
-    font-weight: normal;
+    font-weight: 300;
     padding-left: 1rem;
     transition: color 0.5s ease-in-out, background-color 0.5s ease-in-out;
   }
@@ -61,7 +61,6 @@ export default css`
   progress-spinner {
     display: inline-block;
     flex-grow: 0;
-    line-height: 1.3;
     margin: 25px -14px 0px 0px;
     font-size: 0.9rem;
   }

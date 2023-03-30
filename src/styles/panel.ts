@@ -66,7 +66,6 @@ export default css`
     right: -1px;
     background: linear-gradient(180deg, transparent 0, rgba(0, 0, 0, 0.75));
     margin: 0;
-    line-height: 1.35;
     transition: 0.1s ease-out;
     overflow: hidden;
     text-align: center;
