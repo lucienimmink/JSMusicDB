@@ -43,7 +43,7 @@ export default css`
     font-size: 1.5rem;
   }
   h3 {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
   }
   h4 {
     font-size: 1rem;
@@ -124,12 +124,12 @@ export default css`
     }
     @keyframes h3 {
       to {
-        font-size: 1.2rem;
+        font-size: 1.25rem;
       }
     }
     h4 {
       transform-origin: center top;
-      font-size: 1.1rem;
+      font-size: 1rem;
       animation: h4 1s linear infinite;
     }
     @keyframes h4 {

@@ -114,7 +114,7 @@ export default css`
   }
   h4 {
     font-weight: 400;
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     margin: 0;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -122,7 +122,7 @@ export default css`
   }
   h5 {
     font-weight: 400;
-    font-size: 1.1rem;
+    font-size: 1rem;
     margin: 0;
     white-space: nowrap;
     text-overflow: ellipsis;

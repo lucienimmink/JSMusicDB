@@ -14,7 +14,7 @@ export default css`
     z-index: 1;
     margin-bottom: -1px;
     top: 49px;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     font-weight: 400;
   }
   .virtual-scroll .header {
