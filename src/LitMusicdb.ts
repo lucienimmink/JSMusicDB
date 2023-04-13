@@ -1,6 +1,6 @@
 import timeSpan from '@addasoft/timespan';
 import { localized, t } from '@weavedev/lit-i18next';
-import { html, LitElement, nothing } from 'lit';
+import { LitElement, html, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import './components/album-art/album-art';
 import './components/app-link/app-link';
@@ -17,17 +17,17 @@ import router from './routes';
 import litMusicdb from './styles/lit-musicdb';
 import scrollbar from './styles/scrollbar';
 import { dark, light, system } from './styles/themes';
+import { global as EventBus } from './utils/EventBus';
 import { animateCSS, animationCSS } from './utils/animations';
 import { getCurrentTheme, updateSunriseData } from './utils/colour';
-import { global as EventBus } from './utils/EventBus';
 import { i18nInit } from './utils/i18next';
-import { getSK, RESET_LASTFM } from './utils/lastfm';
+import { RESET_LASTFM, getSK } from './utils/lastfm';
 import { launchQueue } from './utils/launch-queue';
 import { REFRESH } from './utils/musicdb';
-import { DONE_RELOADING, getJwt, RESET_SERVER } from './utils/node-mp3stream';
+import { DONE_RELOADING, RESET_SERVER, getJwt } from './utils/node-mp3stream';
 import { START_CURRENT_PLAYLIST, STOP_PLAYER } from './utils/player';
 import { CHANGE_URL } from './utils/router';
-import { getSettingByName, TOGGLE_SETTING } from './utils/settings';
+import { TOGGLE_SETTING, getSettingByName } from './utils/settings';
 
 @customElement('lit-musicdb')
 @localized()

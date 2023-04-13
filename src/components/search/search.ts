@@ -1,6 +1,6 @@
 import timeSpan from '@addasoft/timespan';
 import { localized, t } from '@weavedev/lit-i18next';
-import { html, LitElement, nothing, PropertyValueMap } from 'lit';
+import { LitElement, PropertyValueMap, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import container from '../../styles/container';

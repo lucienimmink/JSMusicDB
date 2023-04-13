@@ -113,7 +113,7 @@ export default css`
     margin: 0 0.5rem;
   }
   h4 {
-    font-weight: 300;
+    font-weight: 400;
     font-size: 1.3rem;
     margin: 0;
     white-space: nowrap;
@@ -121,7 +121,7 @@ export default css`
     overflow: hidden;
   }
   h5 {
-    font-weight: 300;
+    font-weight: 400;
     font-size: 1.1rem;
     margin: 0;
     white-space: nowrap;
@@ -288,7 +288,7 @@ export default css`
   }
   /* notihng is playing */
   h3 {
-    font-weight: 300;
+    font-weight: 400;
   }
   app-link {
     color: var(--primary, #006ecd);

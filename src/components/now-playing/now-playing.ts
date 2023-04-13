@@ -1,7 +1,7 @@
 import timeSpan from '@addasoft/timespan';
 import '@lit-labs/virtualizer';
 import { localized, t } from '@weavedev/lit-i18next';
-import { html, LitElement, nothing } from 'lit';
+import { LitElement, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import buttons from '../../styles/buttons';
@@ -10,17 +10,15 @@ import controls from '../../styles/controls';
 import nowPlaying from '../../styles/now-playing';
 import progress from '../../styles/progress-bar';
 import smallMuted from '../../styles/small-muted';
+import { global as EventBus } from '../../utils/EventBus';
 import { animateCSS, animationCSS } from '../../utils/animations';
 import { ACCENT_COLOR } from '../../utils/colour';
-import { global as EventBus } from '../../utils/EventBus';
 import {
-  getCurrentPlaylist,
   NEXT_TRACK,
   PAUSE_PLAYER,
   PLAYER_ERROR,
   PLAY_PLAYER_START,
   PREVIOUS_TRACK,
-  setCurrentPlaylist,
   SET_POSITION,
   START_CURRENT_PLAYLIST,
   TOGGLE_LOVED,
@@ -29,8 +27,10 @@ import {
   TOGGLE_SHUFFLE,
   TOGGLE_SHUFFLE_UPDATED,
   UPDATE_PLAYER,
+  getCurrentPlaylist,
+  setCurrentPlaylist,
 } from '../../utils/player';
-import { getSettingByName, TOGGLE_SETTING } from '../../utils/settings';
+import { TOGGLE_SETTING, getSettingByName } from '../../utils/settings';
 import { albumsIcon } from '../icons/albums';
 import { artistsIcon } from '../icons/artists';
 import { chevronDownIcon } from '../icons/chevron-down';

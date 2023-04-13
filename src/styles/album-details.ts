@@ -36,7 +36,7 @@ export default css`
     text-overflow: ellipsis;
     margin: 0;
     flex-grow: 0;
-    font-weight: 300;
+    font-weight: 400;
   }
   h2 {
     margin-top: -5px;

@@ -1,7 +1,7 @@
 import timeSpan from '@addasoft/timespan';
 import '@lit-labs/virtualizer';
 import { localized, t } from '@weavedev/lit-i18next';
-import { html, LitElement, nothing, PropertyValueMap } from 'lit';
+import { LitElement, PropertyValueMap, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import buttons from '../../styles/buttons';
 import container from '../../styles/container';
@@ -12,6 +12,9 @@ import smallMuted from '../../styles/small-muted';
 import { global as EventBus } from '../../utils/EventBus';
 import { getLastFMUserName } from '../../utils/lastfm';
 import {
+  LOADED_PLAYLIST,
+  LOAD_PLAYLIST,
+  UPDATE_PLAYER,
   getCurrentPlaylist,
   getNewPlaylistForLovedTracks,
   getNewPlaylistForRadio,
@@ -19,11 +22,8 @@ import {
   getNewPlaylistForRandom,
   getNewPlaylistForRandomPref,
   getTopTracksForUser,
-  LOADED_PLAYLIST,
-  LOAD_PLAYLIST,
   setCurrentPlaylist,
   startPlaylist,
-  UPDATE_PLAYER,
 } from '../../utils/player';
 import { CHANGE_URL } from '../../utils/router';
 import { nowPlayingIcon } from '../icons/now-playing';

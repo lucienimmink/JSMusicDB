@@ -1,7 +1,7 @@
 declare const MediaMetadata: any;
 
 import { localized, t } from '@weavedev/lit-i18next';
-import { html, LitElement, nothing } from 'lit';
+import { LitElement, html, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import buttons from '../../styles/buttons';
@@ -10,17 +10,17 @@ import player from '../../styles/player';
 import progress from '../../styles/progress-bar';
 import responsive from '../../styles/responsive';
 import smallMuted from '../../styles/small-muted';
+import { global as EventBus } from '../../utils/EventBus';
 import { animateCSS, animationCSS } from '../../utils/animations';
 import {
   ACCENT_COLOR,
+  LIGHT,
   addCustomCss,
   currentBgColor,
   getColorsFromRGBWithBGColor,
   getDominantColorByURL,
-  LIGHT,
   removeCustomCss,
 } from '../../utils/colour';
-import { global as EventBus } from '../../utils/EventBus';
 import {
   announceNowPlaying,
   getLastFMUserName,
@@ -31,10 +31,6 @@ import {
 import { getJwt, getServer } from '../../utils/node-mp3stream';
 import {
   CHANGE_TITLE,
-  getCurrentPlaylist,
-  getCurrentTime,
-  getIsShuffled,
-  getNextPlaylist,
   LOADED_PLAYLIST,
   LOAD_PLAYLIST,
   NEXT_TRACK,
@@ -43,11 +39,7 @@ import {
   PLAY_PLAYER,
   PLAY_PLAYER_START,
   PREVIOUS_TRACK,
-  setCurrentPlaylist,
-  setCurrentTime,
-  setIsShuffled,
   SET_POSITION,
-  shuffle,
   START_CURRENT_PLAYLIST,
   STOP_PLAYER,
   TOGGLE_LOVED,
@@ -56,8 +48,16 @@ import {
   TOGGLE_SHUFFLE,
   TOGGLE_SHUFFLE_UPDATED,
   UPDATE_PLAYER,
+  getCurrentPlaylist,
+  getCurrentTime,
+  getIsShuffled,
+  getNextPlaylist,
+  setCurrentPlaylist,
+  setCurrentTime,
+  setIsShuffled,
+  shuffle,
 } from '../../utils/player';
-import { getSettingByName, TOGGLE_SETTING } from '../../utils/settings';
+import { TOGGLE_SETTING, getSettingByName } from '../../utils/settings';
 import { heartIcon } from '../icons/heart';
 import { nextIcon } from '../icons/next';
 import { pauseIcon } from '../icons/pause';

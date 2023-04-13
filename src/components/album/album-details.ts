@@ -1,6 +1,6 @@
 import timeSpan from '@addasoft/timespan';
 import { i18next, localized, t } from '@weavedev/lit-i18next';
-import { html, LitElement, nothing } from 'lit';
+import { LitElement, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import albumDetails from '../../styles/album-details';
 import buttons from '../../styles/buttons';
@@ -8,7 +8,7 @@ import container from '../../styles/container';
 import responsive from '../../styles/responsive';
 import smallMuted from '../../styles/small-muted';
 import { global as EventBus } from '../../utils/EventBus';
-import { getSettingByName, TOGGLE_SETTING } from '../../utils/settings';
+import { TOGGLE_SETTING, getSettingByName } from '../../utils/settings';
 import { hqIcon } from '../icons/hq';
 import musicdb from '../musicdb';
 import '../track/track';

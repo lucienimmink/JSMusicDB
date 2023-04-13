@@ -1,10 +1,10 @@
 import { localized, t } from '@weavedev/lit-i18next';
-import { html, LitElement, nothing, PropertyValueMap } from 'lit';
+import { LitElement, PropertyValueMap, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import alert from '../../styles/alert';
 import { global as EventBus } from '../../utils/EventBus';
 import { getJwt, getRSSFeed, getServer } from '../../utils/node-mp3stream';
-import { getSettingByName, TOGGLE_SETTING } from '../../utils/settings';
+import { TOGGLE_SETTING, getSettingByName } from '../../utils/settings';
 import musicdb from '../musicdb';
 
 @customElement('release-alert')

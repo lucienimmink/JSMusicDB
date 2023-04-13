@@ -44,7 +44,7 @@ export default css`
     background: rgba(255, 255, 255, 0.85);
   }
   h4 {
-    font-weight: 300;
+    font-weight: 400;
     font-size: 1.3rem;
     margin: 0px;
     white-space: nowrap;
@@ -52,7 +52,7 @@ export default css`
     overflow: hidden;
   }
   h5 {
-    font-weight: 300;
+    font-weight: 400;
     font-size: 1.1rem;
     margin: 3px 0 0;
     white-space: nowrap;

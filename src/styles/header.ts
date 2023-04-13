@@ -33,7 +33,7 @@ export default css`
     display: flex;
     align-items: center;
     height: 50px;
-    font-weight: 300;
+    font-weight: 400;
     padding-left: 1rem;
     transition: color 0.5s ease-in-out, background-color 0.5s ease-in-out;
   }
@@ -62,7 +62,7 @@ export default css`
     display: inline-block;
     flex-grow: 0;
     margin: 25px -14px 0px 0px;
-    font-size: 0.9rem;
+    font-size: 0.875rem;
   }
   @media (min-width: 576px) {
     .md-up {

@@ -1,7 +1,7 @@
 import timeSpan from '@addasoft/timespan';
 import { i18next, localized, t } from '@weavedev/lit-i18next';
 import { clear, createStore } from 'idb-keyval';
-import { html, LitElement, nothing } from 'lit';
+import { LitElement, html, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { ifDefined } from 'lit/directives/if-defined.js';
 import buttons from '../../styles/buttons';
@@ -10,31 +10,31 @@ import headers from '../../styles/headers';
 import responsive from '../../styles/responsive';
 import settings from '../../styles/settings';
 import smallMuted from '../../styles/small-muted';
-import { updateSunriseData } from '../../utils/colour';
 import { global as EventBus } from '../../utils/EventBus';
+import { updateSunriseData } from '../../utils/colour';
 import {
+  RESET_LASTFM,
   getLastFMUserName,
   removeLastFMLink,
-  RESET_LASTFM,
 } from '../../utils/lastfm';
 import { REFRESH } from '../../utils/musicdb';
 import {
-  canGetRSSFeed,
   DONE_RELOADING,
+  HAS_SSE,
+  IS_RELOADING,
+  RESET_SERVER,
+  canGetRSSFeed,
   getJwt,
   getRescan,
   getServer,
   getVersion,
-  HAS_SSE,
-  IS_RELOADING,
   resetServer,
-  RESET_SERVER,
 } from '../../utils/node-mp3stream';
 import {
+  TOGGLE_SETTING,
   getLastParsed,
   getSettings,
   setSetting,
-  TOGGLE_SETTING,
 } from '../../utils/settings';
 import { cloudDownloadIcon } from '../icons/cloudDownload';
 import { disconnectIcon } from '../icons/disconnect';
@@ -266,6 +266,7 @@ export class SettingsNav extends LitElement {
       <p>
         ${t('labels.language')}:
         <select
+          name="language"
           @change="${(e: Event) =>
             this._toggle('language', e, e.target?.value)}"
           .value="${this.settings?.language ||

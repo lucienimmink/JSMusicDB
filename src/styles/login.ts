@@ -37,7 +37,7 @@ export default css`
     align-items: center;
   }
   label {
-    font-size: 0.8rem;
+    font-size: 0.875rem;
   }
   input {
     display: block;

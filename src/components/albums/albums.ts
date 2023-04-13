@@ -1,6 +1,6 @@
 import '@lit-labs/virtualizer';
 import { localized, t } from '@weavedev/lit-i18next';
-import { html, LitElement, nothing } from 'lit';
+import { LitElement, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import container from '../../styles/container';
 import headers from '../../styles/headers';

@@ -1,5 +1,5 @@
 import { createStore, get, set } from 'idb-keyval';
-import { html, LitElement, PropertyValues } from 'lit';
+import { LitElement, PropertyValues, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import albumArt from '../../styles/album-art';
 import { defaultAlbum, defaultArtist, defaultPixel } from './defaultart';

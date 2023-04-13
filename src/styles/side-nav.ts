@@ -94,7 +94,7 @@ export default css`
   h1 {
     margin: 0 0 0 1rem;
     padding: 0;
-    font-weight: 300;
+    font-weight: 400;
     height: 50px;
     display: flex;
     align-items: center;

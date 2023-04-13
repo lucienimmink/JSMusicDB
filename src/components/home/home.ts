@@ -1,5 +1,5 @@
 import { localized, t } from '@weavedev/lit-i18next';
-import { html, LitElement, nothing } from 'lit';
+import { LitElement, html, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import container from '../../styles/container';
 import headers from '../../styles/headers';
@@ -10,12 +10,12 @@ import { global as EventBus } from '../../utils/EventBus';
 import { getLastFMUserName, getRecentlyListened } from '../../utils/lastfm';
 import {
   DUMMY_TRACK,
-  getRecentlyPlayed,
   REFRESH,
+  getRecentlyPlayed,
   setRecentlyPlayed,
 } from '../../utils/musicdb';
 import { getJwt, getRSSFeed, getServer } from '../../utils/node-mp3stream';
-import { getSettingByName, TOGGLE_SETTING } from '../../utils/settings';
+import { TOGGLE_SETTING, getSettingByName } from '../../utils/settings';
 import { cdSVG } from '../icons/cd';
 import { heartIcon } from '../icons/heart';
 import musicdb from '../musicdb';

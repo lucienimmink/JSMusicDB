@@ -32,7 +32,7 @@ export default css`
   .jumplist app-link {
     padding: 4vh;
     font-size: 1.3rem;
-    font-weight: 300;
+    font-weight: 400;
     color: var(--primary, #006ecd);
     transition: all 0.2s ease-in-out;
     text-decoration: none;

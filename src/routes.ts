@@ -1,9 +1,9 @@
 import { Routes } from '@lit-labs/router';
 import { html } from 'lit';
-import { TOGGLE_MENU } from './components/side-nav/side-nav.js';
 import { LitMusicdb } from './LitMusicdb.js';
-import { animateCSS } from './utils/animations.js';
+import { TOGGLE_MENU } from './components/side-nav/side-nav.js';
 import { global as EventBus } from './utils/EventBus';
+import { animateCSS } from './utils/animations.js';
 
 // @ts-ignore: Property 'UrlPattern' does not exist
 if (!globalThis.URLPattern) {
