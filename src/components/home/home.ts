@@ -146,8 +146,8 @@ export class HomeNav extends LitElement {
       `;
     }
     return html`
-      <span class="playing">Playing</span>
-      <span class="small muted">Right now</span>
+      <span class="playing">${t('labels.playing')}</span>
+      <span class="small muted">${t('labels.right-now')}</span>
     `;
   }
   _onError(e: Event) {

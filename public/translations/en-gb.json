@@ -106,7 +106,9 @@
     "playlist": "playlist",
     "language": "Language",
     "select-language": "Select a language",
-    "letters": "Letters"
+    "letters": "Letters",
+    "playing": "Playing",
+    "right-now": "right now"
   },
   "content": {
     "lastfm": {

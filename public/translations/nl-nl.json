@@ -106,7 +106,9 @@
     "playlist": "speellijst",
     "language": "Taal",
     "select-language": "Selecteer een taal",
-    "letters": "Letters"
+    "letters": "Letters",
+    "playing": "Nu bezig",
+    "right-now": "met spelen"
   },
   "content": {
     "lastfm": {
