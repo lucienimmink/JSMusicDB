@@ -78,7 +78,7 @@
     "urlpattern-polyfill": "^7.0.0"
   },
   "volta": {
-    "node": "18.16.0",
+    "node": "20.0.0",
     "npm": "9.6.4"
   }
 }
