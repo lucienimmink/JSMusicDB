@@ -134,7 +134,7 @@ export class AlbumArt extends LitElement {
         }}
         class="${this.transparent ? 'transparent ' : ''} ${this.isDefault
           ? 'default'
-          : ''} ${this.loading ? 'loading' : ''}"
+          : ''} ${this.loading && !this.isDefault ? 'loading' : ''}"
         width="${this.dimension}"
         height="${this.dimension}"
       />

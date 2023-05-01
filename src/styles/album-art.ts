@@ -5,7 +5,7 @@ export default css`
     width: 100%;
     height: 100%;
     transition: opacity 0.2s ease-in-out;
-    background: white;
+    background: var(--background3);
   }
   ::-moz-selection {
     background-color: var(--primary);
