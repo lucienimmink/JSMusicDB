@@ -20,6 +20,7 @@ export const light = css`
     --background3: rgb(236, 236, 236);
     --background3-seethrough: rgba(236, 236, 236, 0.9);
     --background-floating-text: rgba(249, 249, 249, 0.25);
+    --background4: rgb(225, 225, 225);
     --primary-hover: var(--darken);
   }
 `;
@@ -46,6 +47,7 @@ export const dark = css`
     --background3: rgb(60, 60, 60);
     --background3-seethrough: rgba(60, 60, 60, 0.9);
     --background-floating-text: rgba(30, 30, 30, 0.25);
+    --background4: rgb(74, 74, 74);
     --primary-hover: var(--lighten);
   }
 `;
