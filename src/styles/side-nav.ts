@@ -16,15 +16,16 @@ export default css`
     position: fixed;
     top: 100px;
     left: 0;
-    width: 75px;
+    width: 74px;
     color: var(--text-color);
-    background: var(--background3, #e9ecef);
+    background: var(--background2);
     overflow-x: hidden;
     overflow-y: auto;
     margin: 0;
     padding: 0;
     height: calc(100vh - 100px);
     transition: color 0.5s ease-in-out, background-color 0.5s ease-in-out;
+    border-right: 1px solid var(--border-colour);
   }
   .player ul {
     height: calc(100vh - 100px - 81px);
@@ -67,7 +68,8 @@ export default css`
     height: 100%;
     width: 90%;
     max-width: 300px;
-    background: var(--background3, #e9ecef);
+    background: var(--background2);
+    border-right: 1px solid var(--border-colour);
   }
   .full.open {
     transform: translateX(-0);

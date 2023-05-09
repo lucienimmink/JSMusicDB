@@ -41,7 +41,7 @@ export default css`
   }
   .jumplist a:hover,
   .jumplist app-link:hover {
-    background-color: var(--background3);
+    background-color: var(--background2);
   }
   @media (min-width: 768px) {
     .jumplist {

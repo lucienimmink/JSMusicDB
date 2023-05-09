@@ -14,11 +14,11 @@ export default css`
     display: block;
   }
   .album-details > track-in-list:first-child {
-    margin-top: 1px;
+    margin-top: -1px;
   }
   @media (min-width: 992px) {
     .container {
-      padding-top: 254px;
+      padding-top: 257px;
     }
     album-details {
       position: fixed;

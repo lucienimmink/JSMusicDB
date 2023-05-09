@@ -23,7 +23,7 @@ export default css`
   }
   h1 {
     backdrop-filter: blur(2px);
-    background: var(--background3-seethrough, #e9ecef);
+    background: var(--background2-seethrough);
     color: var(--text-color);
     margin: 0px;
     padding: 0px;
@@ -69,10 +69,10 @@ export default css`
       display: inline;
     }
     h1 {
-      background: var(--background3, #e9ecef);
+      background: var(--background2);
     }
     h1.playing {
-      background: var(--background3-seethrough, #e9ecef);
+      background: var(--background2-seethrough);
       backdrop-filter: blur(5px);
     }
   }

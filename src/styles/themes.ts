@@ -11,16 +11,15 @@ export const light = css`
     --progress-background: var(--lighten30);
     --letter-background-hover: var(--darken);
     --letter-background-active: var(--darken30);
-    --text-color: black;
+    --text-color: rgb(59, 59, 59);
     --letter-color: white;
-    --background: rgb(249, 249, 249);
-    --background-seethrough: rgba(249, 249, 249, 0.9);
+    --background: rgb(255, 255, 255);
+    --background-seethrough: rgba(255, 255, 255, 0.9);
     --background2: rgb(243, 243, 243);
     --background2-seethrough: rgba(243, 243, 243, 0.9);
-    --background3: rgb(236, 236, 236);
-    --background3-seethrough: rgba(236, 236, 236, 0.9);
-    --background-floating-text: rgba(249, 249, 249, 0.25);
-    --background4: rgb(225, 225, 225);
+    --background-floating-text: rgba(243, 243, 243, 0.25);
+    --background-album-art: rgb(225, 225, 225);
+    --border-colour: rgb(188, 188, 188);
     --primary-hover: var(--darken);
   }
 `;
@@ -38,16 +37,15 @@ export const dark = css`
     --letter-background-active: var(--lighten30);
     --text-light: rgba(0, 130, 225, 1);
     --text-dark: rgba(0, 130, 225, 1);
-    --text-color: white;
+    --text-color: rgb(204, 204, 204);
     --letter-color: white;
-    --background: rgb(30, 30, 30);
-    --background-seethrough: rgba(30, 30, 30, 0.9);
-    --background2: rgb(37, 37, 38);
-    --background2-seethrough: rgba(37, 37, 38, 0.9);
-    --background3: rgb(60, 60, 60);
-    --background3-seethrough: rgba(60, 60, 60, 0.9);
-    --background-floating-text: rgba(30, 30, 30, 0.25);
-    --background4: rgb(74, 74, 74);
+    --background: rgb(31, 31, 31);
+    --background-seethrough: rgba(31, 31, 31, 0.9);
+    --background2: rgb(24, 24, 24);
+    --background2-seethrough: rgba(24, 24, 24, 0.9);
+    --background-floating-text: rgba(24, 24, 24, 0.25);
+    --background-album-art: rgb(74, 74, 74);
+    --border-colour: rgb(42, 42, 42);
     --primary-hover: var(--lighten);
   }
 `;

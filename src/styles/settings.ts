@@ -28,7 +28,7 @@ export default css`
   }
   input[type='url'] {
     accent-color: var(--primary);
-    background: var(--background3);
+    background: var(--background2);
     border: 0;
     color: var(--text-color);
     padding: 1em 2em;
@@ -37,7 +37,7 @@ export default css`
     transition: all 0.5s ease-in-out;
   }
   select {
-    background: var(--background3);
+    background: var(--background2);
     padding: 0.3rem 0.5rem;
     color: var(--text-color);
     margin-inline-start: 0.5em;

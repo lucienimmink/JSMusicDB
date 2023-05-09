@@ -266,7 +266,7 @@ export default css`
       left: 0.5rem;
       position: absolute;
       padding: 0;
-      border: 1px solid var(--background3, #f3f4f5);
+      border: 1px solid var(--background2);
       background: rgba(255, 255, 255, 0.85);
       box-shadow: 0px 0px 1px var(--primary, #006ecd);
     }

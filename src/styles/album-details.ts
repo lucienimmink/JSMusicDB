@@ -11,6 +11,7 @@ export default css`
     padding: 1rem;
     overflow: hidden;
     transition: all 0.1s ease-in-out;
+    border-bottom: 1px solid var(--border-colour);
   }
   album-art {
     flex: 0 0 125px;

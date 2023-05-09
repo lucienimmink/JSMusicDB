@@ -28,8 +28,9 @@ export default css`
     flex-direction: row;
     box-sizing: border-box;
     transition: background-color 0.2s ease-in-out;
-    min-height: 60px;
+    min-height: 59px;
     align-items: center;
+    border-top: 1px solid var(--border-colour);
   }
   .playlist li.header {
     display: block;
@@ -43,12 +44,12 @@ export default css`
     transition: all 0.2s ease-in-out;
     text-decoration: none;
     align-items: center;
-    height: 60px;
+    height: 59px;
     width: 100%;
     padding-left: 1rem;
   }
   .playlists li app-link:hover {
-    background: var(--background3);
+    background: var(--background2);
   }
   .playlists li .btn-refresh {
     opacity: 0;
@@ -79,7 +80,7 @@ export default css`
     display: flex;
     flex-direction: row;
     box-sizing: border-box;
-    border-top: 1px solid var(--background3);
+    border-top: 1px solid var(--border-colour);
     padding: 0.5rem 1rem;
     transition: background-color 0.2s ease-in-out;
     min-height: 60px;
@@ -87,7 +88,7 @@ export default css`
     cursor: pointer;
   }
   .playlist li:hover {
-    background: var(--background3);
+    background: var(--background2);
   }
   .playlist li.header:hover,
   .playlist li.no-hover:hover {
@@ -131,7 +132,7 @@ export default css`
     margin: 4rem auto 0;
   }
   select {
-    background: var(--background3);
+    background: var(--background2);
     padding: 0.3rem 0.5rem;
     color: var(--text-color);
   }

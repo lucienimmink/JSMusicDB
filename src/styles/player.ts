@@ -2,7 +2,7 @@ import { css } from 'lit';
 
 export default css`
   :host {
-    background: var(--background3, #e9ecef);
+    background: var(--background2);
     box-shadow: 0 7px 11px var(--text-color);
     transition: background-color 0.5s ease-in-out;
   }

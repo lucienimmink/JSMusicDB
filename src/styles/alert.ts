@@ -5,7 +5,7 @@ export default css`
     --distance: 3vw;
     background: var(--background2);
     padding: 1em 2em;
-    border-bottom: 1px solid var(--background3);
+    border-bottom: 1px solid var(--border-colour);
     text-align: center;
   }
   .alert a {

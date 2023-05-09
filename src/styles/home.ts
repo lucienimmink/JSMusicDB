@@ -13,7 +13,7 @@ export default css`
   li {
     display: flex;
     min-height: 75px;
-    border-top: 1px solid var(--background3);
+    border-top: 1px solid var(--border-colour);
     box-sizing: border-box;
     width: 100%;
     display: flex;
@@ -26,7 +26,7 @@ export default css`
     flex-grow: 0;
     width: 70px;
     aspect-ratio: 1 / 1;
-    border: 1px solid var(--background3, #f3f4f5);
+    border: 1px solid var(--background2);
     box-shadow: 0px 0px 1px var(--primary, #006ecd);
     background: rgba(255, 255, 255, 0.85);
   }

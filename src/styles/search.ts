@@ -13,7 +13,7 @@ export default css`
   ol li {
     display: block;
     height: 70px;
-    border-top: 1px solid var(--background3);
+    border-top: 1px solid var(--border-colour);
     box-sizing: border-box;
     width: 100%;
   }
@@ -33,7 +33,7 @@ export default css`
     height: 50px;
     margin-right: 10px;
     flex-grow: 0;
-    border: 1px solid var(--background3, #f3f4f5);
+    border: 1px solid var(--background2, #f3f4f5);
     background: rgba(255, 255, 255, 0.85);
     box-shadow: 0px 0px 1px var(--primary, #006ecd);
   }
@@ -54,7 +54,7 @@ export default css`
     display: flex;
     flex-direction: row;
     box-sizing: border-box;
-    border-top: 1px solid var(--background3);
+    border-top: 1px solid var(--border-colour);
     padding: 0.5rem 1rem;
     transition: background-color 0.2s ease-in-out;
     min-height: 60px;

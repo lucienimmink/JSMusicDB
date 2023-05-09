@@ -13,13 +13,13 @@ export default css`
     display: flex;
     flex-direction: row;
     box-sizing: border-box;
-    border-top: 1px solid var(--background3);
+    border-top: 1px solid var(--border-colour);
     padding: 0.5rem 1rem;
     transition: background-color 0.2s ease-in-out;
     min-height: 60px;
   }
   .track:hover {
-    background: var(--background3);
+    background: var(--background2);
   }
   .track.active {
     background: var(--primary, #006ecd);

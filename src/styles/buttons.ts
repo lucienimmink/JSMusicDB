@@ -30,8 +30,8 @@ export default css`
     background-color: var(--darken);
   }
   .btn-secondary {
-    border: 2px solid var(--background2);
-    background-color: var(--background3);
+    border: 2px solid var(--border-colour);
+    background-color: var(--background2);
     color: var(--text-color);
   }
   .btn-secondary:hover,
