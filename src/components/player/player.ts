@@ -48,6 +48,7 @@ import {
   TOGGLE_SHUFFLE,
   TOGGLE_SHUFFLE_UPDATED,
   UPDATE_PLAYER,
+  UPDATE_TRACK,
   getCurrentPlaylist,
   getCurrentTime,
   getIsShuffled,
@@ -240,6 +241,13 @@ export class Album extends LitElement {
         });
       // share player
       window._player = player;
+
+      setTimeout(() => {
+        EventBus.emit(UPDATE_TRACK, this, {
+          current: this.track,
+          type: PLAY_PLAYER_START,
+        });
+      }, 100);
     } else {
       console.warn('no player found :(');
     }
@@ -282,6 +290,10 @@ export class Album extends LitElement {
       current: this.track,
       type: PLAY_PLAYER_START,
     });
+    EventBus.emit(UPDATE_TRACK, this, {
+      current: this.track,
+      type: PLAY_PLAYER_START,
+    });
     if ('mediaSession' in navigator) {
       (navigator as any).mediaSession.playbackState = 'playing';
     }
@@ -296,6 +308,10 @@ export class Album extends LitElement {
     this.track.isPlaying = false;
     this.track.isPaused = true;
     EventBus.emit(UPDATE_PLAYER, this, {
+      current: this.track,
+      type: PAUSE_PLAYER,
+    });
+    EventBus.emit(UPDATE_TRACK, this, {
       current: this.track,
       type: PAUSE_PLAYER,
     });

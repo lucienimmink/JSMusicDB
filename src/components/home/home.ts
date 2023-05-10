@@ -15,7 +15,7 @@ import {
   setRecentlyPlayed,
 } from '../../utils/musicdb';
 import { getJwt, getRSSFeed, getServer } from '../../utils/node-mp3stream';
-import { UPDATE_PLAYER } from '../../utils/player';
+import { UPDATE_TRACK } from '../../utils/player';
 import { TOGGLE_SETTING, getSettingByName } from '../../utils/settings';
 import { cdSVG } from '../icons/cd';
 import { heartIcon } from '../icons/heart';
@@ -31,7 +31,7 @@ export class HomeNav extends LitElement {
   newReleases: Array<any>;
   counter: any;
   @state()
-  currentTrack: any;
+  currentTrack: any = window._track || null;
 
   private readonly INTERVAL = 1000 * 9;
   private readonly LATEST_ADDITIONS = 10;
@@ -52,14 +52,14 @@ export class HomeNav extends LitElement {
 
     EventBus.on(REFRESH, this._init, this);
     EventBus.on(TOGGLE_SETTING, this._updateFeed, this);
-    EventBus.on(UPDATE_PLAYER, this._updatePlayer, this);
+    EventBus.on(UPDATE_TRACK, this._updatePlayer, this);
 
     getLastFMUserName().then(async (name: string) => {
       if (name !== 'mdb-skipped') {
         this._setDummyData();
+        this.recenttracks = await getRecentlyPlayed();
+        this._poll(name);
       }
-      this.recenttracks = await getRecentlyPlayed();
-      this._poll(name);
     });
     this._updateFeed();
   }
@@ -67,7 +67,7 @@ export class HomeNav extends LitElement {
     super.disconnectedCallback();
     EventBus.off(REFRESH, this._init, this);
     EventBus.off(TOGGLE_SETTING, this._updateFeed, this);
-    EventBus.off(UPDATE_PLAYER, this._updatePlayer, this);
+    EventBus.off(UPDATE_TRACK, this._updatePlayer, this);
     clearInterval(this.counter);
   }
   _init() {
@@ -82,6 +82,7 @@ export class HomeNav extends LitElement {
   }
   _updatePlayer(target: any, data: any) {
     this.currentTrack = data?.current;
+    this.requestUpdate();
   }
   async _updateFeed() {
     const feedURL = await getSettingByName('feed');
@@ -119,7 +120,6 @@ export class HomeNav extends LitElement {
     }, this.INTERVAL);
   }
   async _updateRecentlyPlayed(name: string) {
-    // get new tracks from last.fm (if user is set)
     let lastFMTracks = [];
     if (name !== 'mdb-skipped') {
       const { recenttracks } = await getRecentlyListened(name);
@@ -131,18 +131,6 @@ export class HomeNav extends LitElement {
       }
       return true;
     });
-    if (this.currentTrack) {
-      tracks.unshift({
-        album: { '#text': this.currentTrack?.album?.name },
-        artist: {
-          name:
-            this.currentTrack?.artist?.albumArtist ||
-            this.currentTrack?.artist?.name,
-        },
-        name: this.currentTrack?.title,
-        isPlaying: !!this.currentTrack.isPlaying,
-      });
-    }
     await setRecentlyPlayed(tracks);
     this.recenttracks = tracks;
   }
@@ -185,28 +173,48 @@ export class HomeNav extends LitElement {
   }
 
   private _renderRecentTracks() {
-    return html`${this.recenttracks?.length > 0
+    return html`${this.recenttracks?.length > 0 || this.currentTrack
       ? html`
           <div class="container">
             <h2 class="header">${t('headers.recently-listened')}</h2>
             <ol>
+              ${this.currentTrack
+                ? html`
+                    <li>
+                      <div>
+                        <album-art
+                          artist="${this.currentTrack?.artist?.albumArtist ||
+                          this.currentTrack?.artist?.name}"
+                          album="${this.currentTrack?.album?.name}"
+                        ></album-art>
+                      </div>
+                      <span class="details">
+                        <span
+                          >${this.currentTrack?.artist?.albumArist ||
+                          this.currentTrack?.artist?.name}
+                          • ${this.currentTrack?.title}
+                          <br />
+                          <span class="small muted"
+                            >${this.currentTrack?.album?.name}</span
+                          >
+                        </span>
+                      </span>
+                      <span class="time">
+                        ${this._formatDate('0', this.currentTrack)}
+                      </span>
+                    </li>
+                  `
+                : nothing}
               ${this.recenttracks.map(
                 (track: any) => html`
                   <li class="${track.dummy ? 'dummy ' : ''}">
                     <div>
-                      ${track.image
-                        ? html`<img
-                            src="${track?.image[2]['#text']}"
-                            class="album-art"
-                            alt="${track.artist['#text']} • ${track.name}"
-                            @error="${(e: Event) => this._onError(e)}"
-                          />`
-                        : html`
-                            <album-art
-                              artist="${track.artist.name}"
-                              album="${track.album['#text']}"
-                            ></album-art>
-                          `}
+                      <img
+                        src="${track?.image[2]['#text']}"
+                        class="album-art"
+                        alt="${track.artist['#text']} • ${track.name}"
+                        @error="${(e: Event) => this._onError(e)}"
+                      />
                       ${track.loved === '1'
                         ? html`<span class="heart">${heartIcon}</span>`
                         : nothing}

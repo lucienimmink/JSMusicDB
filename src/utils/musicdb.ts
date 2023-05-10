@@ -13,7 +13,7 @@ export const getMusicDB = async () => {
 
 export const setRecentlyPlayed = async (recentlyPlayed: any) => {
   // only store if the incoming data is correct
-  if (recentlyPlayed.length > 0) return set(RECENTLYPLAYED, recentlyPlayed);
+  if (recentlyPlayed?.length > 0) return set(RECENTLYPLAYED, recentlyPlayed);
 };
 export const getRecentlyPlayed = async () => {
   return get(RECENTLYPLAYED);
