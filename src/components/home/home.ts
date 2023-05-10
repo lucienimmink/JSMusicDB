@@ -15,6 +15,7 @@ import {
   setRecentlyPlayed,
 } from '../../utils/musicdb';
 import { getJwt, getRSSFeed, getServer } from '../../utils/node-mp3stream';
+import { UPDATE_PLAYER } from '../../utils/player';
 import { TOGGLE_SETTING, getSettingByName } from '../../utils/settings';
 import { cdSVG } from '../icons/cd';
 import { heartIcon } from '../icons/heart';
@@ -29,6 +30,8 @@ export class HomeNav extends LitElement {
   recentAdded: Array<any>;
   newReleases: Array<any>;
   counter: any;
+  @state()
+  currentTrack: any;
 
   private readonly INTERVAL = 1000 * 9;
   private readonly LATEST_ADDITIONS = 10;
@@ -49,17 +52,14 @@ export class HomeNav extends LitElement {
 
     EventBus.on(REFRESH, this._init, this);
     EventBus.on(TOGGLE_SETTING, this._updateFeed, this);
+    EventBus.on(UPDATE_PLAYER, this._updatePlayer, this);
 
-    getLastFMUserName().then((name: any) => {
+    getLastFMUserName().then(async (name: string) => {
       if (name !== 'mdb-skipped') {
         this._setDummyData();
-        this._updateRecentlyPlayed(name);
-        if (this.counter !== -1) {
-          clearInterval(this.counter);
-          this.counter = -1;
-        }
-        this._poll(name);
       }
+      this.recenttracks = await getRecentlyPlayed();
+      this._poll(name);
     });
     this._updateFeed();
   }
@@ -67,6 +67,7 @@ export class HomeNav extends LitElement {
     super.disconnectedCallback();
     EventBus.off(REFRESH, this._init, this);
     EventBus.off(TOGGLE_SETTING, this._updateFeed, this);
+    EventBus.off(UPDATE_PLAYER, this._updatePlayer, this);
     clearInterval(this.counter);
   }
   _init() {
@@ -78,6 +79,9 @@ export class HomeNav extends LitElement {
       .catch((error: any) => {
         console.log(error);
       });
+  }
+  _updatePlayer(target: any, data: any) {
+    this.currentTrack = data?.current;
   }
   async _updateFeed() {
     const feedURL = await getSettingByName('feed');
@@ -109,21 +113,37 @@ export class HomeNav extends LitElement {
       this.newReleases = [];
     }
   }
-  _poll(name: any) {
+  _poll(name: string) {
     this.counter = setInterval(() => {
       this._updateRecentlyPlayed(name);
     }, this.INTERVAL);
   }
   async _updateRecentlyPlayed(name: string) {
-    this.recenttracks = await getRecentlyPlayed();
-    getRecentlyListened(name)
-      .then(async ({ recenttracks }: { recenttracks: any }) => {
-        await setRecentlyPlayed(recenttracks?.track);
-        this.recenttracks = await getRecentlyPlayed();
-      })
-      .catch(() => {
-        //
+    // get new tracks from last.fm (if user is set)
+    let lastFMTracks = [];
+    if (name !== 'mdb-skipped') {
+      const { recenttracks } = await getRecentlyListened(name);
+      lastFMTracks = recenttracks?.track;
+    }
+    const tracks = lastFMTracks.filter((track: any) => {
+      if (track['@attr']?.nowplaying) {
+        return false;
+      }
+    });
+    if (this.currentTrack) {
+      tracks.unshift({
+        album: { '#text': this.currentTrack?.album?.name },
+        artist: {
+          name:
+            this.currentTrack?.artist?.albumArtist ||
+            this.currentTrack?.artist?.name,
+        },
+        name: this.currentTrack?.title,
+        isPlaying: !!this.currentTrack.isPlaying,
       });
+    }
+    await setRecentlyPlayed(tracks);
+    this.recenttracks = tracks;
   }
   _setDummyData() {
     this.recenttracks = [];
@@ -131,7 +151,7 @@ export class HomeNav extends LitElement {
       this.recenttracks.push(DUMMY_TRACK);
     }
   }
-  _formatDate(dateString: string) {
+  _formatDate(dateString: string, track: any = null) {
     const date = new Date(Number(dateString) * 1000);
     if (dateString !== '0') {
       const formatter = new Intl.DateTimeFormat('en-GB', {
@@ -143,6 +163,14 @@ export class HomeNav extends LitElement {
       return html`
         <span>${dateTime[1]}</span>
         <span class="small muted">${dateTime[0]}</span>
+      `;
+    }
+    if (track) {
+      return html`
+        ${track.isPlaying
+          ? html`<span class="playing">${t('labels.playing')}</span>`
+          : html`<span class="playing">${t('labels.paused')}</span>`}
+        <span class="small muted">${t('labels.right-now')}</span>
       `;
     }
     return html`
@@ -165,12 +193,19 @@ export class HomeNav extends LitElement {
                 (track: any) => html`
                   <li class="${track.dummy ? 'dummy ' : ''}">
                     <div>
-                      <img
-                        src="${track.image[2]['#text']}"
-                        class="album-art"
-                        alt="${track.artist['#text']} • ${track.name}"
-                        @error="${(e: Event) => this._onError(e)}"
-                      />
+                      ${track.image
+                        ? html`<img
+                            src="${track?.image[2]['#text']}"
+                            class="album-art"
+                            alt="${track.artist['#text']} • ${track.name}"
+                            @error="${(e: Event) => this._onError(e)}"
+                          />`
+                        : html`
+                            <album-art
+                              artist="${track.artist.name}"
+                              album="${track.album['#text']}"
+                            ></album-art>
+                          `}
                       ${track.loved === '1'
                         ? html`<span class="heart">${heartIcon}</span>`
                         : nothing}
@@ -183,7 +218,7 @@ export class HomeNav extends LitElement {
                       </span>
                     </span>
                     <span class="time">
-                      ${this._formatDate(track?.date?.uts || '0')}
+                      ${this._formatDate(track?.date?.uts || '0', track)}
                     </span>
                   </li>
                 `

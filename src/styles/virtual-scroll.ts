@@ -18,7 +18,8 @@ export default css`
     width: 100%;
   }
   ol li.header + li {
-    margin-top: -2px;
+    margin-top: -3px;
+    top: 0px !important;
   }
   ol app-link {
     display: flex;
