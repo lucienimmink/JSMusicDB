@@ -129,6 +129,7 @@ export class HomeNav extends LitElement {
       if (track['@attr']?.nowplaying) {
         return false;
       }
+      return true;
     });
     if (this.currentTrack) {
       tracks.unshift({
