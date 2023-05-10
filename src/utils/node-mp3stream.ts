@@ -60,6 +60,7 @@ export const authenticate = async (server: string, payload: ArrayBuffer) => {
     body: JSON.stringify({
       encryptedPayload: _arrayBufferToBase64(payload),
     }),
+    tmeout: 5000,
   });
   try {
     return await response.json();

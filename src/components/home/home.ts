@@ -125,7 +125,7 @@ export class HomeNav extends LitElement {
       const { recenttracks } = await getRecentlyListened(name);
       lastFMTracks = recenttracks?.track;
     }
-    const tracks = lastFMTracks.filter((track: any) => {
+    const tracks = lastFMTracks?.filter((track: any) => {
       if (track['@attr']?.nowplaying) {
         return false;
       }

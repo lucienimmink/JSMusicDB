@@ -181,6 +181,7 @@ export const authenticate = async ({
         'content-type': 'application/x-www-form-urlencoded',
       },
       body: params,
+      timeout: 5000,
     }
   ).then(response => response.json().catch(e => e));
 };
