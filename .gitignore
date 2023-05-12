@@ -19,6 +19,7 @@
 /_site/
 /dist/
 /out-tsc/
+dist.zip
 
 ## env
 .env
