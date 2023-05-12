@@ -22,9 +22,8 @@ export default css`
     background: var(--background2);
   }
   .track.active {
-    background: var(--primary, #006ecd);
-    color: var(--letter-color);
-    transition: color 0.2s ease-in-out;
+    background-color: var(--background2-seethrough);
+    color: var(--primary);
   }
   .num {
     flex-grow: 0;

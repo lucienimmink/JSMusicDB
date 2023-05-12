@@ -82,6 +82,7 @@ export default css`
     box-sizing: border-box;
     border-top: 1px solid var(--border-colour);
     padding: 0.5rem 1rem;
+    background-color: var(--background);
     transition: background-color 0.2s ease-in-out;
     min-height: 60px;
     width: 100%;
@@ -96,9 +97,8 @@ export default css`
     background: var(--background-seethrough, rgba(248, 249, 250, 0.85));
   }
   .playlist li.active {
-    background: var(--primary, #006ecd);
-    color: var(--letter-color);
-    transition: background-color 0.2s ease-in-out;
+    background-color: var(--background2-seethrough);
+    color: var(--primary);
   }
   .playlist svg {
     width: 10px;
