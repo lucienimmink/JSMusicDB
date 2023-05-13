@@ -15,6 +15,7 @@
     "prepare": "husky install",
     "zip": "node scripts/zip.js",
     "deploy": "node scripts/deploy.js",
+    "zip:deploy" : "npm run zip && npm run deploy",
     "analyse": "custom-elements-manifest analyze --litelement --outdir dist --globs \"src/**/*.ts\"",
     "analyse:watch": "custom-elements-manifest analyze --litelement --outdir dist --globs \"src/**/*.ts\" --watch"
   },
