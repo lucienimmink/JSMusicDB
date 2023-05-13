@@ -58,6 +58,7 @@ export class HomeNav extends LitElement {
       if (name !== 'mdb-skipped') {
         this._setDummyData();
         this.recenttracks = await getRecentlyPlayed();
+        this._updateRecentlyPlayed(name);
         this._poll(name);
       }
     });
