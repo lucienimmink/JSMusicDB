@@ -529,9 +529,6 @@ export class LetterNav extends LitElement {
                     >(${this.playlist.tracks.length})</span
                   >
                 </li>
-                <!-- ${this.playlist.tracks.map((track: any) =>
-                  this._renderTrack(track)
-                )} -->
                 <lit-virtualizer
                   .scrollTarget=${window}
                   .items=${this.playlist.tracks}
