@@ -10,7 +10,8 @@ export default css`
     padding: 0;
     width: 100%;
   }
-  li {
+  li,
+  ol > a {
     display: flex;
     min-height: 75px;
     border-top: 1px solid var(--border-colour);
@@ -20,8 +21,12 @@ export default css`
     padding: 10px 1rem;
     transition: all 0.2s ease-in-out;
   }
-  li .album-art,
-  li album-art {
+  ol > a {
+    text-decoration: none;
+    color: var(--text-color, #fff);
+  }
+  ol .album-art,
+  ol album-art {
     margin-right: 1rem;
     flex-grow: 0;
     width: 70px;
@@ -30,13 +35,13 @@ export default css`
     box-shadow: 0px 0px 1px var(--primary, #006ecd);
     background: rgba(255, 255, 255, 0.85);
   }
-  li .details {
+  ol .details {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
   }
-  li .time {
+  ol .time {
     flex-grow: 0;
     display: flex;
     flex-direction: column;
@@ -48,17 +53,18 @@ export default css`
     font-variant-numeric: tabular-nums;
     font-family: system-ui;
   }
-  li .playing {
+  ol .playing {
     color: var(--primary, #006ecd);
     transition: color 0.2s ease-in-out;
   }
-  li > div {
+  li > div,
+  ol > a > div {
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
   }
-  li .heart {
+  ol .heart {
     display: inline-block;
     border-radius: 50%;
     width: 17px;
@@ -74,13 +80,10 @@ export default css`
     filter: blur(4px);
     opacity: 0.8;
   }
-  li > a {
-    display: flex;
-    text-decoration: none;
-    color: var(--text-color);
-  }
-  li > a:hover {
+  li > a:hover,
+  ol > a:hover {
     color: var(--primary);
+    background: var(--background2);
   }
   .grid {
     display: flex;

@@ -286,17 +286,22 @@ export class HomeNav extends LitElement {
           </h2>
           <ol>
             ${this.newReleases.map(
-              (release: any) => html` <li>
-                <a href="${release.link}" target="_blank" rel="noopener">
+              (release: any) => html` <a
+                href="${release.link}"
+                target="_blank"
+                rel="noopener"
+              >
+                <div>
                   <album-art
                     artist="${release.artist}"
                     album="${release.album}"
+                    static
                   ></album-art>
-                  <span class="details">
-                    ${release.artist} &bull; ${release.album}
-                  </span>
-                </a>
-              </li>`
+                </div>
+                <span class="details">
+                  ${release.artist} &bull; ${release.album}
+                </span>
+              </a>`
             )}
           </ol>
         </div>`
