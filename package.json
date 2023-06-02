@@ -81,7 +81,7 @@
     "i18next-browser-languagedetector": "^7.0.1",
     "idb-keyval": "^6.2.0",
     "lit": "^2.7.0",
-    "urlpattern-polyfill": "^8.0.0"
+    "urlpattern-polyfill": "^9.0.0"
   },
   "volta": {
     "node": "20.1.0",
