@@ -19,6 +19,7 @@ import { UPDATE_TRACK } from '../../utils/player';
 import { TOGGLE_SETTING, getSettingByName } from '../../utils/settings';
 import { cdSVG } from '../icons/cd';
 import { heartIcon } from '../icons/heart';
+import { hqIcon } from '../icons/hq';
 import musicdb from '../musicdb';
 
 @customElement('home-nav')
@@ -102,11 +103,15 @@ export class HomeNav extends LitElement {
           const release = item.querySelector('title')?.innerHTML;
           const splitted = release?.split('-');
           const artist = splitted?.splice(0, 1)[0].trim();
-          const album = splitted?.join('-').trim();
+          const album = splitted
+            ?.join('-')
+            .trim()
+            .replaceAll(` (Lossless)`, '');
+          const isHires = release?.includes(` (Lossless)`);
           const link = item.querySelector('link')?.innerHTML;
           const mbdArtist = mdb.getArtistByName(artist);
           if (mbdArtist) {
-            list.push({ artist, album, link });
+            list.push({ artist, album, link, isHires });
           }
         });
         this.newReleases = list;
@@ -298,8 +303,13 @@ export class HomeNav extends LitElement {
                     static
                   ></album-art>
                 </div>
-                <span class="details">
-                  ${release.artist} &bull; ${release.album}
+                <span class="details"
+                  ><span>
+                    ${release.artist} &bull; ${release.album}
+                    ${release.isHires
+                      ? html`<span class="small muted hq-icon">${hqIcon}</span>`
+                      : nothing}
+                  </span>
                 </span>
               </a>`
             )}

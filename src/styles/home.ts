@@ -93,6 +93,12 @@ export default css`
     --distance: 3vw;
     gap: var(--distance);
   }
+  .hq-icon {
+    width: 1em;
+    display: inline-block;
+    position: relative;
+    top: 0.1em;
+  }
   @media (min-width: 768px) {
     .grid {
       --distance: 16px;
