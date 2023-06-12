@@ -22,6 +22,10 @@ const renderCallback = (html: any, url: string, controller: LitMusicdb) => {
   }
   if (!url.includes('/playlists/'))
     animateCSS(controller.shadowRoot?.querySelector('#outlet'), 'slideInUp');
+  // @ts-ignore
+  if (!document.startViewTransition) return html;
+  // @ts-ignore
+  document.startViewTransition(() => html);
   return html;
 };
 

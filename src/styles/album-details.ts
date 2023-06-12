@@ -125,7 +125,7 @@ export default css`
     }
     @keyframes h3 {
       to {
-        font-size: 1.25rem;
+        font-size: 1.2rem;
       }
     }
     h4 {
