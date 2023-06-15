@@ -30,4 +30,4 @@ const fetchArtForAlbum = async ({
   return await Promise.any(populate(id, albumConfig));
 };
 
-export { fetchArtForArtist, fetchArtForAlbum };
+export { fetchArtForAlbum, fetchArtForArtist };

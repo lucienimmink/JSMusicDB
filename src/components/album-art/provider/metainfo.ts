@@ -39,4 +39,4 @@ const getMBID = async (artist: string) => {
   return artists[0].id;
 };
 
-export { getMetaInfo, getMBID };
+export { getMBID, getMetaInfo };
