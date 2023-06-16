@@ -51,11 +51,16 @@ export class Artist extends LitElement {
         console.log(error);
       });
   }
+  _handleClick(e: any) {
+    const { target } = e;
+    target.style.viewTransitionName = 'album-art';
+  }
   private _renderAlbum(album: any) {
     return html`
       <app-link
         href="/letter/${album.artist.letter.escapedLetter}/artist/${album.artist
           .escapedName}/album/${album.escapedName}"
+        @click="${this._handleClick}"
       >
         <div class="panel">
           <album-art

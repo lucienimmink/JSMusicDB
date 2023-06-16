@@ -23,6 +23,7 @@ export default css`
     border: 1px solid var(--background, #f3f4f5);
     box-shadow: 0px 0px 1px var(--primary, #006ecd);
     transition: all 0.1s ease-in-out;
+    view-transition-name: album-art;
   }
   .details {
     display: flex;

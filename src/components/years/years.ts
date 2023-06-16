@@ -126,6 +126,7 @@ export class LetterNav extends LitElement {
           text
           href="/letter/${album.artist.letter.escapedLetter}/artist/${album
             .artist.escapedName}/album/${album.escapedName}"
+          @click="${this._handleClick}"
         >
           <album-art
             artist="${album.artist.albumArtist || album.artist.name}"
@@ -143,6 +144,12 @@ export class LetterNav extends LitElement {
       </li>
     `;
   }
+
+  private _handleClick(e: any) {
+    const { target } = e;
+    target.style.viewTransitionName = 'album-art';
+  }
+
   render() {
     return html` ${this._renderJumplist()}
       <div class="container">

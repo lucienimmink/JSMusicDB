@@ -3,6 +3,7 @@ import { css } from 'lit';
 export default css`
   .playlists .header {
     height: 60px;
+    border-top: 1px solid transparent;
   }
   ul {
     margin: 0;

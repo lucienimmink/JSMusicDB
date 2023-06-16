@@ -52,11 +52,16 @@ export class Letter extends LitElement {
       this.getArtists(null, this.letter);
     }
   }
+  _handleClick(e: any) {
+    const { target } = e;
+    target.style.viewTransitionName = 'album-art';
+  }
   private _renderArtist(artist: any) {
     return html`
       <app-link
         href="/letter/${artist.letter
           .escapedLetter}/artist/${artist.escapedName}"
+        @click="${this._handleClick}"
       >
         <div class="panel">
           <album-art artist="${artist.albumArtist || artist.name}"></album-art>

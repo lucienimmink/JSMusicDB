@@ -3,7 +3,6 @@ import { html } from 'lit';
 import { LitMusicdb } from './LitMusicdb.js';
 import { TOGGLE_MENU } from './components/side-nav/side-nav.js';
 import { global as EventBus } from './utils/EventBus';
-import { animateCSS } from './utils/animations.js';
 
 // @ts-ignore: Property 'UrlPattern' does not exist
 if (!globalThis.URLPattern) {
@@ -20,8 +19,16 @@ const renderCallback = (html: any, url: string, controller: LitMusicdb) => {
   } else {
     document.querySelector('html')?.classList.remove('noscroll');
   }
-  if (!url.includes('/playlists/'))
-    animateCSS(controller.shadowRoot?.querySelector('#outlet'), 'slideInUp');
+  // remove the transtion for now-playing and playlists routes
+  if (url.includes('/playing') || url.includes('/playlists/')) {
+    // @ts-ignore
+    controller.shadowRoot.querySelector('#outlet').style.viewTransitionName =
+      '';
+  } else {
+    // @ts-ignore
+    controller.shadowRoot.querySelector('#outlet').style.viewTransitionName =
+      'outlet';
+  }
   return html;
 };
 

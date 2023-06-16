@@ -41,6 +41,7 @@ export default css`
     height: 81px;
     box-sizing: border-box;
     z-index: 2;
+    view-transition-name: player;
   }
   .loading-wrapper {
     background: var(--background);
