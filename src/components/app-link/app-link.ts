@@ -53,16 +53,22 @@ export default class Link extends LitElement {
       </a>
     `;
   }
-  linkClick(event: PointerEvent) {
+  linkClick(event: Event) {
     event.preventDefault();
     window.history.pushState({ path: this.href }, '', this.href);
+    // @ts-ignore
     if (!document?.startViewTransition) {
       EventBus.emit(CHANGE_URL, this, this.href);
       return;
     }
+    // @ts-ignore
     document.startViewTransition(() => {
       EventBus.emit(CHANGE_URL, this, this.href);
-      event.target.style.viewTransitionName = ''; // reset the viewTransition
+      if (event.target) {
+        const target = event.target as HTMLElement;
+        // @ts-ignore
+        target.style.viewTransitionName = '';
+      }
     });
   }
 }
