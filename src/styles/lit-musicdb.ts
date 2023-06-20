@@ -10,6 +10,7 @@ export default css`
     top: env(titlebar-area-y, 0);
     width: 100%;
     z-index: 4;
+    view-transition-name: main-header;
   }
   letter-nav {
     position: fixed;
@@ -18,6 +19,7 @@ export default css`
     top: 50px;
     z-index: 2;
     display: none;
+    view-transition-name: letter-nav;
   }
   side-nav {
     display: none;
