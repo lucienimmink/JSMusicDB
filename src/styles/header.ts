@@ -52,6 +52,7 @@ export default css`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    view-transition-name: main-header-text;
   }
   h1.customWindowControls div {
     max-width: calc(env(titlebar-area-width, 100%) - 60px);

@@ -26,6 +26,7 @@ export default css`
     height: calc(100vh - 100px);
     transition: color 0.5s ease-in-out, background-color 0.5s ease-in-out;
     border-right: 1px solid var(--border-colour);
+    view-transition-name: side-nav-list;
   }
   .player ul {
     height: calc(100vh - 100px - 81px);
@@ -70,6 +71,7 @@ export default css`
     max-width: 300px;
     background: var(--background2);
     border-right: 1px solid var(--border-colour);
+    view-transition-name: full-side-nav-list;
   }
   .full.open {
     transform: translateX(-0);

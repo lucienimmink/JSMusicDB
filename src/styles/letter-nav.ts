@@ -19,6 +19,7 @@ export default css`
     margin-bottom: 0;
     list-style: none;
     transition: background-color 0.5s ease-in-out;
+    view-transition-name: letter-nav-list;
   }
   li {
     text-align: center;
