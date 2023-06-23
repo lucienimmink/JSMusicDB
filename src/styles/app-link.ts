@@ -49,6 +49,13 @@ export default css`
     padding: 15px;
     color: var(--text-color, default);
   }
+  :hover ::slotted(.panel),
+  :focus ::slotted(.panel) {
+    transform: scale(1.075);
+  }
+  :active ::slotted(.panel) {
+    transform: scale(0.9);
+  }
   @media (min-width: 576px) {
     .menu {
       padding: 25px;
