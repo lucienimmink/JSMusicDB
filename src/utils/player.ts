@@ -275,7 +275,12 @@ export const getTopTracksForUser = (playlist: any) =>
               const artist = track?.artist?.name;
               const title = track?.name;
               const coretrack = mdb.getTrackByArtistAndName(artist, title);
-              if (coretrack) {
+              if (
+                coretrack &&
+                coretrack.artist &&
+                coretrack.album &&
+                coretrack.title
+              ) {
                 // @ts-ignore
                 newPlaylist.tracks.push(coretrack);
               }

@@ -471,7 +471,7 @@ export class LetterNav extends LitElement {
                     `
                   : nothing}
                 ${track.title} <br /><span class="small muted"
-                  >${track.trackArtist} &bull; ${track.album.name}</span
+                  >${track?.trackArtist} &bull; ${track?.album?.name}</span
                 ></span
               >
               <span class="time"
