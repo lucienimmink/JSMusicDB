@@ -52,13 +52,13 @@ export default css`
   :host {
     overflow: hidden;
   }
-  :hover ::slotted(.panel),
+  /* :hover ::slotted(.panel),
   :focus ::slotted(.panel) {
     transform: scale(1.02);
   }
   :active ::slotted(.panel) {
     transform: scale(0.98);
-  }
+  } */
   @media (min-width: 576px) {
     .menu {
       padding: 25px;

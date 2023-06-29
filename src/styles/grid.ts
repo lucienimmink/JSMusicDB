@@ -13,6 +13,16 @@ export default css`
     padding: var(--distance) 0;
     gap: var(--distance);
   }
+  app-link album-art {
+    display: block;
+    transition: transform 0.2s ease-in-out;
+  }
+  app-link:hover album-art {
+    transform: scale(1.05);
+  }
+  app-link:active album-art {
+    transform: scale(0.95);
+  }
   @media (min-width: 768px) {
     :host {
       --distance: 1vw;
