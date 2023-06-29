@@ -30,7 +30,7 @@
     "eslint": "^8.37.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-html": "^7.1.0",
-    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-import": "^2.26.0",
     "husky": "^8.0.3",
     "i18next-http-backend": "^2.2.0",
     "lint-staged": "^13.2.0",
