@@ -185,6 +185,7 @@ export class LitMusicdb extends LitElement {
     );
   }
   protected _changeUrl(target: any, url = '/') {
+    if (this.route === url) return;
     this.route = url;
     this.letter = url.split('/letter/')?.[1]?.split('/')[0];
     this.artist = url.split('/artist/')?.[1]?.split('/')[0];
