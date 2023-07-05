@@ -52,7 +52,9 @@ export default css`
     background-clip: padding-box;
     border: 1px solid #ced4da;
     border-radius: 0;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    transition:
+      border-color 0.15s ease-in-out,
+      box-shadow 0.15s ease-in-out;
   }
   @media (min-width: 768px) {
     .container {

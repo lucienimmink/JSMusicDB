@@ -88,7 +88,7 @@ export class Header extends LitElement {
       // @ts-ignore
       navigator.windowControlsOverlay.addEventListener(
         'geometrychange',
-        this._changeCustomWindowControls
+        this._changeCustomWindowControls,
       );
     }
   }
@@ -100,7 +100,7 @@ export class Header extends LitElement {
       // @ts-ignore
       navigator.windowControlsOverlay.removeEventListener(
         'geometrychange',
-        this._changeCustomWindowControls
+        this._changeCustomWindowControls,
       );
     }
   }
@@ -157,7 +157,7 @@ export class Header extends LitElement {
             this._poll({ server, jwt });
           }, POLL_INTERVALL);
         }
-      }
+      },
     );
   };
   _updateProgress = (progress: string, status: string) => {

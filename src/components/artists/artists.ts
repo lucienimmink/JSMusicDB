@@ -97,7 +97,7 @@ export class LetterNav extends LitElement {
               >${letter.letter}</a
             >
           </li>
-        `
+        `,
       )}
     </ul>`;
   }

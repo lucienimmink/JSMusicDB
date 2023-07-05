@@ -70,7 +70,7 @@ export const animationCSS = css`
 export const animateCSS = (
   element: Element | NodeListOf<Element> | null | undefined,
   animation: string,
-  prefix = 'animate__'
+  prefix = 'animate__',
 ) =>
   // We create a Promise and return it
   new Promise(resolve => {
@@ -87,7 +87,7 @@ const _handleEvents = (
   element: Element | null | undefined,
   animationName: string,
   prefix: string,
-  resolve: any
+  resolve: any,
 ) => {
   element?.classList.add(`${prefix}animated`, animationName);
   // When the animation ends, we clean the classes and resolve the Promise

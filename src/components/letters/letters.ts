@@ -53,7 +53,7 @@ export class LetterNav extends LitElement {
               >${letter.letter}</app-link
             >
           </li>
-        `
+        `,
       )}
     </ul>`;
   }

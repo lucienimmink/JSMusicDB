@@ -58,7 +58,7 @@ export class LetterNav extends LitElement {
     return [headers, container, smallMuted, responsive, playlists, buttons];
   }
   protected async willUpdate(
-    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
   ): Promise<void> {
     if (_changedProperties.has('playlistId')) {
       await this._getPlaylists();
@@ -261,7 +261,7 @@ export class LetterNav extends LitElement {
   async _loadedPlaylist() {
     this.loading = false;
     const target = this.shadowRoot?.querySelector(
-      '#playlist-selector'
+      '#playlist-selector',
     ) as HTMLSelectElement;
     if (target) {
       target.value = 'current';
@@ -501,9 +501,10 @@ export class LetterNav extends LitElement {
             <select @change="${(e: Event) => this._generateArtistRadio(e)}">
               <option disabled selected>${t('labels.select-artist')}</option>
               ${this.artists.map(
-                (artist: any) => html` <option value="${artist.escapedName}">
-                  ${artist.name}
-                </option>`
+                (artist: any) =>
+                  html` <option value="${artist.escapedName}">
+                    ${artist.name}
+                  </option>`,
               )}
             </select>
           </li>

@@ -54,7 +54,7 @@ export default (controller: any) =>
             .letter="${props?.letter}"
           ></artists-in-letter>`,
           '/letter/:letter',
-          controller
+          controller,
         );
       },
       enter: async () => {
@@ -73,7 +73,7 @@ export default (controller: any) =>
           html`<release-alert .artist="${props.artist}"></release-alert>
             <albums-in-artist .artist="${props.artist}"></albums-in-artist>`,
           '/letter/:letter/artist/:artist',
-          controller
+          controller,
         );
       },
       enter: async () => {
@@ -94,7 +94,7 @@ export default (controller: any) =>
             .album="${props.album}"
           ></tracks-in-album>`,
           '/letter/:letter/artist/:artist/album/:album',
-          controller
+          controller,
         );
       },
       enter: async () => {
@@ -109,7 +109,7 @@ export default (controller: any) =>
         return renderCallback(
           html`<settings-nav></settings-nav>`,
           '/settings',
-          controller
+          controller,
         );
       },
       enter: async () => {
@@ -126,7 +126,7 @@ export default (controller: any) =>
             .hasVisiblePlayer=${controller.showPlayer}
           ></years-nav>`,
           '/years',
-          controller
+          controller,
         );
       },
       enter: async () => {
@@ -143,7 +143,7 @@ export default (controller: any) =>
             .hasVisiblePlayer=${controller.showPlayer}
           ></artists-nav>`,
           '/artists',
-          controller
+          controller,
         );
       },
       enter: async () => {
@@ -160,7 +160,7 @@ export default (controller: any) =>
             .hasVisiblePlayer=${controller.showPlayer}
           ></albums-nav>`,
           '/albums',
-          controller
+          controller,
         );
       },
       enter: async () => {
@@ -177,7 +177,7 @@ export default (controller: any) =>
             .hasVisiblePlayer=${controller.showPlayer}
           ></letters-nav>`,
           '/letters',
-          controller
+          controller,
         );
       },
       enter: async () => {
@@ -192,7 +192,7 @@ export default (controller: any) =>
         return renderCallback(
           html`<playlists-nav></playlists-nav>`,
           '/letters',
-          controller
+          controller,
         );
       },
       enter: async () => {
@@ -210,7 +210,7 @@ export default (controller: any) =>
         return renderCallback(
           html`<playlists-nav .playlistId="${props.playlist}"></playlists-nav>`,
           '/playlists/:playlist',
-          controller
+          controller,
         );
       },
       enter: async () => {
@@ -228,7 +228,7 @@ export default (controller: any) =>
         return renderCallback(
           html`<search-nav .query="${props?.query}"></search-nav>`,
           '/search/:query',
-          controller
+          controller,
         );
       },
       enter: async () => {
@@ -242,12 +242,12 @@ export default (controller: any) =>
       render: () => {
         const nowPlaying = controller.shadowRoot?.querySelector('now-playing');
         nowPlaying?.dispatchEvent(
-          new CustomEvent('_player', { detail: controller._player })
+          new CustomEvent('_player', { detail: controller._player }),
         );
         return renderCallback(
           html`<now-playing></now-playing>`,
           '/playing',
-          controller
+          controller,
         );
       },
       enter: async () => {

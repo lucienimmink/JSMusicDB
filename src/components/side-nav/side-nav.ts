@@ -115,7 +115,7 @@ export class SideNav extends LitElement {
                       title="${ifDefined(
                         t('labels.close-menu') === null
                           ? undefined
-                          : t('labels.close-menu')
+                          : t('labels.close-menu'),
                       )}"
                       @click=${(e: Event) => {
                         this._handleClick(e);
@@ -139,7 +139,7 @@ export class SideNav extends LitElement {
                       placeholder="${ifDefined(
                         t('labels.search') === null
                           ? undefined
-                          : t('labels.search')
+                          : t('labels.search'),
                       )}"
                       id="search"
                       @focus="${() => {
@@ -158,7 +158,7 @@ export class SideNav extends LitElement {
             <app-link
               href="/"
               title="${ifDefined(
-                t('labels.home') === null ? undefined : t('labels.home')
+                t('labels.home') === null ? undefined : t('labels.home'),
               )}"
               menu
               flex
@@ -175,7 +175,7 @@ export class SideNav extends LitElement {
                     title="${ifDefined(
                       t('labels.letters') === null
                         ? undefined
-                        : t('labels.letters')
+                        : t('labels.letters'),
                     )}"
                     menu
                     flex
@@ -189,7 +189,7 @@ export class SideNav extends LitElement {
             <app-link
               href="/artists"
               title="${ifDefined(
-                t('labels.artists') === null ? undefined : t('labels.artists')
+                t('labels.artists') === null ? undefined : t('labels.artists'),
               )}"
               menu
               flex
@@ -200,7 +200,7 @@ export class SideNav extends LitElement {
             <app-link
               href="/albums"
               title="${ifDefined(
-                t('labels.albums') === null ? undefined : t('labels.albums')
+                t('labels.albums') === null ? undefined : t('labels.albums'),
               )}"
               menu
               flex
@@ -211,7 +211,7 @@ export class SideNav extends LitElement {
             <app-link
               href="/years"
               title="${ifDefined(
-                t('labels.years') === null ? undefined : t('labels.years')
+                t('labels.years') === null ? undefined : t('labels.years'),
               )}"
               menu
               flex
@@ -224,7 +224,7 @@ export class SideNav extends LitElement {
               title="${ifDefined(
                 t('labels.playlists') === null
                   ? undefined
-                  : t('labels.playlists')
+                  : t('labels.playlists'),
               )}"
               menu
               flex
@@ -237,7 +237,7 @@ export class SideNav extends LitElement {
               title="${ifDefined(
                 t('labels.now-playing') === null
                   ? undefined
-                  : t('labels.now-playing')
+                  : t('labels.now-playing'),
               )}"
               menu
               flex
@@ -253,7 +253,7 @@ export class SideNav extends LitElement {
                     title="${ifDefined(
                       t('labels.scrobble-cache') === null
                         ? undefined
-                        : t('labels.scrobble-cache')
+                        : t('labels.scrobble-cache'),
                     )}"
                     menu
                     flex
@@ -267,7 +267,9 @@ export class SideNav extends LitElement {
             <app-link
               href="/settings"
               title="${ifDefined(
-                t('labels.settings') === null ? undefined : t('labels.settings')
+                t('labels.settings') === null
+                  ? undefined
+                  : t('labels.settings'),
               )}"
               menu
               flex

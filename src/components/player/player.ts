@@ -158,7 +158,7 @@ export class Album extends LitElement {
   _shuffleCollection() {
     if (!this.playlist.shuffledIndices) {
       const availableIndices = this.playlist.tracks.map(
-        (track: any, index: number) => index
+        (track: any, index: number) => index,
       );
       this.playlist.shuffledIndices = shuffle(availableIndices);
     }
@@ -218,7 +218,7 @@ export class Album extends LitElement {
     if (player && this.track) {
       player.crossOrigin = 'anonymous';
       player.src = `${server}/listen?path=${encodeURIComponent(
-        this.track.source.url
+        this.track.source.url,
       )}&jwt=${jwt}`;
       player
         .play()
@@ -519,7 +519,7 @@ export class Album extends LitElement {
   }
   _updateBgColorIfSystemTheme() {
     const darkModeMediaQuery = window.matchMedia(
-      '(prefers-color-scheme: dark)'
+      '(prefers-color-scheme: dark)',
     );
     darkModeMediaQuery.addListener(async () => {
       const theme = await getSettingByName('theme');

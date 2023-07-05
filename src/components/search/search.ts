@@ -40,7 +40,7 @@ export class SearchNav extends LitElement {
     this._doSearch();
   }
   protected willUpdate(
-    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
   ): void {
     if (_changedProperties.has('query')) {
       this._doSearch();
@@ -123,7 +123,7 @@ export class SearchNav extends LitElement {
                   </div>
                 </app-link>
               </li>
-            `
+            `,
           )}
         </ol>
       </div>
@@ -164,7 +164,7 @@ export class SearchNav extends LitElement {
                   </div>
                 </app-link>
               </li>
-            `
+            `,
           )}
         </ol>
       </div>
@@ -202,7 +202,7 @@ export class SearchNav extends LitElement {
                     : html` <span class="small muted">${track.type}</span> `}
                 </span>
               </li>
-            `
+            `,
           )}
         </ol>
       </div>

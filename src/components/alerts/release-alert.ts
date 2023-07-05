@@ -69,7 +69,7 @@ export default class ReleaseAlert extends LitElement {
       <br />`;
   }
   protected willUpdate(
-    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
   ): void {
     if (_changedProperties.has('artist')) {
       this._updateFeed();
@@ -80,7 +80,7 @@ export default class ReleaseAlert extends LitElement {
       ? html`
           <div class="alert alert-new-release">
             ${this.newReleases.map(
-              (release: any) => html`${this._renderRelease(release)}`
+              (release: any) => html`${this._renderRelease(release)}`,
             )}
           </div>
         `

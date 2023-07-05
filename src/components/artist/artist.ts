@@ -35,7 +35,7 @@ export class Artist extends LitElement {
     EventBus.off(REFRESH, this._getAlbums, this);
   }
   protected willUpdate(
-    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
   ): void {
     if (_changedProperties.has('artist')) {
       this._getAlbums(this.artist);

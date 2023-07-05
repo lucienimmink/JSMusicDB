@@ -21,7 +21,7 @@ const getMetaInfo = async ({
   }
   const response = await fetchWithTimeout(
     `https://ws.audioscrobbler.com/2.0/?${searchParams}`,
-    { timeout: 10000 }
+    { timeout: 10000 },
   );
   const json = await response.json();
   return json;
@@ -33,7 +33,7 @@ const getMBID = async (artist: string) => {
   searchParams.set('query', artist);
   const response = await fetchWithTimeout(
     `https://musicbrainz.org/ws/2/artist/?${searchParams}`,
-    { timeout: 10000 }
+    { timeout: 10000 },
   );
   const { artists } = await response.json();
   return artists[0].id;

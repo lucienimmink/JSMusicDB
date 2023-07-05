@@ -45,14 +45,14 @@ export function getDominantColor(img: any, cb: any, override: any): any {
 export function getDominantColorByURL(
   url: any,
   cb: any,
-  override = false
+  override = false,
 ): any {
   if (window.runningInElectron && !override) {
     // send an event to download this image
     document.querySelector('lit-musicdb')?.dispatchEvent(
       new CustomEvent('external.mdbuntaint', {
         detail: { url },
-      })
+      }),
     );
   } else {
     // clone the img object
@@ -74,10 +74,10 @@ export function getDominantColorByURL(
             r: rgb[0],
             g: rgb[1],
             b: rgb[2],
-          })
+          }),
         );
       },
-      false
+      false,
     );
     clone.src = `${url}#no-sw-cache`;
   }
@@ -195,13 +195,13 @@ export const updateSunriseData = async (useGPS = true) => {
         const lng = coords.longitude;
         const response = await fetchWithTimeout(
           `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`,
-          { timeout: 10000 }
+          { timeout: 10000 },
         );
         const { results } = await response.json();
         const sunset = new Date(results.sunset);
         const sunrise: Date = new Date(results.sunrise);
         const nextDayStop: Date = new Date(
-          sunrise.setDate(sunrise.getDate() + 1)
+          sunrise.setDate(sunrise.getDate() + 1),
         );
         return resolve(await _setSunrise(sunset, nextDayStop));
       });
@@ -222,7 +222,7 @@ export const currentBgColor = async () => {
     case 'system':
       // eslint-disable-next-line no-case-declarations
       const darkMode = window.matchMedia(
-        '(prefers-color-scheme: dark)'
+        '(prefers-color-scheme: dark)',
       ).matches;
       return darkMode ? DARK : LIGHT;
     case 'auto':

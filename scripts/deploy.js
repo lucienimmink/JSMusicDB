@@ -15,7 +15,7 @@ try {
         'Content-Type': 'application/zip',
         Authorization: `Bearer ${process.env.NETLIFY_AUTH_TOKEN}`,
       },
-    }
+    },
   );
   process.exit(0);
 } catch (error) {

@@ -64,7 +64,7 @@ export class LetterNav extends LitElement {
       const key = await getPublicKey(this.server);
       const encrypted = await this._encrypt(
         { name: this.username, password: this.password },
-        key
+        key,
       );
       const { jwt } = await authenticate(this.server, encrypted);
       if (!jwt) {
@@ -88,7 +88,7 @@ export class LetterNav extends LitElement {
         hash: 'SHA-256',
       },
       false,
-      ['encrypt']
+      ['encrypt'],
     );
     const payload = new TextEncoder().encode(JSON.stringify(user));
     return crypto.subtle.encrypt(
@@ -96,7 +96,7 @@ export class LetterNav extends LitElement {
         name: 'RSA-OAEP',
       },
       encryptionKey,
-      payload
+      payload,
     );
   }
   async _toggleInfo() {
@@ -104,7 +104,7 @@ export class LetterNav extends LitElement {
       animateCSS(this.shadowRoot?.querySelector('.modal'), 'fadeOut');
       await animateCSS(
         this.shadowRoot?.querySelector('.modal-backdrop'),
-        'fadeOut'
+        'fadeOut',
       );
     }
     this.showInfoModal = !this.showInfoModal;
@@ -167,7 +167,7 @@ export class LetterNav extends LitElement {
                       placeholder="${ifDefined(
                         t('labels.placeholders.username') === null
                           ? undefined
-                          : t('labels.placeholders.username')
+                          : t('labels.placeholders.username'),
                       )}"
                       required
                       id="username"
@@ -182,7 +182,7 @@ export class LetterNav extends LitElement {
                       placeholder="${ifDefined(
                         t('labels.placeholders.password') === null
                           ? undefined
-                          : t('labels.placeholders.password')
+                          : t('labels.placeholders.password'),
                       )}"
                       required
                       id="password"
@@ -197,7 +197,7 @@ export class LetterNav extends LitElement {
                       placeholder="${ifDefined(
                         t('labels.placeholders.server') === null
                           ? undefined
-                          : t('labels.placeholders.server')
+                          : t('labels.placeholders.server'),
                       )}"
                       required
                       id="server"

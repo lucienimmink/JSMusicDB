@@ -23,7 +23,7 @@ export const getSimilairArtists = (artist: any) => {
   params.set('method', 'artist.getSimilar');
   params.set('artist', artist);
   return fetchWithTimeout(
-    `https://ws.audioscrobbler.com/2.0/?${params.toString()}`
+    `https://ws.audioscrobbler.com/2.0/?${params.toString()}`,
   )
     .then(response => response.json().catch(e => e))
     .catch(e => e);
@@ -38,7 +38,7 @@ export const getLovedTracks = (user: string) => {
   params.set('user', user);
   return fetchWithTimeout(
     `https://ws.audioscrobbler.com/2.0/?${params.toString()}`,
-    { timeout: 10000 }
+    { timeout: 10000 },
   )
     .then(response => response.json().catch(e => e))
     .catch(e => e);
@@ -49,7 +49,7 @@ export const getTrackInfo = (track: any, user: string) => {
   params.set('method', 'track.getInfo');
   params.set(
     'artist',
-    track.album.artist.albumArtist || track.album.artist.name
+    track.album.artist.albumArtist || track.album.artist.name,
   );
   params.set('album', track.album.name);
   params.set('track', track.title);
@@ -57,7 +57,7 @@ export const getTrackInfo = (track: any, user: string) => {
   params.set('format', 'json');
   params.set('user', user);
   return fetchWithTimeout(
-    `https://ws.audioscrobbler.com/2.0/?${params.toString()}`
+    `https://ws.audioscrobbler.com/2.0/?${params.toString()}`,
   )
     .then(response => response.json().catch(e => e))
     .catch(e => e);
@@ -72,7 +72,7 @@ export const getTopArtists = (user: string) => {
   params.set('period', '1month');
   params.set('user', user);
   return fetchWithTimeout(
-    `https://ws.audioscrobbler.com/2.0/?${params.toString()}`
+    `https://ws.audioscrobbler.com/2.0/?${params.toString()}`,
   )
     .then(response => response.json().catch(e => e))
     .catch(e => e);
@@ -86,7 +86,7 @@ export const getRecentlyListened = (user: string) => {
   params.set('extended', 'true');
   params.set('user', user);
   return fetchWithTimeout(
-    `https://ws.audioscrobbler.com/2.0/?${params.toString()}`
+    `https://ws.audioscrobbler.com/2.0/?${params.toString()}`,
   )
     .then(response => response.json().catch(e => e))
     .catch(e => e);
@@ -100,7 +100,7 @@ export const getTopTracks = (user: string, max = 100, period = '3month') => {
   params.set('method', 'user.gettoptracks');
   params.set('user', user);
   return fetchWithTimeout(
-    `https://ws.audioscrobbler.com/2.0/?${params.toString()}`
+    `https://ws.audioscrobbler.com/2.0/?${params.toString()}`,
   )
     .then(response => response.json().catch(e => e))
     .catch(e => e);
@@ -142,12 +142,12 @@ export const toggleLoved = async (track: any, isLoved = true) => {
       track.title,
       null,
       sk,
-      method
-    )
+      method,
+    ),
   );
   params.set(
     'artist',
-    track.album.artist.albumArtist || track.album.artist.name
+    track.album.artist.albumArtist || track.album.artist.name,
   );
   params.set('album', track.album.name);
   params.set('track', track.title);
@@ -182,7 +182,7 @@ export const authenticate = async ({
       },
       body: params,
       timeout: 5000,
-    }
+    },
   ).then(response => response.json().catch(e => e));
 };
 export const announceNowPlaying = async (track: any) => {
@@ -198,7 +198,7 @@ export const announceNowPlaying = async (track: any) => {
       now.getDate(),
       now.getHours(),
       now.getMinutes() + now.getTimezoneOffset(),
-      now.getSeconds()
+      now.getSeconds(),
     ) / 1000;
   const sk: any = await get(SK);
   if (!sk) {
@@ -215,8 +215,8 @@ export const announceNowPlaying = async (track: any) => {
       track.title,
       timestamp,
       sk,
-      'track.updateNowPlaying'
-    )
+      'track.updateNowPlaying',
+    ),
   );
   params.set('artist', track.trackArtist);
   params.set('album', track.album.name);
@@ -244,7 +244,7 @@ export const scrobbleTrack = async (track: any) => {
       now.getDate(),
       now.getHours(),
       now.getMinutes() + now.getTimezoneOffset(),
-      now.getSeconds()
+      now.getSeconds(),
     ) / 1000;
 
   const settings: any = await getSettings();
@@ -280,8 +280,8 @@ export const scrobbleTrack = async (track: any) => {
       track.title,
       timestamp,
       sk,
-      'track.scrobble'
-    )
+      'track.scrobble',
+    ),
   );
   params.set('artist', track.trackArtist);
   params.set('album', track.album.name);
@@ -301,7 +301,7 @@ export const scrobbleTrack = async (track: any) => {
 // private methods
 const _signAuthentication = (user: string, password: string): string =>
   encryption.hex_md5(
-    `api_key${LASTFMAPIKEY}methodauth.getMobileSessionpassword${password}username${user}${LASTFMSECRET}`
+    `api_key${LASTFMAPIKEY}methodauth.getMobileSessionpassword${password}username${user}${LASTFMSECRET}`,
   );
 
 const _signTrack = (
@@ -310,13 +310,13 @@ const _signTrack = (
   track: string,
   timestamp: any,
   sk: string,
-  method: string
+  method: string,
 ): string => {
   return timestamp
     ? encryption.hex_md5(
-        `album${album}api_key${LASTFMAPIKEY}artist${artist}method${method}sk${sk}timestamp${timestamp}track${track}${LASTFMSECRET}`
+        `album${album}api_key${LASTFMAPIKEY}artist${artist}method${method}sk${sk}timestamp${timestamp}track${track}${LASTFMSECRET}`,
       )
     : encryption.hex_md5(
-        `album${album}api_key${LASTFMAPIKEY}artist${artist}method${method}sk${sk}track${track}${LASTFMSECRET}`
+        `album${album}api_key${LASTFMAPIKEY}artist${artist}method${method}sk${sk}track${track}${LASTFMSECRET}`,
       );
 };

@@ -177,7 +177,7 @@ export class NowPlaying extends LitElement {
       this._analyzer.fftSize = this._calculateFft(sampleRate);
       this._hearableBars = this._getHearableBars(
         sampleRate,
-        this._analyzer.fftSize
+        this._analyzer.fftSize,
       );
       source.connect(this._analyzer);
       source.connect(audioCtx.destination);
@@ -534,18 +534,18 @@ export class NowPlaying extends LitElement {
           ${t('content.now-playing.p2.1')}
           <app-link href="/artists" inline
             ><span class="icon">${artistsIcon}</span>${t(
-              'labels.artist'
+              'labels.artist',
             )}</app-link
           >
           ${t('content.now-playing.p2.2')}
           <app-link href="/albums" inline
             ><span class="icon">${albumsIcon}</span>${t(
-              'labels.album'
+              'labels.album',
             )}</app-link
           >${t('content.now-playing.p2.3')}
           <app-link href="/playlists/current" inline
             ><span class="icon">${playlistsIcon}</span>${t(
-              'labels.playlist'
+              'labels.playlist',
             )}</app-link
           >
         </p>

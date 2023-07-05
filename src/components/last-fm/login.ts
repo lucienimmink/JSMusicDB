@@ -83,7 +83,7 @@ export class LetterNav extends LitElement {
       animateCSS(this.shadowRoot?.querySelector('.modal'), 'fadeOut');
       await animateCSS(
         this.shadowRoot?.querySelector('.modal-backdrop'),
-        'fadeOut'
+        'fadeOut',
       );
     }
     this.showInfoModal = !this.showInfoModal;
@@ -146,7 +146,7 @@ export class LetterNav extends LitElement {
                       placeholder="${ifDefined(
                         t('labels.placeholders.username') === null
                           ? undefined
-                          : t('labels.placeholders.username')
+                          : t('labels.placeholders.username'),
                       )}"
                       required
                       id="username"
@@ -161,7 +161,7 @@ export class LetterNav extends LitElement {
                       placeholder="${ifDefined(
                         t('labels.placeholders.password') === null
                           ? undefined
-                          : t('labels.placeholders.password')
+                          : t('labels.placeholders.password'),
                       )}"
                       required
                       id="password"

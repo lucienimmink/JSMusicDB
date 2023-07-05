@@ -56,7 +56,7 @@ export const getNextPlaylist = (playlist: any) => {
       return getTopTracksForUser(playlist);
     default:
       throw new Error(
-        `No implementation to generate a new playlist for type ${playlist.type}`
+        `No implementation to generate a new playlist for type ${playlist.type}`,
       );
   }
 };
@@ -79,7 +79,7 @@ export const getNewPlaylistForRandom = (playlist: any) => {
         const trackIDs = Object.keys(mdb.tracks);
         const randomTracks: string[] = _shuffle(trackIDs).splice(
           0,
-          playlist.max
+          playlist.max,
         );
         const nextPlaylist = {
           i18name: 'playlists.name.random',
@@ -125,17 +125,17 @@ export const getNewPlaylistForRandomPref = (playlist: any) => {
             if (i % 3 === 0 || i % 5 === 0) {
               newPlaylist.tracks.push(
                 // @ts-ignore
-                _getRandomTrackFromArtists(highRotation, newPlaylist)
+                _getRandomTrackFromArtists(highRotation, newPlaylist),
               );
             } else if (i % 4 === 0 || i % 7 === 0) {
               newPlaylist.tracks.push(
                 // @ts-ignore
-                _getRandomTrackFromArtists(mediumRotation, newPlaylist)
+                _getRandomTrackFromArtists(mediumRotation, newPlaylist),
               );
             } else {
               newPlaylist.tracks.push(
                 // @ts-ignore
-                _getRandomTrackFromArtists(mdb.artistsList(), newPlaylist)
+                _getRandomTrackFromArtists(mdb.artistsList(), newPlaylist),
               );
             }
           }
@@ -144,7 +144,7 @@ export const getNewPlaylistForRandomPref = (playlist: any) => {
         .catch(e => {
           return reject(e);
         });
-    })
+    }),
   );
 };
 export const getNewPlaylistForRadioPref = (playlist: any) => {
@@ -175,12 +175,12 @@ export const getNewPlaylistForRadioPref = (playlist: any) => {
             if (i % 3 === 0 || i % 5 === 0) {
               newPlaylist.tracks.push(
                 // @ts-ignore
-                _getRandomTrackFromArtists(highRotation, newPlaylist)
+                _getRandomTrackFromArtists(highRotation, newPlaylist),
               );
             } else if (i % 4 === 0 || i % 7 === 0) {
               newPlaylist.tracks.push(
                 // @ts-ignore
-                _getRandomTrackFromArtists(mediumRotation, newPlaylist)
+                _getRandomTrackFromArtists(mediumRotation, newPlaylist),
               );
             } else {
               // use the preferences to get a related random track
@@ -188,11 +188,11 @@ export const getNewPlaylistForRadioPref = (playlist: any) => {
               try {
                 const relatedArtists = await _getNextSimilarArtist(
                   randomHighRotationArtist,
-                  mdb
+                  mdb,
                 );
                 const randomTrack = await _getRandomTrackFromArtists(
                   relatedArtists,
-                  newPlaylist
+                  newPlaylist,
                 );
                 // @ts-ignore
                 newPlaylist.tracks.push(randomTrack);
@@ -206,7 +206,7 @@ export const getNewPlaylistForRadioPref = (playlist: any) => {
         .catch(e => {
           return reject(e);
         });
-    })
+    }),
   );
 };
 export const getNewPlaylistForRadio = (playlist: any) => {
@@ -227,7 +227,7 @@ export const getNewPlaylistForRadio = (playlist: any) => {
           resolve(newPlaylist);
         });
       })
-      .catch(() => reject())
+      .catch(() => reject()),
   );
 };
 export const getNewPlaylistForLovedTracks = (playlist: any) =>
@@ -253,10 +253,10 @@ export const getNewPlaylistForLovedTracks = (playlist: any) =>
               }
             });
             resolve(newPlaylist);
-          }
+          },
         );
       })
-      .catch(() => reject())
+      .catch(() => reject()),
   );
 export const getTopTracksForUser = (playlist: any) =>
   new Promise((resolve, reject) =>
@@ -286,10 +286,10 @@ export const getTopTracksForUser = (playlist: any) =>
               }
             });
             resolve(newPlaylist);
-          }
+          },
         );
       })
-      .catch(() => reject())
+      .catch(() => reject()),
   );
 const _getNewPlaylistForAlbum = (playlist: any) =>
   new Promise((resolve, reject) =>
@@ -307,11 +307,11 @@ const _getNewPlaylistForAlbum = (playlist: any) =>
         };
         return resolve(nextPlaylist);
       })
-      .catch(() => reject())
+      .catch(() => reject()),
   );
 const _getRandomTrackFromArtists = (
   artists: Array<any>,
-  playlist: any
+  playlist: any,
 ): any => {
   const randomArtist = _shuffle(artists)[0];
   if (!randomArtist) {
@@ -358,7 +358,7 @@ const _getNextTrack = (artist: any, mdb: any, playlist: any) =>
         // add a new track to the playlist
         const randomTrack = _getRandomTrackFromArtists(
           similarartists,
-          playlist
+          playlist,
         );
         playlist.tracks.push(randomTrack);
         return playlist.tracks.length < playlist.max

@@ -8,8 +8,11 @@ export default css`
     cursor: pointer;
     text-align: center;
     vertical-align: middle;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-      border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    transition:
+      color 0.15s ease-in-out,
+      background-color 0.15s ease-in-out,
+      border-color 0.15s ease-in-out,
+      box-shadow 0.15s ease-in-out;
   }
   .btn-small {
     padding: 0.25rem 0.5rem;

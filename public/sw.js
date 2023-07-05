@@ -23,9 +23,9 @@ self.addEventListener('activate', event => {
             }
             return true;
           })
-          .map(cacheName => caches.delete(cacheName))
+          .map(cacheName => caches.delete(cacheName)),
       );
-    })()
+    })(),
   );
 });
 
@@ -38,7 +38,7 @@ self.addEventListener('install', event => {
         '/translations/en-gb.json',
         '/translations/nl-nl.json',
       ]);
-    })()
+    })(),
   );
 });
 
@@ -87,14 +87,14 @@ self.addEventListener('fetch', async event => {
               if (networkResponse) {
                 await cache.put(event.request, networkResponse.clone());
               }
-            })()
+            })(),
           );
           const finalRespone =
             (await cachedResponse) || (await networkResponsePromise);
           refresh(event.request.url, finalRespone.clone());
           // Returned the cached response if we have one, otherwise return the network response.
           return finalRespone;
-        })()
+        })(),
       );
     } else if (UPDATE_AND_CACHE.some(url => event.request.url.match(url))) {
       return await updateCache(event);
@@ -111,12 +111,12 @@ self.addEventListener('fetch', async event => {
               if (networkResponse) {
                 await cache.put(event.request, networkResponse.clone());
               }
-            })()
+            })(),
           );
 
           // Returned the cached response if we have one, otherwise return the network response.
           return cachedResponse || networkResponsePromise;
-        })()
+        })(),
       );
     }
   } catch (e) {

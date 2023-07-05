@@ -153,7 +153,7 @@ export class SettingsNav extends LitElement {
     this.stats.time = timeSpan(
       this.mdb.totals.playingTime,
       true,
-      this._toLocale(i18next.language)
+      this._toLocale(i18next.language),
     );
     this.stats.parsingTime = this.mdb.totals.parsingTime;
     const date = await getLastParsed();
@@ -163,7 +163,7 @@ export class SettingsNav extends LitElement {
         // @ts-ignore
         dateStyle: 'full',
         timeStyle: 'medium',
-      }
+      },
     );
     this.stats.parsed = formatter.format(date);
     this.requestUpdate();
@@ -258,7 +258,7 @@ export class SettingsNav extends LitElement {
               @click=${this._resetmp3Stream}
             >
               <span class="icon">${disconnectIcon}</span> ${t(
-                'buttons.disconnect'
+                'buttons.disconnect',
               )}
             </button>`
           : nothing}
@@ -478,7 +478,7 @@ export class SettingsNav extends LitElement {
                 placeholder="${ifDefined(
                   t('labels.rss-feed-placeholder') === null
                     ? undefined
-                    : t('labels.rss-feed-placeholder')
+                    : t('labels.rss-feed-placeholder'),
                 )}"
                 .value=${this.settings?.feed || ''}
                 @change="${(e: Event) => this._setFeed(e)}"

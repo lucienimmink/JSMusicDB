@@ -35,7 +35,9 @@ export default css`
     height: 50px;
     font-weight: 400;
     padding-left: 1rem;
-    transition: color 0.5s ease-in-out, background-color 0.5s ease-in-out;
+    transition:
+      color 0.5s ease-in-out,
+      background-color 0.5s ease-in-out;
   }
   h1 div {
     height: 100%;

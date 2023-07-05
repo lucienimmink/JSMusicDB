@@ -122,7 +122,7 @@ export class LitMusicdb extends LitElement {
             await update();
             EventBus.emit(REFRESH, this);
           }
-        }
+        },
       );
     }
   }
@@ -151,7 +151,7 @@ export class LitMusicdb extends LitElement {
     if (!this.hasSK) {
       animateCSS(
         this.shadowRoot?.querySelector('.loading-wrapper'),
-        'fadeOut'
+        'fadeOut',
       ).then(() => {
         this.loading = false;
       });
@@ -163,7 +163,7 @@ export class LitMusicdb extends LitElement {
     if (!this.hasToken) {
       animateCSS(
         this.shadowRoot?.querySelector('.loading-wrapper'),
-        'fadeOut'
+        'fadeOut',
       ).then(() => {
         this.loading = false;
       });
@@ -181,7 +181,7 @@ export class LitMusicdb extends LitElement {
     this.loading = false;
     await animateCSS(
       this.shadowRoot?.querySelector('.loading-wrapper'),
-      'fadeOut'
+      'fadeOut',
     );
   }
   protected _changeUrl(target: any, url = '/') {

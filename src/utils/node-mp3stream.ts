@@ -41,12 +41,12 @@ export const canUseSSE = async (server: string) => {
 export const getRSSFeed = async (
   server: string,
   jwt: string,
-  remote: string
+  remote: string,
 ) => {
   // temp ts hack for cachebusting
   const ts = new Date().getTime();
   const response = await fetchWithTimeout(
-    `${server}/proxy?jwt=${jwt}&remote=${remote}&ts=${ts}`
+    `${server}/proxy?jwt=${jwt}&remote=${remote}&ts=${ts}`,
   );
   return response.text();
 };
@@ -72,7 +72,7 @@ export const authenticate = async (server: string, payload: ArrayBuffer) => {
 export const getRescan = async (server: string, jwt: string) => {
   const ts = new Date().getTime();
   const response = await fetchWithTimeout(
-    `${server}/rescan?jwt=${jwt}&ts=${ts}`
+    `${server}/rescan?jwt=${jwt}&ts=${ts}`,
   );
   return response.text();
 };
@@ -80,7 +80,7 @@ export const getRescan = async (server: string, jwt: string) => {
 export const getProgress = async (server: string, jwt: string) => {
   const ts = new Date().getTime();
   const response = await fetchWithTimeout(
-    `${server}/progress?jwt=${jwt}&ts=${ts}`
+    `${server}/progress?jwt=${jwt}&ts=${ts}`,
   );
   if (response.status === 200) {
     return response.json();
@@ -121,8 +121,8 @@ const _arrayBufferToBase64 = (buffer: ArrayBuffer) =>
   btoa(
     new Uint8Array(buffer).reduce(
       (data, byte) => data + String.fromCharCode(byte),
-      ''
-    )
+      '',
+    ),
   );
 
 const _semver = (v1: string, v2: string) => {

@@ -40,14 +40,14 @@ export class Encryption {
         // tslint:disable-next-line:no-bitwise
         output += String.fromCharCode(
           0xc0 | ((x >>> 6) & 0x1f),
-          0x80 | (x & 0x3f)
+          0x80 | (x & 0x3f),
         );
       } else if (x <= 0xffff) {
         // tslint:disable-next-line:no-bitwise
         output += String.fromCharCode(
           0xe0 | ((x >>> 12) & 0x0f),
           0x80 | ((x >>> 6) & 0x3f),
-          0x80 | (x & 0x3f)
+          0x80 | (x & 0x3f),
         );
       } else if (x <= 0x1fffff) {
         // tslint:disable-next-line:no-bitwise
@@ -55,7 +55,7 @@ export class Encryption {
           0xf0 | ((x >>> 18) & 0x07),
           0x80 | ((x >>> 12) & 0x3f),
           0x80 | ((x >>> 6) & 0x3f),
-          0x80 | (x & 0x3f)
+          0x80 | (x & 0x3f),
         );
       }
     }
@@ -178,7 +178,7 @@ export class Encryption {
   private md5_cmn(q: any, a: any, b: any, x: any, s: any, t: any) {
     return this.safe_add(
       this.bit_rol(this.safe_add(this.safe_add(a, q), this.safe_add(x, t)), s),
-      b
+      b,
     );
   }
   private md5_ff(a: any, b: any, c: any, d: any, x: any, s: any, t: any) {

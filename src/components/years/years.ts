@@ -41,7 +41,7 @@ export class LetterNav extends LitElement {
       const sortedYears = Object.keys(mdb.years).sort(
         (a: string, b: string) => {
           return parseInt(a, 10) < parseInt(b, 10) ? 1 : -1;
-        }
+        },
       );
       if (sortedYears[0] === 'undefined') {
         sortedYears.shift(); // remove 'undefined' that is not a year silly
@@ -97,7 +97,7 @@ export class LetterNav extends LitElement {
               >${year.year}</a
             >
           </li>
-        `
+        `,
       )}
     </ul>`;
   }

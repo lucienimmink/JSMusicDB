@@ -196,9 +196,8 @@ export class HomeNav extends LitElement {
                       </div>
                       <span class="details">
                         <span
-                          >${this.currentTrack?.artist?.albumArist ||
-                          this.currentTrack?.artist?.name}
-                          • ${this.currentTrack?.title}
+                          >${this.currentTrack?.trackArtist} •
+                          ${this.currentTrack?.title}
                           <br />
                           <span class="small muted"
                             >${this.currentTrack?.album?.name}</span
@@ -236,7 +235,7 @@ export class HomeNav extends LitElement {
                       ${this._formatDate(track?.date?.uts || '0', track)}
                     </span>
                   </li>
-                `
+                `,
               )}
             </ol>
           </div>
@@ -275,7 +274,7 @@ export class HomeNav extends LitElement {
                       </div>
                     </div>
                   </app-link>
-                `
+                `,
               )}
             </div>
           </div>
@@ -291,27 +290,26 @@ export class HomeNav extends LitElement {
           </h2>
           <ol>
             ${this.newReleases.map(
-              (release: any) => html` <a
-                href="${release.link}"
-                target="_blank"
-                rel="noopener"
-              >
-                <div>
-                  <album-art
-                    artist="${release.artist}"
-                    album="${release.album}"
-                    static
-                  ></album-art>
-                </div>
-                <span class="details"
-                  ><span>
-                    ${release.artist} &bull; ${release.album}
-                    ${release.isHires
-                      ? html`<span class="small muted hq-icon">${hqIcon}</span>`
-                      : nothing}
+              (release: any) =>
+                html` <a href="${release.link}" target="_blank" rel="noopener">
+                  <div>
+                    <album-art
+                      artist="${release.artist}"
+                      album="${release.album}"
+                      static
+                    ></album-art>
+                  </div>
+                  <span class="details"
+                    ><span>
+                      ${release.artist} &bull; ${release.album}
+                      ${release.isHires
+                        ? html`<span class="small muted hq-icon"
+                            >${hqIcon}</span
+                          >`
+                        : nothing}
+                    </span>
                   </span>
-                </span>
-              </a>`
+                </a>`,
             )}
           </ol>
         </div>`

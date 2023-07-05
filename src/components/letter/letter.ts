@@ -46,7 +46,7 @@ export class Letter extends LitElement {
     EventBus.off(REFRESH, this.getArtists, this);
   }
   protected willUpdate(
-    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
   ): void {
     if (_changedProperties.has('letter')) {
       this.getArtists(null, this.letter);
@@ -77,7 +77,7 @@ export class Letter extends LitElement {
   }
   render() {
     return html` ${this.artists.map((artist: any) =>
-      this._renderArtist(artist)
+      this._renderArtist(artist),
     )}`;
   }
 }

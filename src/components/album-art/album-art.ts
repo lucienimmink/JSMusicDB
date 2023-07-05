@@ -11,11 +11,11 @@ const resizeObserver = new ResizeObserver((entries: any) => {
     const element = entry.target as HTMLImageElement;
     element.setAttribute(
       'width',
-      Math.round(Number(entry.contentRect.width)).toString()
+      Math.round(Number(entry.contentRect.width)).toString(),
     );
     element.setAttribute(
       'height',
-      Math.round(Number(entry.contentRect.height)).toString()
+      Math.round(Number(entry.contentRect.height)).toString(),
     );
     element.dispatchEvent(new CustomEvent('resize', { bubbles: true }));
   }
@@ -76,7 +76,7 @@ export class AlbumArt extends LitElement {
       },
       {
         rootMargin: '250px 0px',
-      }
+      },
     );
   }
   public getDimensions() {
@@ -197,7 +197,7 @@ export class AlbumArt extends LitElement {
   }
   async updateCache(
     cacheKey: string | number,
-    key: { artist: string; album: string; dimension: number }
+    key: { artist: string; album: string; dimension: number },
   ) {
     if (sharedCache[cacheKey]) {
       this.art = this.replaceDimensions(sharedCache[cacheKey], this.dimension);
@@ -286,14 +286,14 @@ export class AlbumArt extends LitElement {
       try {
         let remoteURL = await get(
           `remoteURL-${artist}-${album}`,
-          this.customStore
+          this.customStore,
         );
         if (!remoteURL) {
           remoteURL = await fetchArtForAlbum({ artist, album });
           await set(
             `remoteURL-${artist}-${album}`,
             remoteURL,
-            this.customStore
+            this.customStore,
           );
         }
         art += remoteURL;

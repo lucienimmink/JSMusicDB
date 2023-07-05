@@ -40,7 +40,7 @@ export class Album extends LitElement {
     this.sortedDiscs = [];
   }
   protected willUpdate(
-    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
   ): void {
     if (_changedProperties.has('album')) {
       this._getTracks();
