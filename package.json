@@ -36,7 +36,7 @@
     "lint-staged": "^13.2.0",
     "node-fetch": "^3.3.1",
     "pinst": "^3.0.0",
-    "prettier": "^2.8.7",
+    "prettier": "^3.0.0",
     "prettier-plugin-organize-imports": "^3.2.2",
     "typescript": "^5.0.0",
     "vite": "^4.2.1",
