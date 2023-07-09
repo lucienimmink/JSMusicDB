@@ -17,6 +17,7 @@
     "deploy": "node scripts/deploy.js",
     "zip:deploy": "npm run zip && npm run deploy",
     "build:zip:deploy": "npm run build && npm run zip && npm run deploy",
+    "bzd": "npm run build:zip:deploy",
     "analyse": "custom-elements-manifest analyze --litelement --outdir dist --globs \"src/**/*.ts\"",
     "analyse:watch": "custom-elements-manifest analyze --litelement --outdir dist --globs \"src/**/*.ts\" --watch"
   },
