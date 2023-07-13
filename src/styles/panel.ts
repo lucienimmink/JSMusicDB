@@ -55,19 +55,20 @@ export default css`
     width: 100%;
     height: 100%;
     overflow: hidden;
-    transition: 0.1s ease-out;
+    transition: 0.15s ease-in-out;
     background-size: cover;
     background-position: 50%;
   }
   .panel-info {
     position: absolute;
     padding: 5px;
-    bottom: -1px;
-    left: -1px;
-    right: -1px;
-    background: linear-gradient(180deg, transparent 0, rgba(0, 0, 0, 0.75));
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(180deg, transparent 0, rgba(0, 0, 0, 0.75) 80%);
+    backdrop-filter: blur(1px);
     margin: 0;
-    transition: 0.1s ease-out;
+    transition: 0.15s ease-in-out;
     overflow: hidden;
     text-align: center;
     text-shadow: 0 0 3px #000;
