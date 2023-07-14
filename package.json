@@ -10,7 +10,6 @@
     "preview": "vite preview .",
     "start": "vite && npm run analyse:watch",
     "dev": "npm run start",
-    "tsc:watch": "tsc --watch",
     "postversion": "git push && git push --tags",
     "prepare": "husky install",
     "zip": "node scripts/zip.js",
