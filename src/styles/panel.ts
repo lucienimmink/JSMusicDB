@@ -67,7 +67,7 @@ export default css`
     right: 0;
     background: linear-gradient(180deg, transparent 0, rgba(0, 0, 0, 0.75) 80%);
     backdrop-filter: blur(1px);
-    margin: 0;
+    margin: -1px;
     transition: 0.15s ease-in-out;
     overflow: hidden;
     text-align: center;
