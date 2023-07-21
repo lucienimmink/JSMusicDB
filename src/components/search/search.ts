@@ -19,10 +19,20 @@ const MAX = 100;
 @customElement('search-nav')
 @localized()
 export class SearchNav extends LitElement {
+  private _query: string;
+
   @property()
   activeroute: string;
+
+  set query(value: string) {
+    const oldValue = this._query;
+    this._query = decodeURIComponent(value);
+    this.requestUpdate('query', oldValue);
+  }
   @property()
-  query: string;
+  get query() {
+    return this._query;
+  }
   @state()
   artists: any;
   @state()
@@ -36,7 +46,7 @@ export class SearchNav extends LitElement {
   constructor() {
     super();
     this.activeroute = '';
-    this.query = '';
+    this._query = '';
     this._doSearch();
   }
   protected willUpdate(
