@@ -43,6 +43,11 @@ export default css`
   h2 {
     margin-top: -5px;
     font-size: 1.5rem;
+    -webkit-background-clip: text !important;
+    -moz-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent;
+    background: linear-gradient(45deg, var(--primary), var(--text-color));
   }
   h3 {
     font-size: 1.25rem;
