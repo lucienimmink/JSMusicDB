@@ -87,6 +87,8 @@ export default css`
     transition: background-color 0.2s ease-in-out;
     min-height: 60px;
     width: 100%;
+  }
+  .playlist li:not(.header) {
     cursor: pointer;
   }
   .playlist li:hover {
