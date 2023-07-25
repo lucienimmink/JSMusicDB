@@ -43,6 +43,9 @@ export default css`
   h2 {
     margin-top: -5px;
     font-size: 1.5rem;
+  }
+  h2 span {
+    display: inline-block;
     -webkit-background-clip: text !important;
     -moz-background-clip: text !important;
     background-clip: text !important;

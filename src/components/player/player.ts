@@ -569,7 +569,7 @@ export class Album extends LitElement {
   }
   private _renderDetails() {
     return html`<div class="details">
-      <h4>${this.track.title}</h4>
+      <h4><span>${this.track.title}</span></h4>
       <h5>
         <app-link
           inline

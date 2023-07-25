@@ -130,7 +130,7 @@ export class AlbumDetails extends LitElement {
   }
   private _renderDetails() {
     return html`<div class="details">
-      <h2>${this.albumDetails?.name}</h2>
+      <h2><span>${this.albumDetails?.name}</span></h2>
       <h3>
         ${this.albumDetails?.artist?.albumArtist ||
         this.albumDetails?.artist?.name}
