@@ -364,6 +364,16 @@ export class SettingsNav extends LitElement {
           ${t('labels.apply-replaygain')}
         </label>
       </p>
+      <p>
+        <label>
+          <input
+            type="checkbox"
+            @click="${(e: Event) => this._toggle('followTrack', e)}"
+            ?checked=${this.settings?.followTrack}
+          />
+          ${t('labels.followTrack')}
+        </label>
+      </p>
     </div>`;
   }
   private _renderThemeSettings() {

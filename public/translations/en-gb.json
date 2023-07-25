@@ -109,7 +109,8 @@
     "letters": "Letters",
     "playing": "Playing",
     "paused": "Paused",
-    "right-now": "right now"
+    "right-now": "right now",
+    "followTrack": "Show album if track changes"
   },
   "content": {
     "lastfm": {

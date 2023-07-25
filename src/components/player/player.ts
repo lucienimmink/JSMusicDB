@@ -33,6 +33,7 @@ import {
   CHANGE_TITLE,
   LOADED_PLAYLIST,
   LOAD_PLAYLIST,
+  NAVIGATE_TO_ALBUM,
   NEXT_TRACK,
   PAUSE_PLAYER,
   PLAYER_ERROR,
@@ -94,6 +95,8 @@ export class Album extends LitElement {
   gain: number;
   @state()
   hasErrorWhilePlaying: boolean;
+  doNavigateToAlbum: boolean;
+
   static get styles() {
     return [
       animationCSS,
@@ -119,6 +122,8 @@ export class Album extends LitElement {
     this._updateBgColorIfSystemTheme();
     this.gain = -9;
     this.hasErrorWhilePlaying = false;
+    this.doNavigateToAlbum = false;
+
     getCurrentPlaylist().then((playlist: any) => {
       this.playlist = playlist;
       getCurrentTime().then((time: any) => {
@@ -132,6 +137,11 @@ export class Album extends LitElement {
         this.bgColor = await currentBgColor();
       }
     });
+
+    getSettingByName('followTrack').then((followTrack: any) => {
+      this.doNavigateToAlbum = !!followTrack;
+    });
+
     getIsShuffled().then((isShuffled: any) => {
       if (isShuffled) {
         this._toggleShuffled();
@@ -241,6 +251,12 @@ export class Album extends LitElement {
         });
       // share player
       window._player = player;
+
+      if (this.doNavigateToAlbum) {
+        EventBus.emit(NAVIGATE_TO_ALBUM, this, {
+          current: this.track,
+        });
+      }
 
       setTimeout(() => {
         EventBus.emit(UPDATE_TRACK, this, {
@@ -492,6 +508,9 @@ export class Album extends LitElement {
     }
     if (setting === 'replaygain') {
       this._setGain();
+    }
+    if (setting === 'followTrack') {
+      this.doNavigateToAlbum = value;
     }
   }
   async _setGain() {

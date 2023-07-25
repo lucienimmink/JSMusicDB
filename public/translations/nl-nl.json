@@ -109,7 +109,8 @@
     "letters": "Letters",
     "playing": "Nu bezig",
     "paused": "Gepauseerd",
-    "right-now": "met spelen"
+    "right-now": "met spelen",
+    "followTrack": "Toon album wanneer een nummer begint te spelen"
   },
   "content": {
     "lastfm": {

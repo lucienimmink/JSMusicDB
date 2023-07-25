@@ -25,9 +25,14 @@ import { RESET_LASTFM, getSK } from './utils/lastfm';
 import { launchQueue } from './utils/launch-queue';
 import { REFRESH } from './utils/musicdb';
 import { DONE_RELOADING, RESET_SERVER, getJwt } from './utils/node-mp3stream';
-import { START_CURRENT_PLAYLIST, STOP_PLAYER } from './utils/player';
+import {
+  NAVIGATE_TO_ALBUM,
+  START_CURRENT_PLAYLIST,
+  STOP_PLAYER,
+} from './utils/player';
 import { CHANGE_URL } from './utils/router';
 import { TOGGLE_SETTING, getSettingByName } from './utils/settings';
+import Track from '@addasoft/musicdbcore/dist/models/Track';
 
 @customElement('lit-musicdb')
 @localized()
@@ -100,6 +105,7 @@ export class LitMusicdb extends LitElement {
     EventBus.on(RESET_SERVER, this._resetServer, this);
     EventBus.on(RESET_LASTFM, this._resetLastFM, this);
     EventBus.on(CHANGE_URL, this._changeUrl, this);
+    EventBus.on(NAVIGATE_TO_ALBUM, this._navigateToAlbum, this);
     this._init();
   }
   disconnectedCallback() {
@@ -111,6 +117,7 @@ export class LitMusicdb extends LitElement {
     EventBus.off(RESET_SERVER, this._resetServer, this);
     EventBus.off(RESET_LASTFM, this._resetLastFM, this);
     EventBus.off(CHANGE_URL, this._changeUrl, this);
+    EventBus.off(NAVIGATE_TO_ALBUM, this._navigateToAlbum, this);
   }
   private _initServiceWorkerRefresh() {
     if ('serviceWorker' in window.navigator) {
@@ -194,6 +201,19 @@ export class LitMusicdb extends LitElement {
     this.shadowRoot.querySelector('#outlet').style.viewTransitionName =
       'outlet';
     this.appRouter.goto(url);
+  }
+  private _navigateToAlbum(target: any, current: any) {
+    const track = current.current as Track;
+    const { artist, album } = track;
+    history.replaceState(
+      {},
+      '',
+      `/letter/${artist?.letter?.escapedLetter}/artist/${artist?.escapedName}/album/${album?.escapedName}`,
+    );
+    this._changeUrl(
+      this,
+      `/letter/${artist?.letter?.escapedLetter}/artist/${artist?.escapedName}/album/${album?.escapedName}`,
+    );
   }
   async _doRefresh() {
     await refresh();
