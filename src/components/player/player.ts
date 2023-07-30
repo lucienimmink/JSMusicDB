@@ -252,7 +252,7 @@ export class Album extends LitElement {
       // share player
       window._player = player;
 
-      if (this.doNavigateToAlbum) {
+      if (this.doNavigateToAlbum && this.playlist.type !== 'album') {
         EventBus.emit(NAVIGATE_TO_ALBUM, this, {
           current: this.track,
         });
