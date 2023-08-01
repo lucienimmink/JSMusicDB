@@ -197,6 +197,7 @@ export class LitMusicdb extends LitElement {
     this.letter = url.split('/letter/')?.[1]?.split('/')[0];
     this.artist = url.split('/artist/')?.[1]?.split('/')[0];
     this.album = url.split('/album/')?.[1]?.split('/')[0];
+    window.scrollTo(0, 0);
     // @ts-ignore
     this.shadowRoot.querySelector('#outlet').style.viewTransitionName =
       'outlet';
