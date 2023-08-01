@@ -77,7 +77,7 @@ export default css`
   @media (min-width: 992px) {
     .jumbotron {
       padding: 2rem;
-      animation: jumbotron 1s linear infinite;
+      animation: jumbotron;
     }
     @keyframes jumbotron {
       to {
@@ -93,9 +93,9 @@ export default css`
       width: 190px;
       height: 190px;
       max-height: 190px;
-      animation: album-art 1s linear infinite;
+      animation: album-art-shrink;
     }
-    @keyframes album-art {
+    @keyframes album-art-shrink {
       to {
         flex: 0 0 75px;
         max-width: 75px;
@@ -107,7 +107,7 @@ export default css`
 
     h3 .muted {
       opacity: 0;
-      animation: h3muted 1s linear infinite;
+      animation: h3muted;
     }
     @keyframes h3muted {
       to {
@@ -116,7 +116,7 @@ export default css`
     }
     h2 {
       font-size: 2.5rem;
-      animation: h2 1s linear infinite;
+      animation: h2;
     }
     @keyframes h2 {
       to {
@@ -130,19 +130,14 @@ export default css`
       overflow: hidden;
     }
     h3 {
-      animation: h3 1s linear infinite;
+      animation: h3;
     }
     @keyframes h3 {
       to {
         font-size: 1.2rem;
       }
     }
-    h4 {
-      transform-origin: center top;
-      font-size: 1rem;
-      animation: h4 1s linear infinite;
-    }
-    @keyframes h4 {
+    @keyframes h4-text {
       25% {
         opacity: 0.25;
       }
@@ -151,11 +146,20 @@ export default css`
         opacity: 0;
       }
     }
+    h4 {
+      transform-origin: center top;
+      font-size: 1rem;
+      animation: h4-text;
+    }
     :host * {
-      animation-play-state: paused !important;
+      /* animation-play-state: paused !important;
       animation-delay: calc(var(--scroll) * -1s) !important;
       animation-iteration-count: 1 !important;
-      animation-fill-mode: both !important;
+      animation-fill-mode: both !important; */
+      animation-timing-function: linear;
+      animation-fill-mode: forwards;
+      animation-timeline: scroll(root);
+      animation-range: 0 160px;
     }
   }
 `;

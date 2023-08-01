@@ -8,7 +8,7 @@ export default css`
     height: 60px;
     border-top: 0;
     border-bottom: 1px solid var(--primary, #006ecd);
-    transition: all 0.5s ease-in-out;
+    transition: all 0.5s linear;
     padding: 1.85rem 1rem 0;
     position: sticky;
     z-index: 1;

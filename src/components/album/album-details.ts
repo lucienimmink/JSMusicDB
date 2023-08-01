@@ -24,8 +24,6 @@ export class AlbumDetails extends LitElement {
   @state()
   albumDetails: any;
   @state()
-  shrinkFactor: string;
-  @state()
   replayGainApplied: boolean;
 
   static readonly SCROLLOFFSET = 160;
@@ -46,7 +44,6 @@ export class AlbumDetails extends LitElement {
       tracks: [],
       type: 'dummy',
     };
-    this.shrinkFactor = '';
     this.replayGainApplied = false;
     getSettingByName('replaygain').then(async (replaygain: any) => {
       this.replayGainApplied = replaygain;
@@ -55,12 +52,10 @@ export class AlbumDetails extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    window.addEventListener('scroll', this._handleScroll);
     EventBus.on(TOGGLE_SETTING, this._doToggleReplayGainSetting, this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    window.removeEventListener('scroll', this._handleScroll);
     EventBus.off(TOGGLE_SETTING, this._doToggleReplayGainSetting, this);
   }
   _doToggleReplayGainSetting() {
@@ -160,7 +155,7 @@ export class AlbumDetails extends LitElement {
   }
   render() {
     return html`
-      <div class="jumbotron ${this.shrinkFactor}">
+      <div class="jumbotron">
         <div class="container ${this.albumDetails?.dummy ? 'dummy ' : ''}">
           <album-art
             artist="${this.albumDetails?.artist?.albumArtist ||
