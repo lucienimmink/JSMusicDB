@@ -12,7 +12,6 @@ if (!globalThis.URLPattern) {
 const renderCallback = (html: any, url: string, controller: LitMusicdb) => {
   const pattern = new URLPattern({ pathname: url });
   if (!pattern.test(controller?.route, location.origin)) return; // only do the lifting if needed
-  window.scrollTo(0, 0);
   EventBus.emit(TOGGLE_MENU, {}, 'close');
   if (url === '/playing') {
     document.querySelector('html')?.classList.add('noscroll');

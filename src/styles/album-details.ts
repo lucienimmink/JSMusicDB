@@ -152,10 +152,6 @@ export default css`
       animation: h4-text;
     }
     :host * {
-      /* animation-play-state: paused !important;
-      animation-delay: calc(var(--scroll) * -1s) !important;
-      animation-iteration-count: 1 !important;
-      animation-fill-mode: both !important; */
       animation-timing-function: linear;
       animation-fill-mode: forwards;
       animation-timeline: scroll(root);

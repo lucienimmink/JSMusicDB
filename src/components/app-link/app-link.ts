@@ -56,6 +56,7 @@ export default class Link extends LitElement {
   linkClick(event: Event) {
     event.preventDefault();
     window.history.pushState({ path: this.href }, '', this.href);
+    window.scrollTo(0, 0);
     // @ts-ignore
     if (!document?.startViewTransition) {
       EventBus.emit(CHANGE_URL, this, this.href);
