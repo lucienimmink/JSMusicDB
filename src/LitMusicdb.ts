@@ -33,6 +33,7 @@ import {
 import { CHANGE_URL } from './utils/router';
 import { TOGGLE_SETTING, getSettingByName } from './utils/settings';
 import Track from '@addasoft/musicdbcore/dist/models/Track';
+import { TOGGLE_OVERFLOW_HIDDEN } from './components/side-nav/side-nav';
 
 @customElement('lit-musicdb')
 @localized()
@@ -106,6 +107,7 @@ export class LitMusicdb extends LitElement {
     EventBus.on(RESET_LASTFM, this._resetLastFM, this);
     EventBus.on(CHANGE_URL, this._changeUrl, this);
     EventBus.on(NAVIGATE_TO_ALBUM, this._navigateToAlbum, this);
+    EventBus.on(TOGGLE_OVERFLOW_HIDDEN, this._toggleOverflowHidden, this);
     this._init();
   }
   disconnectedCallback() {
@@ -118,6 +120,7 @@ export class LitMusicdb extends LitElement {
     EventBus.off(RESET_LASTFM, this._resetLastFM, this);
     EventBus.off(CHANGE_URL, this._changeUrl, this);
     EventBus.off(NAVIGATE_TO_ALBUM, this._navigateToAlbum, this);
+    EventBus.off(TOGGLE_OVERFLOW_HIDDEN, this._toggleOverflowHidden, this);
   }
   private _initServiceWorkerRefresh() {
     if ('serviceWorker' in window.navigator) {
@@ -279,6 +282,16 @@ export class LitMusicdb extends LitElement {
     }
     if (setting === 'gps') {
       this._getTheme();
+    }
+  }
+  _toggleOverflowHidden(target: any, state = false) {
+    if (document.querySelector('html')?.classList.contains('np')) {
+      return;
+    }
+    if (state) {
+      document.querySelector('html')?.classList.add('noscroll');
+    } else {
+      document.querySelector('html')?.classList.remove('noscroll');
     }
   }
   _resetServer() {

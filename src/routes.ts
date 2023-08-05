@@ -15,8 +15,10 @@ const renderCallback = (html: any, url: string, controller: LitMusicdb) => {
   EventBus.emit(TOGGLE_MENU, {}, 'close');
   if (url === '/playing') {
     document.querySelector('html')?.classList.add('noscroll');
+    document.querySelector('html')?.classList.add('np');
   } else {
     document.querySelector('html')?.classList.remove('noscroll');
+    document.querySelector('html')?.classList.remove('np');
   }
   // remove the transtion for now-playing and playlists routes
   if (url.includes('/playing') || url.includes('/playlists/')) {

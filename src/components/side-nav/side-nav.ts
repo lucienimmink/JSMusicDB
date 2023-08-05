@@ -20,6 +20,8 @@ import { yearsIcon } from '../icons/years.js';
 import './../app-link/app-link';
 
 export const TOGGLE_MENU = 'toggle-menu';
+export const TOGGLE_OVERFLOW_HIDDEN = 'toggle-overflow-hidden';
+
 @customElement('side-nav')
 @localized()
 export class SideNav extends LitElement {
@@ -74,6 +76,7 @@ export class SideNav extends LitElement {
         this.open = !this.open;
       }
       if (this.open) {
+        EventBus.emit(TOGGLE_OVERFLOW_HIDDEN, this, true);
         this.addEventListener('click', this._handleDocumentClick);
       } else {
         this.removeEventListener('click', this._handleDocumentClick);
@@ -83,6 +86,7 @@ export class SideNav extends LitElement {
   _handleDocumentClick = (e: any) => {
     const target = e.target as HTMLElement;
     if (target && !this.hasFocus) {
+      EventBus.emit(TOGGLE_OVERFLOW_HIDDEN, this, false);
       this.open = false;
     }
   };
@@ -108,7 +112,7 @@ export class SideNav extends LitElement {
         <ul>
           ${this.full
             ? html`
-                <li>
+                <li class="title">
                   <h1>
                     <a
                       href="#"

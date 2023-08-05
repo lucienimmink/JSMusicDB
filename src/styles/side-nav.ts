@@ -30,6 +30,11 @@ export default css`
     border-right: 1px solid var(--border-colour);
     view-transition-name: side-nav-list;
   }
+  li.title {
+    position: sticky;
+    background: var(--background2-seethrough);
+    top: 0;
+  }
   .player ul {
     height: calc(100vh - 100px - 81px);
   }
@@ -90,7 +95,7 @@ export default css`
     height: 100%;
     background: rgba(0, 0, 0, 0.4);
     opacity: 0;
-    transition: opacity 0.3s cubic-bezier(0, 0, 0.3, 1);
+    transition: opacity 0.2s ease-in-out;
   }
   .full.open:before {
     opacity: 1;
