@@ -515,6 +515,7 @@ export class Album extends LitElement {
   }
   async _setGain() {
     await getSettingByName('replaygain').then(async applyGain => {
+      if (this.track.artist.toLowerCase() === 'royce') this.gain = 0
       if (!applyGain) this.gain = 0;
       if (applyGain) {
         if (this.playlist?.type === 'album') {
