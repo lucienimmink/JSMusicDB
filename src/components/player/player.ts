@@ -518,9 +518,9 @@ export class Album extends LitElement {
       if (!applyGain) this.gain = 0;
       if (applyGain) {
         if (this.playlist?.type === 'album') {
-          this.gain = this.track.album.albumGain || -PREGAIN;
+          this.gain = this.track?.album?.albumGain || -PREGAIN;
         } else {
-          this.gain = this.track.trackGain || -PREGAIN;
+          this.gain = this.track?.trackGain || -PREGAIN;
         }
       }
       const player = this.shadowRoot?.querySelector('audio');
