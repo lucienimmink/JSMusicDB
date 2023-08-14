@@ -136,7 +136,8 @@
   "errors": {
     "username-password": "Controleer je gebruikersnaam en wachtwoord",
     "data": "Fout tijdens het laden",
-    "too-many-results": "Meer dan <strong>{{count}}</strong> resultaten gevonden. De eerste {{count}} resultaten worden getoond. Probeer de zoekterm te verfijnen."
+    "too-many-results": "Meer dan <strong>{{count}}</strong> resultaten gevonden. De eerste {{count}} resultaten worden getoond. Probeer de zoekterm te verfijnen.",
+    "version": "Versie van node-mp3stream is te laag. Graag updaten naar de nieuwste versie."
   },
   "playlists": {
     "name": {

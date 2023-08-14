@@ -136,7 +136,8 @@
   "errors": {
     "username-password": "Please check your username and password",
     "data": "Error loading music data",
-    "too-many-results": "Your search yielded over <strong>{{count}}</strong> results. Only the first {{count}} are shown. Please try to refine your search query"
+    "too-many-results": "Your search yielded over <strong>{{count}}</strong> results. Only the first {{count}} are shown. Please try to refine your search query",
+    "version": "Version of node-mp3stream is too low. Please update to at least version"
   },
   "playlists": {
     "name": {

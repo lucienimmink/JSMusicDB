@@ -33,6 +33,8 @@ export class LetterNav extends LitElement {
   hasError: boolean;
   @state()
   showInfoModal: boolean;
+  @state()
+  versionError: boolean;
   static get styles() {
     return [animationCSS, container, headers, login, buttons, modals];
   }
@@ -44,6 +46,7 @@ export class LetterNav extends LitElement {
     this.server = '';
     this.hasError = false;
     this.showInfoModal = true;
+    this.versionError = false;
 
     getJwt().then(async (jwt: any) => {
       this.token = jwt;
@@ -77,6 +80,8 @@ export class LetterNav extends LitElement {
       // ok, this is quick and dirty; need better solution
       // eslint-disable-next-line no-self-assign
       location.href = location.href;
+    } else {
+      this.versionError = true;
     }
   }
   async _encrypt(user: any, key: any) {
@@ -85,7 +90,7 @@ export class LetterNav extends LitElement {
       key,
       {
         name: 'RSA-OAEP',
-        hash: 'SHA-256',
+        hash: 'SHA-512',
       },
       false,
       ['encrypt'],
@@ -158,6 +163,9 @@ export class LetterNav extends LitElement {
                   ? html`
                       <div class="alert">${t('errors.username-password')}</div>
                     `
+                  : nothing}
+                ${this.versionError
+                  ? html` <div class="alert">${t('errors.version')}</div> `
                   : nothing}
                 <form @submit="${(e: Event) => this._onSubmit(e)}">
                   <div class="row">
