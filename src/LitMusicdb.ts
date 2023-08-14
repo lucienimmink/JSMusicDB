@@ -202,8 +202,11 @@ export class LitMusicdb extends LitElement {
     this.album = url.split('/album/')?.[1]?.split('/')[0];
     window.scrollTo(0, 0);
     // @ts-ignore
-    this.shadowRoot.querySelector('#outlet').style.viewTransitionName =
-      'outlet';
+    if (this.shadowRoot.querySelector('#outlet')) {
+      // @ts-ignore
+      this.shadowRoot.querySelector('#outlet').style.viewTransitionName =
+        'outlet';
+    }
     this.appRouter.goto(url);
   }
   private _navigateToAlbum(target: any, current: any) {
