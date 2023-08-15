@@ -171,21 +171,17 @@ export class NowPlaying extends LitElement {
         '#visualisation',
       ) as HTMLCanvasElement;
       if (canvas) {
-        let audioCtx;
         let source;
-        if (!window._audioCtx) {
-          audioCtx = new AudioContext();
+        if (!window._source) {
+          const audioCtx = new AudioContext();
           source = audioCtx.createMediaElementSource(window._player);
 
           // store in memory for reuse
-          window._audioCtx = audioCtx;
           window._source = source;
         } else {
-          audioCtx = window._audioCtx;
           source = window._source;
         }
         this.visualizer = new AudioMotionAnalyzer(canvas, {
-          audioCtx,
           source,
           alphaBars: true,
           bgAlpha: 0,
@@ -193,11 +189,15 @@ export class NowPlaying extends LitElement {
           colorMode: 'bar-level',
           gradient: 'steelblue',
           mode: 4,
+          smoothing: 0.7,
           overlay: true,
+          reflexRatio: 0.08,
+          reflexAlpha: 0.35,
           showPeaks: true,
           showScaleX: false,
           showScaleY: false,
         });
+        this._doApplyAccentColorToVisualizer();
       }
     }
   }
