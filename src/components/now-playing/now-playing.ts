@@ -175,6 +175,7 @@ export class NowPlaying extends LitElement {
         if (!window._source) {
           const audioCtx = new AudioContext();
           source = audioCtx.createMediaElementSource(window._player);
+          source.connect(audioCtx.destination);
 
           // store in memory for reuse
           window._source = source;
@@ -191,8 +192,7 @@ export class NowPlaying extends LitElement {
           mode: 4,
           smoothing: 0.7,
           overlay: true,
-          reflexRatio: 0.08,
-          reflexAlpha: 0.35,
+          connectSpeakers: false,
           showPeaks: true,
           showScaleX: false,
           showScaleY: false,
