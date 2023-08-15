@@ -84,6 +84,9 @@ export default css`
   .container {
     display: block;
   }
+  #visualisation {
+    height: 100%;
+  }
   canvas {
     z-index: -1;
     position: absolute;
@@ -95,7 +98,7 @@ export default css`
     height: 100%;
     display: none;
   }
-  canvas.active {
+  #visualisation.active canvas {
     display: block;
   }
   .time-controls {

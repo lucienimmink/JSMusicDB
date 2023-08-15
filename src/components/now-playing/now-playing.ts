@@ -4,6 +4,7 @@ import { localized, t } from '@weavedev/lit-i18next';
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
+import AudioMotionAnalyzer from 'audiomotion-analyzer';
 import buttons from '../../styles/buttons';
 import container from '../../styles/container';
 import controls from '../../styles/controls';
@@ -69,8 +70,7 @@ export class NowPlaying extends LitElement {
   _dataArray: any;
   _hearableBars: any;
   _player: any;
-
-  readonly FRAMERATE = 1000 / 45;
+  visualizer: AudioMotionAnalyzer | undefined;
 
   static get styles() {
     return [
@@ -90,17 +90,14 @@ export class NowPlaying extends LitElement {
     this.hasCanvas = false;
     this.smallArt = false;
     this.isBottomShown = false;
-    this.accentColor = '';
     this.playlist = null;
     this.hasError = false;
     this.track = window._track;
+    this._player = window._player;
+    this.accentColor = window._accentColour;
     getSettingByName('visual').then(async (hasVisual: any) => {
       this.hasCanvas = !!hasVisual;
-      await this.sleep(120);
-      this._player = window._player;
-      this.accentColor = window._accentColour;
       this._visualize();
-      this._updatePlaylist();
     });
     getSettingByName('smallArt').then((smallArt: any) => {
       this.smallArt = !!smallArt;
@@ -133,8 +130,28 @@ export class NowPlaying extends LitElement {
   _doToggleShuffleUpdated(target: any, isShuffled: boolean) {
     this.isShuffled = isShuffled;
   }
-  _doAccentColor(target: any, accentColor: string) {
+  _doAccentColor(target: any, accentColor: any) {
     this.accentColor = accentColor;
+    if (this.hasCanvas) {
+      this._doApplyAccentColorToVisualizer();
+    }
+  }
+  _doApplyAccentColorToVisualizer() {
+    const color = this.accentColor || {
+      r: 0,
+      g: 110,
+      b: 205,
+    };
+    // register new gradient based on the current accentColor
+    this.visualizer?.registerGradient('accentColor', {
+      bgColor: 'transparent',
+      dir: 'h',
+      colorStops: [`rgb(${color.r}, ${color.g}, ${color.b})`],
+    });
+    // and apply it
+    this.visualizer?.setOptions({
+      gradient: 'accentColor',
+    });
   }
   _doToggleSetting(target: any, setting: any) {
     if (setting.setting === 'smallArt') {
@@ -142,117 +159,45 @@ export class NowPlaying extends LitElement {
     }
     if (setting.setting === 'visual') {
       this.hasCanvas = setting.value;
-      if (this.hasCanvas && !this._analyzer) {
-        this._visualize();
-      }
+      this._visualize();
     }
   }
   _doHasError(target: any, error: any) {
     this.hasError = error;
   }
   _visualize() {
-    if (
-      this.hasCanvas &&
-      navigator.userAgent.indexOf('Mobi') === -1 &&
-      this._player
-    ) {
-      let audioCtx;
-      let source;
-      let analyser;
-      if (window._audioCtx) {
-        audioCtx = window._audioCtx;
-        source = window._source;
-        analyser = window._analyser;
-      } else {
-        audioCtx = new AudioContext();
-        analyser = audioCtx.createAnalyser();
-        source = audioCtx.createMediaElementSource(this._player);
-        // store in window so we can access it later
-        window._audioCtx = audioCtx;
-        window._source = source;
-        window._analyser = analyser;
-      }
-      this._analyzer = analyser;
-      const sampleRate = audioCtx.sampleRate;
-      this._analyzer.fftSize = this._calculateFft(sampleRate);
-      this._hearableBars = this._getHearableBars(
-        sampleRate,
-        this._analyzer.fftSize,
-      );
-      source.connect(this._analyzer);
-      source.connect(audioCtx.destination);
-      this._dataArray = new Uint8Array(this._hearableBars);
-      this._analyzer.getByteFrequencyData(this._dataArray);
-      this.analyzer = window.requestAnimationFrame(this._draw.bind(this));
-    }
-  }
-  _calculateFft(sampleRate: number): number {
-    return Math.floor(sampleRate / 44100) * 128;
-  }
-  _getHearableBars(sampleRate: number, fftSize: number): number {
-    const halfFFT = fftSize / 2;
-    switch (sampleRate) {
-      case 48000:
-        return halfFFT - 1;
-      case 88200:
-        return halfFFT / 2;
-      case 96000:
-        return halfFFT / 2 - 2;
-      case 176400:
-        return halfFFT / 4;
-      case 192000:
-        return halfFFT / 4 - 4;
-      case 352800:
-        return halfFFT / 8;
-      case 384000:
-        return halfFFT / 8 - 8;
-      case 705600:
-        return halfFFT / 16;
-      case 768000:
-        return halfFFT / 16 - 16;
-      default:
-        return halfFFT;
-    }
-  }
-  _draw() {
-    setTimeout(() => {
-      this.analyzer = window.requestAnimationFrame(this._draw.bind(this));
-      // 45 FPS
-    }, this.FRAMERATE);
+    if (this.hasCanvas) {
+      const canvas = this.shadowRoot?.querySelector(
+        '#visualisation',
+      ) as HTMLCanvasElement;
+      if (canvas) {
+        let audioCtx;
+        let source;
+        if (!window._audioCtx) {
+          audioCtx = new AudioContext();
+          source = audioCtx.createMediaElementSource(window._player);
 
-    // re-get canvas
-    const canvas = this.shadowRoot?.querySelector('canvas');
-    if (canvas) {
-      const WIDTH = canvas.offsetWidth;
-      const HEIGHT = canvas.offsetHeight;
-
-      if (WIDTH && HEIGHT) {
-        const ctx = canvas.getContext('2d');
-        this._analyzer.getByteFrequencyData(this._dataArray);
-        canvas.width = WIDTH;
-        canvas.height = HEIGHT;
-        if (ctx) {
-          ctx.clearRect(0, 0, WIDTH, HEIGHT);
-          const color = this.accentColor || {
-            r: 0,
-            g: 110,
-            b: 205,
-            a: 1,
-          };
-          const barWidth = Math.floor((WIDTH / this._hearableBars) * 1.1);
-          let barHeight;
-          let x = 0;
-          const y = (HEIGHT / 150) * 1.17;
-
-          for (let i = 0; i < this._hearableBars; i++) {
-            barHeight = this._dataArray[i] * y;
-            ctx.fillStyle = `rgba(${color.r},${color.g},${color.b},${
-              this._dataArray[i] / 255
-            })`;
-            ctx.fillRect(x, HEIGHT - barHeight / 2, barWidth, barHeight / 2);
-            x += barWidth + 1;
-          }
+          // store in memory for reuse
+          window._audioCtx = audioCtx;
+          window._source = source;
+        } else {
+          audioCtx = window._audioCtx;
+          source = window._source;
         }
+        this.visualizer = new AudioMotionAnalyzer(canvas, {
+          audioCtx,
+          source,
+          alphaBars: true,
+          bgAlpha: 0,
+          channelLayout: 'single',
+          colorMode: 'bar-level',
+          gradient: 'steelblue',
+          mode: 4,
+          overlay: true,
+          showPeaks: true,
+          showScaleX: false,
+          showScaleY: false,
+        });
       }
     }
   }
@@ -481,10 +426,7 @@ export class NowPlaying extends LitElement {
   private _renderTop() {
     return html`<div class="top">
       <div class="image-wrapper">
-        <canvas
-          id="visualisation"
-          class="${this.hasCanvas ? 'active' : ''}"
-        ></canvas>
+        <div id="visualisation" class="${this.hasCanvas ? 'active' : ''}"></div>
         ${this._renderCurrentAlbumArt()} ${this._renderFloatingText()}
       </div>
       ${this.hasError
