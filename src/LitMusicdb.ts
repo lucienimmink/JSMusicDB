@@ -321,7 +321,9 @@ export class LitMusicdb extends LitElement {
               <div id="outlet" class="${this.showPlayer ? 'player' : ''}">
                 ${this.appRouter.outlet()}
               </div>
-              ${this.showPlayer ? html` <lit-player></lit-player> ` : nothing}
+              ${this.showPlayer
+                ? html` <lit-player route="${this.route}"></lit-player> `
+                : nothing}
               <side-nav route="${this.route}" ?full=${true}></side-nav>
             `
           : nothing}

@@ -2,7 +2,7 @@ declare const MediaMetadata: any;
 
 import { localized, t } from '@weavedev/lit-i18next';
 import { LitElement, html, nothing } from 'lit';
-import { customElement, state } from 'lit/decorators.js';
+import { customElement, state, property } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import buttons from '../../styles/buttons';
 import controls from '../../styles/controls';
@@ -77,6 +77,8 @@ const TARGET_VOLUME = 0.89;
 @customElement('lit-player')
 @localized()
 export class Album extends LitElement {
+  @property()
+  route: string;
   @state()
   playlist: any;
   track: any;
@@ -110,6 +112,7 @@ export class Album extends LitElement {
   }
   constructor() {
     super();
+    this.route = '';
     this.track = null;
     this.isPlaying = false;
     this.timePlayed = 0;
@@ -252,7 +255,11 @@ export class Album extends LitElement {
       // share player
       window._player = player;
 
-      if (this.doNavigateToAlbum && this.playlist.type !== 'album') {
+      if (
+        this.doNavigateToAlbum &&
+        this.playlist.type !== 'album' &&
+        this.route !== '/playing'
+      ) {
         EventBus.emit(NAVIGATE_TO_ALBUM, this, {
           current: this.track,
         });
