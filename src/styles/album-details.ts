@@ -28,7 +28,6 @@ export default css`
   .details {
     display: flex;
     flex-direction: column;
-    overflow: hidden;
   }
   h2,
   h3,
@@ -50,7 +49,7 @@ export default css`
     -moz-background-clip: text !important;
     background-clip: text !important;
     -webkit-text-fill-color: transparent;
-    background: linear-gradient(45deg, var(--primary), var(--text-color));
+    background: linear-gradient(90deg, var(--primary), var(--text-color));
   }
   h3 {
     font-size: 1.25rem;

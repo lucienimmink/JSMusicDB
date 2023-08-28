@@ -61,6 +61,8 @@ export class NowPlaying extends LitElement {
   hasCanvas: boolean;
   @state()
   smallArt: boolean;
+  @state()
+  classicVis: boolean;
   analyzer: any;
   accentColor: any;
   @state()
@@ -89,6 +91,7 @@ export class NowPlaying extends LitElement {
     this.isShuffled = false;
     this.hasCanvas = false;
     this.smallArt = false;
+    this.classicVis = false;
     this.isBottomShown = false;
     this.playlist = null;
     this.hasError = false;
@@ -97,11 +100,16 @@ export class NowPlaying extends LitElement {
     this.accentColor = window._accentColour;
     getSettingByName('visual').then(async (hasVisual: any) => {
       this.hasCanvas = !!hasVisual;
-      this._visualize();
+    });
+    getSettingByName('classicVis').then(async (classicVis: any) => {
+      this.classicVis = !!classicVis;
     });
     getSettingByName('smallArt').then((smallArt: any) => {
       this.smallArt = !!smallArt;
     });
+    setTimeout(() => {
+      this._visualize();
+    }, 100);
   }
   async sleep(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -161,6 +169,10 @@ export class NowPlaying extends LitElement {
       this.hasCanvas = setting.value;
       this._visualize();
     }
+    if (setting.setting === 'classicVis') {
+      this.classicVis = setting.value;
+      this._visualize();
+    }
   }
   _doHasError(target: any, error: any) {
     this.hasError = error;
@@ -184,11 +196,12 @@ export class NowPlaying extends LitElement {
         }
         this.visualizer = new AudioMotionAnalyzer(canvas, {
           source,
-          alphaBars: true,
+          alphaBars: !this.classicVis,
           bgAlpha: 0,
           channelLayout: 'single',
-          colorMode: 'bar-level',
-          gradient: 'steelblue',
+          colorMode: this.classicVis ? 'gradient' : 'bar-level',
+          gradient: this.classicVis ? 'classic' : 'steelblue',
+          ledBars: this.classicVis,
           mode: 4,
           smoothing: 0.7,
           overlay: true,
@@ -196,6 +209,7 @@ export class NowPlaying extends LitElement {
           showPeaks: true,
           showScaleX: false,
           showScaleY: false,
+          reflexRatio: this.classicVis ? 0.04 : 0,
         });
         this._doApplyAccentColorToVisualizer();
       }
@@ -431,7 +445,9 @@ export class NowPlaying extends LitElement {
       </div>
       ${this.hasError
         ? this._renderErrorState()
-        : html`<div class="controls-wrapper">
+        : html`<div class="controls-wrapper ${
+            this.classicVis ? 'classic-vis' : nothing
+          }">
                             ${this._renderTimeControls()}
                             <div class="details-wrapper">
                               ${this._renderTextDetails()}

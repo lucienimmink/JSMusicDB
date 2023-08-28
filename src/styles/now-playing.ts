@@ -81,6 +81,9 @@ export default css`
       var(--background) 100%
     );
   }
+  .controls-wrapper.classic-vis {
+    background: var(--background);
+  }
   .container {
     display: block;
   }

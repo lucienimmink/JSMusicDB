@@ -53,11 +53,6 @@ export default css`
   }
   h4 span {
     display: inline-block;
-    -webkit-background-clip: text !important;
-    -moz-background-clip: text !important;
-    background-clip: text !important;
-    -webkit-text-fill-color: transparent;
-    background: linear-gradient(45deg, var(--primary), var(--text-color));
   }
   h5 {
     font-weight: 400;

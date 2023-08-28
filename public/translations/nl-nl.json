@@ -110,7 +110,8 @@
     "playing": "Nu bezig",
     "paused": "Gepauseerd",
     "right-now": "met spelen",
-    "followTrack": "Toon album wanneer een nummer begint te spelen"
+    "followTrack": "Toon album wanneer een nummer begint te spelen",
+    "classic-visualization": "Klassieke LED visualisatie"
   },
   "content": {
     "lastfm": {

@@ -465,6 +465,23 @@ export class SettingsNav extends LitElement {
                       <label>
                         <input
                           type="checkbox"
+                          @click="${(e: Event) =>
+                            this._toggle('classicVis', e)}"
+                          .checked=${this.settings?.classicVis}
+                        />
+                        ${t('labels.classic-visualization')}
+                      </label>
+                    `
+                  : nothing
+              }
+            </p>
+            <p>
+              ${
+                this.settings?.visual
+                  ? html`
+                      <label>
+                        <input
+                          type="checkbox"
                           @click="${(e: Event) => this._toggle('smallArt', e)}"
                           .checked=${this.settings?.smallArt}
                         />

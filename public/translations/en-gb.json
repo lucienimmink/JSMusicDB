@@ -110,7 +110,8 @@
     "playing": "Playing",
     "paused": "Paused",
     "right-now": "right now",
-    "followTrack": "Show album if track changes"
+    "followTrack": "Show album if track changes",
+    "classic-visualization": "Show classic LED visualization"
   },
   "content": {
     "lastfm": {
