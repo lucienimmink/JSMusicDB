@@ -209,7 +209,7 @@ export class NowPlaying extends LitElement {
           showPeaks: true,
           showScaleX: false,
           showScaleY: false,
-          reflexRatio: this.classicVis ? 0.04 : 0,
+          reflexRatio: this.classicVis ? 0.035 : 0,
         });
         this._doApplyAccentColorToVisualizer();
       }
