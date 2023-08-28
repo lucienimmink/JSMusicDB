@@ -199,6 +199,9 @@ export default css`
   .bottom .playlist {
     height: calc(100vh - 155px);
   }
+  .bottom .playlist lit-virtualizer {
+    height: calc(100vh - 155px);
+  }
   .bottom .playlist track-in-list {
     width: 100%;
     cursor: pointer;
