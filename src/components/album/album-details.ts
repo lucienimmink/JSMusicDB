@@ -113,13 +113,13 @@ export class AlbumDetails extends LitElement {
   private _renderButtons() {
     return html`<h4>
       <button class="btn btn-primary" @click=${(e: any) => this._playAlbum(e)}>
-        ${t('labels.play-album')}
+        ${t('labels.play-album')} <span>${t('labels.play-album2')}</span>
       </button>
       <button
         class="btn btn-secondary"
         @click=${(e: any) => this._queueAlbum(e)}
       >
-        ${t('labels.queue-album')}
+        ${t('labels.queue-album')} <span>${t('labels.queue-album2')}</span>
       </button>
     </h4>`;
   }

@@ -446,7 +446,7 @@ export class NowPlaying extends LitElement {
       ${this.hasError
         ? this._renderErrorState()
         : html`<div class="controls-wrapper ${
-            this.classicVis ? 'classic-vis' : nothing
+            this.classicVis ? 'classic-vis' : ''
           }">
                             ${this._renderTimeControls()}
                             <div class="details-wrapper">

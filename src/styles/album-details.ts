@@ -28,6 +28,7 @@ export default css`
   .details {
     display: flex;
     flex-direction: column;
+    width: calc(100% - 127px - 1rem);
   }
   h2,
   h3,
@@ -44,7 +45,6 @@ export default css`
     font-size: 1.5rem;
   }
   h2 span {
-    display: inline-block;
     -webkit-background-clip: text !important;
     -moz-background-clip: text !important;
     background-clip: text !important;
@@ -59,6 +59,7 @@ export default css`
   }
   h4 {
     font-size: 1rem;
+    text-overflow: unset;
   }
   h4 + h4 {
     margin-top: 0.3rem;
@@ -75,6 +76,9 @@ export default css`
   }
   h3 .muted svg {
     top: 2px;
+  }
+  h4 span {
+    display: none;
   }
   @media (min-width: 992px) {
     .jumbotron {
@@ -133,6 +137,9 @@ export default css`
     }
     h3 {
       animation: h3;
+    }
+    h4 span {
+      display: inline;
     }
     @keyframes h3 {
       to {

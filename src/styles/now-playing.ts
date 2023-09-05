@@ -89,6 +89,7 @@ export default css`
   }
   #visualisation {
     height: 100%;
+    display: none;
   }
   canvas {
     z-index: -1;
@@ -100,9 +101,6 @@ export default css`
     width: 100%;
     height: 100%;
     display: none;
-  }
-  #visualisation.active canvas {
-    display: block;
   }
   .time-controls {
     display: flex;
@@ -216,6 +214,15 @@ export default css`
     justify-content: center;
   }
   @media (min-width: 576px) {
+    #visualisation.active {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+    }
+    #visualisation.active canvas {
+      display: block;
+    }
     .details-wrapper {
       flex-direction: row;
     }
