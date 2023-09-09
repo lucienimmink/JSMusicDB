@@ -248,7 +248,7 @@ export const getNewPlaylistForLovedTracks = (playlist: any) =>
               const artist = track?.artist?.name;
               const title = track?.name;
               const coretrack = mdb.getTrackByArtistAndName(artist, title);
-              if (coretrack) {
+              if (coretrack && coretrack.id !== '') {
                 // @ts-ignore
                 newPlaylist.tracks.push(coretrack);
               }
