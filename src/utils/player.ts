@@ -251,6 +251,13 @@ export const getNewPlaylistForLovedTracks = (playlist: any) =>
               if (coretrack && coretrack.id !== '') {
                 // @ts-ignore
                 newPlaylist.tracks.push(coretrack);
+              } else {
+                const results = mdb.searchTrackByArtistAndTrack(artist, title);
+                if (results.length > 0) {
+                  newPlaylist.tracks.push(results[0]);
+                } else {
+                  console.log('no track found for ', artist, title);
+                }
               }
             });
             resolve(newPlaylist);
