@@ -125,6 +125,7 @@ export class NowPlaying extends LitElement {
   }
   disconnectedCallback() {
     super.disconnectedCallback();
+    this.visualizer?.destroy();
     EventBus.off(UPDATE_PLAYER, this._doUpdate, this);
     EventBus.off(TOGGLE_LOVED_UPDATED, this._doUpdate, this);
     EventBus.off(TOGGLE_SHUFFLE_UPDATED, this._doToggleShuffleUpdated, this);
@@ -210,6 +211,8 @@ export class NowPlaying extends LitElement {
           showScaleX: false,
           showScaleY: false,
           reflexRatio: this.classicVis ? 0.035 : 0,
+          maxFPS: 60,
+          maxDecibels: -27,
         });
         this._doApplyAccentColorToVisualizer();
       }
