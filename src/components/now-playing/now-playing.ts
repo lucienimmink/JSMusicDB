@@ -212,7 +212,6 @@ export class NowPlaying extends LitElement {
           showScaleY: false,
           reflexRatio: this.classicVis ? 0.035 : 0,
           maxFPS: 60,
-          maxDecibels: -27,
         });
         this._doApplyAccentColorToVisualizer();
       }
