@@ -67,6 +67,7 @@ export class NowPlaying extends LitElement {
   accentColor: any;
   @state()
   isBottomShown: boolean;
+  @state()
   playlist: any;
   _analyzer: any;
   _dataArray: any;
@@ -228,7 +229,6 @@ export class NowPlaying extends LitElement {
     });
     playlist.tracks = tracks;
     this.playlist = playlist;
-    this.requestUpdate();
   }
   async _update({ current, type }: { current: any; type: string }) {
     this.track = current;
