@@ -110,6 +110,7 @@ export class NowPlaying extends LitElement {
     setTimeout(() => {
       this._visualize();
     }, 100);
+    this._updatePlaylist();
   }
   async sleep(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -473,9 +474,6 @@ export class NowPlaying extends LitElement {
   private _renderBottom() {
     return html`<div class="bottom">
       <div class="playlist">
-        <!-- ${this.playlist?.tracks.map(track => {
-          this._renderTrack(track);
-        })} -->
         <lit-virtualizer
           .scrollTarget=${window}
           .items=${this.playlist?.tracks}
