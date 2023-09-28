@@ -11,6 +11,7 @@ export default css`
   }
   .track {
     display: flex;
+    width: 100%;
     flex-direction: row;
     box-sizing: border-box;
     border-top: 1px solid var(--border-colour);
@@ -31,12 +32,15 @@ export default css`
   }
   .track.active svg {
     display: inline-block;
-    width: 10px;
+    width: 9px;
   }
   .num {
     flex-grow: 0;
     width: 35px;
     min-width: 35px;
+  }
+  .track.active .num svg {
+    width: 15px;
   }
   .title {
     flex-grow: 1;

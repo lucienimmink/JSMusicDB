@@ -1,4 +1,3 @@
-import timeSpan from '@addasoft/timespan';
 import '@lit-labs/virtualizer';
 import { localized, t } from '@weavedev/lit-i18next';
 import { LitElement, PropertyValueMap, html, nothing } from 'lit';
@@ -27,11 +26,10 @@ import {
 } from '../../utils/player';
 import { CHANGE_URL } from '../../utils/router';
 import { nowPlayingIcon } from '../icons/now-playing';
-import { pauseIcon } from '../icons/pause';
-import { playIcon } from '../icons/play';
 import { redoIcon } from '../icons/redo';
-import '../loading-indicator/loading-indicator';
 import musicdb from '../musicdb';
+import '../loading-indicator/loading-indicator';
+import './../track/track.js';
 
 @customElement('playlists-nav')
 @localized()
@@ -453,43 +451,14 @@ export class LetterNav extends LitElement {
     </div>`;
   }
   private _renderTrack(track: any) {
-    return html`
-      ${track
-        ? html`
-            <li
-              @click="${() => {
-                this.setPlaylist(track);
-              }}"
-              class="${track.isPlaying || track.isPaused ? 'active' : ''}"
-            >
-              <span class="title">
-                ${track.isPlaying || track.isPaused
-                  ? html`
-                      ${track.isPlaying
-                        ? html`${playIcon}`
-                        : html`${pauseIcon}`}
-                    `
-                  : nothing}
-                ${track.title} <br /><span class="small muted"
-                  >${track?.trackArtist} &bull; ${track?.album?.name}</span
-                ></span
-              >
-              <span class="time"
-                >${timeSpan(track.duration)} <br />
-                ${track.position > 0 && (track.isPlaying || track.isPaused)
-                  ? html`
-                      <span class="small muted"
-                        >${timeSpan(track.position)}</span
-                      >
-                    `
-                  : html`
-                      <span class="small muted">${track.type}</span>
-                    `}</span
-              >
-            </li>
-          `
-        : nothing}
-    `;
+    return html`<track-in-list
+      .track=${track}
+      type=${this.playlist.type}
+      ?showAlbum=${true}
+      @click=${() => {
+        this.setPlaylist(track);
+      }}
+    ></track-in-list>`;
   }
   private _renderArtistSelector() {
     return html`

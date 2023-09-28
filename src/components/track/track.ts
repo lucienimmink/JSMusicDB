@@ -51,14 +51,14 @@ export class Track extends LitElement {
 
   private _renderTime() {
     return html`${timeSpan(this.track?.duration)} <br />
-      ${this.track?.position > 0 && this.type === 'album'
+      ${this.track?.isPlaying || this.track?.isPaused
         ? html`
             <span class="small muted if-active"
               >${timeSpan(this.track?.position)}</span
             >
           `
         : nothing}
-      ${this.type !== 'album'
+      ${this.type !== 'album' && !this.track?.isPlaying && !this.track?.isPaused
         ? html` <span class="small muted">${this.track?.type}</span> `
         : nothing}`;
   }

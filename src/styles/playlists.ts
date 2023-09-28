@@ -88,40 +88,16 @@ export default css`
     min-height: 60px;
     width: 100%;
   }
-  .playlist li:not(.header) {
+  .playlist track-in-list {
+    display: flex;
+    min-height: 60px;
+    width: 100%;
     cursor: pointer;
-  }
-  .playlist li:hover {
-    background: var(--background2);
   }
   .playlist li.header:hover,
   .playlist li.no-hover:hover {
     backdrop-filter: blur(2px);
     background: var(--background-seethrough, rgba(248, 249, 250, 0.85));
-  }
-  .playlist li.active {
-    background-color: var(--background2-seethrough);
-    color: var(--primary);
-  }
-  .playlist svg {
-    width: 10px;
-    display: inline-block;
-  }
-  .playlist .num {
-    flex-grow: 0;
-    width: 35px;
-    min-width: 35px;
-  }
-  .playlist .title {
-    flex-grow: 1;
-  }
-  .playlist .time {
-    flex-grow: 0;
-    text-align: end;
-    width: 65px;
-    min-width: 65px;
-    font-variant-numeric: tabular-nums;
-    font-family: system-ui;
   }
   .playlist .artist-selector {
     display: flex;
