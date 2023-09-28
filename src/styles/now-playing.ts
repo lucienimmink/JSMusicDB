@@ -37,6 +37,9 @@ export default css`
     position: relative;
     transition: transform 0.2s ease-in-out;
   }
+  .top.classic-vis {
+    background: rgba(0, 0, 0, 0.85);
+  }
   .bottom {
     backdrop-filter: blur(5px);
     background: var(--background-seethrough, #f8f9fa);
@@ -185,11 +188,22 @@ export default css`
     padding: 0 10px 5px;
     max-width: calc(100vw - 250px);
   }
+  .classic-vis .floating-text-details {
+    background: rgba(0, 0, 0, 0.6);
+  }
   .floating-text-details h4 {
     font-size: 4rem;
   }
+  .classic-vis .floating-text-details h4 {
+    color: white;
+  }
   .floating-text-details h5 {
     font-size: 2rem;
+  }
+  .classic-vis .floating-text-details h5 {
+    color: white;
+    --primary: lightgray;
+    --primary-hover: gray;
   }
   .floating-text-details app-link {
     transition: all 0.2s ease-in-out 0s;

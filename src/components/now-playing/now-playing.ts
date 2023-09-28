@@ -148,6 +148,7 @@ export class NowPlaying extends LitElement {
     }
   }
   _doApplyAccentColorToVisualizer() {
+    if (this.classicVis) return;
     const color = this.accentColor || {
       r: 0,
       g: 110,
@@ -205,7 +206,7 @@ export class NowPlaying extends LitElement {
           colorMode: this.classicVis ? 'gradient' : 'bar-level',
           gradient: this.classicVis ? 'classic' : 'steelblue',
           ledBars: this.classicVis,
-          mode: 4,
+          mode: this.classicVis ? 5 : 4,
           smoothing: 0.7,
           overlay: true,
           connectSpeakers: false,
@@ -214,8 +215,11 @@ export class NowPlaying extends LitElement {
           showScaleY: false,
           reflexRatio: this.classicVis ? 0.035 : 0,
           maxFPS: 60,
+          maxDecibels: -27,
         });
-        this._doApplyAccentColorToVisualizer();
+        if (!this.classicVis) {
+          this._doApplyAccentColorToVisualizer();
+        }
       }
     }
   }
@@ -441,7 +445,7 @@ export class NowPlaying extends LitElement {
     </div>`;
   }
   private _renderTop() {
-    return html`<div class="top">
+    return html`<div class="top ${this.classicVis ? 'classic-vis' : ''}">
       <div class="image-wrapper">
         <div id="visualisation" class="${this.hasCanvas ? 'active' : ''}"></div>
         ${this._renderCurrentAlbumArt()} ${this._renderFloatingText()}
