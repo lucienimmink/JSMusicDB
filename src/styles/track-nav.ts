@@ -15,15 +15,23 @@ export default css`
     box-sizing: border-box;
     border-top: 1px solid var(--border-colour);
     padding: 0.5rem 1rem;
-    transition: background-color 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
     min-height: 60px;
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
   }
   .track:hover {
     background: var(--background2);
   }
   .track.active {
     background-color: var(--background2-seethrough);
+    border-left: 1px solid var(--border-colour);
+    border-right: 1px solid var(--border-colour);
     color: var(--primary);
+  }
+  .track.active svg {
+    display: inline-block;
+    width: 10px;
   }
   .num {
     flex-grow: 0;

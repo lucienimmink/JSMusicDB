@@ -83,6 +83,17 @@ export class Track extends LitElement {
             `
           : nothing}
         <span class="title">
+          ${this.type !== 'album'
+            ? html`
+                ${this.track.isPlaying || this.track.isPaused
+                  ? html`
+                      ${this.track.isPlaying
+                        ? html`${playIcon}`
+                        : html`${pauseIcon}`}
+                    `
+                  : nothing}
+              `
+            : nothing}
           ${this.track?.title} <br />
           <span class="small muted"
             >${this.track?.trackArtist}${this.showAlbum
