@@ -13,20 +13,19 @@ export default css`
   ol li {
     display: block;
     height: 70px;
-    border-top: 1px solid var(--border-colour);
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid var(--border-colour);
     box-sizing: border-box;
     width: 100%;
   }
-  ol li.header + li {
-    margin-top: -3px;
-    top: 0px !important;
-  }
   ol app-link {
     display: flex;
-    padding: 10px 1rem;
+    padding: 0 1rem;
+    height: 100%;
     transition: background-color 0.2s ease-in-out;
   }
   ol app-link:hover {
+    border-top-color: var(--border-colour);
     background: var(--background2);
   }
   album-art {
