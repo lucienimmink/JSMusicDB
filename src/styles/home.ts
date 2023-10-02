@@ -14,7 +14,7 @@ export default css`
   ol > a {
     display: flex;
     min-height: 75px;
-    border-top: 1px solid var(--border-colour);
+    border-bottom: 1px solid var(--border-colour);
     box-sizing: border-box;
     width: 100%;
     display: flex;
