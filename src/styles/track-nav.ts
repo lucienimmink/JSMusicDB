@@ -14,12 +14,12 @@ export default css`
     width: 100%;
     flex-direction: row;
     box-sizing: border-box;
-    border-top: 1px solid var(--border-colour);
     padding: 0.5rem 1rem;
     transition: all 0.2s ease-in-out;
     min-height: 60px;
     border-left: 1px solid transparent;
     border-right: 1px solid transparent;
+    border-bottom: 1px solid var(--border-colour);
   }
   .track:hover {
     background: var(--background2);

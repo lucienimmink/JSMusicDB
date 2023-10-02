@@ -31,13 +31,7 @@ export default css`
     transition: background-color 0.2s ease-in-out;
     min-height: 59px;
     align-items: center;
-    border-top: 1px solid var(--border-colour);
-  }
-  .playlist li.header {
-    display: block;
-    padding: 1.85rem 1rem 0px;
-    border-top: 0;
-    height: auto;
+    border-bottom: 1px solid var(--border-colour);
   }
   .playlists li app-link {
     display: flex;
@@ -81,12 +75,17 @@ export default css`
     display: flex;
     flex-direction: row;
     box-sizing: border-box;
-    border-top: 1px solid var(--border-colour);
+    border-bottom: 1px solid var(--border-colour);
     padding: 0.5rem 1rem;
     background-color: var(--background);
     transition: background-color 0.2s ease-in-out;
     min-height: 60px;
     width: 100%;
+  }
+  .playlist li.header {
+    display: block;
+    padding: 1.85rem 1rem 0px;
+    height: auto;
   }
   .playlist track-in-list {
     display: flex;

@@ -13,9 +13,6 @@ export default css`
     cursor: pointer;
     display: block;
   }
-  .album-details > track-in-list:first-child {
-    margin-top: -1px;
-  }
   @media (min-width: 992px) {
     .container {
       padding-top: 257px;

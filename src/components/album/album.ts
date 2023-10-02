@@ -143,6 +143,7 @@ export class Album extends LitElement {
         this._setPlaylist(e, track);
       }}
       .track=${track}
+      class="${track.isPaused || track.isPlaying ? 'active' : ''}"
       type="album"
     ></track-in-list>`;
   }
