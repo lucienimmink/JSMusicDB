@@ -31,6 +31,7 @@ export default css`
     flex-grow: 0;
     width: 70px;
     aspect-ratio: 1 / 1;
+    height: 70px;
     border: 1px solid var(--background2);
     box-shadow: 0px 0px 1px var(--primary, #006ecd);
     background: rgba(255, 255, 255, 0.85);
