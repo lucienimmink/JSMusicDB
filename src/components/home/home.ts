@@ -210,7 +210,7 @@ export class HomeNav extends LitElement {
                     </li>
                   `
                 : nothing}
-              ${this.recenttracks.map(
+              ${this.recenttracks?.map(
                 (track: any) => html`
                   <li class="${track.dummy ? 'dummy ' : ''}">
                     <div>
@@ -248,7 +248,7 @@ export class HomeNav extends LitElement {
           <div class="container">
             <h2 class="header">${t('headers.recently-added')}</h2>
             <div class="grid">
-              ${this.recentAdded.map(
+              ${this.recentAdded?.map(
                 (album: any) => html`
                   <app-link
                     href="/letter/${album.artist.letter
@@ -289,7 +289,7 @@ export class HomeNav extends LitElement {
             <span class="small muted">(${this.newReleases.length})</span>
           </h2>
           <ol>
-            ${this.newReleases.map(
+            ${this.newReleases?.map(
               (release: any) =>
                 html` <a href="${release.link}" target="_blank" rel="noopener">
                   <div>
