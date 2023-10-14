@@ -137,8 +137,10 @@ export class HomeNav extends LitElement {
       }
       return true;
     });
-    await setRecentlyPlayed(tracks);
-    this.recenttracks = tracks;
+    if (tracks) {
+      await setRecentlyPlayed(tracks);
+      this.recenttracks = tracks;
+    }
   }
   _setDummyData() {
     this.recenttracks = [];
