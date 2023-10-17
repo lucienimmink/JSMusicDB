@@ -22,6 +22,8 @@ export const launchQueue = () => {
           case 'playpause':
             EventBus.emit(TOGGLE_PLAY_PAUSE_PLAYER, {});
             break;
+          case null:
+            break;
           default:
             console.log(`unknown shortcut event: ${nav}`);
         }
