@@ -361,13 +361,15 @@ export class NowPlaying extends LitElement {
         <div
           class="progress-bar progress-buffered-bar"
           style=${styleMap({
-            width: (this.track.buffered.end / this.track.duration) * 100 + '%',
+            '--progress-perc':
+              (this.track.buffered.end / this.track.duration) * 100 + '%',
           })}
         ></div>
         <div
           class="progress-bar ${this.track.isPlaying ? '' : 'paused'}"
           style=${styleMap({
-            width: (this.track.position / this.track.duration) * 100 + '%',
+            '--progress-perc':
+              (this.track.position / this.track.duration) * 100 + '%',
           })}
         ></div>
       </div>

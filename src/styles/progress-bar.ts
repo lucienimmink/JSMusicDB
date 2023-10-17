@@ -6,6 +6,7 @@ export default css`
     cursor: pointer;
     position: relative;
     background: var(--progress-background, #4dbbff);
+    overflow: hidden;
   }
   .progress-bar {
     background: var(--primary, #006ecd);
@@ -21,6 +22,8 @@ export default css`
   }
   .progress-buffered-bar {
     opacity: 0.3;
+    transform: translateX(calc(-100% + var(--progress-perc, 0%)));
+    transition: transform 0.1666666s linear;
   }
   .progress .text {
     font-variant-numeric: tabular-nums;
