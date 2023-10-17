@@ -10,7 +10,7 @@ export default css`
   .progress-bar {
     background: var(--primary, #006ecd);
     height: 6px;
-    transition: width 0.1s linear;
+    transition: width 0.3s linear;
     position: absolute;
     pointer-events: none;
   }
