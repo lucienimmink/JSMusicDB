@@ -10,9 +10,11 @@ export default css`
   .progress-bar {
     background: var(--primary, #006ecd);
     height: 6px;
-    transition: width 0.3s linear;
     position: absolute;
     pointer-events: none;
+    width: 100%;
+    transform: translateX(calc(-100% + var(--progress-perc, 0%)));
+    transition: transform 0.1666666s linear;
   }
   .progress-bar.paused {
     animation: pulsate-animation 1s infinite;

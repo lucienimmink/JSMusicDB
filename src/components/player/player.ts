@@ -641,7 +641,8 @@ export class Album extends LitElement {
       <div
         class="progress-bar ${this.isPlaying ? '' : 'paused'}"
         style=${styleMap({
-          width: (this.track.position / this.track.duration) * 100 + '%',
+          '--progress-perc':
+            (this.track.position / this.track.duration) * 100 + '%',
         })}
       ></div>
     </div>`;
