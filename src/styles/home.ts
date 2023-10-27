@@ -110,6 +110,15 @@ export default css`
   app-link:active album-art {
     transform: scale(0.95);
   }
+  app-link .panel {
+    overflow: hidden;
+    transition: all 0.2s ease-in-out;
+  }
+  app-link:hover .panel,
+  app-link:active .panel {
+    border-color: var(--primary);
+    border-radius: 0.5rem;
+  }
   @media (min-width: 768px) {
     .grid {
       --distance: 16px;
