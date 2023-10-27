@@ -117,7 +117,6 @@ export default css`
   app-link:hover .panel,
   app-link:active .panel {
     border-color: var(--primary);
-    border-radius: 0.5rem;
   }
   @media (min-width: 768px) {
     .grid {

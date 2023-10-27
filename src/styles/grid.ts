@@ -29,7 +29,6 @@ export default css`
   }
   app-link:hover .panel {
     border-color: var(--primary);
-    border-radius: 0.5rem;
   }
   @media (min-width: 768px) {
     :host {
