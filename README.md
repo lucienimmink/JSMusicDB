@@ -39,10 +39,6 @@ A music player and database written using LIT and TypeScript. Using modern JavaS
 ![Screenshot of JSMusicDB albums vies](https://www.jsmusicdb.com/assets/screenshot-5-xs.webp 'Screenshot of JSMusicDB albums view')
 ![Screenshot of JSMusicDB playlist view](https://www.jsmusicdb.com/assets/screenshot-6-xs.webp 'Screenshot of JSMusicDB playlist view')
 
-## Translations
-
-The application is fully translatable using i18next. Dutch and English are provided by [Lucien Immink](https://github.com/lucienimmink). New languages can be added by creating a [pull request](https://github.com/lucienimmink/JSMusicDB/pulls). See `/public/translations/` for the key-value files.
-
 ## API keys
 
 Add the following to your local `.env` file to use last.fm and fanart

@@ -1,4 +1,3 @@
-import { localized, t } from '@weavedev/lit-i18next';
 import { LitElement, PropertyValueMap, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import musicdb from '../../components/musicdb';
@@ -10,7 +9,6 @@ import { REFRESH } from '../../utils/musicdb';
 import './../app-link/app-link';
 
 @customElement('artists-in-letter')
-@localized()
 export class Letter extends LitElement {
   @property()
   letter: string;
@@ -67,9 +65,7 @@ export class Letter extends LitElement {
           <album-art artist="${artist.albumArtist || artist.name}"></album-art>
           <div class="panel-info color-type-primary-alt">
             <span>${artist.albumArtist || artist.name}</span>
-            <span class="small muted"
-              >${t('labels.albums')}: ${artist.albums.length}</span
-            >
+            <span class="small muted">Albums: ${artist.albums.length}</span>
           </div>
         </div>
       </app-link>

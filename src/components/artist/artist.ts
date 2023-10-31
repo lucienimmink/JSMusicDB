@@ -1,4 +1,3 @@
-import { localized, t } from '@weavedev/lit-i18next';
 import { LitElement, PropertyValueMap, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import musicdb from '../../components/musicdb';
@@ -10,7 +9,6 @@ import { REFRESH } from '../../utils/musicdb';
 import '../app-link/app-link';
 
 @customElement('albums-in-artist')
-@localized()
 export class Artist extends LitElement {
   @property()
   artist: string;
@@ -71,11 +69,7 @@ export class Artist extends LitElement {
             <span>${album.name}</span>
             ${album.year === 0
               ? nothing
-              : html`
-                  <span class="small muted"
-                    >${t('labels.year')}: ${album.year}</span
-                  >
-                `}
+              : html` <span class="small muted">Year: ${album.year}</span> `}
           </div>
         </div>
       </app-link>

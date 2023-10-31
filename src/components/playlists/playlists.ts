@@ -1,5 +1,4 @@
 import '@lit-labs/virtualizer';
-import { localized, t } from '@weavedev/lit-i18next';
 import { LitElement, PropertyValueMap, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import buttons from '../../styles/buttons';
@@ -32,7 +31,6 @@ import '../loading-indicator/loading-indicator';
 import './../track/track.js';
 
 @customElement('playlists-nav')
-@localized()
 export class LetterNav extends LitElement {
   @property()
   activeroute: string;
@@ -295,14 +293,13 @@ export class LetterNav extends LitElement {
   private _renderPlaylistSelector() {
     return html`<div class="playlists">
       <ul class="md-up">
-        <li class="header">${t('headers.playlists')}</li>
+        <li class="header">Playlists</li>
         ${this.current?.tracks?.length > 0
           ? html`
               <li class="${this.playlistId === 'current' ? 'active' : ''}">
                 <app-link href="/playlists/current" flex
-                  >${t('links.current-playlist')}<span class="icon-note"
-                    >${nowPlayingIcon}</span
-                  ></app-link
+                  >Current playlist
+                  <span class="icon-note">${nowPlayingIcon}</span></app-link
                 >
               </li>
             `
@@ -311,7 +308,7 @@ export class LetterNav extends LitElement {
           ? html`
               <li class="${this.playlistId === 'loved' ? 'active' : ''}">
                 <app-link href="/playlists/loved" flex
-                  >${t('links.loved-playlist')}<span class="icon-note"
+                  >Loved tracks on last.fm<span class="icon-note"
                     >${nowPlayingIcon}</span
                   >
                   ${this.currentPlaylistId === 'loved'
@@ -332,8 +329,8 @@ export class LetterNav extends LitElement {
           ? html`
               <li class="${this.playlistId === 'top' ? 'active' : ''}">
                 <app-link href="/playlists/top" flex
-                  >${t('links.most-played-playlist')}
-                  ${this.lastFMUserName}<span class="icon-note"
+                  >Most played tracks by ${this.lastFMUserName}<span
+                    class="icon-note"
                     >${nowPlayingIcon}</span
                   >
                   ${this.currentPlaylistId === 'top'
@@ -350,9 +347,8 @@ export class LetterNav extends LitElement {
           : nothing}
         <li class="${this.playlistId === 'random' ? 'active' : ''}">
           <app-link href="/playlists/random" flex
-            >${this.max} ${t('links.random-playlist')}<span class="icon-note"
-              >${nowPlayingIcon}</span
-            >
+            >${this.max} random tracks
+            <span class="icon-note">${nowPlayingIcon}</span>
             ${this.currentPlaylistId === 'random'
               ? html` <button
                   class="btn btn-small btn-primary btn-refresh"
@@ -367,10 +363,8 @@ export class LetterNav extends LitElement {
           ? html`
               <li class="${this.playlistId === 'random-pref' ? 'active' : ''}">
                 <app-link href="/playlists/random-pref" flex
-                  >${this.max} ${t('links.preference-playlist')}<span
-                    class="icon-note"
-                    >${nowPlayingIcon}</span
-                  >
+                  >${this.max} tracks by preference
+                  <span class="icon-note">${nowPlayingIcon}</span>
                   ${this.currentPlaylistId === 'random-pref'
                     ? html` <button
                         class="btn btn-small btn-primary btn-refresh"
@@ -387,9 +381,8 @@ export class LetterNav extends LitElement {
           ? html`
               <li class="${this.playlistId === 'pref-radio' ? 'active' : ''}">
                 <app-link href="/playlists/pref-radio" flex
-                  >${t('links.preference-radio')}<span class="icon-note"
-                    >${nowPlayingIcon}</span
-                  >
+                  >Radio by preference
+                  <span class="icon-note">${nowPlayingIcon}</span>
                   ${this.currentPlaylistId === 'pref-radio'
                     ? html` <button
                         class="btn btn-small btn-primary btn-refresh"
@@ -404,7 +397,7 @@ export class LetterNav extends LitElement {
           : nothing}
         <li class="${this.playlistId === 'radio' ? 'active' : ''}">
           <app-link href="/playlists/radio" flex
-            >${t('links.artist-radio')}<span class="icon-note"
+            >Artist radio<span class="icon-note"
               >${nowPlayingIcon}</span
             ></app-link
           >
@@ -415,38 +408,32 @@ export class LetterNav extends LitElement {
         @change=${(e: Event) => this._switchPlaylist(e)}
         id="playlist-selector"
       >
-        <option disabled selected>${t('links.choose-playlist')}</option>
+        <option disabled selected>Choose playlist</option>
         ${this.current?.tracks?.length > 0
-          ? html`
-              <option value="current">${t('links.current-playlist')}</option>
-            `
+          ? html` <option value="current">Current playlist</option> `
           : nothing}
         ${this.lastFMUserName
-          ? html` <option value="loved">${t('links.loved-playlist')}</option> `
+          ? html` <option value="loved">Loved tracks on last.fm</option> `
           : nothing}
         ${this.lastFMUserName
           ? html`
               <option value="top">
-                ${t('links.most-played-playlist')} ${this.lastFMUserName}
+                Most played tracks by ${this.lastFMUserName}
               </option>
             `
           : nothing}
-        <option value="random">
-          ${this.max} ${t('links.random-playlist')}
-        </option>
+        <option value="random">${this.max} random tracks</option>
         ${this.lastFMUserName
           ? html`
               <option value="random-pref">
-                ${this.max} ${t('links.preference-playlist')}
+                ${this.max} tracks by preference
               </option>
             `
           : nothing}
         ${this.lastFMUserName
-          ? html`
-              <option value="pref-radio">${t('links.preference-radio')}</option>
-            `
+          ? html` <option value="pref-radio">Radio by preference</option> `
           : nothing}
-        <option value="radio">${t('links.artist-radio')}</option>
+        <option value="radio">Artist radio</option>
       </select>
     </div>`;
   }
@@ -464,11 +451,11 @@ export class LetterNav extends LitElement {
     return html`
       <div class="playlist">
         <ul>
-          <li class="header">${t('headers.create-radio')}</li>
+          <li class="header">Create artist radio</li>
           <li class="no-hover artist-selector">
-            <span class="md-up">${t('labels.start-artist')}: </span>
+            <span class="md-up">Start with this artist: </span>
             <select @change="${(e: Event) => this._generateArtistRadio(e)}">
-              <option disabled selected>${t('labels.select-artist')}</option>
+              <option disabled selected>Select an artist from the list</option>
               ${this.artists.map(
                 (artist: any) =>
                   html` <option value="${artist.escapedName}">
@@ -489,12 +476,7 @@ export class LetterNav extends LitElement {
             <div class="playlist">
               <ul>
                 <li class="header">
-                  ${this.playlist.i18name
-                    ? t(this.playlist.i18name, {
-                        username: this.lastFMUserName,
-                        count: this.playlist.tracks.length,
-                      })
-                    : this.playlist.name}
+                  ${this.playlist.name}
                   <span class="small muted"
                     >(${this.playlist.tracks.length})</span
                   >
@@ -511,7 +493,7 @@ export class LetterNav extends LitElement {
         : nothing}
       ${this.showStartArtistSelection ? this._renderArtistSelector() : nothing}
       ${this.loading
-        ? html` <loading-indicator>${t('labels.loading')}</loading-indicator> `
+        ? html` <loading-indicator>Loading...</loading-indicator> `
         : nothing}
     </div>`;
   }

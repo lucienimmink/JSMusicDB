@@ -1,8 +1,5 @@
-import { localized, t } from '@weavedev/lit-i18next';
 import { LitElement, html, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import buttons from '../../styles/buttons';
 import container from '../../styles/container';
 import headers from '../../styles/headers';
@@ -10,6 +7,7 @@ import login from '../../styles/login';
 import modals from '../../styles/modals';
 import { animateCSS, animationCSS } from '../../utils/animations';
 import {
+  MINIMALSTREAMVERSION,
   authenticate,
   canLogin,
   getJwt,
@@ -22,7 +20,6 @@ import { infoIcon } from '../icons/info';
 import { timesIcon } from '../icons/times';
 
 @customElement('mp3stream-login')
-@localized()
 export class LetterNav extends LitElement {
   username: string;
   password: string;
@@ -119,7 +116,7 @@ export class LetterNav extends LitElement {
       <div class="modal-backdrop"></div>
       <div class="modal">
         <div class="modal-header">
-          <h2 class="header">${t('headers.login.whats-this')}</h2>
+          <h2 class="header">What's this?</h2>
           <button
             class="btn btn-transparent btn-icon"
             aria-label="toggle information"
@@ -129,15 +126,31 @@ export class LetterNav extends LitElement {
           </button>
         </div>
         <div class="modal-body">
-          <p>${t('content.mp3stream.p1')}</p>
-          <p>${t('content.mp3stream.p2')}</p>
-          <p>${unsafeHTML(t('content.mp3stream.p3'))}</p>
-          <p>${t('content.mp3stream.p4')}</p>
+          <p>Welcome to JSMusicDB!</p>
+          <p>
+            In order to use this music player you need to provide credentials to
+            the streamer back-end you would like to use.
+          </p>
+          <p>
+            JSMusicDB is compatible with
+            <a
+              href="//github.com/lucienimmink/node-mp3stream"
+              target="_blank"
+              rel="noopener"
+              >node-mp3stream</a
+            >, a nodejs based music streamer that you can install and run from
+            your own pc or NAS.
+          </p>
+          <p>
+            Once installed just provide your username, password and streamer URL
+            as configured in node-mp3stream. We do not store your credentials
+            anywhere.
+          </p>
         </div>
 
         <div class="modal-footer">
           <button class="btn btn-primary" @click=${this._toggleInfo}>
-            ${t('buttons.dismiss')}
+            Dismiss
           </button>
         </div>
       </div>
@@ -150,7 +163,7 @@ export class LetterNav extends LitElement {
             <div class="login">
               <div class="container">
                 <h2 class="header">
-                  ${t('headers.login.mp3stream')}
+                  Login to node-mp3stream
                   <button
                     class="btn btn-transparent btn-icon"
                     aria-label="toggle information"
@@ -161,22 +174,25 @@ export class LetterNav extends LitElement {
                 </h2>
                 ${this.hasError
                   ? html`
-                      <div class="alert">${t('errors.username-password')}</div>
+                      <div class="alert">
+                        Please check your username and password
+                      </div>
                     `
                   : nothing}
                 ${this.versionError
-                  ? html` <div class="alert">${t('errors.version')}</div> `
+                  ? html`
+                      <div class="alert">
+                        Version of node-mp3stream is too low. Please update to
+                        at least version ${MINIMALSTREAMVERSION}
+                      </div>
+                    `
                   : nothing}
                 <form @submit="${(e: Event) => this._onSubmit(e)}">
                   <div class="row">
-                    <label for="username">${t('labels.username')}</label>
+                    <label for="username">Username: </label>
                     <input
                       type="text"
-                      placeholder="${ifDefined(
-                        t('labels.placeholders.username') === null
-                          ? undefined
-                          : t('labels.placeholders.username'),
-                      )}"
+                      placeholder="John Doe"
                       required
                       id="username"
                       name="name"
@@ -184,14 +200,10 @@ export class LetterNav extends LitElement {
                     />
                   </div>
                   <div class="row">
-                    <label for="password">${t('labels.password')}</label>
+                    <label for="password">Password:</label>
                     <input
                       type="password"
-                      placeholder="${ifDefined(
-                        t('labels.placeholders.password') === null
-                          ? undefined
-                          : t('labels.placeholders.password'),
-                      )}"
+                      placeholder="Password"
                       required
                       id="password"
                       name="password"
@@ -199,14 +211,10 @@ export class LetterNav extends LitElement {
                     />
                   </div>
                   <div class="row">
-                    <label for="server">${t('labels.server')}</label>
+                    <label for="server">Server:</label>
                     <input
                       type="text"
-                      placeholder="${ifDefined(
-                        t('labels.placeholders.server') === null
-                          ? undefined
-                          : t('labels.placeholders.server'),
-                      )}"
+                      placeholder="http://localhost"
                       required
                       id="server"
                       name="server"
@@ -215,7 +223,7 @@ export class LetterNav extends LitElement {
                   </div>
                   <div class="row buttons">
                     <button class="btn btn-primary" type="submit">
-                      ${t('buttons.submit')}
+                      Submit
                     </button>
                   </div>
                 </form>

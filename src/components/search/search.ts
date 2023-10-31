@@ -1,8 +1,6 @@
 import timeSpan from '@addasoft/timespan';
-import { localized, t } from '@weavedev/lit-i18next';
 import { LitElement, PropertyValueMap, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import container from '../../styles/container';
 import headers from '../../styles/headers';
 import search from '../../styles/search';
@@ -17,7 +15,6 @@ import './../app-link/app-link';
 const MAX = 100;
 
 @customElement('search-nav')
-@localized()
 export class SearchNav extends LitElement {
   private _query: string;
 
@@ -98,7 +95,8 @@ export class SearchNav extends LitElement {
   private _renderOverflow() {
     return html`
       <div class="warn">
-        ${unsafeHTML(t('errors.too-many-results', { count: MAX }))}
+        Your search yielded over <strong>${MAX}</strong> results. Only the first
+        ${MAX} are shown. Please try to refine your search query
       </div>
     `;
   }
@@ -108,7 +106,7 @@ export class SearchNav extends LitElement {
         ${this.artists?.overflow ? this._renderOverflow() : nothing}
         <ol>
           <li class="header">
-            ${t('headers.artists')}
+            Artists
             <span class="small muted">(${this.artists?.list.length})</span>
           </li>
           ${this.artists?.list.map(
@@ -128,7 +126,7 @@ export class SearchNav extends LitElement {
                       >${artist.albumArtist || artist.name}</span
                     >
                     <span class="small muted"
-                      >${t('labels.albums')}: ${artist.albums.length}</span
+                      >Albums: ${artist.albums.length}</span
                     >
                   </div>
                 </app-link>
@@ -145,7 +143,7 @@ export class SearchNav extends LitElement {
         ${this.albums?.overflow ? this._renderOverflow() : nothing}
         <ol>
           <li class="header">
-            ${t('headers.albums')}
+            Albums
             <span class="small muted">(${this.albums?.list.length})</span>
           </li>
           ${this.albums?.list.map(
@@ -166,9 +164,7 @@ export class SearchNav extends LitElement {
                     <span class="album">${album.name}</span>
                     ${album.year
                       ? html`
-                          <span class="small muted"
-                            >${t('labels.year')}: ${album.year}</span
-                          >
+                          <span class="small muted">Year: ${album.year}</span>
                         `
                       : nothing}
                   </div>
@@ -186,7 +182,7 @@ export class SearchNav extends LitElement {
         ${this.tracks?.overflow ? this._renderOverflow() : nothing}
         <ol>
           <li class="header">
-            ${t('headers.tracks')}
+            Tracks
             <span class="small muted">(${this.tracks?.list.length})</span>
           </li>
           ${this.tracks?.list.map(

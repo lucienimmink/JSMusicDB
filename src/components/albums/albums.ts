@@ -1,5 +1,4 @@
 import '@lit-labs/virtualizer';
-import { localized, t } from '@weavedev/lit-i18next';
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import container from '../../styles/container';
@@ -14,7 +13,6 @@ import '../app-link/app-link';
 import musicdb from '../musicdb';
 
 @customElement('albums-nav')
-@localized()
 export class LetterNav extends LitElement {
   albums: Array<any>;
   @state()
@@ -117,11 +115,7 @@ export class LetterNav extends LitElement {
         <div class="details">
           <span class="album">${album.name}</span>
           ${album.year
-            ? html`
-                <span class="small muted"
-                  >${t('labels.year')}: ${album.year}</span
-                >
-              `
+            ? html` <span class="small muted">Year: ${album.year}</span> `
             : nothing}
         </div>
       </app-link>

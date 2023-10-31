@@ -1,4 +1,3 @@
-import { localized, t } from '@weavedev/lit-i18next';
 import { LitElement, html, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import container from '../../styles/container';
@@ -23,7 +22,6 @@ import { hqIcon } from '../icons/hq';
 import musicdb from '../musicdb';
 
 @customElement('home-nav')
-@localized()
 export class HomeNav extends LitElement {
   @state()
   recenttracks: Array<any>;
@@ -165,14 +163,14 @@ export class HomeNav extends LitElement {
     if (track) {
       return html`
         ${track.isPlaying
-          ? html`<span class="playing">${t('labels.playing')}</span>`
-          : html`<span class="playing">${t('labels.paused')}</span>`}
-        <span class="small muted">${t('labels.right-now')}</span>
+          ? html`<span class="playing">Playing</span>`
+          : html`<span class="playing">Paused</span>`}
+        <span class="small muted">right now</span>
       `;
     }
     return html`
-      <span class="playing">${t('labels.playing')}</span>
-      <span class="small muted">${t('labels.right-now')}</span>
+      <span class="playing">Playing</span>
+      <span class="small muted">right now</span>
     `;
   }
   _onError(e: Event) {
@@ -184,7 +182,7 @@ export class HomeNav extends LitElement {
     return html`${this.recenttracks?.length > 0 || this.currentTrack
       ? html`
           <div class="container">
-            <h2 class="header">${t('headers.recently-listened')}</h2>
+            <h2 class="header">Recently listened</h2>
             <ol>
               ${this.currentTrack
                 ? html`
@@ -248,7 +246,7 @@ export class HomeNav extends LitElement {
     return html`${this.recentAdded.length > 0
       ? html`
           <div class="container">
-            <h2 class="header">${t('headers.recently-added')}</h2>
+            <h2 class="header">Recently added</h2>
             <div class="grid">
               ${this.recentAdded?.map(
                 (album: any) => html`
@@ -270,7 +268,7 @@ export class HomeNav extends LitElement {
                           ? nothing
                           : html`
                               <span class="small muted"
-                                >${t('labels.year')}: ${album.year}</span
+                                >Year: ${album.year}</span
                               >
                             `}
                       </div>
@@ -287,7 +285,7 @@ export class HomeNav extends LitElement {
     return html`${this.newReleases.length > 0
       ? html` <div class="container">
           <h2 class="header">
-            ${t('headers.new-releases')}
+            New releases
             <span class="small muted">(${this.newReleases.length})</span>
           </h2>
           <ol>
