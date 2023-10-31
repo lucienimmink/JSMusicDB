@@ -7,7 +7,8 @@
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
     <meta name="Description" content="Web standards based music player" />
-    <meta name="theme-color" content="#0063B1" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#00417A" id="theme-color-light" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#94D1FF" id="theme-color-dark" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <base href="/" />
     <link
@@ -38,6 +39,18 @@
     <link rel="stylesheet" href="./src/styles/view-transitions.css">
     <link rel="preload" as="font" href="/src/fonts/fira-sans-book.woff2" type="font/woff2" crossorigin />
     <style>
+      :root {
+        --primary: rgb(0, 110, 205);
+        --darken: oklch(from var(--primary) calc(l - 10) c h);
+        --lighten: oklch(from var(--primary) calc(l + 10) c h);
+        --darken30: oklch(from var(--primary) calc(l - 30) c h);
+        --lighten30: oklch(from var(--primary) calc(l + 30) c h);
+
+        --background-seethrough: rgb(from var(--background) r g b / 90%);
+        --background2-seethrough: rgb(from var(--background2) r g b / 90%);
+        --background-floating-text: rgb(from var(--background2) r g b / 25%);
+        --background-album-art: var(--background);
+      }
       @font-face {
         font-family: 'firasans';
         src: url('/src/fonts/fira-sans-book.woff2') format('woff2');
@@ -79,7 +92,7 @@
       }
 
       ::-webkit-scrollbar-thumb {
-        background-color: var(--progress, #006ecd);
+        background-color: var(--progress, #00417A);
       }
 
       ::-moz-selection {
@@ -97,10 +110,7 @@
         color: var(--text-color);
         z-index: 101;
         position: fixed;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
+        inset: 0;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -124,7 +134,7 @@
         height: 4px;
         border-radius: 50%;
         animation: progress-bar-animation 3s infinite;
-        background-color: var(--primary, #006ecd);
+        background-color: var(--primary, #00417A);
       }
 
       .progress-circle:nth-child(2) {

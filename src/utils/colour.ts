@@ -33,12 +33,6 @@ const getReadableColor = (rgba: any, bgcolor = LIGHT): any => {
   return convertToStrict(tinycolor(rgba, {}).toRgb());
 };
 
-const getHighestContrast = (color: any): any => {
-  return tinycolor.readability(tinycolor(DARK, {}), color) >
-    tinycolor.readability(tinycolor(LIGHT, {}), color)
-    ? DARK
-    : LIGHT;
-};
 export function getDominantColor(img: any, cb: any, override: any): any {
   getDominantColorByURL(img.src, cb, override);
 }
@@ -84,43 +78,36 @@ export function getDominantColorByURL(
 }
 export function getColorsFromRGBWithBGColor(rgba: any, bgColor: string): any {
   const text = getReadableColor(rgba, bgColor);
-  const lighten = convertToStrict(tinycolor(text, {}).lighten().toRgb());
   const darken = convertToStrict(tinycolor(text, {}).darken().toRgb());
-  const lighten30 = convertToStrict(tinycolor(text, {}).lighten(30).toRgb());
-  const darken30 = convertToStrict(tinycolor(text, {}).darken(30).toRgb());
+  const lighten = convertToStrict(tinycolor(text, {}).lighten().toRgb());
   return {
     rgba,
     text,
-    lighten,
     darken,
-    lighten30,
-    darken30,
-    letterColor: getHighestContrast(tinycolor(text, {})),
+    lighten,
   };
 }
 export function convertRGBtoString(rgba: any): string {
   return tinycolor(rgba, {}).toRgbString();
 }
-export function addCustomCss(colors: any): void {
+export async function addCustomCss(colors: any) {
   const accentCSSOverrideNode: HTMLElement = document.createElement('style');
-  const { darken, lighten, text, letterColor, darken30, lighten30 } = colors;
+  const { text, darken, lighten } = colors;
   accentCSSOverrideNode.setAttribute('type', 'text/css');
   accentCSSOverrideNode.id = 'custom-css-node';
   accentCSSOverrideNode.textContent = `
       @charset "UTF-8";
       :root {
-        --primary: rgba(${text.r}, ${text.g}, ${text.b}, 1);
-        --darken: rgba(${darken.r}, ${darken.g}, ${darken.b}, 1);
-        --lighten: rgba(${lighten.r}, ${lighten.g}, ${lighten.b}, 1);
-        --darken30: rgba(${darken30.r}, ${darken30.g}, ${darken30.b}, 1);
-        --lighten30: rgba(${lighten30.r}, ${lighten30.g}, ${lighten30.b}, 1);
-        --letter-color: ${letterColor};
+        --primary: rgb(${text.r} ${text.g} ${text.b});
       }`;
   removeCustomCss();
   document.querySelector('body')?.appendChild(accentCSSOverrideNode);
   document
-    .querySelector('[name="theme-color"]')
+    .querySelector('#theme-color-light')
     ?.setAttribute('content', `rgb(${darken.r}, ${darken.g}, ${darken.b})`);
+  document
+    .querySelector('#theme-color-dark')
+    ?.setAttribute('content', `rgb(${lighten.r}, ${lighten.g}, ${lighten.b})`);
 }
 export function removeCustomCss(): void {
   if (document.querySelector('#custom-css-node')) {

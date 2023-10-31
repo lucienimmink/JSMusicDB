@@ -8,7 +8,7 @@ export default css`
     background-size: contain;
     position: relative;
     border: 1px solid var(--background2, #f3f4f5);
-    box-shadow: 0px 0px 1px var(--primary, #006ecd);
+    box-shadow: 0px 0px 1px var(--primary, #00417a);
     box-sizing: border-box;
     transition: transform 0.15s ease-in-out;
   }

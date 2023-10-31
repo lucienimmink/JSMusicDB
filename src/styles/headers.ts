@@ -7,8 +7,8 @@ export default css`
     box-sizing: border-box;
     height: 60px;
     border-top: 0;
-    border-bottom: 1px solid var(--primary, #006ecd);
-    transition: all 0.5s linear;
+    border-bottom: 1px solid var(--primary, #00417a);
+    transition: all 0.5s ease-in-out;
     padding: 1.85rem 1rem 0;
     position: sticky;
     z-index: 1;
@@ -19,7 +19,7 @@ export default css`
   }
   .virtual-scroll .header {
     top: 0;
-    color: var(--primary, #006ecd);
+    color: var(--primary, #00417a);
     transition: none;
     cursor: pointer;
   }

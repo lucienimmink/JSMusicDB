@@ -33,7 +33,7 @@ export default css`
     padding: 4vh;
     font-size: 1.5rem;
     font-weight: 400;
-    color: var(--primary, #006ecd);
+    color: var(--primary, #00417a);
     transition: all 0.2s ease-in-out;
     text-decoration: none;
     display: block;

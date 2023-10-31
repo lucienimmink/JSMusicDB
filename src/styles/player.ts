@@ -34,7 +34,7 @@ export default css`
     transition: color 0.5s ease-in-out;
   }
   .details app-link {
-    color: var(--primary, #006ecd);
+    color: var(--primary, #00417a);
     transition: color 0.2s ease-in-out;
   }
   .art {

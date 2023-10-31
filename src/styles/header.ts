@@ -44,7 +44,7 @@ export default css`
     padding-top: 8px;
   }
   app-link {
-    color: var(--primary, #006ecd);
+    color: var(--primary, #00417a);
     transition: color 0.2s ease-in-out;
     -webkit-app-region: no-drag;
     app-region: no-drag;

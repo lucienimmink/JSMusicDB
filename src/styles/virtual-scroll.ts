@@ -35,7 +35,7 @@ export default css`
     flex-grow: 0;
     border: 1px solid var(--background2);
     background: rgba(255, 255, 255, 0.85);
-    box-shadow: 0px 0px 1px var(--primary, #006ecd);
+    box-shadow: 0px 0px 1px var(--primary, #00417a);
   }
   .details {
     flex-grow: 1;

@@ -22,13 +22,13 @@ export default css`
   }
   .controls .btn:hover,
   .controls .btn:focus {
-    color: var(--primary, #006ecd);
+    color: var(--primary, #00417a);
     outline: none;
   }
   .controls .btn:active,
   .controls .btn.active {
     border: 0;
-    background: var(--primary, #006ecd);
+    background: var(--primary, #00417a);
     color: var(--letter-color);
   }
   .controls .btn svg {

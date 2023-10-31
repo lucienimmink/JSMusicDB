@@ -33,7 +33,7 @@ export default css`
     aspect-ratio: 1 / 1;
     height: 70px;
     border: 1px solid var(--background2);
-    box-shadow: 0px 0px 1px var(--primary, #006ecd);
+    box-shadow: 0px 0px 1px var(--primary, #00417a);
     background: rgba(255, 255, 255, 0.85);
   }
   ol .details {
@@ -55,7 +55,7 @@ export default css`
     font-family: system-ui;
   }
   ol .playing {
-    color: var(--primary, #006ecd);
+    color: var(--primary, #00417a);
     transition: color 0.2s ease-in-out;
   }
   li > div,
@@ -72,7 +72,7 @@ export default css`
     height: 17px;
     padding: 5px;
     color: var(--letter-color, #fff);
-    background: var(--primary, #006ecd);
+    background: var(--primary, #00417a);
     position: absolute;
     top: -8px;
     right: -1px;

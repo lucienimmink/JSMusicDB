@@ -35,7 +35,7 @@ export default css`
   }
   .playlists li app-link {
     display: flex;
-    color: var(--primary, #006ecd);
+    color: var(--primary, #00417a);
     transition: all 0.2s ease-in-out;
     text-decoration: none;
     align-items: center;

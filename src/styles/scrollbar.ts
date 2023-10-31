@@ -9,6 +9,6 @@ export default css`
     background-color: var(--progress-background, #f3f4f5);
   }
   ::-webkit-scrollbar-thumb {
-    background-color: var(--progress, #006ecd);
+    background-color: var(--progress, #00417a);
   }
 `;

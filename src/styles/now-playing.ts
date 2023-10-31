@@ -298,7 +298,7 @@ export default css`
       padding: 0;
       border: 1px solid var(--background2);
       background: rgba(255, 255, 255, 0.85);
-      box-shadow: 0px 0px 1px var(--primary, #006ecd);
+      box-shadow: 0px 0px 1px var(--primary, #00417a);
     }
     .smallArt canvas {
       height: calc(100vh - 50px);
@@ -321,7 +321,7 @@ export default css`
     font-weight: 400;
   }
   app-link {
-    color: var(--primary, #006ecd);
+    color: var(--primary, #00417a);
     transition: color 0.2s ease-in-out;
   }
   app-link .icon {
@@ -339,7 +339,7 @@ export default css`
     background-color: var(--progress-background, #f3f4f5);
   }
   ::-webkit-scrollbar-thumb {
-    background-color: var(--progress, #006ecd);
+    background-color: var(--progress, #00417a);
   }
   @media (min-width: 576px) {
     h3 {

@@ -9,7 +9,7 @@ export default css`
     background-color: var(--progress-background, #f3f4f5);
   }
   ::-webkit-scrollbar-thumb {
-    background-color: var(--progress, #006ecd);
+    background-color: var(--progress, #00417a);
   }
   ul {
     list-style: none;
@@ -127,7 +127,7 @@ export default css`
     width: 25px;
   }
   input {
-    border: 1px solid var(--primary, #006ecd);
+    border: 1px solid var(--primary, #00417a);
     padding: 8px 10px;
     display: block;
     width: 90%;
@@ -135,7 +135,7 @@ export default css`
   }
   input:focus {
     border-radius: 0;
-    border: 1px solid var(--primary, #006ecd);
+    border: 1px solid var(--primary, #00417a);
   }
   @media (min-width: 576px) {
     input {
