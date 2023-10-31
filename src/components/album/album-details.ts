@@ -1,5 +1,4 @@
 import timeSpan from '@addasoft/timespan';
-import { i18next, localized, t } from '@weavedev/lit-i18next';
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import albumDetails from '../../styles/album-details';
@@ -14,7 +13,6 @@ import musicdb from '../musicdb';
 import '../track/track';
 
 @customElement('album-details')
-@localized()
 export class AlbumDetails extends LitElement {
   @property()
   artist: string;
@@ -86,18 +84,13 @@ export class AlbumDetails extends LitElement {
         console.log(error);
       });
   }
-  private _toLocale(i18nLocale: string) {
-    if (!i18nLocale) return 'en-GB';
-    const t = i18nLocale.split('-');
-    return `${t[0]}-${t[1].toUpperCase()}`;
-  }
   calculateLength(tracks: Array<any>) {
     let duration = 0;
     if (tracks) {
       tracks.forEach(track => {
         duration += track.duration;
       });
-      return timeSpan(duration, true, this._toLocale(i18next.language));
+      return timeSpan(duration, true, 'en-GB');
     }
     return 0;
   }
@@ -113,13 +106,13 @@ export class AlbumDetails extends LitElement {
   private _renderButtons() {
     return html`<h4>
       <button class="btn btn-primary" @click=${(e: any) => this._playAlbum(e)}>
-        ${t('labels.play-album')} <span>${t('labels.play-album2')}</span>
+        Play <span>album</span>
       </button>
       <button
         class="btn btn-secondary"
         @click=${(e: any) => this._queueAlbum(e)}
       >
-        ${t('labels.queue-album')} <span>${t('labels.queue-album2')}</span>
+        Queue <span>album</span>
       </button>
     </h4>`;
   }
@@ -139,14 +132,12 @@ export class AlbumDetails extends LitElement {
           ? html`${this.albumDetails?.year} •`
           : nothing}
         ${this.albumDetails?.tracks?.length}
-        ${t('labels.songs', { count: this.albumDetails?.tracks?.length })} •
+        track${this.albumDetails?.tracks?.length !== 1 ? 's' : ''} •
         ${this.calculateLength(this.albumDetails?.tracks)}
         <span class="small muted md-up-inline">
           • ${this.albumDetails?.type}
           ${this.replayGainApplied && this.albumDetails?.albumGain !== 0
-            ? html`
-                • ${t('labels.album-gain')} ${this.albumDetails?.albumGain} dB
-              `
+            ? html` • Album gain: ${this.albumDetails?.albumGain} dB `
             : nothing}
         </span>
       </h4>

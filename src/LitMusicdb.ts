@@ -1,5 +1,4 @@
 import timeSpan from '@addasoft/timespan';
-import { localized, t } from '@weavedev/lit-i18next';
 import { LitElement, html, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import './components/album-art/album-art';
@@ -20,7 +19,6 @@ import { dark, light, system } from './styles/themes';
 import { global as EventBus } from './utils/EventBus';
 import { animateCSS, animationCSS } from './utils/animations';
 import { getCurrentTheme, updateSunriseData } from './utils/colour';
-import { i18nInit } from './utils/i18next';
 import { RESET_LASTFM, getSK } from './utils/lastfm';
 import { launchQueue } from './utils/launch-queue';
 import { REFRESH } from './utils/musicdb';
@@ -36,7 +34,6 @@ import Track from '@addasoft/musicdbcore/dist/models/Track';
 import { TOGGLE_OVERFLOW_HIDDEN } from './components/side-nav/side-nav';
 
 @customElement('lit-musicdb')
-@localized()
 export class LitMusicdb extends LitElement {
   letters: Array<any>;
   @state()
@@ -186,7 +183,6 @@ export class LitMusicdb extends LitElement {
     await this.initMusicDB();
     await this._initSettingsAndThemes();
     launchQueue();
-    i18nInit();
     this._changeUrl(this, window.location.pathname);
     this.loading = false;
     await animateCSS(
@@ -331,7 +327,7 @@ export class LitMusicdb extends LitElement {
         ${!this.hasToken ? html`<mp3stream-login></mp3stream-login>` : nothing}
         ${this.loading
           ? html`<div class="loading-wrapper">
-              ${t('labels.loading')}
+              Loading...
               <loading-indicator></loading-indicator>
             </div>`
           : nothing}

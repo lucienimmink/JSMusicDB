@@ -1,9 +1,7 @@
 import timeSpan from '@addasoft/timespan';
-import { i18next, localized, t } from '@weavedev/lit-i18next';
 import { clear, createStore } from 'idb-keyval';
 import { LitElement, html, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import buttons from '../../styles/buttons';
 import container from '../../styles/container';
 import headers from '../../styles/headers';
@@ -44,7 +42,6 @@ import { unlinkIcon } from '../icons/unlink';
 import musicdb, { updateAndRefresh } from '../musicdb';
 
 @customElement('settings-nav')
-@localized()
 export class SettingsNav extends LitElement {
   @state()
   settings: any;
@@ -59,8 +56,6 @@ export class SettingsNav extends LitElement {
   showVersion: boolean;
   @state()
   canGetRSSFeed = false;
-  @state()
-  languages = [];
 
   static get styles() {
     return [buttons, container, headers, smallMuted, responsive, settings];
@@ -74,7 +69,6 @@ export class SettingsNav extends LitElement {
     this.mp3stream = '';
     this.isReloading = false;
     this.showVersion = true;
-    this.languages = [];
     this._init();
     getSettings().then(async (setting: any) => {
       this.settings = setting;
@@ -91,7 +85,6 @@ export class SettingsNav extends LitElement {
         this.stats.mp3stream = await getVersion(this.mp3stream);
       }
       this.canGetRSSFeed = await canGetRSSFeed(this.mp3stream);
-      this.languages = await this._readLanguages();
     });
   }
   connectedCallback() {
@@ -108,11 +101,6 @@ export class SettingsNav extends LitElement {
     EventBus.off(DONE_RELOADING, this._setIsReloadingFalse, this);
     EventBus.off(HAS_SSE, this._updateSEE, this);
   }
-  private _toLocale(i18nLocale: string) {
-    if (!i18nLocale) return 'en-GB';
-    const t = i18nLocale.split('-');
-    return `${t[0]}-${t[1].toUpperCase()}`;
-  }
   private _init() {
     musicdb
       .then(async (mdb: any) => {
@@ -122,9 +110,6 @@ export class SettingsNav extends LitElement {
       .catch((error: any) => {
         console.log(error);
       });
-  }
-  private async _readLanguages() {
-    return await (await fetch('/translations/languages.json'))?.json();
   }
   private _setIsReloadingTrue() {
     this.isReloading = true;
@@ -140,7 +125,7 @@ export class SettingsNav extends LitElement {
     if (!date) {
       return fallback;
     }
-    const formatter = new Intl.DateTimeFormat(i18next.language || 'en-GB', {
+    const formatter = new Intl.DateTimeFormat('en-GB', {
       // @ts-ignore
       timeStyle: 'medium',
     });
@@ -150,21 +135,14 @@ export class SettingsNav extends LitElement {
     this.stats.albums = this.mdb.totals.albums;
     this.stats.artists = this.mdb.totals.artists;
     this.stats.tracks = this.mdb.totals.tracks;
-    this.stats.time = timeSpan(
-      this.mdb.totals.playingTime,
-      true,
-      this._toLocale(i18next.language),
-    );
+    this.stats.time = timeSpan(this.mdb.totals.playingTime, true, 'en-GB');
     this.stats.parsingTime = this.mdb.totals.parsingTime;
     const date = await getLastParsed();
-    const formatter = new Intl.DateTimeFormat(
-      this._toLocale(i18next.language),
-      {
-        // @ts-ignore
-        dateStyle: 'full',
-        timeStyle: 'medium',
-      },
-    );
+    const formatter = new Intl.DateTimeFormat('en-GB', {
+      // @ts-ignore
+      dateStyle: 'full',
+      timeStyle: 'medium',
+    });
     this.stats.parsed = formatter.format(date);
     this.requestUpdate();
   }
@@ -183,10 +161,6 @@ export class SettingsNav extends LitElement {
         setting: 'smallArt',
         value: false,
       });
-    }
-    if (prop === 'language') {
-      i18next.changeLanguage(value);
-      this._populateStats();
     }
     await setSetting(prop, value);
     EventBus.emit(TOGGLE_SETTING, this, { setting: prop, value });
@@ -231,12 +205,22 @@ export class SettingsNav extends LitElement {
   }
   private _renderUserInfo() {
     return html`<div class="container container-block">
-      <h2 class="header">${t('headers.user-info')}</h2>
+      <h2 class="header">User settings</h2>
       <p>
-        ${t('labels.linked-to-lastfm')}
-        ${this?.lastFMUsername !== 'mdb-skipped'
-          ? this.lastFMUsername
-          : t('labels.unlinked')}
+        Linked to node-mp3stream server:
+        ${this.mp3stream ? this.mp3stream : 'false'}
+        ${this.mp3stream
+          ? html`<button
+              class="btn btn-secondary btn-small"
+              @click=${this._resetmp3Stream}
+            >
+              <span class="icon">${disconnectIcon}</span> Disconnect
+            </button>`
+          : nothing}
+      </p>
+      <p>
+        Linked to last.fm account:
+        ${this?.lastFMUsername !== 'mdb-skipped' ? this.lastFMUsername : 'none'}
         ${this?.lastFMUsername
           ? html`<button
               class="btn btn-secondary btn-small"
@@ -244,53 +228,18 @@ export class SettingsNav extends LitElement {
             >
               <span class="icon">${unlinkIcon}</span> ${this?.lastFMUsername !==
               'mdb-skipped'
-                ? html`${t('buttons.unlink')}`
-                : html`${t('buttons.relink')}`}
+                ? html`Unlink`
+                : html`Link`}
             </button>`
           : nothing}
-      </p>
-      <p>
-        ${t('labels.linked-to-mp3stream')}
-        ${this.mp3stream ? this.mp3stream : 'false'}
-        ${this.mp3stream
-          ? html`<button
-              class="btn btn-secondary btn-small"
-              @click=${this._resetmp3Stream}
-            >
-              <span class="icon">${disconnectIcon}</span> ${t(
-                'buttons.disconnect',
-              )}
-            </button>`
-          : nothing}
-      </p>
-      <p>
-        ${t('labels.language')}:
-        <select
-          name="language"
-          @change="${(e: Event) =>
-            this._toggle('language', e, e.target?.value)}"
-          .value="${this.settings?.language ||
-          this._toLocale(i18next.language)}"
-        >
-          <option disabled>${t('labels.select-language')}</option>
-          ${this.languages?.map((lang: any) => {
-            return html`<option
-              value="${lang.locale}"
-              .selected=${this.settings?.language === lang.locale ||
-              this._toLocale(i18next.language) === lang.locale}
-            >
-              ${lang.name}
-            </option>`;
-          })}
-        </select>
       </p>
     </div>`;
   }
   private _renderCollectionSettings() {
     return html`<div class="container container-block">
-      <h2 class="header">${t('headers.collection-info')}</h2>
+      <h2 class="header">Collection settings</h2>
       <p>
-        ${t('labels.collection')}:
+        Collection:
         <button
           class="btn btn-secondary btn-small"
           ?disabled="${!this.stats?.parsingTime}"
@@ -298,7 +247,7 @@ export class SettingsNav extends LitElement {
             this._refreshCollection();
           }}
         >
-          <span class="icon">${syncIcon}</span> ${t('buttons.refresh')}
+          <span class="icon">${syncIcon}</span> Refresh
         </button>
         <button
           class="btn btn-primary btn-small"
@@ -307,23 +256,23 @@ export class SettingsNav extends LitElement {
             this._reloadCollection();
           }}
         >
-          <span class="icon">${cloudDownloadIcon}</span> ${t('buttons.reload')}
+          <span class="icon">${cloudDownloadIcon}</span> Reload
         </button>
       </p>
       <p>
-        ${t('labels.purge-cache')}:
+        Purge image cache:
         <button
           class="btn btn-secondary btn-small"
           @click=${this._clearImageCache}
         >
-          <span class="icon">${trashIcon}</span> ${t('buttons.clear')}
+          <span class="icon">${trashIcon}</span> Clear
         </button>
       </p>
     </div>`;
   }
   private _renderPlayerSettings() {
     return html`<div class="container container-block">
-      <h2 class="header">${t('headers.player-settings')}</h2>
+      <h2 class="header">Player settings</h2>
       <p>
         <label>
           <input
@@ -331,7 +280,7 @@ export class SettingsNav extends LitElement {
             ?checked=${this.settings?.playliststate}
             @click="${(e: Event) => this._toggle('playliststate', e)}"
           />
-          ${t('labels.save-playlist-state')}
+          Save playlist state
         </label>
       </p>
       <p>
@@ -341,7 +290,7 @@ export class SettingsNav extends LitElement {
             @click="${(e: Event) => this._toggle('manualScrobble', e)}"
             ?checked=${this.settings?.manualScrobble}
           />
-          ${t('labels.manual-scrobbling')}
+          Manual scrobbling
         </label>
       </p>
       <p>
@@ -351,7 +300,7 @@ export class SettingsNav extends LitElement {
             @click="${(e: Event) => this._toggle('continues', e)}"
             ?checked=${this.settings?.continues}
           />
-          ${t('labels.continues-play')}
+          Continues play mode
         </label>
       </p>
       <p>
@@ -361,7 +310,7 @@ export class SettingsNav extends LitElement {
             @click="${(e: Event) => this._toggle('replaygain', e)}"
             ?checked=${this.settings?.replaygain}
           />
-          ${t('labels.apply-replaygain')}
+          Apply replaygain
         </label>
       </p>
       <p>
@@ -371,14 +320,14 @@ export class SettingsNav extends LitElement {
             @click="${(e: Event) => this._toggle('followTrack', e)}"
             ?checked=${this.settings?.followTrack}
           />
-          ${t('labels.followTrack')}
+          Show album if track changes
         </label>
       </p>
     </div>`;
   }
   private _renderThemeSettings() {
     return html`<div class="container container-block">
-        <h2 class="header">${t('headers.theme-settings')}</h2>
+        <h2 class="header">Theme settings</h2>
         <p>
           <label>
             <input
@@ -386,7 +335,7 @@ export class SettingsNav extends LitElement {
               @click="${(e: Event) => this._toggle('dynamicTheme', e)}"
               ?checked=${this.settings?.dynamicTheme}
             />
-            ${t('labels.dynamic-accent-color')}
+            Dynamic accent colour
           </label>
         </p>
         <p class="radio-group">
@@ -396,7 +345,7 @@ export class SettingsNav extends LitElement {
               @click="${(e: Event) => this._toggle('theme', e, 'light')}"
               .checked=${this.settings?.theme === 'light'}
             />
-            ${t('labels.light-theme')}
+            Light theme
           </label>
           <label>
             <input
@@ -404,7 +353,7 @@ export class SettingsNav extends LitElement {
               @click="${(e: Event) => this._toggle('theme', e, 'dark')}"
               .checked=${this.settings?.theme === 'dark'}
             />
-            ${t('labels.dark-theme')}
+            Dark theme
           </label>
           <label>
             <input
@@ -412,7 +361,7 @@ export class SettingsNav extends LitElement {
               @click="${(e: Event) => this._toggle('theme', e, 'system')}"
               .checked=${this.settings?.theme === 'system'}
             />
-            ${t('labels.system-theme')}
+            System theme
           </label>
           <label>
             <input
@@ -420,13 +369,13 @@ export class SettingsNav extends LitElement {
               @click="${(e: Event) => this._toggle('theme', e, 'auto')}"
               .checked=${this.settings?.theme === 'auto'}
             />
-            ${t('labels.dynamic-theme')}&nbsp;
+            Dynamic theme&nbsp;
             <span class="small muted"
-              >${t('labels.dark-mode-between', {
-                start: this._formatDate(this.settings?.start, '21:00:00'),
-                end: this._formatDate(this.settings?.stop, '09:00:00'),
-              })}</span
-            >
+              >Dark theme between ${this._formatDate(
+                this.settings?.start,
+                '21:00:00',
+              )} and ${this._formatDate(this.settings?.stop, '09:00:00')}
+              </span>
           </label>
         </p>
         ${
@@ -439,7 +388,8 @@ export class SettingsNav extends LitElement {
                       @click="${(e: Event) => this._toggle('gps', e)}"
                       ?checked=${this.settings?.gps}
                     />
-                    ${t('labels.track-location')}
+                    Track location to precisly determine when to switch to dark
+                    theme
                   </label>
                 </p>
               `
@@ -447,7 +397,7 @@ export class SettingsNav extends LitElement {
         }
         </div>
         <div class="container container-block md-up">
-          <h2 class="header">${t('headers.now-playing-screen')}</h2>
+          <h2 class="header">Now playing screen settings</h2>
             <p>
               <label>
                 <input
@@ -455,7 +405,7 @@ export class SettingsNav extends LitElement {
                   @click="${(e: Event) => this._toggle('visual', e)}"
                   .checked=${this.settings?.visual}
                 />
-                ${t('labels.show-visualization')}
+                Show visualisation during playback
               </label>
             </p>
             <p>
@@ -469,7 +419,7 @@ export class SettingsNav extends LitElement {
                             this._toggle('classicVis', e)}"
                           .checked=${this.settings?.classicVis}
                         />
-                        ${t('labels.classic-visualization')}
+                        Show classic LED visualisation
                       </label>
                     `
                   : nothing
@@ -485,7 +435,7 @@ export class SettingsNav extends LitElement {
                           @click="${(e: Event) => this._toggle('smallArt', e)}"
                           .checked=${this.settings?.smallArt}
                         />
-                        ${t('labels.show-small-album-art')}
+                        Show smaller album art
                       </label>
                     `
                   : nothing
@@ -498,15 +448,11 @@ export class SettingsNav extends LitElement {
     return html`${this.canGetRSSFeed
       ? html`
           <div class="container container-block">
-            <h2 class="header">${t('headers.rss-feed')}</h2>
+            <h2 class="header">RSS Feed for showing upcoming releases</h2>
             <p>
               <input
                 type="url"
-                placeholder="${ifDefined(
-                  t('labels.rss-feed-placeholder') === null
-                    ? undefined
-                    : t('labels.rss-feed-placeholder'),
-                )}"
+                placeholder="RSS feed URL for upcoming releases. Leave empty to disable."
                 .value=${this.settings?.feed || ''}
                 @change="${(e: Event) => this._setFeed(e)}"
               />
@@ -517,18 +463,18 @@ export class SettingsNav extends LitElement {
   }
   private _renderInformation() {
     return html`<div class="container container-block">
-      <h2 class="header">${t('headers.info')}</h2>
-      <p>${t('labels.artists')}: ${this.stats?.artists}</p>
-      <p>${t('labels.albums')}: ${this.stats?.albums}</p>
-      <p>${t('labels.tracks')}: ${this.stats?.tracks}</p>
-      <p>${t('labels.playing-time')}: ${this.stats?.time}</p>
-      <p>${t('labels.parsing-time')}: ${this.stats?.parsingTime}ms</p>
-      <p>${t('labels.last-updated')}: ${this.stats?.parsed}</p>
+      <h2 class="header">Statistics</h2>
+      <p>Artists: ${this.stats?.artists}</p>
+      <p>Albums: ${this.stats?.albums}</p>
+      <p>Tracks: ${this.stats?.tracks}</p>
+      <p>Total playing time: ${this.stats?.time}</p>
+      <p>Time needed to parse: ${this.stats?.parsingTime}ms</p>
+      <p>Last updated: ${this.stats?.parsed}</p>
       ${this.showVersion
-        ? html`<p>${t('labels.build')}: ${import.meta.env.PACKAGE_VERSION}</p>`
+        ? html`<p>Version: ${import.meta.env.PACKAGE_VERSION}</p>`
         : nothing}
       ${this.stats?.mp3stream
-        ? html` <p>${t('labels.node-mp3stream')}: ${this.stats?.mp3stream}</p> `
+        ? html` <p>Node-mp3stream version: ${this.stats?.mp3stream}</p> `
         : nothing}
     </div>`;
   }

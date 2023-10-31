@@ -1,6 +1,5 @@
 import timeSpan from '@addasoft/timespan';
 import '@lit-labs/virtualizer';
-import { localized, t } from '@weavedev/lit-i18next';
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
@@ -47,7 +46,6 @@ import { volumeIcon } from '../icons/volume';
 import('./../track/track.js');
 
 @customElement('now-playing')
-@localized()
 export class NowPlaying extends LitElement {
   @property()
   route: string;
@@ -352,7 +350,7 @@ export class NowPlaying extends LitElement {
     </div>`;
   }
   private _renderErrorState() {
-    return html`<div class="error">${t('errors.data')}</div>`;
+    return html`<div class="error">Error loading music data</div>`;
   }
   private _renderTimeControls() {
     return html`<div class="time-controls">
@@ -492,25 +490,22 @@ export class NowPlaying extends LitElement {
   private _renderNothingPlaying() {
     return html`
       <div class="container p-1">
-        <h3>${t('headers.nothing-playing')}</h3>
-        <p>${t('content.now-playing.p1')}</p>
+        <h3>Nothing is playing</h3>
         <p>
-          ${t('content.now-playing.p2.1')}
+          This is where you can see what's currently playing and what is coming
+          up next.
+        </p>
+        <p>
+          Find an
           <app-link href="/artists" inline
-            ><span class="icon">${artistsIcon}</span>${t(
-              'labels.artist',
-            )}</app-link
+            ><span class="icon">${artistsIcon}</span>artist</app-link
           >
-          ${t('content.now-playing.p2.2')}
+          or
           <app-link href="/albums" inline
-            ><span class="icon">${albumsIcon}</span>${t(
-              'labels.album',
-            )}</app-link
-          >${t('content.now-playing.p2.3')}
+            ><span class="icon">${albumsIcon}</span>album</app-link
+          >that you want to play. Or explore a
           <app-link href="/playlists/current" inline
-            ><span class="icon">${playlistsIcon}</span>${t(
-              'labels.playlist',
-            )}</app-link
+            ><span class="icon">${playlistsIcon}</span>playlist</app-link
           >
         </p>
       </div>

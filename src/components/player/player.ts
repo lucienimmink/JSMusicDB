@@ -1,6 +1,5 @@
 declare const MediaMetadata: any;
 
-import { localized, t } from '@weavedev/lit-i18next';
 import { LitElement, html, nothing } from 'lit';
 import { customElement, state, property } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
@@ -75,7 +74,6 @@ const PREGAIN = 11;
 const TARGET_VOLUME = 0.89;
 
 @customElement('lit-player')
-@localized()
 export class Album extends LitElement {
   @property()
   route: string;
@@ -631,7 +629,7 @@ export class Album extends LitElement {
     </app-link>`;
   }
   private _renderErrorState() {
-    return html`<div class="error">${t('errors.data')}</div>`;
+    return html`<div class="error">Error loading music data</div>`;
   }
   private _renderProgressBar() {
     return html`<div

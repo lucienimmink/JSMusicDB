@@ -1,5 +1,4 @@
 import '@lit-labs/virtualizer';
-import { localized, t } from '@weavedev/lit-i18next';
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import container from '../../styles/container';
@@ -14,7 +13,6 @@ import musicdb from '../musicdb';
 import './../app-link/app-link';
 
 @customElement('artists-nav')
-@localized()
 export class LetterNav extends LitElement {
   @state()
   showJumpList: boolean;
@@ -118,9 +116,7 @@ export class LetterNav extends LitElement {
         ></album-art>
         <div class="details">
           <span class="artist">${artist.albumArtist || artist.name}</span>
-          <span class="small muted"
-            >${t('labels.albums')}: ${artist.albums.length}</span
-          >
+          <span class="small muted">Albums: ${artist.albums.length}</span>
         </div>
       </app-link>
     </li>`;

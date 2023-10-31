@@ -83,7 +83,6 @@ export const getNewPlaylistForRandom = (playlist: any) => {
           playlist.max,
         );
         const nextPlaylist = {
-          i18name: 'playlists.name.random',
           name: `${playlist.max} random tracks`,
           tracks: [],
           type: 'random',
@@ -116,7 +115,6 @@ export const getNewPlaylistForRandomPref = (playlist: any) => {
           });
           const newPlaylist = {
             name: `Random tracks based on ${playlist.username} recently listened tracks`,
-            i18name: 'playlists.name.preference',
             tracks: [],
             type: 'random-pref',
             max: playlist.max,
@@ -166,7 +164,6 @@ export const getNewPlaylistForRadioPref = (playlist: any) => {
           });
           const newPlaylist = {
             name: `Radio based on ${playlist.username} recently listened tracks`,
-            i18name: 'playlists.name.preference-radio',
             tracks: [],
             type: 'random-pref',
             max: playlist.max,
@@ -217,7 +214,6 @@ export const getNewPlaylistForRadio = (playlist: any) => {
         const startArtist = mdb.artists[playlist.artist];
         const newPlaylist = {
           name: `Artist radio for ${startArtist.name}`,
-          i18name: 'playlists.name.artist-radio',
           tracks: [_getRandomTrackFromArtists([startArtist], null)],
           type: 'radio',
           max: playlist.max,
@@ -239,7 +235,6 @@ export const getNewPlaylistForLovedTracks = (playlist: any) =>
           ({ lovedtracks }: { lovedtracks: any }) => {
             const newPlaylist = {
               name: `${playlist.username} loved tracks on Last.FM`,
-              i18name: 'playlists.name.loved',
               tracks: [],
               type: 'loved',
               username: playlist.username,
@@ -274,7 +269,6 @@ export const getTopTracksForUser = (playlist: any) =>
           ({ toptracks }: { toptracks: any }) => {
             const newPlaylist = {
               name: `Most played tracks by ${playlist.username} in the last 3 months`,
-              i18name: 'playlists.name.most-played',
               tracks: [],
               type: 'top',
               username: playlist.username,

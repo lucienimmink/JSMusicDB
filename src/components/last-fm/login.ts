@@ -1,7 +1,5 @@
-import { localized, t } from '@weavedev/lit-i18next';
 import { LitElement, html, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
-import { ifDefined } from 'lit/directives/if-defined.js';
 import buttons from '../../styles/buttons';
 import container from '../../styles/container';
 import headers from '../../styles/headers';
@@ -18,7 +16,6 @@ import { infoIcon } from '../icons/info';
 import { timesIcon } from '../icons/times';
 
 @customElement('lastfm-login')
-@localized()
 export class LetterNav extends LitElement {
   username: string;
   password: string;
@@ -94,7 +91,7 @@ export class LetterNav extends LitElement {
       <div class="modal-backdrop"></div>
       <div class="modal">
         <div class="modal-header">
-          <h2 class="header">${t('headers.login.whats-this')}</h2>
+          <h2 class="header">What's this?</h2>
           <button
             class="btn btn-transparent btn-icon"
             aria-label="toggle information"
@@ -104,14 +101,17 @@ export class LetterNav extends LitElement {
           </button>
         </div>
         <div class="modal-body">
-          <p>${t('content.lastfm.p1')}</p>
-          <p>${t('content.lastfm.p2')}</p>
-          <p>${t('content.lastfm.p3')}</p>
+          <p>Optionally you can connect JSMusicDB to your last.fm account</p>
+          <p>
+            Recently played tracks and playlists based on your last.fm account
+            become available, making it a personal experience!
+          </p>
+          <p>If you aren't interesed you can always just skip this step.</p>
         </div>
 
         <div class="modal-footer">
           <button class="btn btn-primary" @click=${this._toggleInfo}>
-            ${t('buttons.dismiss')}
+            Dismiss
           </button>
         </div>
       </div>
@@ -124,7 +124,7 @@ export class LetterNav extends LitElement {
             <div class="login">
               <div class="container">
                 <h2 class="header">
-                  ${t('headers.login.lastfm')}
+                  Login to last.fm
                   <button
                     class="btn btn-transparent btn-icon"
                     aria-label="toggle information"
@@ -135,19 +135,17 @@ export class LetterNav extends LitElement {
                 </h2>
                 ${this.hasError
                   ? html`
-                      <div class="alert">${t('errors.username-password')}</div>
+                      <div class="alert">
+                        Please check your username and password
+                      </div>
                     `
                   : nothing}
                 <form @submit="${(e: Event) => this._onSubmit(e)}">
                   <div class="row">
-                    <label for="username">${t('labels.username')}</label>
+                    <label for="username">Username:</label>
                     <input
                       type="text"
-                      placeholder="${ifDefined(
-                        t('labels.placeholders.username') === null
-                          ? undefined
-                          : t('labels.placeholders.username'),
-                      )}"
+                      placeholder="John Doe"
                       required
                       id="username"
                       name="name"
@@ -155,14 +153,10 @@ export class LetterNav extends LitElement {
                     />
                   </div>
                   <div class="row">
-                    <label for="password">${t('labels.password')}</label>
+                    <label for="password">Password</label>
                     <input
                       type="password"
-                      placeholder="${ifDefined(
-                        t('labels.placeholders.password') === null
-                          ? undefined
-                          : t('labels.placeholders.password'),
-                      )}"
+                      placeholder="password"
                       required
                       id="password"
                       name="password"
@@ -170,15 +164,13 @@ export class LetterNav extends LitElement {
                     />
                   </div>
                   <div class="row buttons">
-                    <button class="btn btn-primary" type="submit">
-                      ${t('buttons.login')}
-                    </button>
+                    <button class="btn btn-primary" type="submit">Login</button>
                     <button
                       class="btn btn-link"
                       type="button"
                       @click="${(e: Event) => this._onSkip(e)}"
                     >
-                      ${t('buttons.skip')}
+                      Skip
                     </button>
                   </div>
                 </form>

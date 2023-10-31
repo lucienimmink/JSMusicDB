@@ -25,7 +25,6 @@
     "@types/node": "^20.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
-    "@weavedev/lit-i18next": "^2.0.0-rc.0",
     "api-viewer-element": "^1.0.0-pre.7",
     "dotenv": "^16.0.3",
     "eslint": "^8.37.0",
@@ -33,7 +32,6 @@
     "eslint-plugin-html": "^7.1.0",
     "eslint-plugin-import": "^2.26.0",
     "husky": "^8.0.3",
-    "i18next-http-backend": "^2.2.0",
     "lint-staged": "^15.0.0",
     "node-fetch": "^3.3.1",
     "pinst": "^3.0.0",
@@ -61,7 +59,7 @@
     ]
   },
   "name": "jsmusicdb",
-  "version": "3.39.1",
+  "version": "3.40.0",
   "description": "Web standards music database and player",
   "author": "Lucien Immink",
   "license": "MIT",
@@ -80,7 +78,6 @@
     "diacritics-normalizr": "^1.0.3",
     "fast-average-color": "^9.3.0",
     "fuse.js": "^7.0.0",
-    "i18next-browser-languagedetector": "^7.0.1",
     "idb-keyval": "^6.2.0",
     "lit": "^3.0.0",
     "urlpattern-polyfill": "^9.0.0"

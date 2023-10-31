@@ -1,7 +1,7 @@
 import { del, get, set } from 'idb-keyval';
 import { fetchWithTimeout } from './fetch';
 
-const MINIMALSTREAMVERSION = '5.8.0';
+export const MINIMALSTREAMVERSION = '5.8.0';
 const MINIMALRSSFEEDVERSION = '5.4.2';
 const MINIMALSSEVERSION = '5.6.11';
 const JWT = 'jwt';
