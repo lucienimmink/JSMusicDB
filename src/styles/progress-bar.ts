@@ -5,11 +5,11 @@ export default css`
     height: 6px;
     cursor: pointer;
     position: relative;
-    background: var(--progress-background, #4dbbff);
+    background: var(--progress-background);
     overflow: hidden;
   }
   .progress-bar {
-    background: var(--primary, #00417a);
+    background: var(--primary);
     height: 6px;
     position: absolute;
     pointer-events: none;

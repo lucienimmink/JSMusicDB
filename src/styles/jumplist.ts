@@ -3,7 +3,7 @@ import { css } from 'lit';
 export default css`
   .jumplist {
     backdrop-filter: blur(2px);
-    background: var(--background-seethrough, #f8f9fa);
+    background: var(--background-seethrough);
     list-style: none;
     margin: 0;
     padding: 0;
@@ -33,7 +33,7 @@ export default css`
     padding: 4vh;
     font-size: 1.5rem;
     font-weight: 400;
-    color: var(--primary, #00417a);
+    color: var(--primary);
     transition: all 0.2s ease-in-out;
     text-decoration: none;
     display: block;

@@ -7,7 +7,7 @@ export default css`
   }
   .jumbotron {
     color: var(--text-color);
-    background: var(--background2, #f2f4f7);
+    background: var(--background2);
     padding: 1rem;
     overflow: hidden;
     transition: all 0.1s ease-in-out;
@@ -20,8 +20,8 @@ export default css`
     height: 125px;
     max-height: 125px;
     margin-right: 1rem;
-    border: 1px solid var(--background, #f3f4f5);
-    box-shadow: 0px 0px 1px var(--primary, #00417a);
+    border: 1px solid var(--background);
+    box-shadow: 0px 0px 1px var(--primary);
     transition: all 0.1s ease-in-out;
     view-transition-name: album-art;
   }

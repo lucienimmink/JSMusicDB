@@ -35,7 +35,7 @@ export default css`
   }
   .playlists li app-link {
     display: flex;
-    color: var(--primary, #00417a);
+    color: var(--primary);
     transition: all 0.2s ease-in-out;
     text-decoration: none;
     align-items: center;
@@ -96,7 +96,7 @@ export default css`
   .playlist li.header:hover,
   .playlist li.no-hover:hover {
     backdrop-filter: blur(2px);
-    background: var(--background-seethrough, rgba(248, 249, 250, 0.85));
+    background: var(--background-seethrough);
   }
   .playlist .artist-selector {
     display: flex;

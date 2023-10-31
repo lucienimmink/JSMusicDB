@@ -33,9 +33,9 @@ export default css`
     height: 50px;
     margin-right: 10px;
     flex-grow: 0;
-    border: 1px solid var(--background2, #f3f4f5);
+    border: 1px solid var(--background2);
     background: rgba(255, 255, 255, 0.85);
-    box-shadow: 0px 0px 1px var(--primary, #00417a);
+    box-shadow: 0px 0px 1px var(--primary);
   }
   .details {
     flex-grow: 1;

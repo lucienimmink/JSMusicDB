@@ -6,10 +6,10 @@ export default css`
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background-color: var(--progress-background, #f3f4f5);
+    background-color: var(--progress-background);
   }
   ::-webkit-scrollbar-thumb {
-    background-color: var(--progress, #00417a);
+    background-color: var(--progress);
   }
   ul {
     list-style: none;
@@ -127,7 +127,7 @@ export default css`
     width: 25px;
   }
   input {
-    border: 1px solid var(--primary, #00417a);
+    border: 1px solid var(--primary);
     padding: 8px 10px;
     display: block;
     width: 90%;
@@ -135,7 +135,7 @@ export default css`
   }
   input:focus {
     border-radius: 0;
-    border: 1px solid var(--primary, #00417a);
+    border: 1px solid var(--primary);
   }
   @media (min-width: 576px) {
     input {

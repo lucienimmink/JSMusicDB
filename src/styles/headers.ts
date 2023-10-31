@@ -3,11 +3,11 @@ import { css } from 'lit';
 export default css`
   .header {
     backdrop-filter: blur(2px);
-    background: var(--background-seethrough, rgba(248, 249, 250, 0.85));
+    background: var(--background-seethrough);
     box-sizing: border-box;
     height: 60px;
     border-top: 0;
-    border-bottom: 1px solid var(--primary, #00417a);
+    border-bottom: 1px solid var(--primary);
     transition: all 0.5s ease-in-out;
     padding: 1.85rem 1rem 0;
     position: sticky;
@@ -19,7 +19,7 @@ export default css`
   }
   .virtual-scroll .header {
     top: 0;
-    color: var(--primary, #00417a);
+    color: var(--primary);
     transition: none;
     cursor: pointer;
   }

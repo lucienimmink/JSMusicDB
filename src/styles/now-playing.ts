@@ -3,7 +3,7 @@ import { css } from 'lit';
 export default css`
   .wrapper {
     color: var(--text-color);
-    background: var(--background, #f8f9fa);
+    background: var(--background);
     position: fixed;
     top: 50px;
     left: 0;
@@ -29,7 +29,7 @@ export default css`
   }
   .top {
     backdrop-filter: blur(5px);
-    background: var(--background-seethrough, #f8f9fa);
+    background: var(--background-seethrough);
     z-index: 2;
     display: flex;
     flex-direction: column;
@@ -42,7 +42,7 @@ export default css`
   }
   .bottom {
     backdrop-filter: blur(5px);
-    background: var(--background-seethrough, #f8f9fa);
+    background: var(--background-seethrough);
     z-index: 1;
     display: block;
     position: absolute;
@@ -298,7 +298,7 @@ export default css`
       padding: 0;
       border: 1px solid var(--background2);
       background: rgba(255, 255, 255, 0.85);
-      box-shadow: 0px 0px 1px var(--primary, #00417a);
+      box-shadow: 0px 0px 1px var(--primary);
     }
     .smallArt canvas {
       height: calc(100vh - 50px);
@@ -321,7 +321,7 @@ export default css`
     font-weight: 400;
   }
   app-link {
-    color: var(--primary, #00417a);
+    color: var(--primary);
     transition: color 0.2s ease-in-out;
   }
   app-link .icon {
@@ -336,10 +336,10 @@ export default css`
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background-color: var(--progress-background, #f3f4f5);
+    background-color: var(--progress-background);
   }
   ::-webkit-scrollbar-thumb {
-    background-color: var(--progress, #00417a);
+    background-color: var(--progress);
   }
   @media (min-width: 576px) {
     h3 {

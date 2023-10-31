@@ -6,9 +6,9 @@ export default css`
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background-color: var(--progress-background, #f3f4f5);
+    background-color: var(--progress-background);
   }
   ::-webkit-scrollbar-thumb {
-    background-color: var(--progress, #00417a);
+    background-color: var(--progress);
   }
 `;

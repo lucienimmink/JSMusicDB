@@ -20,7 +20,7 @@ export const loadingIndicator = css`
     height: 4px;
     border-radius: 50%;
     animation: progress-bar-animation 3s infinite;
-    background-color: var(--primary, #00417a);
+    background-color: var(--primary);
   }
   .progress-circle:nth-child(2) {
     animation-delay: 200ms;

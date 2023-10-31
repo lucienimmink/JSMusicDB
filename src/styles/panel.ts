@@ -7,8 +7,8 @@ export default css`
     cursor: pointer;
     background-size: contain;
     position: relative;
-    border: 1px solid var(--background2, #f3f4f5);
-    box-shadow: 0px 0px 1px var(--primary, #00417a);
+    border: 1px solid var(--background2);
+    box-shadow: 0px 0px 1px var(--primary);
     box-sizing: border-box;
     transition: transform 0.15s ease-in-out;
   }

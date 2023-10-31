@@ -8,7 +8,7 @@ export default css`
     top: 50px;
   }
   .login {
-    background: var(--background, #f8f9fa);
+    background: var(--background);
     position: fixed;
     top: 0;
     left: 0;
