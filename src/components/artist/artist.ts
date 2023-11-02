@@ -1,12 +1,10 @@
-import { LitElement, PropertyValueMap, html, nothing } from 'lit';
+import { LitElement, PropertyValueMap, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import musicdb from '../../components/musicdb';
 import grid from '../../styles/grid';
-import panel from '../../styles/panel';
-import smallMuted from '../../styles/small-muted';
 import { global as EventBus } from '../../utils/EventBus';
 import { REFRESH } from '../../utils/musicdb';
-import '../app-link/app-link';
+import '../album/album-in-grid';
 
 @customElement('albums-in-artist')
 export class Artist extends LitElement {
@@ -17,7 +15,7 @@ export class Artist extends LitElement {
   @state()
   active = false;
   static get styles() {
-    return [smallMuted, panel, grid];
+    return [grid];
   }
   constructor() {
     super();
@@ -55,24 +53,10 @@ export class Artist extends LitElement {
   }
   private _renderAlbum(album: any) {
     return html`
-      <app-link
-        href="/letter/${album.artist.letter.escapedLetter}/artist/${album.artist
-          .escapedName}/album/${album.escapedName}"
-        @click="${this._handleClick}"
-      >
-        <div class="panel">
-          <album-art
-            artist="${album.artist.albumArtist || album.artist.name}"
-            album="${album.name}"
-          ></album-art>
-          <div class="panel-info color-type-primary-alt">
-            <span>${album.name}</span>
-            ${album.year === 0
-              ? nothing
-              : html` <span class="small muted">Year: ${album.year}</span> `}
-          </div>
-        </div>
-      </app-link>
+      <album-in-grid
+        .album=${album}
+        @click=${this._handleClick}
+      ></album-in-grid>
     `;
   }
 

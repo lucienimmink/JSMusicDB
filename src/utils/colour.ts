@@ -33,48 +33,35 @@ const getReadableColor = (rgba: any, bgcolor = LIGHT): any => {
   return convertToStrict(tinycolor(rgba, {}).toRgb());
 };
 
-export function getDominantColor(img: any, cb: any, override: any): any {
-  getDominantColorByURL(img.src, cb, override);
+export function getDominantColor(img: any, cb: any): any {
+  getDominantColorByURL(img.src, cb);
 }
-export function getDominantColorByURL(
-  url: any,
-  cb: any,
-  override = false,
-): any {
-  if (window.runningInElectron && !override) {
-    // send an event to download this image
-    document.querySelector('lit-musicdb')?.dispatchEvent(
-      new CustomEvent('external.mdbuntaint', {
-        detail: { url },
-      }),
-    );
-  } else {
-    // clone the img object
-    const clone = new Image();
-    clone.crossOrigin = 'Anonymous';
-    clone.addEventListener(
-      'load',
-      () => {
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-        canvas.width = clone.width;
-        canvas.height = clone.height;
-        context?.drawImage(clone, 0, 0);
+export function getDominantColorByURL(url: any, cb: any): any {
+  // clone the img object
+  const clone = new Image();
+  clone.crossOrigin = 'Anonymous';
+  clone.addEventListener(
+    'load',
+    () => {
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+      canvas.width = clone.width;
+      canvas.height = clone.height;
+      context?.drawImage(clone, 0, 0);
 
-        const fac = new FastAverageColor();
-        const rgb = fac.getColor(canvas).value;
-        cb(
-          convertToStrict({
-            r: rgb[0],
-            g: rgb[1],
-            b: rgb[2],
-          }),
-        );
-      },
-      false,
-    );
-    clone.src = `${url}#no-sw-cache`;
-  }
+      const fac = new FastAverageColor();
+      const rgb = fac.getColor(canvas).value;
+      cb(
+        convertToStrict({
+          r: rgb[0],
+          g: rgb[1],
+          b: rgb[2],
+        }),
+      );
+    },
+    false,
+  );
+  clone.src = `${url}#no-sw-cache`;
 }
 export function getColorsFromRGBWithBGColor(rgba: any, bgColor: string): any {
   const text = getReadableColor(rgba, bgColor);

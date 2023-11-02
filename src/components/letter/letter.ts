@@ -6,7 +6,7 @@ import panel from '../../styles/panel';
 import smallMuted from '../../styles/small-muted';
 import { global as EventBus } from '../../utils/EventBus';
 import { REFRESH } from '../../utils/musicdb';
-import './../app-link/app-link';
+import './../artist/artist-in-grid';
 
 @customElement('artists-in-letter')
 export class Letter extends LitElement {
@@ -56,19 +56,10 @@ export class Letter extends LitElement {
   }
   private _renderArtist(artist: any) {
     return html`
-      <app-link
-        href="/letter/${artist.letter
-          .escapedLetter}/artist/${artist.escapedName}"
-        @click="${this._handleClick}"
-      >
-        <div class="panel">
-          <album-art artist="${artist.albumArtist || artist.name}"></album-art>
-          <div class="panel-info color-type-primary-alt">
-            <span>${artist.albumArtist || artist.name}</span>
-            <span class="small muted">Albums: ${artist.albums.length}</span>
-          </div>
-        </div>
-      </app-link>
+      <artist-in-grid
+        .artist=${artist}
+        @click=${this._handleClick}
+      ></artist-in-grid>
     `;
   }
   render() {

@@ -21,6 +21,8 @@ import { heartIcon } from '../icons/heart';
 import { hqIcon } from '../icons/hq';
 import musicdb from '../musicdb';
 
+import '../album/album-in-grid';
+
 @customElement('home-nav')
 export class HomeNav extends LitElement {
   @state()
@@ -250,30 +252,7 @@ export class HomeNav extends LitElement {
             <div class="grid">
               ${this.recentAdded?.map(
                 (album: any) => html`
-                  <app-link
-                    href="/letter/${album.artist.letter
-                      ?.escapedLetter}/artist/${album.artist
-                      ?.escapedName}/album/${album.escapedName}"
-                  >
-                    <div class="panel panel-home">
-                      <album-art
-                        artist="${album.artist.albumArtist ||
-                        album.artist.name}"
-                        album="${album.name}"
-                        no-lazy
-                      ></album-art>
-                      <div class="panel-info color-type-primary-alt">
-                        <span>${album.name}</span>
-                        ${album.year === 0
-                          ? nothing
-                          : html`
-                              <span class="small muted"
-                                >Year: ${album.year}</span
-                              >
-                            `}
-                      </div>
-                    </div>
-                  </app-link>
+                  <album-in-grid .album=${album} home></album-in-grid>
                 `,
               )}
             </div>

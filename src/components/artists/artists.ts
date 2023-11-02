@@ -11,6 +11,7 @@ import { REFRESH } from '../../utils/musicdb';
 import { handleScroll } from '../../utils/virtual-scroll';
 import musicdb from '../musicdb';
 import './../app-link/app-link';
+import './../artist/artist-in-list';
 
 @customElement('artists-nav')
 export class LetterNav extends LitElement {
@@ -102,23 +103,10 @@ export class LetterNav extends LitElement {
 
   private _renderArtist(artist: any) {
     return html`<li>
-      <app-link
-        flex
-        text
-        href="/letter/${artist.letter
-          .escapedLetter}/artist/${artist.escapedName}"
-        @click="${this._handleClick}"
-      >
-        <album-art
-          artist="${artist.albumArtist || artist.name}"
-          dimension="50"
-          no-lazy="true"
-        ></album-art>
-        <div class="details">
-          <span class="artist">${artist.albumArtist || artist.name}</span>
-          <span class="small muted">Albums: ${artist.albums.length}</span>
-        </div>
-      </app-link>
+      <artist-in-list
+        .artist=${artist}
+        @click=${this._handleClick}
+      ></artist-in-list>
     </li>`;
   }
   private _renderArtists(artist: any) {

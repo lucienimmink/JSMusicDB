@@ -10,6 +10,7 @@ import { global as EventBus } from '../../utils/EventBus';
 import { REFRESH } from '../../utils/musicdb';
 import { handleScroll } from '../../utils/virtual-scroll';
 import '../app-link/app-link';
+import '../album/album-in-list';
 import musicdb from '../musicdb';
 
 @customElement('albums-nav')
@@ -99,26 +100,10 @@ export class LetterNav extends LitElement {
   }
   private _renderAlbum(album: any) {
     return html`<li>
-      <app-link
-        flex
-        text
-        href="/letter/${album.artist.letter.escapedLetter}/artist/${album.artist
-          .escapedName}/album/${album.escapedName}"
-        @click="${this._handleClick}"
-      >
-        <album-art
-          artist="${album.artist.albumArtist || album.artist.name}"
-          album="${album.name}"
-          dimension="50"
-          no-lazy="true"
-        ></album-art>
-        <div class="details">
-          <span class="album">${album.name}</span>
-          ${album.year
-            ? html` <span class="small muted">Year: ${album.year}</span> `
-            : nothing}
-        </div>
-      </app-link>
+      <album-in-list
+        @click=${this._handleClick}
+        .album=${album}
+      ></album-in-list>
     </li>`;
   }
   private _rendderAlbums(album: any) {
