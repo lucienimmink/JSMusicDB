@@ -65,13 +65,9 @@ export function getDominantColorByURL(url: any, cb: any): any {
 }
 export function getColorsFromRGBWithBGColor(rgba: any, bgColor: string): any {
   const text = getReadableColor(rgba, bgColor);
-  const darken = convertToStrict(tinycolor(text, {}).darken().toRgb());
-  const lighten = convertToStrict(tinycolor(text, {}).lighten().toRgb());
   return {
     rgba,
     text,
-    darken,
-    lighten,
   };
 }
 export function convertRGBtoString(rgba: any): string {
@@ -79,7 +75,7 @@ export function convertRGBtoString(rgba: any): string {
 }
 export async function addCustomCss(colors: any) {
   const accentCSSOverrideNode: HTMLElement = document.createElement('style');
-  const { text, darken, lighten } = colors;
+  const { text, rgba } = colors;
   accentCSSOverrideNode.setAttribute('type', 'text/css');
   accentCSSOverrideNode.id = 'custom-css-node';
   accentCSSOverrideNode.textContent = `
@@ -90,11 +86,8 @@ export async function addCustomCss(colors: any) {
   removeCustomCss();
   document.querySelector('body')?.appendChild(accentCSSOverrideNode);
   document
-    .querySelector('#theme-color-light')
-    ?.setAttribute('content', `rgb(${darken.r}, ${darken.g}, ${darken.b})`);
-  document
-    .querySelector('#theme-color-dark')
-    ?.setAttribute('content', `rgb(${lighten.r}, ${lighten.g}, ${lighten.b})`);
+    .querySelector('[name="theme-color"]')
+    ?.setAttribute('content', tinycolor(rgba, {}).toRgbString());
 }
 export function removeCustomCss(): void {
   if (document.querySelector('#custom-css-node')) {
