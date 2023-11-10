@@ -9,7 +9,11 @@ export default css`
     overflow: hidden;
   }
   .progress-bar {
-    background: var(--primary);
+    background: linear-gradient(
+      to right,
+      var(--progress-background) 0%,
+      var(--primary) 100%
+    );
     height: 6px;
     position: absolute;
     pointer-events: none;
