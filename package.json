@@ -38,7 +38,7 @@
     "prettier": "^3.0.3",
     "prettier-plugin-organize-imports": "^3.2.3",
     "typescript": "^5.2.2",
-    "vite": "^4.5.0",
+    "vite": "^5.0.0",
     "vite-plugin-package-version": "^1.0.2",
     "vite-plugin-preload": "^0.3.1",
     "zip-a-folder": "^3.1.3"
