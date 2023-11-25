@@ -21,6 +21,7 @@ export default css`
     top: 0;
     color: var(--primary);
     transition: none;
+    height: auto !important;
     cursor: pointer;
   }
   @media (min-width: 992px) {
