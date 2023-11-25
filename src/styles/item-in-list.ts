@@ -16,6 +16,7 @@ export default css`
     height: 50px;
     margin-right: 0.75rem;
     flex-grow: 0;
+    flex-shrink: 0;
     border: 1px solid var(--background2);
     background: rgba(255, 255, 255, 0.85);
     box-shadow: 0px 0px 1px var(--primary);
@@ -25,9 +26,10 @@ export default css`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    max-width: calc(100vw - 80px);
+    max-width: calc(100vw - 2rem - 50px - 0.75rem);
   }
-  .details .artist .details .album {
+  .details .artist,
+  .details .album {
     display: block;
     white-space: nowrap;
     text-overflow: ellipsis;
