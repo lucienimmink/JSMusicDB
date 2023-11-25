@@ -5,7 +5,7 @@ export default css`
     backdrop-filter: blur(2px);
     background: var(--background-seethrough);
     box-sizing: border-box;
-    height: 60px;
+    min-height: 60px;
     border-top: 0;
     border-bottom: 1px solid var(--primary);
     transition: all 0.5s ease-in-out;

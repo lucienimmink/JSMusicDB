@@ -284,7 +284,7 @@ export class LitMusicdb extends LitElement {
     }
   }
   _toggleOverflowHidden(target: any, state = false) {
-    if (document.querySelector('html')?.classList.contains('np')) {
+    if (document.querySelector('html')?.classList.contains('noscroll')) {
       return;
     }
     if (state) {

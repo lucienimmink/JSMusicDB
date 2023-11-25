@@ -15,10 +15,8 @@ const renderCallback = (html: any, url: string, controller: LitMusicdb) => {
   EventBus.emit(TOGGLE_MENU, {}, 'close');
   if (url === '/playing') {
     document.querySelector('html')?.classList.add('noscroll');
-    document.querySelector('html')?.classList.add('np');
   } else {
     document.querySelector('html')?.classList.remove('noscroll');
-    document.querySelector('html')?.classList.remove('np');
   }
   // remove the transtion for now-playing and playlists routes
   if (url.includes('/playing') || url.includes('/playlists/')) {
@@ -52,7 +50,7 @@ export default (controller: any) =>
       render: props => {
         return renderCallback(
           html`<artists-in-letter
-            .letter="${props?.letter}"
+            .letter="${props?.letter ?? ''}"
           ></artists-in-letter>`,
           '/letter/:letter',
           controller,
@@ -71,8 +69,10 @@ export default (controller: any) =>
       }),
       render: props => {
         return renderCallback(
-          html`<release-alert .artist="${props.artist}"></release-alert>
-            <albums-in-artist .artist="${props.artist}"></albums-in-artist>`,
+          html`<release-alert .artist="${props.artist ?? ''}"></release-alert>
+            <albums-in-artist
+              .artist="${props.artist ?? ''}"
+            ></albums-in-artist>`,
           '/letter/:letter/artist/:artist',
           controller,
         );
@@ -91,8 +91,8 @@ export default (controller: any) =>
       render: props => {
         return renderCallback(
           html`<tracks-in-album
-            .artist="${props.artist}"
-            .album="${props.album}"
+            .artist="${props.artist ?? ''}"
+            .album="${props.album ?? ''}"
           ></tracks-in-album>`,
           '/letter/:letter/artist/:artist/album/:album',
           controller,
@@ -209,7 +209,9 @@ export default (controller: any) =>
       }),
       render: props => {
         return renderCallback(
-          html`<playlists-nav .playlistId="${props.playlist}"></playlists-nav>`,
+          html`<playlists-nav
+            .playlistId="${props.playlist ?? ''}"
+          ></playlists-nav>`,
           '/playlists/:playlist',
           controller,
         );
@@ -227,7 +229,7 @@ export default (controller: any) =>
       }),
       render: props => {
         return renderCallback(
-          html`<search-nav .query="${props?.query}"></search-nav>`,
+          html`<search-nav .query="${props?.query ?? ''}"></search-nav>`,
           '/search/:query',
           controller,
         );
