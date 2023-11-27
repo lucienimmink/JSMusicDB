@@ -246,7 +246,8 @@ export class Album extends LitElement {
           }
           this.track.isLoved = this.isLoved;
         })
-        .catch(() => {
+        .catch(e => {
+          console.error(e);
           this.hasErrorWhilePlaying = true;
           EventBus.emit(PLAYER_ERROR, this, true);
         });
