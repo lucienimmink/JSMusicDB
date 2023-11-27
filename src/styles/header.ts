@@ -9,7 +9,8 @@ export default css`
     background-color: var(--primary);
     color: var(--letter-color);
   }
-  a {
+  a,
+  button {
     color: var(--primary);
     text-decoration: none;
     transition: color 0.2s ease-in-out;
@@ -17,6 +18,12 @@ export default css`
     margin-right: 1rem;
     display: flex;
     align-items: center;
+  }
+  button {
+    cursor: pointer;
+    background: none;
+    border: 0;
+    padding: 0;
   }
   svg {
     width: 25px;

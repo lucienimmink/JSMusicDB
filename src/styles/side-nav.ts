@@ -11,6 +11,12 @@ export default css`
   ::-webkit-scrollbar-thumb {
     background-color: var(--progress);
   }
+  button {
+    cursor: pointer;
+    background: none;
+    border: 0;
+    padding: 0;
+  }
   ul {
     list-style: none;
     position: fixed;
@@ -28,7 +34,6 @@ export default css`
       color 0.5s ease-in-out,
       background-color 0.5s ease-in-out;
     border-right: 1px solid var(--border-colour);
-    view-transition-name: side-nav-list;
   }
   li.title {
     position: sticky;
@@ -69,21 +74,14 @@ export default css`
     height: 100%;
     z-index: 100;
     width: 100%;
-    transform: translateX(-100%);
-    transition: transform 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
     top: 0;
-  }
-  .full ul {
-    top: 0;
-    height: 100%;
-    width: 90%;
-    max-width: 300px;
-    background: var(--background2);
-    border-right: 1px solid var(--border-colour);
-    view-transition-name: full-side-nav-list;
+    opacity: 0;
+    pointer-events: none;
   }
   .full.open {
-    transform: translateX(-0);
+    opacity: 1;
+    pointer-events: all;
   }
   .full:before {
     content: '';
@@ -94,13 +92,29 @@ export default css`
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.4);
-    opacity: 0;
-    transition: opacity 0.2s ease-in-out;
   }
-  .full.open:before {
-    opacity: 1;
+  .slide-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    max-width: 300px;
+    background: var(--background2);
+    transition: transform 0.2s ease-in-out;
+    z-index: 101;
+    transform: translateX(-100%);
+    view-transition-name: full-side-nav-list;
   }
-  .full li span {
+  .slide-menu.open {
+    transform: translateX(0);
+  }
+  .slide-menu ul {
+    top: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .slide-menu li span {
     display: inline-block;
     margin-left: 0.75rem;
   }
@@ -116,7 +130,8 @@ export default css`
     height: 100%;
     padding-top: 8px;
   }
-  h1 a {
+  h1 a,
+  h1 button {
     text-decoration: none;
     color: var(--primary);
     margin-right: 1rem;

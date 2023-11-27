@@ -216,7 +216,7 @@ export class Header extends LitElement {
         ? 'playing'
         : ''}"
     >
-      <a href="#" @click=${this._toggleMenu} title="open menu">${barsIcon}</a>
+      <button @click=${this._toggleMenu} title="open menu">${barsIcon}</button>
       <div>
         ${this.alb
           ? html`

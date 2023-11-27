@@ -89,36 +89,39 @@ export class SideNav extends LitElement {
   };
   _handleClick = (e: any) => {
     e.preventDefault();
+    EventBus.emit(TOGGLE_OVERFLOW_HIDDEN, this, false);
     this.open = false;
   };
   _search = (e: any) => {
     e.preventDefault();
     this.query = this.shadowRoot?.querySelector('input')?.value || '';
     const path = `/search/${this.query}`;
+    // should use router here
     window.history.pushState({ path }, '', path);
+    EventBus.emit(TOGGLE_OVERFLOW_HIDDEN, this, false);
     EventBus.emit(CHANGE_URL, this, path);
   };
   render() {
     return html`
+      <div class="${this.full ? 'full' : ''} ${this.open ? 'open' : ''}"></div>
       <div
-        class="${this.full ? 'full' : ''} ${this.open ? 'open' : ''} ${this
-          .hasVisiblePlayer
-          ? 'player'
-          : ''}"
+        class="${this.full ? 'slide-menu' : ''} ${this.open
+          ? 'open'
+          : ''} ${this.hasVisiblePlayer ? 'player' : ''}"
       >
         <ul>
           ${this.full
             ? html`
                 <li class="title">
                   <h1>
-                    <a
-                      href="#"
+                    <button
                       title="Close menu"
                       @click=${(e: Event) => {
                         this._handleClick(e);
                       }}
-                      >${timesIcon}</a
                     >
+                      ${timesIcon}
+                    </button>
                     <div>JSMusicDB</div>
                   </h1>
                 </li>
