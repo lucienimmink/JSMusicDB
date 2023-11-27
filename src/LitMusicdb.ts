@@ -203,7 +203,15 @@ export class LitMusicdb extends LitElement {
       this.shadowRoot.querySelector('#outlet').style.viewTransitionName =
         'outlet';
     }
-    this.appRouter.goto(url);
+    // @ts-ignore
+    if (!document?.startViewTransition) {
+      this.appRouter.goto(url);
+    } else {
+      // @ts-ignore
+      document.startViewTransition(() => {
+        this.appRouter.goto(url);
+      });
+    }
   }
   private _navigateToAlbum(target: any, current: any) {
     const track = current.current as Track;
