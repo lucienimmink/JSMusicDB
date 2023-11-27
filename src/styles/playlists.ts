@@ -77,7 +77,6 @@ export default css`
     box-sizing: border-box;
     border-bottom: 1px solid var(--border-colour);
     padding: 0.5rem 1rem;
-    background-color: var(--background);
     transition: background-color 0.2s ease-in-out;
     min-height: 60px;
     width: 100%;
