@@ -92,6 +92,9 @@ export default css`
         padding: 1rem 2rem;
       }
     }
+    .details {
+      width: calc(100% - 190px - 1rem);
+    }
     album-art {
       margin-left: -42px;
       flex: 0 0 190px;
