@@ -7,12 +7,12 @@ export const light = css`
     --progress-background: var(--lighten30);
     --letter-background-hover: var(--darken);
     --letter-background-active: var(--darken30);
-    --letter-color: oklch(from var(--primary) calc(l + 60) c h);
+    --letter-color: oklch(from var(--primary) calc(l * 2) c h);
 
     --background: white;
-    --text-color: oklch(from var(--background) calc(l - 99) c h);
-    --background2: oklch(from var(--background) calc(l - 3) c h);
-    --border-colour: oklch(from var(--background) calc(l - 15) c h);
+    --text-color: oklch(from var(--background) calc(l * 0.01) c h);
+    --background2: oklch(from var(--background) calc(l * 0.97) c h);
+    --border-colour: oklch(from var(--background) calc(l * 0.85) c h);
 
     --primary-hover: var(--darken);
   }
@@ -25,12 +25,12 @@ export const dark = css`
     --progress-background: var(--darken30);
     --letter-background-hover: var(--lighten);
     --letter-background-active: var(--lighten30);
-    --letter-color: oklch(from var(--primary) calc(l - 60) c h);
+    --letter-color: oklch(from var(--primary) calc(l * 0.4) c h);
 
     --background: rgb(31, 31, 31);
-    --text-color: oklch(from var(--background) calc(l + 99) c h);
-    --background2: oklch(from var(--background) calc(l + 3) c h);
-    --border-colour: oklch(from var(--background) calc(l + 15) c h);
+    --text-color: oklch(from var(--background) calc(l * 99) c h);
+    --background2: oklch(from var(--background) calc(l * 1.1) c h);
+    --border-colour: oklch(from var(--background) calc(l * 1.5) c h);
 
     --primary-hover: var(--lighten);
   }
