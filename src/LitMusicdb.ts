@@ -69,6 +69,7 @@ export class LitMusicdb extends LitElement {
   _player: any;
 
   touchstartX: number = 0;
+  touchstartY: number = 0;
 
   static get styles() {
     return [animationCSS, litMusicdb, scrollbar];
@@ -314,13 +315,20 @@ export class LitMusicdb extends LitElement {
   }
   _handleTouchStart = (e: any) => {
     this.touchstartX = e.changedTouches[0].screenX;
+    this.touchstartY = e.changedTouches[0].screenY;
   };
   _handleTouchEnd = (e: any) => {
     const x = e.changedTouches[0].screenX;
+    const y = e.changedTouches[0].screenY;
 
-    if (x > this.touchstartX) {
+    const ratio =
+      Math.abs(x - this.touchstartX) / Math.abs(y - this.touchstartY);
+
+    if (x > this.touchstartX && ratio > 10) {
       EventBus.emit(TOGGLE_MENU, this, 'open');
+      e.stopImmediatePropagation();
     }
+    return true;
   };
   render() {
     return html`

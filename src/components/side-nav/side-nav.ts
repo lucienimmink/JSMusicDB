@@ -104,14 +104,13 @@ export class SideNav extends LitElement {
     EventBus.emit(CHANGE_URL, this, path);
   };
   _handleTouchStart = (e: any) => {
-    e.stopPropagation();
     this.touchstartX = e.changedTouches[0].screenX;
   };
   _handleTouchEnd = (e: any) => {
-    e.stopPropagation();
     const x = e.changedTouches[0].screenX;
 
     if (x < this.touchstartX) {
+      EventBus.emit(TOGGLE_OVERFLOW_HIDDEN, this, false);
       this.open = false;
     }
   };
