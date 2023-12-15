@@ -18,7 +18,7 @@ A music player and database written using LIT and TypeScript. Using modern JavaS
 
 ![Screenshot of JSMusicDB showing the now-playing screen](https://www.jsmusicdb.com/assets/screenshot-3.webp 'Screenshot of JSMusicDB showing the now-playing screen')
 
-#### All artists starting with the same letter
+#### All artists start with the same letter
 
 ![Screenshot of JSMusicDB letter view](https://www.jsmusicdb.com/assets/screenshot-4.webp 'Screenshot of JSMusicDB letter view')
 
