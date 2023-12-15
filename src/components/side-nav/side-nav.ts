@@ -34,6 +34,8 @@ export class SideNav extends LitElement {
   @state()
   hasScrobbleCache: boolean;
   query: string;
+  touchstartX: number = 0;
+
   static get styles() {
     return [responsive, sideNav];
   }
@@ -101,6 +103,18 @@ export class SideNav extends LitElement {
     EventBus.emit(TOGGLE_OVERFLOW_HIDDEN, this, false);
     EventBus.emit(CHANGE_URL, this, path);
   };
+  _handleTouchStart = (e: any) => {
+    e.stopPropagation();
+    this.touchstartX = e.changedTouches[0].screenX;
+  };
+  _handleTouchEnd = (e: any) => {
+    e.stopPropagation();
+    const x = e.changedTouches[0].screenX;
+
+    if (x < this.touchstartX) {
+      this.open = false;
+    }
+  };
   render() {
     return html`
       <div class="${this.full ? 'full' : ''} ${this.open ? 'open' : ''}"></div>
@@ -108,6 +122,8 @@ export class SideNav extends LitElement {
         class="${this.full ? 'slide-menu' : ''} ${this.open
           ? 'open'
           : ''} ${this.hasVisiblePlayer ? 'player' : ''}"
+        @touchstart=${this._handleTouchStart}
+        @touchend=${this._handleTouchEnd}
       >
         <ul>
           ${this.full

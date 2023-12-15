@@ -31,7 +31,10 @@ import {
 import { CHANGE_URL } from './utils/router';
 import { TOGGLE_SETTING, getSettingByName } from './utils/settings';
 import Track from '@addasoft/musicdbcore/dist/models/Track';
-import { TOGGLE_OVERFLOW_HIDDEN } from './components/side-nav/side-nav';
+import {
+  TOGGLE_MENU,
+  TOGGLE_OVERFLOW_HIDDEN,
+} from './components/side-nav/side-nav';
 
 @customElement('lit-musicdb')
 export class LitMusicdb extends LitElement {
@@ -64,6 +67,8 @@ export class LitMusicdb extends LitElement {
 
   appRouter: any;
   _player: any;
+
+  touchstartX: number = 0;
 
   static get styles() {
     return [animationCSS, litMusicdb, scrollbar];
@@ -307,9 +312,22 @@ export class LitMusicdb extends LitElement {
   _resetLastFM() {
     this.hasSK = false;
   }
+  _handleTouchStart = (e: any) => {
+    this.touchstartX = e.changedTouches[0].screenX;
+  };
+  _handleTouchEnd = (e: any) => {
+    const x = e.changedTouches[0].screenX;
+
+    if (x > this.touchstartX) {
+      EventBus.emit(TOGGLE_MENU, this, 'open');
+    }
+  };
   render() {
     return html`
-      <main>
+      <main
+        @touchstart=${this._handleTouchStart}
+        @touchend=${this._handleTouchEnd}
+      >
         ${this.hasToken && this.hasData
           ? html`
               <main-header
