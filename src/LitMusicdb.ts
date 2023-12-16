@@ -324,7 +324,7 @@ export class LitMusicdb extends LitElement {
     const ratio =
       Math.abs(x - this.touchstartX) / Math.abs(y - this.touchstartY);
 
-    if (x > this.touchstartX && ratio > 10) {
+    if (x > this.touchstartX && ratio > 3) {
       EventBus.emit(TOGGLE_MENU, this, 'open');
       e.stopImmediatePropagation();
     }
