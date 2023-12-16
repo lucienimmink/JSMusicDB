@@ -31,6 +31,7 @@ export default css`
     margin-top: 50px;
     display: block;
     padding-bottom: 50px;
+    min-height: calc(100vh - 100px);
   }
   #outlet.player {
     padding-bottom: 90px;
@@ -66,6 +67,7 @@ export default css`
     #outlet {
       margin-top: 100px;
       margin-left: 75px;
+      min-height: calc(100vh - 150px);
     }
     letter-nav {
       display: block;
