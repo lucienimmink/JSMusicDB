@@ -44,6 +44,7 @@ export default css`
     }
     .controls .btn svg {
       width: 22px;
+      margin-top: 3px;
     }
   }
 `;
