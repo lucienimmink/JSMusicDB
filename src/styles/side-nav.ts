@@ -120,15 +120,15 @@ export default css`
   }
   h1 {
     margin: 0 0 0 1rem;
-    padding: 0;
+    display: flex;
     font-weight: 400;
     height: 50px;
-    display: flex;
     align-items: center;
   }
   h1 div {
     height: 100%;
-    padding-top: 8px;
+    padding-top: 15px;
+    flex-grow: 1;
   }
   h1 a,
   h1 button {
@@ -156,6 +156,9 @@ export default css`
     input {
       width: 88%;
       margin: 8px 25px;
+    }
+    h1 {
+      padding-inline: 10px;
     }
   }
 `;

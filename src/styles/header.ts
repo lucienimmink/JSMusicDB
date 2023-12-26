@@ -85,5 +85,8 @@ export default css`
       background: var(--background2-seethrough);
       backdrop-filter: blur(5px);
     }
+    button {
+      padding-inline: 10px;
+    }
   }
 `;

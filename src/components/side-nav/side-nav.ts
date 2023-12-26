@@ -129,6 +129,7 @@ export class SideNav extends LitElement {
             ? html`
                 <li class="title">
                   <h1>
+                    <div>JSMusicDB</div>
                     <button
                       title="Close menu"
                       @click=${(e: Event) => {
@@ -137,7 +138,6 @@ export class SideNav extends LitElement {
                     >
                       ${timesIcon}
                     </button>
-                    <div>JSMusicDB</div>
                   </h1>
                 </li>
                 <li>
