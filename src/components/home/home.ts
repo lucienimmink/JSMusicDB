@@ -216,12 +216,10 @@ export class HomeNav extends LitElement {
                 (track: any) => html`
                   <li class="${track.dummy ? 'dummy ' : ''}">
                     <div>
-                      <img
-                        src="${track?.image[2]['#text']}"
-                        class="album-art"
-                        alt="${track.artist['#text']} • ${track.name}"
-                        @error="${(e: Event) => this._onError(e)}"
-                      />
+                      <album-art
+                        artist="${track.artist.name}"
+                        album="${track.album['#text']}"
+                      ></album-art>
                       ${track.loved === '1'
                         ? html`<span class="heart">${heartIcon}</span>`
                         : nothing}
