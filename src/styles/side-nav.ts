@@ -39,6 +39,7 @@ export default css`
     position: sticky;
     background: var(--background2-seethrough);
     top: 0;
+    app-region: no-drag;
   }
   .player ul {
     height: calc(100vh - 100px - 81px);

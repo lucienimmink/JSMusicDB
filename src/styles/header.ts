@@ -53,7 +53,6 @@ export default css`
   app-link {
     color: var(--primary);
     transition: color 0.2s ease-in-out;
-    -webkit-app-region: no-drag;
     app-region: no-drag;
   }
   div {
@@ -65,7 +64,6 @@ export default css`
   }
   h1.customWindowControls div {
     max-width: calc(env(titlebar-area-width, 100%) - 60px);
-    -webkit-app-region: drag;
     app-region: drag;
   }
   progress-spinner {
