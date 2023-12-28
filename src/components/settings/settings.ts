@@ -304,7 +304,7 @@ export class SettingsNav extends LitElement {
             @click="${(e: Event) => this._toggle('followTrack', e)}"
             ?checked=${this.settings?.followTrack}
           />
-          Show album if track changes
+          View follows track change
         </label>
       </p>
     </div>`;
