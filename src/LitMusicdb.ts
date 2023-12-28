@@ -1,4 +1,3 @@
-import timeSpan from '@addasoft/timespan';
 import { LitElement, html, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import './components/album-art/album-art';
@@ -18,7 +17,6 @@ import scrollbar from './styles/scrollbar';
 import { dark, light, system } from './styles/themes';
 import { global as EventBus } from './utils/EventBus';
 import { animateCSS, animationCSS } from './utils/animations';
-import { getCurrentTheme, updateSunriseData } from './utils/colour';
 import { RESET_LASTFM, getSK } from './utils/lastfm';
 import { launchQueue } from './utils/launch-queue';
 import { REFRESH } from './utils/musicdb';
@@ -154,8 +152,6 @@ export class LitMusicdb extends LitElement {
       this._startCurrentPlaylist();
       await this._getTheme();
     }
-    const useGPS = await getSettingByName('gps');
-    await updateSunriseData(useGPS || false);
     await this._getTheme();
   }
   private async _initLastFM() {
@@ -262,10 +258,6 @@ export class LitMusicdb extends LitElement {
         css = cssMap.system;
         clearTimeout(this.themeSwitchCycle);
         break;
-      case 'auto': {
-        css = cssMap[await this._autoSwitchTheme()];
-        break;
-      }
       default:
         clearTimeout(this.themeSwitchCycle);
         css = cssMap.light;
@@ -277,23 +269,8 @@ export class LitMusicdb extends LitElement {
     const themeElement = document.getElementById('themed');
     if (themeElement) themeElement.innerHTML = css.cssText;
   }
-  async _autoSwitchTheme() {
-    const { nextCycle, theme }: { nextCycle: number; theme: string } =
-      await getCurrentTheme();
-    if (nextCycle) {
-      console.info(`Switching theme in ${timeSpan(nextCycle)}`);
-      clearTimeout(this.themeSwitchCycle);
-      this.themeSwitchCycle = setTimeout(() => {
-        this._getTheme();
-      }, nextCycle);
-    }
-    return theme;
-  }
   _toggleSetting({ setting }: { setting: string }) {
     if (setting === 'theme') {
-      this._getTheme();
-    }
-    if (setting === 'gps') {
       this._getTheme();
     }
   }

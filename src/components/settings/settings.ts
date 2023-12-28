@@ -9,7 +9,6 @@ import responsive from '../../styles/responsive';
 import settings from '../../styles/settings';
 import smallMuted from '../../styles/small-muted';
 import { global as EventBus } from '../../utils/EventBus';
-import { updateSunriseData } from '../../utils/colour';
 import {
   RESET_LASTFM,
   getLastFMUserName,
@@ -75,7 +74,6 @@ export class SettingsNav extends LitElement {
       if (!this.settings) {
         this.settings = {};
       }
-      await updateSunriseData(this.settings?.gps || false);
       if (!this.settings?.theme) {
         this.settings.theme = 'light';
       }
@@ -121,16 +119,6 @@ export class SettingsNav extends LitElement {
   private _updateSEE(event: Event, value: boolean) {
     this.stats.isUsingSSE = value;
   }
-  _formatDate(date: any, fallback: string) {
-    if (!date) {
-      return fallback;
-    }
-    const formatter = new Intl.DateTimeFormat('en-GB', {
-      // @ts-ignore
-      timeStyle: 'medium',
-    });
-    return formatter.format(date);
-  }
   private async _populateStats() {
     this.stats.albums = this.mdb.totals.albums;
     this.stats.artists = this.mdb.totals.artists;
@@ -146,14 +134,10 @@ export class SettingsNav extends LitElement {
     this.stats.parsed = formatter.format(date);
     this.requestUpdate();
   }
-  async _toggle(prop: string, e: Event, value: any = null) {
-    // e.preventDefault();
+  private async _toggle(prop: string, e: Event, value: any = null) {
     const current = this.settings ? this.settings[prop] : false;
     if (!value) {
       value = !current;
-    }
-    if (prop === 'gps') {
-      await updateSunriseData(value);
     }
     if (prop === 'visual' && value === false) {
       await setSetting('smallArt', false);
@@ -166,7 +150,7 @@ export class SettingsNav extends LitElement {
     EventBus.emit(TOGGLE_SETTING, this, { setting: prop, value });
     this.settings = await getSettings();
   }
-  async _setFeed(e: Event) {
+  private async _setFeed(e: Event) {
     // @ts-ignore
     const value = e?.target?.value;
     await setSetting('feed', value);
@@ -176,7 +160,7 @@ export class SettingsNav extends LitElement {
     });
     this.settings = await getSettings();
   }
-  async _reloadCollection() {
+  private async _reloadCollection() {
     const jwt: any = await getJwt();
     const server: any = await getServer();
     if (jwt && server) {
@@ -184,23 +168,23 @@ export class SettingsNav extends LitElement {
       this.isReloading = true;
     }
   }
-  async _refreshCollection() {
+  private async _refreshCollection() {
     this.stats.parsingTime = 0;
     this.requestUpdate();
     await updateAndRefresh();
     this._populateStats();
   }
-  async _resetmp3Stream() {
+  private async _resetmp3Stream() {
     await resetServer();
     this.mp3stream = null;
     EventBus.emit(RESET_SERVER, this);
   }
-  async _resetLastfM() {
+  private async _resetLastfM() {
     await removeLastFMLink();
     this.lastFMUsername = null;
     EventBus.emit(RESET_LASTFM, this);
   }
-  _clearImageCache() {
+  private _clearImageCache() {
     clear(createStore('album-art-db', 'album-art-store'));
   }
   private _renderUserInfo() {
@@ -363,38 +347,7 @@ export class SettingsNav extends LitElement {
             />
             System theme
           </label>
-          <label>
-            <input
-              type="radio"
-              @click="${(e: Event) => this._toggle('theme', e, 'auto')}"
-              .checked=${this.settings?.theme === 'auto'}
-            />
-            Dynamic theme&nbsp;
-            <span class="small muted"
-              >Dark theme between ${this._formatDate(
-                this.settings?.start,
-                '21:00:00',
-              )} and ${this._formatDate(this.settings?.stop, '09:00:00')}
-              </span>
-          </label>
         </p>
-        ${
-          this.settings?.theme === 'auto'
-            ? html`
-                <p>
-                  <label>
-                    <input
-                      type="checkbox"
-                      @click="${(e: Event) => this._toggle('gps', e)}"
-                      ?checked=${this.settings?.gps}
-                    />
-                    Track location to precisly determine when to switch to dark
-                    theme
-                  </label>
-                </p>
-              `
-            : nothing
-        }
         </div>
         <div class="container container-block md-up">
           <h2 class="header">Now playing screen settings</h2>

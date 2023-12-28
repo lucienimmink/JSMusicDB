@@ -2,8 +2,7 @@ declare const window: any;
 
 import { tinycolor } from '@thebespokepixel/es-tinycolor';
 import { FastAverageColor } from 'fast-average-color';
-import { fetchWithTimeout } from './fetch';
-import { getSettingByName, setSetting } from './settings';
+import { getSettingByName } from './settings';
 
 export const ACCENT_COLOR = 'accent-color';
 export const LIGHT = '#e9ecef';
@@ -94,93 +93,9 @@ export function removeCustomCss(): void {
     document.querySelector('#custom-css-node')?.remove();
   }
 }
-const _getCurrentColour = async () => {
-  const now: any = new Date();
-  let stop: any = await getSettingByName('stop');
-  let start: any = await getSettingByName('start');
-  if (!start) {
-    start = (await _getNewStartAndStop()).start;
-  }
-  if (!stop) {
-    stop = (await _getNewStartAndStop()).stop;
-  }
-  if (now > start && now < stop) {
-    return DARK;
-  }
-  return LIGHT;
-};
-const _getNewStartAndStop = async () => {
-  const now: Date = new Date();
-  const stop: Date = new Date();
-  const start: Date = new Date();
 
-  start.setSeconds(0);
-  start.setMinutes(0);
-  start.setHours(21);
-
-  if (now > start) {
-    stop.setDate(stop.getDate() + 1);
-  }
-  stop.setSeconds(0);
-  stop.setMinutes(0);
-  stop.setHours(9);
-  return { start, stop };
-};
-const _setSunrise = async (start: any, stop: any) => {
-  await setSetting('start', start);
-  await setSetting('stop', stop);
-};
-export const getCurrentTheme = async () => {
-  const now: any = new Date();
-  let stop: any = await getSettingByName('stop');
-  let start: any = await getSettingByName('start');
-  if (!start) {
-    start = (await _getNewStartAndStop()).start;
-  }
-  if (!stop) {
-    stop = (await _getNewStartAndStop()).stop;
-  }
-  const theme = {
-    theme: 'light',
-    nextCycle: 0,
-  };
-  if (now > start && now < stop) {
-    theme.nextCycle = stop - now;
-    theme.theme = 'dark';
-  }
-  if (now < start) {
-    theme.nextCycle = start - now;
-  }
-  return theme;
-};
-export const updateSunriseData = async (useGPS = true) => {
-  // eslint-disable-next-line no-async-promise-executor
-  return new Promise(async (resolve: any) => {
-    if (useGPS) {
-      return navigator.geolocation.getCurrentPosition(async ({ coords }) => {
-        const lat = coords.latitude;
-        const lng = coords.longitude;
-        const response = await fetchWithTimeout(
-          `https://api.sunrise-sunset.org/json?lat=${lat}&lng=${lng}&formatted=0`,
-          { timeout: 10000 },
-        );
-        const { results } = await response.json();
-        const sunset = new Date(results.sunset);
-        const sunrise: Date = new Date(results.sunrise);
-        const nextDayStop: Date = new Date(
-          sunrise.setDate(sunrise.getDate() + 1),
-        );
-        return resolve(await _setSunrise(sunset, nextDayStop));
-      });
-    }
-    const { start, stop }: { start: Date; stop: Date } =
-      await _getNewStartAndStop();
-    return resolve(await _setSunrise(start, stop));
-  });
-};
 export const currentBgColor = async () => {
   const theme = await getSettingByName('theme');
-  const currentIfAuto: any = await _getCurrentColour();
   switch (theme) {
     case 'light':
       return LIGHT;
@@ -192,7 +107,7 @@ export const currentBgColor = async () => {
         '(prefers-color-scheme: dark)',
       ).matches;
       return darkMode ? DARK : LIGHT;
-    case 'auto':
-      return currentIfAuto;
+    default:
+      console.log('unkown theme', theme);
   }
 };
