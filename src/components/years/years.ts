@@ -39,24 +39,20 @@ export class LetterNav extends LitElement {
     musicdb.then((mdb: any) => {
       this.years = [];
       this.albums = [];
-      const sortedYears = Object.keys(mdb.years).sort(
-        (a: string, b: string) => {
+      const sortedYears = Object.keys(mdb.years)
+        .filter((year: string) => year !== '0')
+        .sort((a: string, b: string) => {
           return parseInt(a, 10) < parseInt(b, 10) ? 1 : -1;
-        },
-      );
-      if (sortedYears[0] === 'undefined') {
-        sortedYears.shift(); // remove 'undefined' that is not a year silly
-      }
+        });
       sortedYears.forEach((year: string) => {
-        this.years.push(mdb.years[year]);
-      });
-      this.years.forEach((year: any) => {
+        const mdbYear = mdb.years[year];
+        this.years.push(mdbYear);
         const header = {
-          header: year.year,
-          albums: year.albums.length,
+          header: mdbYear.year,
+          albums: mdbYear?.albums?.length,
         };
         this.albums.push(header);
-        year.albums.forEach((album: any) => {
+        mdbYear.albums?.forEach((album: any) => {
           this.albums.push(album);
         });
       });
