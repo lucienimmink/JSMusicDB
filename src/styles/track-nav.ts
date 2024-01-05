@@ -25,10 +25,9 @@ export default css`
     background: var(--background2);
   }
   .track.active {
-    background-color: var(--background2-seethrough);
-    border-left: 1px solid var(--border-colour);
-    border-right: 1px solid var(--border-colour);
-    color: var(--primary);
+    background-color: var(--primary-seethrough);
+    border-bottom-color: var(--primary);
+    color: var(--letter-color);
   }
   .track.active svg {
     display: inline-block;
