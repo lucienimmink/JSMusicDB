@@ -229,7 +229,7 @@ export class Header extends LitElement {
                   this.alb.artist.name}</app-link
                 >
                 <span>• </span></span
-              >${this.alb.name}
+              ><span class="album">${this.alb.name}</span>
             `
           : nothing}
         ${this.art && !this.alb

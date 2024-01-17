@@ -66,6 +66,16 @@ export default css`
     max-width: calc(env(titlebar-area-width, 100%) - 60px);
     app-region: drag;
   }
+  h1 .album {
+    -webkit-background-clip: text !important;
+    -moz-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent;
+    background: linear-gradient(90deg, var(--primary), var(--text-color));
+  }
+  h1 .album::selection {
+    -webkit-text-fill-color: var(--letter-color);
+  }
   progress-spinner {
     display: inline-block;
     flex-grow: 0;
