@@ -2,9 +2,17 @@ import { createStore, get, set } from 'idb-keyval';
 import { LitElement, PropertyValues, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import albumArt from '../../styles/album-art';
-import { defaultAlbum, defaultArtist, defaultPixel } from './defaultart';
+import {
+  defaultAlbumLight,
+  defaultArtistLight,
+  defaultPixel,
+  defaultAlbumDark,
+  defaultArtistDark,
+} from './defaultart';
 import { fetchArtForAlbum, fetchArtForArtist } from './fetchArt';
 import sharedCache from './shared-cache';
+import { TOGGLE_SETTING, getSettingByName } from './../../utils/settings';
+import { global as EventBus } from './../../utils/EventBus';
 
 const resizeObserver = new ResizeObserver((entries: any) => {
   for (const entry of entries) {
@@ -49,6 +57,8 @@ export class AlbumArt extends LitElement {
   loading: boolean;
   @state()
   isDefault: boolean;
+  @state()
+  theme: string;
 
   ARTBASE = `https://res.cloudinary.com/jsmusicdb-com/image/fetch/f_auto,q_auto`;
 
@@ -67,6 +77,7 @@ export class AlbumArt extends LitElement {
     this.visible = 'false';
     this.loading = false;
     this.isDefault = false;
+    this.theme = 'light';
 
     intersectionObserver = new IntersectionObserver(
       entries => {
@@ -111,12 +122,13 @@ export class AlbumArt extends LitElement {
     } else {
       this.initArt();
     }
+    this.setTheme();
   }
   defaultArt() {
     if (this.album) {
-      return defaultAlbum;
+      return this.theme === 'dark' ? defaultAlbumDark : defaultAlbumLight;
     }
-    return defaultArtist;
+    return this.theme === 'dark' ? defaultArtistDark : defaultArtistLight;
   }
   render() {
     return html`
@@ -140,11 +152,22 @@ export class AlbumArt extends LitElement {
       />
     `;
   }
+  private async setTheme() {
+    const theme = await getSettingByName('theme');
+    if (theme === 'system') {
+      this.theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
+    } else {
+      this.theme = theme;
+    }
+  }
   disconnectedCallback() {
     super.disconnectedCallback();
     // @ts-ignore
     resizeObserver.unobserve(this);
     intersectionObserver.disconnect();
+    EventBus.off(TOGGLE_SETTING, this._doToggleSetting, this);
   }
   async connectedCallback() {
     super.connectedCallback();
@@ -157,6 +180,12 @@ export class AlbumArt extends LitElement {
       resizeObserver.observe(this);
     }
     intersectionObserver.observe(this);
+    EventBus.on(TOGGLE_SETTING, this._doToggleSetting, this);
+  }
+  async _doToggleSetting(target: any, setting: any) {
+    if (setting.setting === 'theme') {
+      this.setTheme();
+    }
   }
   dispatch() {
     const evt = new CustomEvent('art', {
@@ -279,7 +308,8 @@ export class AlbumArt extends LitElement {
         sharedCache[`${artist}`] = art;
         set(`${artist}`, art, this.customStore);
       }
-      this.art = art || defaultArtist;
+      this.art =
+        art || this.theme === 'dark' ? defaultArtistDark : defaultArtistLight;
     } else {
       // let's resize those larger album arts we get.
       art += `,w_${dimension},h_${dimension},c_fill/`;
@@ -309,7 +339,8 @@ export class AlbumArt extends LitElement {
         sharedCache[`${artist}-${album}`] = art;
         set(`${artist}-${album}`, art, this.customStore);
       }
-      this.art = art || defaultAlbum;
+      this.art =
+        art || this.theme === 'dark' ? defaultAlbumDark : defaultAlbumLight;
     }
     this.dispatch();
   }
