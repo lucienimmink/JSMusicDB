@@ -13,6 +13,7 @@ export const light = css`
     --text-color: oklch(from var(--background) calc(l - 0.99) c h);
     --background2: oklch(from var(--background) calc(l - 0.03) c h);
     --border-colour: oklch(from var(--background) calc(l - 0.15) c h);
+    --background3: oklch(from var(--background) calc(l - 0.06) c h);
 
     --primary-hover: var(--darken);
   }
@@ -31,6 +32,7 @@ export const dark = css`
     --text-color: oklch(from var(--background) calc(l + 0.99) c h);
     --background2: oklch(from var(--background) calc(l + 0.03) c h);
     --border-colour: oklch(from var(--background) calc(l + 0.15) c h);
+    --background3: oklch(from var(--background) calc(l + 0.06) c h);
 
     --primary-hover: var(--lighten);
   }

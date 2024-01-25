@@ -56,6 +56,7 @@ export default css`
   }
   app-link:hover {
     opacity: 1;
+    background: var(--background3);
   }
   svg {
     width: 20px;
