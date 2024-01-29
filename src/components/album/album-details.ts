@@ -153,6 +153,7 @@ export class AlbumDetails extends LitElement {
             this.albumDetails?.artist?.name}"
             album="${this.albumDetails?.name}"
             ?static=${true}
+            dimension="190"
           ></album-art>
           ${this._renderDetails()}
         </div>
