@@ -69,6 +69,9 @@ export default css`
       margin-left: 75px;
       min-height: calc(100vh - 150px);
     }
+    #outlet.player {
+      min-height: calc(100vh - 190px);
+    }
     letter-nav {
       display: block;
     }
