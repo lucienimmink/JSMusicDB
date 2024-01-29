@@ -31,6 +31,7 @@ export class AlbumInList extends LitElement {
                 album="${this.album?.name}"
                 dimension="50"
                 no-lazy
+                static
               ></album-art>
               <div class="details">
                 <span class="artist">${this.album.name}</span>

@@ -194,6 +194,8 @@ export class HomeNav extends LitElement {
                           artist="${this.currentTrack?.artist?.albumArtist ||
                           this.currentTrack?.artist?.name}"
                           album="${this.currentTrack?.album?.name}"
+                          dimension="70"
+                          static
                         ></album-art>
                       </div>
                       <span class="details">
@@ -219,6 +221,8 @@ export class HomeNav extends LitElement {
                       <album-art
                         artist="${track.artist.name}"
                         album="${track.album['#text']}"
+                        dimension="70"
+                        static
                       ></album-art>
                       ${track.loved === '1'
                         ? html`<span class="heart">${heartIcon}</span>`

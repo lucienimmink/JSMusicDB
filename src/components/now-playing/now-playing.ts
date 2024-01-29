@@ -306,6 +306,7 @@ export class NowPlaying extends LitElement {
         objectFit="cover"
         transparent
         no-lazy
+        static
         .album=${this.track.album.name}
         .artist=${this.track.album.artist.albumArtist ||
         this.track.album.artist.name}
@@ -317,6 +318,7 @@ export class NowPlaying extends LitElement {
       <album-art
         objectFit="contain"
         transparent
+        static
         .album=${this.track.album.name}
         .artist=${this.track.album.artist.albumArtist ||
         this.track.album.artist.name}

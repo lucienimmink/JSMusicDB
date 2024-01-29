@@ -622,10 +622,11 @@ export class Album extends LitElement {
     return html`<app-link href="/playing" class="art">
       <album-art
         @art=${(e: any) => this._setArt(e)}
-        .artist=${this.track.album.artist.albumArtist ||
+        artist=${this.track.album.artist.albumArtist ||
         this.track.album.artist.name}
-        .album=${this.track.album.name}
+        album=${this.track.album.name}
         dimension="75"
+        static
       ></album-art>
     </app-link>`;
   }

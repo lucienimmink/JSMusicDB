@@ -18,12 +18,8 @@ const resizeObserver = new ResizeObserver((entries: any) => {
   for (const entry of entries) {
     const element = entry.target as HTMLImageElement;
     element.setAttribute(
-      'width',
+      'dimension',
       Math.round(Number(entry.contentRect.width)).toString(),
-    );
-    element.setAttribute(
-      'height',
-      Math.round(Number(entry.contentRect.height)).toString(),
     );
     element.dispatchEvent(new CustomEvent('resize', { bubbles: true }));
   }
