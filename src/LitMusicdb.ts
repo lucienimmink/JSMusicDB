@@ -13,7 +13,6 @@ import musicdb, { refresh, update } from './components/musicdb';
 import './components/player/player';
 import router from './routes';
 import litMusicdb from './styles/lit-musicdb';
-import scrollbar from './styles/scrollbar';
 import { dark, light, system } from './styles/themes';
 import { global as EventBus } from './utils/EventBus';
 import { animateCSS, animationCSS } from './utils/animations';
@@ -70,7 +69,7 @@ export class LitMusicdb extends LitElement {
   touchstartY: number = 0;
 
   static get styles() {
-    return [animationCSS, litMusicdb, scrollbar];
+    return [animationCSS, litMusicdb];
   }
 
   constructor() {

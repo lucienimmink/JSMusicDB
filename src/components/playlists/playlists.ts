@@ -12,6 +12,7 @@ import { getLastFMUserName } from '../../utils/lastfm';
 import {
   LOADED_PLAYLIST,
   LOAD_PLAYLIST,
+  NEW_PLAYLIST_LENGTH,
   UPDATE_PLAYER,
   getCurrentPlaylist,
   getNewPlaylistForLovedTracks,
@@ -48,6 +49,8 @@ export class LetterNav extends LitElement {
   artists: Array<any>;
   @state()
   loading: boolean;
+  @state()
+  newPlaylistLength: number;
   currentPlaylistId: string;
 
   static get styles() {
@@ -264,11 +267,15 @@ export class LetterNav extends LitElement {
     }
     this.playlist = await getCurrentPlaylist();
   }
+  _updatePlaylistLength(target: any, length: number) {
+    this.newPlaylistLength = length;
+  }
   connectedCallback() {
     super.connectedCallback();
     EventBus.on(UPDATE_PLAYER, this._update, this);
     EventBus.on(LOAD_PLAYLIST, this._loadPlaylist, this);
     EventBus.on(LOADED_PLAYLIST, this._loadedPlaylist, this);
+    EventBus.on(NEW_PLAYLIST_LENGTH, this._updatePlaylistLength, this);
     this._getPlaylists();
   }
   disconnectedCallback() {
@@ -276,6 +283,7 @@ export class LetterNav extends LitElement {
     EventBus.off(UPDATE_PLAYER, this._update, this);
     EventBus.off(LOAD_PLAYLIST, this._loadPlaylist, this);
     EventBus.off(LOADED_PLAYLIST, this._loadedPlaylist, this);
+    EventBus.off(NEW_PLAYLIST_LENGTH, this._updatePlaylistLength, this);
   }
   constructor() {
     super();
@@ -289,6 +297,7 @@ export class LetterNav extends LitElement {
     this.max = 100;
     this.playlistId = '';
     this.currentPlaylistId = '';
+    this.newPlaylistLength = 0;
   }
   private _renderPlaylistSelector() {
     return html`<div class="playlists">
@@ -493,7 +502,19 @@ export class LetterNav extends LitElement {
         : nothing}
       ${this.showStartArtistSelection ? this._renderArtistSelector() : nothing}
       ${this.loading
-        ? html` <loading-indicator>Loading...</loading-indicator> `
+        ? html`
+            <loading-indicator
+              ><div slot="text">
+                Loading...
+                ${this.newPlaylistLength
+                  ? html`${(
+                      (this.newPlaylistLength / this.max) *
+                      100
+                    ).toFixed()}%`
+                  : nothing}
+              </div></loading-indicator
+            >
+          `
         : nothing}
     </div>`;
   }

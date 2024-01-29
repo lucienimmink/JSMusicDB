@@ -34,6 +34,14 @@ export const loadingIndicator = css`
   .progress-circle:nth-child(5) {
     animation-delay: 800ms;
   }
+
+  ::slotted(*) {
+    margin-block-end: 0.5em;
+    text-align: center;
+
+    font-variant-numeric: tabular-nums;
+    font-family: system-ui;
+  }
   @keyframes progress-bar-animation {
     0% {
       transform: translate(0, 0);

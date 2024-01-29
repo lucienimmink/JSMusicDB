@@ -331,16 +331,6 @@ export default css`
     top: 5px;
     position: relative;
   }
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-  ::-webkit-scrollbar-track {
-    background-color: var(--progress-background);
-  }
-  ::-webkit-scrollbar-thumb {
-    background-color: var(--progress);
-  }
   @media (min-width: 576px) {
     h3 {
       padding-top: 1.5rem;

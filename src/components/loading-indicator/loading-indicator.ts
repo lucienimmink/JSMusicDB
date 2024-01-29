@@ -9,6 +9,7 @@ export class Loading extends LitElement {
   }
   render() {
     return html`
+      <slot name="text"></slot>
       <div class="progress-bar">
         <div class="progress-circle"></div>
         <div class="progress-circle"></div>

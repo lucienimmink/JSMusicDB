@@ -31,6 +31,7 @@ export const CHANGE_TITLE = 'change-title';
 export const PLAYER_ERROR = 'player-error';
 export const UPDATE_TRACK = 'update-track';
 export const NAVIGATE_TO_ALBUM = 'navigate-to-album';
+export const NEW_PLAYLIST_LENGTH = 'new-playlist-length';
 
 export const getCurrentPlaylist = () => get(CURRENT_PLAYLIST);
 export const setCurrentPlaylist = (playlist: any) =>
@@ -77,6 +78,7 @@ export const getNewPlaylistForRandom = (playlist: any) => {
   return new Promise((resolve, reject) => {
     musicdb
       .then((mdb: any) => {
+        EventBus.emit(NEW_PLAYLIST_LENGTH, {}, 0);
         const trackIDs = Object.keys(mdb.tracks);
         const randomTracks: string[] = _shuffle(trackIDs).splice(
           0,
@@ -91,6 +93,7 @@ export const getNewPlaylistForRandom = (playlist: any) => {
         randomTracks.forEach(id => {
           // @ts-ignore
           nextPlaylist.tracks.push(mdb.tracks[id]);
+          EventBus.emit(NEW_PLAYLIST_LENGTH, {}, nextPlaylist.tracks.length);
         });
         return resolve(nextPlaylist);
       })
@@ -100,6 +103,7 @@ export const getNewPlaylistForRandom = (playlist: any) => {
 export const getNewPlaylistForRandomPref = (playlist: any) => {
   return new Promise((resolve, reject) =>
     musicdb.then((mdb: any) => {
+      EventBus.emit(NEW_PLAYLIST_LENGTH, {}, 0);
       const highRotation: Array<any> = [];
       const mediumRotation: Array<any> = [];
       getTopArtists(playlist.username)
@@ -137,6 +141,7 @@ export const getNewPlaylistForRandomPref = (playlist: any) => {
                 _getRandomTrackFromArtists(mdb.artistsList(), newPlaylist),
               );
             }
+            EventBus.emit(NEW_PLAYLIST_LENGTH, {}, newPlaylist.tracks.length);
           }
           return resolve(newPlaylist);
         })
@@ -149,6 +154,7 @@ export const getNewPlaylistForRandomPref = (playlist: any) => {
 export const getNewPlaylistForRadioPref = (playlist: any) => {
   return new Promise((resolve, reject) =>
     musicdb.then((mdb: any) => {
+      EventBus.emit(NEW_PLAYLIST_LENGTH, {}, 0);
       const highRotation: Array<any> = [];
       const mediumRotation: Array<any> = [];
       getTopArtists(playlist.username)
@@ -198,6 +204,7 @@ export const getNewPlaylistForRadioPref = (playlist: any) => {
                 // no simialr artists, skip this track
               }
             }
+            EventBus.emit(NEW_PLAYLIST_LENGTH, {}, newPlaylist.tracks.length);
           }
           return resolve(newPlaylist);
         })
@@ -211,6 +218,7 @@ export const getNewPlaylistForRadio = (playlist: any) => {
   return new Promise((resolve, reject) =>
     musicdb
       .then((mdb: any) => {
+        EventBus.emit(NEW_PLAYLIST_LENGTH, {}, 0);
         const startArtist = mdb.artists[playlist.artist];
         const newPlaylist = {
           name: `Artist radio for ${startArtist.name}`,
@@ -231,6 +239,7 @@ export const getNewPlaylistForLovedTracks = (playlist: any) =>
   new Promise((resolve, reject) =>
     musicdb
       .then((mdb: any) => {
+        EventBus.emit(NEW_PLAYLIST_LENGTH, {}, 0);
         getLovedTracks(playlist.username).then(
           ({ lovedtracks }: { lovedtracks: any }) => {
             const newPlaylist = {
@@ -246,6 +255,11 @@ export const getNewPlaylistForLovedTracks = (playlist: any) =>
               if (coretrack && coretrack.id !== '') {
                 // @ts-ignore
                 newPlaylist.tracks.push(coretrack);
+                EventBus.emit(
+                  NEW_PLAYLIST_LENGTH,
+                  {},
+                  newPlaylist.tracks.length,
+                );
                 // } else {
                 //   const results = mdb.searchTrackByArtistAndTrack(artist, title);
                 //   if (results.length > 0) {
@@ -265,6 +279,7 @@ export const getTopTracksForUser = (playlist: any) =>
   new Promise((resolve, reject) =>
     musicdb
       .then((mdb: any) => {
+        EventBus.emit(NEW_PLAYLIST_LENGTH, {}, 0);
         getTopTracks(playlist.username, playlist.max).then(
           ({ toptracks }: { toptracks: any }) => {
             const newPlaylist = {
@@ -285,6 +300,11 @@ export const getTopTracksForUser = (playlist: any) =>
               ) {
                 // @ts-ignore
                 newPlaylist.tracks.push(coretrack);
+                EventBus.emit(
+                  NEW_PLAYLIST_LENGTH,
+                  {},
+                  newPlaylist.tracks.length,
+                );
               }
             });
             resolve(newPlaylist);
@@ -363,6 +383,7 @@ const _getNextTrack = (artist: any, mdb: any, playlist: any) =>
           playlist,
         );
         playlist.tracks.push(randomTrack);
+        EventBus.emit(NEW_PLAYLIST_LENGTH, {}, playlist.tracks.length);
         return playlist.tracks.length < playlist.max
           ? _getNextTrack(randomTrack.album.artist, mdb, playlist)
           : reject();
