@@ -71,6 +71,8 @@ export class NowPlaying extends LitElement {
   _dataArray: any;
   _hearableBars: any;
   _player: any;
+  touchstartX: number;
+  touchstartY: number;
   visualizer: AudioMotionAnalyzer | undefined;
 
   static get styles() {
@@ -97,6 +99,8 @@ export class NowPlaying extends LitElement {
     this.track = window._track;
     this._player = window._player;
     this.accentColor = window._accentColour;
+    this.touchstartX = 0;
+    this.touchstartY = 0;
     getSettingByName('visual').then(async (hasVisual: any) => {
       this.hasCanvas = !!hasVisual;
     });
@@ -300,6 +304,41 @@ export class NowPlaying extends LitElement {
   _hasMoreDiscs() {
     return Object.keys(this.track.album.discs).length > 1;
   }
+  _handleTouchStart = (e: any) => {
+    this.touchstartX = e.changedTouches[0].screenX;
+    this.touchstartY = e.changedTouches[0].screenY;
+  };
+  _handleTouchEnd = (e: any) => {
+    const x = e.changedTouches[0].screenX;
+    const y = e.changedTouches[0].screenY;
+
+    const ratioY =
+      Math.abs(y - this.touchstartY) / Math.abs(x - this.touchstartX);
+    const ratioX =
+      Math.abs(x - this.touchstartX) / Math.abs(y - this.touchstartY);
+
+    // toggle view
+    if (y > this.touchstartY && ratioY > 3) {
+      this.isBottomShown = false;
+      e.stopImmediatePropagation();
+    }
+    if (y < this.touchstartY && ratioY > 3) {
+      this.isBottomShown = true;
+      e.stopImmediatePropagation();
+    }
+
+    // prev/next
+    if (x > this.touchstartX && ratioX > 3) {
+      this._previous();
+      e.stopImmediatePropagation();
+    }
+    if (x < this.touchstartX && ratioX > 3) {
+      this._next();
+      e.stopImmediatePropagation();
+    }
+
+    return true;
+  };
   private _renderBackdrop() {
     return html`<div class="backdrop">
       <album-art
@@ -447,7 +486,11 @@ export class NowPlaying extends LitElement {
     </div>`;
   }
   private _renderTop() {
-    return html`<div class="top ${this.classicVis ? 'classic-vis' : ''}">
+    return html`<div
+      class="top ${this.classicVis ? 'classic-vis' : ''}"
+      @touchstart=${this._handleTouchStart}
+      @touchend=${this._handleTouchEnd}
+    >
       <div class="image-wrapper">
         <div id="visualisation" class="${this.hasCanvas ? 'active' : ''}"></div>
         ${this._renderCurrentAlbumArt()} ${this._renderFloatingText()}
