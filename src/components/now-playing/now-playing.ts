@@ -312,31 +312,22 @@ export class NowPlaying extends LitElement {
     const x = e.changedTouches[0].screenX;
     const y = e.changedTouches[0].screenY;
 
-    const ratioY =
-      Math.abs(y - this.touchstartY) / Math.abs(x - this.touchstartX);
-    const ratioX =
-      Math.abs(x - this.touchstartX) / Math.abs(y - this.touchstartY);
+    const ratio = {
+      x: Math.abs(x - this.touchstartX) / Math.abs(y - this.touchstartY),
+      y: Math.abs(y - this.touchstartY) / Math.abs(x - this.touchstartX),
+    };
 
-    // toggle view
-    if (y > this.touchstartY && ratioY > 6) {
-      this.isBottomShown = false;
+    if (ratio.y > 6) {
+      // swipe up or down
       e.stopImmediatePropagation();
-    }
-    if (y < this.touchstartY && ratioY > 6) {
-      this.isBottomShown = true;
+      y > this.touchstartY
+        ? (this.isBottomShown = false)
+        : (this.isBottomShown = true);
+    } else if (ratio.x > 3) {
+      // swipe left or right
       e.stopImmediatePropagation();
+      x > this.touchstartX ? this._previous() : this._next();
     }
-
-    // prev/next
-    if (x > this.touchstartX && ratioX > 3) {
-      this._previous();
-      e.stopImmediatePropagation();
-    }
-    if (x < this.touchstartX && ratioX > 3) {
-      this._next();
-      e.stopImmediatePropagation();
-    }
-
     return true;
   };
   private _renderBackdrop() {
