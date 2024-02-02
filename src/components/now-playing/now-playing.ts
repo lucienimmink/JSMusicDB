@@ -318,11 +318,11 @@ export class NowPlaying extends LitElement {
       Math.abs(x - this.touchstartX) / Math.abs(y - this.touchstartY);
 
     // toggle view
-    if (y > this.touchstartY && ratioY > 3) {
+    if (y > this.touchstartY && ratioY > 6) {
       this.isBottomShown = false;
       e.stopImmediatePropagation();
     }
-    if (y < this.touchstartY && ratioY > 3) {
+    if (y < this.touchstartY && ratioY > 6) {
       this.isBottomShown = true;
       e.stopImmediatePropagation();
     }
