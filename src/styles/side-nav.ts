@@ -79,23 +79,17 @@ export default css`
     content: '';
     display: block;
     position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: rgba(0, 0, 0, 0.4);
   }
   .slide-menu {
     position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
+    inset: 0;
     max-width: 300px;
     background: var(--background2);
     transition: transform 0.2s ease-in-out;
     z-index: 101;
-    transform: translateX(-100%);
+    transform: translateX(calc(-100% - 1px));
     view-transition-name: full-side-nav-list;
   }
   .slide-menu.open {
