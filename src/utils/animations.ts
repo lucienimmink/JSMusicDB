@@ -3,6 +3,7 @@ import { css } from 'lit';
 export const animationCSS = css`
   :host {
     --animate-duration: 0.2s;
+    --animate-duration-medium: 0.5s;
     --animate-duration-slow: 1s;
     --animate-delay: 0.5s;
     --animate-repeat: 1;
@@ -45,6 +46,29 @@ export const animationCSS = css`
       transform: translate3d(0, 0, 0);
     }
   }
+  @keyframes slideInLeft {
+    from {
+      transform: translate3d(-100%, 0, 0);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    to {
+      opacity: 0;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+  @keyframes slideInRight {
+    from {
+      transform: translate3d(100%, 0, 0);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    to {
+      transform: translate3d(0, 0, 0);
+    }
+  }
   @keyframes fadeOut {
     from {
       opacity: 1;
@@ -54,16 +78,37 @@ export const animationCSS = css`
       opacity: 0;
     }
   }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
   .animate__slideInUp {
     animation-name: slideInUp;
   }
   .animate__slideInDown {
     animation-name: slideInDown;
   }
+  .animate__slideInLeft {
+    animation-duration: var(--animate-duration-medium);
+    animation-name: slideInLeft;
+  }
+  .animate__slideInRight {
+    animation-duration: var(--animate-duration-medium);
+    animation-name: slideInRight;
+  }
   .animate__fadeOut {
     animation-duration: var(--animate-duration-slow);
     animation-name: fadeOut;
     animation-timing-function: ease-out;
+  }
+  .animate__fadeIn {
+    animation-duration: var(--animate-duration-slow);
+    animation-name: fadeIn;
   }
 `;
 

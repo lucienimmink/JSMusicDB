@@ -236,6 +236,17 @@ export class NowPlaying extends LitElement {
     playlist.tracks = tracks;
     this.playlist = playlist;
   }
+  private _getPreviousTrack() {
+    const currentIndex = this.playlist?.tracks.lastIndexOf(this.track) || 0;
+    console.log({ currentIndex });
+    if (currentIndex > 0) {
+      return this.playlist?.tracks[currentIndex - 1];
+    }
+    return this.track;
+  }
+  private _getNextTrack() {
+    return this.track;
+  }
   async _update({ current, type }: { current: any; type: string }) {
     this.track = current;
     if (type === PLAY_PLAYER_START || type === PAUSE_PLAYER) {
@@ -265,6 +276,14 @@ export class NowPlaying extends LitElement {
   }
   _previous() {
     animateCSS(this.shadowRoot?.querySelectorAll('h4, h5'), 'slideInDown');
+    animateCSS(
+      this.shadowRoot?.querySelectorAll('.previous-album-art'),
+      'slideInLeft',
+    );
+    animateCSS(
+      this.shadowRoot?.querySelectorAll('.current-album-art'),
+      'fadeIn',
+    );
     EventBus.emit(PREVIOUS_TRACK, this);
   }
   _togglePlayPause() {
@@ -275,6 +294,10 @@ export class NowPlaying extends LitElement {
   }
   _next() {
     animateCSS(this.shadowRoot?.querySelectorAll('h4, h5'), 'slideInUp');
+    animateCSS(
+      this.shadowRoot?.querySelectorAll('.next-album-art'),
+      'slideInRight',
+    );
     EventBus.emit(NEXT_TRACK, this);
   }
   async _setPlaylist(track: any) {
@@ -343,15 +366,14 @@ export class NowPlaying extends LitElement {
       ></album-art>
     </div>`;
   }
-  private _renderCurrentAlbumArt() {
-    return html`<div class="current-album-art">
+  private _renderArt(track: any, position: string = 'current') {
+    return html`<div class="${position}-album-art album-art">
       <album-art
         objectFit="contain"
         transparent
         static
-        .album=${this.track.album.name}
-        .artist=${this.track.album.artist.albumArtist ||
-        this.track.album.artist.name}
+        .album=${track.album.name}
+        .artist=${track.album.artist.albumArtist || track.album.artist.name}
       ></album-art>
     </div>`;
   }
@@ -484,7 +506,9 @@ export class NowPlaying extends LitElement {
     >
       <div class="image-wrapper">
         <div id="visualisation" class="${this.hasCanvas ? 'active' : ''}"></div>
-        ${this._renderCurrentAlbumArt()} ${this._renderFloatingText()}
+        ${this._renderArt(this._getPreviousTrack(), 'previous')}
+        ${this._renderArt(this.track)} ${this._renderFloatingText()}
+        ${this._renderArt(this._getNextTrack(), 'next')}
       </div>
       ${this.hasError
         ? this._renderErrorState()

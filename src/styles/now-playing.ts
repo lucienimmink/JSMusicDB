@@ -65,13 +65,21 @@ export default css`
     position: relative;
     max-height: calc(100vh - 50px - 135px);
   }
-  .current-album-art {
+  .album-art {
     height: 100%;
     padding: 10px;
     box-sizing: border-box;
     margin: 0px auto;
     z-index: 1;
-    position: relative;
+    position: absolute;
+  }
+  .previous-album-art {
+    transform: translateX(-100%);
+    z-index: 2;
+  }
+  .next-album-art {
+    transform: translateX(100%);
+    z-index: 2;
   }
   .controls-wrapper {
     height: 135px;
