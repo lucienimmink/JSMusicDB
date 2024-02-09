@@ -81,6 +81,12 @@ export default css`
     transform: translateX(100%);
     z-index: 2;
   }
+  .smallArt .previous-album-art {
+    display: none;
+  }
+  .smallArt .next-album-art {
+    display: none;
+  }
   .controls-wrapper {
     height: 135px;
     max-height: 135px;
@@ -322,6 +328,16 @@ export default css`
     }
     .bottom .playlist track-in-list {
       width: 80vw;
+    }
+
+    .album-art {
+      position: relative;
+    }
+    .previous-album-art {
+      display: none;
+    }
+    .next-album-art {
+      display: none;
     }
   }
   /* notihng is playing */
