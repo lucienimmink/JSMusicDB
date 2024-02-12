@@ -23,8 +23,8 @@
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.9.0",
     "@types/node": "^20.9.0",
-    "@typescript-eslint/eslint-plugin": "^6.10.0",
-    "@typescript-eslint/parser": "^6.10.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
     "api-viewer-element": "^1.0.0-pre.8",
     "dotenv": "^16.3.1",
     "eslint": "^8.53.0",
