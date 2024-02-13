@@ -21,7 +21,7 @@ export const light = css`
 
 export const dark = css`
   :root {
-    --primary: rgb(0, 144, 255);
+    --primary: rgb(41, 162, 255);
     --progress: var(--darken);
     --progress-background: var(--darken30);
     --letter-background-hover: var(--lighten);
