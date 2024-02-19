@@ -194,6 +194,7 @@ export class HomeNav extends LitElement {
                           artist="${this.currentTrack?.artist?.albumArtist ||
                           this.currentTrack?.artist?.name}"
                           album="${this.currentTrack?.album?.name}"
+                          mbid="${this.currentTrack?.album?.mbid}"
                           dimension="70"
                           static
                         ></album-art>
