@@ -152,6 +152,7 @@ export class AlbumDetails extends LitElement {
             artist="${this.albumDetails?.artist?.albumArtist ||
             this.albumDetails?.artist?.name}"
             album="${this.albumDetails?.name}"
+            mbid="${this.albumDetails?.mbid}"
             ?static=${true}
             dimension="190"
           ></album-art>
