@@ -625,6 +625,7 @@ export class Album extends LitElement {
         artist=${this.track.album.artist.albumArtist ||
         this.track.album.artist.name}
         album=${this.track.album.name}
+        mbid="${this.track.album.mbid}"
         dimension="75"
         static
       ></album-art>

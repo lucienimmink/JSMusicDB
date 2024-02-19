@@ -32,6 +32,7 @@ export class AlbumInGrid extends LitElement {
                     this.album?.artist?.albumArtist || this.album?.artist?.name,
                   )}
                   album="${this.album.name}"
+                  mbid="${this.album.mbid}"
                 ></album-art>
                 <div class="panel-info color-type-primary-alt">
                   <span>${this.album.name}</span>

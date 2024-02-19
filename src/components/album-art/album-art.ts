@@ -49,6 +49,8 @@ export class AlbumArt extends LitElement {
   noLazy: boolean;
   @property()
   visible: string;
+  @property()
+  mbid: string;
   @state()
   loading: boolean;
   @state()
@@ -74,6 +76,7 @@ export class AlbumArt extends LitElement {
     this.loading = false;
     this.isDefault = false;
     this.theme = 'light';
+    this.mbid = '';
 
     intersectionObserver = new IntersectionObserver(
       entries => {
@@ -112,6 +115,11 @@ export class AlbumArt extends LitElement {
       } else if (
         changedProperties.get('album') &&
         changedProperties.get('album') !== this.album
+      ) {
+        this.initArt();
+      } else if (
+        changedProperties.get('mbid') &&
+        changedProperties.get('mbid') !== this.mbid
       ) {
         this.initArt();
       }
@@ -288,7 +296,7 @@ export class AlbumArt extends LitElement {
       try {
         let remoteURL = await get(`remoteURL-${artist}`, this.customStore);
         if (!remoteURL) {
-          remoteURL = await fetchArtForArtist(this.artist);
+          remoteURL = await fetchArtForArtist(artist, this.mbid);
           await set(`remoteURL-${artist}`, remoteURL, this.customStore);
         }
         art += remoteURL;
@@ -315,7 +323,7 @@ export class AlbumArt extends LitElement {
           this.customStore,
         );
         if (!remoteURL) {
-          remoteURL = await fetchArtForAlbum({ artist, album });
+          remoteURL = await fetchArtForAlbum({ artist, album, id: this.mbid });
           await set(
             `remoteURL-${artist}-${album}`,
             remoteURL,

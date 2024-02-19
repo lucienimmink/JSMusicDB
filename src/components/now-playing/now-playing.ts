@@ -374,6 +374,7 @@ export class NowPlaying extends LitElement {
         static
         .album=${track.album.name}
         .artist=${track.album.artist.albumArtist || track.album.artist.name}
+        .mbid=${track.album.mbid}
       ></album-art>
     </div>`;
   }

@@ -29,6 +29,7 @@ export class AlbumInList extends LitElement {
                   this.album?.artist?.albumArtist || this.album?.artist?.name,
                 )}
                 album="${this.album?.name}"
+                mbid="${this.album?.mbid}"
                 dimension="50"
                 no-lazy
                 static

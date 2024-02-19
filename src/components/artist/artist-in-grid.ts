@@ -25,6 +25,7 @@ export class ArtistInGrid extends LitElement {
               <div class="panel">
                 <album-art
                   artist="${this.artist.albumArtist || this.artist.name}"
+                  mbid="${this.artist.mbid}"
                 ></album-art>
                 <div class="panel-info color-type-primary-alt">
                   <span>${this.artist.albumArtist || this.artist.name}</span>

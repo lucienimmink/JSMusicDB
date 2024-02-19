@@ -120,6 +120,7 @@ export class SearchNav extends LitElement {
                 >
                   <album-art
                     artist="${artist.albumArtist || artist.name}"
+                    mbid="${artist.mbid}"
                   ></album-art>
                   <div class="details">
                     <span class="artist"
@@ -159,6 +160,7 @@ export class SearchNav extends LitElement {
                   <album-art
                     artist="${album.artist.albumArtist || album.artist.name}"
                     album="${album.name}"
+                    mbid="${album.mbid}"
                   ></album-art>
                   <div class="details">
                     <span class="album">${album.name}</span>
