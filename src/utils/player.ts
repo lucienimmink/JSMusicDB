@@ -260,13 +260,6 @@ export const getNewPlaylistForLovedTracks = (playlist: any) =>
                   {},
                   newPlaylist.tracks.length,
                 );
-                // } else {
-                //   const results = mdb.searchTrackByArtistAndTrack(artist, title);
-                //   if (results.length > 0) {
-                //     newPlaylist.tracks.push(results[0]);
-                //   } else {
-                //     console.log('no track found for ', artist, title);
-                //   }
               }
             });
             resolve(newPlaylist);

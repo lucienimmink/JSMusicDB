@@ -108,6 +108,6 @@ export const currentBgColor = async () => {
       ).matches;
       return darkMode ? DARK : LIGHT;
     default:
-      console.log('unkown theme', theme);
+      console.info('unkown theme', theme);
   }
 };

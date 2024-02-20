@@ -52,36 +52,31 @@ export class Album extends LitElement {
     super.disconnectedCallback();
     EventBus.off(REFRESH, this._getTracks, this);
   }
-  _getTracks(artist: any = this.artist, album = this.album) {
+  async _getTracks(artist: any = this.artist, album = this.album) {
     if (artist instanceof Object) {
       artist = this.artist;
     }
     this.sortedDiscs = [];
-    musicdb
-      .then((mdb: any) => {
-        this.albumDetails = mdb.albums[`${artist}|${album}`];
-        const namedDiscs = Object.keys(this.albumDetails?.discs || {});
-        let discnrs: any[] = [];
-        namedDiscs.forEach(name => {
-          const discnr = name.substring(5);
-          discnrs.push({
-            discnr,
-            name,
-          });
-        });
-        discnrs = discnrs.sort((a, b) => {
-          if (a.discnr < b.discnr) {
-            return -1;
-          }
-          return 1;
-        });
-        discnrs.forEach(disc => {
-          this.sortedDiscs.push(this.albumDetails.discs[disc.name]);
-        });
-      })
-      .catch((error: any) => {
-        console.log(error);
+    const mdb: any = await musicdb;
+    this.albumDetails = mdb.albums[`${artist}|${album}`];
+    const namedDiscs = Object.keys(this.albumDetails?.discs || {});
+    let discnrs: any[] = [];
+    namedDiscs.forEach(name => {
+      const discnr = name.substring(5);
+      discnrs.push({
+        discnr,
+        name,
       });
+    });
+    discnrs = discnrs.sort((a, b) => {
+      if (a.discnr < b.discnr) {
+        return -1;
+      }
+      return 1;
+    });
+    discnrs.forEach(disc => {
+      this.sortedDiscs.push(this.albumDetails.discs[disc.name]);
+    });
   }
   async _setPlaylist(e: Event, track = { id: undefined }) {
     let startIndex = 0;

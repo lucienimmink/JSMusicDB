@@ -34,30 +34,23 @@ export class LetterNav extends LitElement {
     this.showJumpList = false;
     handleScroll(scroller, index);
   };
-  _getAlbums = () => {
-    musicdb
-      .then((mdb: any) => {
-        this.albums = [];
-        this.letters = mdb.sortedLetters;
-        this.letters.forEach((letter: any) => {
-          letter
-            .sortAndReturnArtistsBy('sortName', 'asc')
-            .map((artist: any) => {
-              const header = {
-                header: artist.albumArtist || artist.name,
-                albums: artist.albums.length,
-                id: artist.letter.letter,
-              };
-              this.albums.push(header);
-              artist.albums.map((album: any) => {
-                this.albums.push(album);
-              });
-            });
+  _getAlbums = async () => {
+    const mdb: any = await musicdb;
+    this.albums = [];
+    this.letters = mdb.sortedLetters;
+    this.letters.forEach((letter: any) => {
+      letter.sortAndReturnArtistsBy('sortName', 'asc').map((artist: any) => {
+        const header = {
+          header: artist.albumArtist || artist.name,
+          albums: artist.albums.length,
+          id: artist.letter.letter,
+        };
+        this.albums.push(header);
+        artist.albums.map((album: any) => {
+          this.albums.push(album);
         });
-      })
-      .catch((error: any) => {
-        console.log(error);
       });
+    });
   };
   connectedCallback() {
     super.connectedCallback();

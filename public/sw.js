@@ -120,7 +120,7 @@ self.addEventListener('fetch', async event => {
       );
     }
   } catch (e) {
-    console.log(`error while fetching using the service worker`, e);
+    console.error(`error while fetching using the service worker`, e);
   }
 });
 
@@ -183,7 +183,7 @@ function refresh(request, response) {
             client.postMessage(message);
           })
           .catch(() => {
-            console.log('error parsing response');
+            console.error('error parsing response');
           });
       }
     });

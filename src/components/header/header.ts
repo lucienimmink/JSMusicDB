@@ -173,31 +173,26 @@ export class Header extends LitElement {
       this._changeTitle();
     }
   };
-  attributeChangedCallback(name: any, oldval: any, newval: any) {
-    musicdb
-      .then((mdb: any) => {
-        switch (name) {
-          case 'album':
-            if (newval !== 'undefined') {
-              const albumDetails = mdb.albums[`${this.artist}|${this.album}`];
-              this.alb = albumDetails;
-            } else {
-              this.alb = null;
-            }
-            break;
-          case 'artist':
-            if (newval !== 'undefined') {
-              const artistDetails = mdb.artists[this.artist];
-              this.art = artistDetails;
-            } else {
-              this.art = null;
-            }
-            break;
+  async attributeChangedCallback(name: any, oldval: any, newval: any) {
+    const mdb: any = await musicdb;
+    switch (name) {
+      case 'album':
+        if (newval !== 'undefined') {
+          const albumDetails = mdb.albums[`${this.artist}|${this.album}`];
+          this.alb = albumDetails;
+        } else {
+          this.alb = null;
         }
-      })
-      .catch((error: any) => {
-        console.log(error);
-      });
+        break;
+      case 'artist':
+        if (newval !== 'undefined') {
+          const artistDetails = mdb.artists[this.artist];
+          this.art = artistDetails;
+        } else {
+          this.art = null;
+        }
+        break;
+    }
     super.attributeChangedCallback(name, oldval, newval);
   }
   private _renderReloading() {

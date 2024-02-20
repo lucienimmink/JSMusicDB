@@ -99,15 +99,10 @@ export class SettingsNav extends LitElement {
     EventBus.off(DONE_RELOADING, this._setIsReloadingFalse, this);
     EventBus.off(HAS_SSE, this._updateSEE, this);
   }
-  private _init() {
-    musicdb
-      .then(async (mdb: any) => {
-        this.mdb = mdb;
-        this._populateStats();
-      })
-      .catch((error: any) => {
-        console.log(error);
-      });
+  private async _init() {
+    const mdb: any = await musicdb;
+    this.mdb = mdb;
+    this._populateStats();
   }
   private _setIsReloadingTrue() {
     this.isReloading = true;

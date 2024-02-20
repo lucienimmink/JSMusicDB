@@ -238,7 +238,6 @@ export class NowPlaying extends LitElement {
   }
   private _getPreviousTrack() {
     const currentIndex = this.playlist?.tracks.lastIndexOf(this.track) || 0;
-    console.log({ currentIndex });
     if (currentIndex > 0) {
       return this.playlist?.tracks[currentIndex - 1];
     }

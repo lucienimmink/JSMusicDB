@@ -75,14 +75,9 @@ export class AlbumDetails extends LitElement {
     }
     super.attributeChangedCallback(name, oldval, newval);
   }
-  getDetails(artist = this.artist, album = this.album) {
-    musicdb
-      .then((mdb: any) => {
-        this.albumDetails = mdb.albums[`${artist}|${album}`];
-      })
-      .catch((error: any) => {
-        console.log(error);
-      });
+  async getDetails(artist = this.artist, album = this.album) {
+    const mdb: any = await musicdb;
+    this.albumDetails = mdb.albums[`${artist}|${album}`];
   }
   calculateLength(tracks: Array<any>) {
     let duration = 0;

@@ -25,11 +25,11 @@ export const launchQueue = () => {
           case null:
             break;
           default:
-            console.log(`unknown shortcut event: ${nav}`);
+            console.info(`unknown shortcut event: ${nav}`);
         }
       }
     });
   } else {
-    console.log('not supported');
+    console.info('not supported');
   }
 };

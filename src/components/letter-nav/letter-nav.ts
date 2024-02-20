@@ -29,14 +29,9 @@ export class LetterNav extends LitElement {
     super.disconnectedCallback();
     EventBus.off(REFRESH, this._init, this);
   }
-  private _init() {
-    musicdb
-      .then((mdb: any) => {
-        this.letters = mdb.sortedLetters;
-      })
-      .catch((error: any) => {
-        console.log(error);
-      });
+  private async _init() {
+    const mdb: any = await musicdb;
+    this.letters = mdb.sortedLetters;
   }
 
   private _renderLetter(letter: any) {

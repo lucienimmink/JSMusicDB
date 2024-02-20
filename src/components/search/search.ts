@@ -61,18 +61,13 @@ export class SearchNav extends LitElement {
     super.disconnectedCallback();
     EventBus.off(REFRESH, this._doSearch, this);
   }
-  _doSearch() {
-    musicdb
-      .then((mdb: any) => {
-        if (this.query) {
-          this.artists = this._spliceList(mdb.searchArtist(this.query), MAX);
-          this.albums = this._spliceList(mdb.searchAlbum(this.query), MAX);
-          this.tracks = this._spliceList(mdb.searchTrack(this.query), MAX);
-        }
-      })
-      .catch((error: any) => {
-        console.log(error);
-      });
+  async _doSearch() {
+    const mdb: any = await musicdb;
+    if (this.query) {
+      this.artists = this._spliceList(mdb.searchArtist(this.query), MAX);
+      this.albums = this._spliceList(mdb.searchAlbum(this.query), MAX);
+      this.tracks = this._spliceList(mdb.searchTrack(this.query), MAX);
+    }
   }
   _spliceList(results: any[], count: number) {
     let ret = false;

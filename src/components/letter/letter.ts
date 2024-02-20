@@ -23,17 +23,12 @@ export class Letter extends LitElement {
     this.letter = '';
     this.artists = [];
   }
-  getArtists(event: any, l = this.letter) {
+  async getArtists(event: any, l = this.letter) {
     l = decodeURIComponent(l);
-    musicdb
-      .then((mdb: any) => {
-        const activeLetter: any = mdb.letters[l];
-        this.artists =
-          activeLetter?.sortAndReturnArtistsBy('sortName', 'asc') || [];
-      })
-      .catch((error: any) => {
-        console.log(error);
-      });
+    const mdb: any = await musicdb;
+    const activeLetter: any = mdb.letters[l];
+    this.artists =
+      activeLetter?.sortAndReturnArtistsBy('sortName', 'asc') || [];
   }
   connectedCallback() {
     super.connectedCallback();

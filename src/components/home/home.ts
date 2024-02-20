@@ -72,15 +72,10 @@ export class HomeNav extends LitElement {
     EventBus.off(UPDATE_TRACK, this._updatePlayer, this);
     clearInterval(this.counter);
   }
-  _init() {
-    musicdb
-      .then((mdb: any) => {
-        this.recentAdded = mdb.getLatestAdditions(this.LATEST_ADDITIONS);
-        this._updateFeed();
-      })
-      .catch((error: any) => {
-        console.log(error);
-      });
+  async _init() {
+    const mdb: any = await musicdb;
+    this.recentAdded = mdb.getLatestAdditions(this.LATEST_ADDITIONS);
+    this._updateFeed();
   }
   _updatePlayer(target: any, data: any) {
     this.currentTrack = data?.current;

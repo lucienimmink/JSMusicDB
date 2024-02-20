@@ -37,15 +37,10 @@ export class Artist extends LitElement {
       this._getAlbums(this.artist);
     }
   }
-  _getAlbums(artist = this.artist) {
-    musicdb
-      .then((mdb: any) => {
-        this.albums =
-          mdb.artists[artist]?.sortAndReturnAlbumsBy('year', 'asc') || [];
-      })
-      .catch((error: any) => {
-        console.log(error);
-      });
+  async _getAlbums(artist = this.artist) {
+    const mdb: any = await musicdb;
+    this.albums =
+      mdb.artists[artist]?.sortAndReturnAlbumsBy('year', 'asc') || [];
   }
   _handleClick(e: any) {
     const { target } = e;
