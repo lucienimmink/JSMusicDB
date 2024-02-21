@@ -174,6 +174,7 @@ export class Header extends LitElement {
     }
   };
   async attributeChangedCallback(name: any, oldval: any, newval: any) {
+    super.attributeChangedCallback(name, oldval, newval);
     const mdb: any = await musicdb;
     switch (name) {
       case 'album':
@@ -193,7 +194,6 @@ export class Header extends LitElement {
         }
         break;
     }
-    super.attributeChangedCallback(name, oldval, newval);
   }
   private _renderReloading() {
     return html`${this.isReloading
