@@ -216,11 +216,11 @@ export class LitMusicdb extends LitElement {
   }
   private _navigateToAlbum(target: any, current: any) {
     const track = current.current as Track;
-    const { artist, album } = track;
+    const { artist, album, id } = track;
     history.replaceState(
       {},
       '',
-      `/letter/${artist?.letter?.escapedLetter}/artist/${artist?.escapedName}/album/${album?.escapedName}`,
+      `/letter/${artist?.letter?.escapedLetter}/artist/${artist?.escapedName}/album/${album?.escapedName}?id=${id}`,
     );
     this._changeUrl(
       this,
