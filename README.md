@@ -14,6 +14,10 @@ A music player and database written using LIT and TypeScript. Using modern JavaS
 
 ![Screenshot of JSMusicDB in dark mode](https://www.jsmusicdb.com/assets/screenshot-2.webp 'Screenshot of JSMusicDB in dark mode')
 
+#### Mini album details on scroll
+
+![Screenshot of JSMusicDB showing Mini album details on scroll](https://www.jsmusicdb.com/assets/screenshot-8.webp 'Screenshot of JSMusicDB showing Mini album details on scroll')
+
 #### Now playing screen with a spectrum analyzer
 
 ![Screenshot of JSMusicDB showing the now-playing screen](https://www.jsmusicdb.com/assets/screenshot-3.webp 'Screenshot of JSMusicDB showing the now-playing screen')
