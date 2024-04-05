@@ -7,6 +7,7 @@ const fetchArt = async (mbid: string) => {
   if (!mbid) {
     throw Error('Cannot search without a proper mbid');
   }
+  if (!FANARTAPIKEY) return;
   const response = await fetchWithTimeout(
     `https://webservice.fanart.tv/v3/music/${mbid}&?api_key=${FANARTAPIKEY}&format=json`,
     { timeout: 10000 },

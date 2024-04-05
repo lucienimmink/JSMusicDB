@@ -8,6 +8,7 @@ const getMetaInfo = async ({
   artist: string;
   album: string;
 }) => {
+  if (!LASTFMAPIKEY) return;
   const searchParams = new URLSearchParams();
   searchParams.set('api_key', LASTFMAPIKEY);
   searchParams.set('artist', artist);

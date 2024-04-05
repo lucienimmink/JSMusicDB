@@ -142,7 +142,7 @@ export class LetterNav extends LitElement {
                   : nothing}
                 <form @submit="${(e: Event) => this._onSubmit(e)}">
                   <div class="row">
-                    <label for="username">Username:</label>
+                    <label for="username">Username</label>
                     <input
                       type="text"
                       placeholder="John Doe"

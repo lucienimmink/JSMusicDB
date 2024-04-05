@@ -47,17 +47,25 @@ export default css`
     background-color: var(--darken);
     color: var(--letter-color);
   }
-  .btn-transparent {
+  .btn-transparent,
+  .btn-link {
     color: var(--primary);
     padding: 0;
     border: 0;
     background-color: transparent;
+  }
+  .btn-link {
+    text-decoration: none;
   }
   .btn-transparent:hover,
   .btn-transparent:focus {
     outline: none;
     border: 0;
     color: var(--darken30);
+  }
+  .btn-link:hover,
+  .btn-link:focus {
+    text-decoration: underline;
   }
   .btn-icon {
     width: 1.5rem;
