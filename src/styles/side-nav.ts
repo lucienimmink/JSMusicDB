@@ -62,14 +62,12 @@ export default css`
   }
   .full {
     backdrop-filter: blur(5px);
-    position: fixed;
-    height: 100%;
-    z-index: 100;
-    width: 100%;
-    transition: opacity 0.2s ease-in-out;
-    top: 0;
+    inset: 0;
     opacity: 0;
     pointer-events: none;
+    position: fixed;
+    transition: opacity 0.2s ease-in-out;
+    z-index: 100;
   }
   .full.open {
     opacity: 1;
