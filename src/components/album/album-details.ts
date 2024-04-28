@@ -11,6 +11,7 @@ import { TOGGLE_SETTING, getSettingByName } from '../../utils/settings';
 import { hqIcon } from '../icons/hq';
 import musicdb from '../musicdb';
 import '../track/track';
+import { LOCALE } from '../../utils/date';
 
 @customElement('album-details')
 export class AlbumDetails extends LitElement {
@@ -85,7 +86,7 @@ export class AlbumDetails extends LitElement {
       tracks.forEach(track => {
         duration += track.duration;
       });
-      return timeSpan(duration, true, 'en-GB');
+      return timeSpan(duration, true, LOCALE);
     }
     return 0;
   }

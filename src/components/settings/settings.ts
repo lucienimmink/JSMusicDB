@@ -39,6 +39,7 @@ import { syncIcon } from '../icons/sync';
 import { trashIcon } from '../icons/trash';
 import { unlinkIcon } from '../icons/unlink';
 import musicdb, { updateAndRefresh } from '../musicdb';
+import { LOCALE } from '../../utils/date';
 
 @customElement('settings-nav')
 export class SettingsNav extends LitElement {
@@ -118,10 +119,10 @@ export class SettingsNav extends LitElement {
     this.stats.albums = this.mdb.totals.albums;
     this.stats.artists = this.mdb.totals.artists;
     this.stats.tracks = this.mdb.totals.tracks;
-    this.stats.time = timeSpan(this.mdb.totals.playingTime, true, 'en-GB');
+    this.stats.time = timeSpan(this.mdb.totals.playingTime, true, LOCALE);
     this.stats.parsingTime = this.mdb.totals.parsingTime;
     const date = await getLastParsed();
-    const formatter = new Intl.DateTimeFormat('en-GB', {
+    const formatter = new Intl.DateTimeFormat(LOCALE, {
       // @ts-ignore
       dateStyle: 'full',
       timeStyle: 'medium',

@@ -53,6 +53,7 @@ export default css`
     justify-content: center;
     font-variant-numeric: tabular-nums;
     font-family: system-ui;
+    text-transform: capitalize;
   }
   ol .playing {
     color: var(--primary);

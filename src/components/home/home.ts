@@ -22,6 +22,7 @@ import { hqIcon } from '../icons/hq';
 import musicdb from '../musicdb';
 
 import '../album/album-in-grid';
+import { LOCALE, getRelativeTime } from '../../utils/date';
 
 @customElement('home-nav')
 export class HomeNav extends LitElement {
@@ -146,7 +147,7 @@ export class HomeNav extends LitElement {
   _formatDate(dateString: string, track: any = null) {
     const date = new Date(Number(dateString) * 1000);
     if (dateString !== '0') {
-      const formatter = new Intl.DateTimeFormat('en-GB', {
+      const formatter = new Intl.DateTimeFormat(LOCALE, {
         // @ts-ignore
         dateStyle: 'medium',
         timeStyle: 'short',
@@ -154,7 +155,7 @@ export class HomeNav extends LitElement {
       const dateTime = formatter.format(date).split(', ');
       return html`
         <span>${dateTime[1]}</span>
-        <span class="small muted">${dateTime[0]}</span>
+        <span class="small muted">${getRelativeTime(date.getTime())}</span>
       `;
     }
     if (track) {

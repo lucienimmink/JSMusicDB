@@ -29,19 +29,6 @@ self.addEventListener('activate', event => {
   );
 });
 
-// step 0.5: Force cache the translations
-self.addEventListener('install', event => {
-  event.waitUntil(
-    (async function () {
-      const cache = await caches.open(CACHE_NAME);
-      await cache.addAll([
-        '/translations/en-gb.json',
-        '/translations/nl-nl.json',
-      ]);
-    })(),
-  );
-});
-
 // step 1: define a list of files that should not be cached
 const NON_CACHEABLE = [
   '/listen',
