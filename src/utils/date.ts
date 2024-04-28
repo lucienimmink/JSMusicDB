@@ -1,5 +1,5 @@
 const DAY_IN_MILLISECONDS = 1000 * 60 * 60 * 24;
-export const LOCALE = 'en-gb';
+export const LOCALE = 'en-GB';
 
 export function getRelativeTime(timestamp: number): string {
   const rtf = new Intl.RelativeTimeFormat(LOCALE, { numeric: 'auto' });
