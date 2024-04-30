@@ -155,7 +155,9 @@ export class HomeNav extends LitElement {
       const dateTime = formatter.format(date).split(', ');
       return html`
         <span>${dateTime[1]}</span>
-        <span class="small muted">${getRelativeTime(date.getTime())}</span>
+        <span class="small muted"
+          >${getRelativeTime(date.getTime(), { skipToday: true })}</span
+        >
       `;
     }
     if (track) {
