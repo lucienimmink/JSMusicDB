@@ -9,7 +9,7 @@ const fetchArt = async (mbid: string) => {
   }
   if (!FANARTAPIKEY) return;
   const response = await fetchWithTimeout(
-    `https://webservice.fanart.tv/v3/music/${mbid}&?api_key=${FANARTAPIKEY}&format=json`,
+    `https://webservice.fanart.tv/v3/music/${mbid}?api_key=${FANARTAPIKEY}&format=json`,
     { timeout: 10000 },
   );
   if (response.status === 200) {

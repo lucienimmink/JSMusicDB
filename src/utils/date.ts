@@ -6,19 +6,23 @@ export function getRelativeTime(
   options = { skipToday: false },
 ): string {
   const rtf = new Intl.RelativeTimeFormat(LOCALE, { numeric: 'auto' });
-  const now = Date.now();
-  const diffTime = Math.abs(now - new Date(time).getTime());
-  const diffDays = Math.floor(diffTime / DAY_IN_MILLISECONDS);
+  const currentTime = Date.now();
+  const timeDifference = Math.abs(currentTime - new Date(time).getTime());
+  let daysDifference = Math.floor(timeDifference / DAY_IN_MILLISECONDS);
 
-  if (diffDays === 0) {
-    const currentHour = new Date().getHours();
-    const targetHour = new Date(time).getHours();
-    if (currentHour < targetHour) {
+  const currentHour = new Date().getHours();
+  const targetHour = new Date(time).getHours();
+
+  if (daysDifference < 1) {
+    if (currentHour < targetHour && !options.skipToday) {
       return rtf.format(-1, 'day');
-    } else if (options.skipToday === true) {
-      return '';
     }
+    return ''; // Skip today if requested
   }
 
-  return rtf.format(diffDays, 'day');
+  if (currentHour < targetHour) {
+    daysDifference += 1;
+  }
+
+  return rtf.format(-daysDifference, 'day');
 }
