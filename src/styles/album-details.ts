@@ -51,6 +51,9 @@ export default css`
     -webkit-text-fill-color: transparent;
     background: linear-gradient(90deg, var(--primary), var(--text-color));
   }
+  h2 span {
+    display: inline-block;
+  }
   h2 span::selection {
     -webkit-text-fill-color: var(--letter-color);
   }

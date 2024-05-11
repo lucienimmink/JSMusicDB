@@ -72,6 +72,7 @@ export default css`
     background-clip: text !important;
     -webkit-text-fill-color: transparent;
     background: linear-gradient(90deg, var(--primary), var(--text-color));
+    display: inline-block;
   }
   h1 .album::selection {
     -webkit-text-fill-color: var(--letter-color);

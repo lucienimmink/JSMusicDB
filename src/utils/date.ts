@@ -1,28 +1,33 @@
-const DAY_IN_MILLISECONDS = 1000 * 60 * 60 * 24;
 export const LOCALE = 'en-GB';
+const ONE_DAY = 1000 * 60 * 60 * 24;
+
+function daysBetween(date1: Date, date2: Date) {
+  const differenceMs = Math.abs(date1.getTime() - date2.getTime());
+  return Math.floor(differenceMs / ONE_DAY);
+}
 
 export function getRelativeTime(
   time: number,
   options = { skipToday: false },
 ): string {
   const rtf = new Intl.RelativeTimeFormat(LOCALE, { numeric: 'auto' });
-  const currentTime = Date.now();
-  const timeDifference = Math.abs(currentTime - new Date(time).getTime());
-  let daysDifference = Math.floor(timeDifference / DAY_IN_MILLISECONDS);
 
-  const currentHour = new Date().getHours();
-  const targetHour = new Date(time).getHours();
+  const currentDate = new Date();
+  const targetDate = new Date(time);
 
-  if (daysDifference < 1) {
-    if (currentHour < targetHour && !options.skipToday) {
-      return rtf.format(-1, 'day');
-    }
-    return ''; // Skip today if requested
-  }
+  const currentDay = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth(),
+    currentDate.getDate(),
+  );
+  const targetDay = new Date(
+    targetDate.getFullYear(),
+    targetDate.getMonth(),
+    targetDate.getDate(),
+  );
 
-  if (currentHour < targetHour) {
-    daysDifference += 1;
-  }
+  const daysDifference = daysBetween(currentDay, targetDay);
+  if (daysDifference === 0 && options.skipToday) return '';
 
   return rtf.format(-daysDifference, 'day');
 }
