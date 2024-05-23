@@ -18,6 +18,7 @@ export default css`
       opacity 0.2s ease-in-out;
     height: 100%;
     position: relative;
+    opacity: 0.5;
   }
   .controls .btn svg {
     margin: 0 1px;
@@ -29,10 +30,12 @@ export default css`
     color: var(--primary);
     background: var(--background3);
     outline: none;
+    opacity: 1;
   }
   .controls .btn.active {
     background: var(--primary) !important;
     color: var(--letter-color) !important;
+    opacity: 1;
   }
   .controls .btn:hover:before {
     content: '';

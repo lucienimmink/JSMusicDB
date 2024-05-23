@@ -561,32 +561,41 @@ export class Album extends LitElement {
       <button
         class="btn"
         @click=${() => this._previous()}
-        aria-label="previous track"
+        aria-label="Previous track"
+        title="Previous track"
       >
         ${previousIcon}
       </button>
       <button
         class="btn"
         @click=${() => this._togglePlayPause()}
-        aria-label="play or pause"
+        aria-label="${this.isPlaying ? 'Pause' : 'Play'} track"
+        title="${this.isPlaying ? 'Pause' : 'Play'} track"
       >
         ${this.isPlaying ? pauseIcon : playIcon}
       </button>
-      <button class="btn" @click=${() => this._next()} aria-label="next track">
+      <button
+        class="btn"
+        @click=${() => this._next()}
+        aria-label="next track"
+        title="Next track"
+      >
         ${nextIcon}
       </button>
       <button class="btn" style="display:none">${volumeIcon}</button>
       <button
         class="btn md-up ${this.isLoved ? 'active' : ''}"
         @click=${() => this._toggleLoved()}
-        aria-label="love or unlove track"
+        aria-label="${this.isLoved ? 'un' : ''}love track"
+        title="${this.isLoved ? 'un' : ''}love track"
       >
         ${heartIcon}
       </button>
       <button
         class="btn md-up ${this.isShuffled ? 'active' : ''}"
         @click=${() => this._toggleShuffled()}
-        aria-label="shuffle or unshuffle playlist"
+        aria-label="${this.isShuffled ? 'un' : ''}shuffle playlist"
+        title="${this.isShuffled ? 'un' : ''}shuffle playlist"
       >
         ${randomIcon}
       </button>
