@@ -153,19 +153,28 @@ export default css`
     margin-left: 1rem;
     height: 45px;
     width: 45px;
+    border-radius: 50%;
   }
   .controls .btn svg {
     width: 20px;
+    margin-top: 5px;
   }
   .controls .btn-toggle {
     position: absolute;
-    bottom: -23px;
+    bottom: -20px;
     height: 25px;
-    padding-left: 5px;
+    padding-left: 18px;
+  }
+  .controls .btn-toggle:hover {
+    background: transparent;
   }
   .controls .btn-toggle:active {
     background: none;
   }
+  .controls .btn:hover::before {
+    display: none;
+  }
+
   .details-wrapper {
     display: flex;
     flex-direction: column;
@@ -188,6 +197,7 @@ export default css`
     margin-left: 0.5rem;
     height: 35px;
     width: 35px;
+    padding: 0;
   }
   .controls-meta .btn svg {
     width: 15x;
@@ -275,11 +285,12 @@ export default css`
     .controls .btn svg {
       height: 1.5rem;
       width: 1.5rem;
+      margin: 5px 0;
     }
     .controls .btn-toggle {
-      bottom: -17px;
+      bottom: -14px;
       height: 25px;
-      padding-left: 17px;
+      padding-left: 22px;
     }
     .controls-meta {
       position: static;

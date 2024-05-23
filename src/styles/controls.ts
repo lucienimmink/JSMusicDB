@@ -5,46 +5,53 @@ export default css`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding-right: 1rem;
     align-items: center;
   }
   .controls .btn {
+    display: block;
     color: var(--text-color);
-    width: 35px;
-    height: 35px;
+    background-color: transparent;
     border: 0;
-    border-radius: 50%;
-    background: none;
-    margin-left: 0.5rem;
-    line-height: normal;
-    padding: 0;
-    transition: all 0.2s ease-in-out;
+    transition:
+      color 0.2s ease-in-out,
+      background-color 0.2s ease-in-out,
+      opacity 0.2s ease-in-out;
+    height: 100%;
+    position: relative;
   }
-  .controls .btn:hover,
-  .controls .btn:focus {
+  .controls .btn svg {
+    margin: 0 1px;
+  }
+  .controls .btn + .btn {
+    margin: 0;
+  }
+  .controls .btn:hover {
     color: var(--primary);
+    background: var(--background3);
     outline: none;
   }
-  .controls .btn:active,
   .controls .btn.active {
-    border: 0;
-    background: var(--primary);
-    color: var(--letter-color);
+    background: var(--primary) !important;
+    color: var(--letter-color) !important;
+  }
+  .controls .btn:hover:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 9px;
+    width: 100%;
+    display: block;
+    background-color: var(--primary);
+    z-index: 1;
   }
   .controls .btn svg {
     width: 18px;
   }
-  .controls .btn + .btn {
-    margin-left: 0.5rem;
-  }
   @media (min-width: 576px) {
-    .controls .btn {
-      width: 50px;
-      height: 50px;
-    }
     .controls .btn svg {
       width: 22px;
-      margin-top: 3px;
+      margin: 3px 9px 0;
     }
   }
 `;
