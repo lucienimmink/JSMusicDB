@@ -3,6 +3,7 @@ import '@lit-labs/virtualizer';
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
+// eslint-disable-next-line import/no-named-as-default
 import AudioMotionAnalyzer from 'audiomotion-analyzer';
 import buttons from '../../styles/buttons';
 import container from '../../styles/container';

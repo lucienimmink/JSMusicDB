@@ -1,5 +1,5 @@
 import { fetchArt as mp3stream } from '../mp3stream';
-import { fetchArt as audiodb } from './audiodb';
+import { fetchArt as deezer } from './deezer';
 import { fetchArt as fanart } from './fanart';
 
 const config = [
@@ -12,7 +12,7 @@ const config = [
     key: 'mbid',
   },
   {
-    provider: audiodb,
+    provider: deezer,
     key: 'artist',
   },
 ];
