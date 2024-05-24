@@ -51,6 +51,18 @@ export const getRSSFeed = async (
   return response.text();
 };
 
+export const getCorsProxy = async (
+  server: string,
+  jwt: string,
+  remote: string,
+) => {
+  const response = await fetchWithTimeout(
+    `${server}/proxy?jwt=${jwt}&remote=${remote}`,
+  );
+
+  return response;
+};
+
 export const authenticate = async (server: string, payload: ArrayBuffer) => {
   const response = await fetchWithTimeout(`${server}/authenticate`, {
     method: 'post',

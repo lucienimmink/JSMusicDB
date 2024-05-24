@@ -1,9 +1,16 @@
-import { fetchWithTimeout } from '../../../../utils/fetch';
+import {
+  getJwt,
+  getCorsProxy,
+  getServer,
+} from '../../../../utils/node-mp3stream';
 
 const fetchArt = async (artist: string) => {
-  const response = await fetchWithTimeout(
+  const jwt: any = await getJwt();
+  const server: any = await getServer();
+  const response = await getCorsProxy(
+    server,
+    jwt,
     `https://api.deezer.com/search/artist?q=${encodeURIComponent(artist)}`,
-    { timeout: 10000 },
   );
   if (response.status === 200) {
     const json = await response.json();

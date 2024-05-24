@@ -297,7 +297,8 @@ export class AlbumArt extends LitElement {
         let remoteURL = await get(`remoteURL-${artist}`, this.customStore);
         if (!remoteURL) {
           remoteURL = await fetchArtForArtist(artist, this.mbid);
-          await set(`remoteURL-${artist}`, remoteURL, this.customStore);
+          if (remoteURL)
+            await set(`remoteURL-${artist}`, remoteURL, this.customStore);
         }
         art += remoteURL;
         if (this.isEmptyArt(art)) {
