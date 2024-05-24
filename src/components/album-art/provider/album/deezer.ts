@@ -8,7 +8,7 @@ const fetchArt = async ({
   album: string;
 }) => {
   const response = await fetchWithTimeout(
-    `https://api.deezer.com/search/artist?q=${encodeURIComponent(artist)} - ${encodeURIComponent(album)}`,
+    `https://api.deezer.com/search/album?q=${encodeURIComponent(artist)} - ${encodeURIComponent(album)}`,
     { timeout: 10000 },
   );
   if (response.status === 200) {
