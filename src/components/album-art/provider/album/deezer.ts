@@ -22,7 +22,7 @@ const fetchArt = async ({
     const json = await response.json();
     const { data } = json;
     if (data) {
-      return data[0].picture_xl;
+      return data[0].cover_xl;
     }
   }
   throw Error('no art found in provider deezer');

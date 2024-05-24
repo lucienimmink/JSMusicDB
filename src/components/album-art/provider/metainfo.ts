@@ -8,7 +8,8 @@ const getMetaInfo = async ({
   artist: string;
   album: string;
 }) => {
-  if (!LASTFMAPIKEY) return;
+  if (!LASTFMAPIKEY)
+    throw Error('no last.fm api key provided, cannot use provider');
   const searchParams = new URLSearchParams();
   searchParams.set('api_key', LASTFMAPIKEY);
   searchParams.set('artist', artist);
