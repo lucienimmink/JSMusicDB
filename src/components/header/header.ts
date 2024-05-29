@@ -106,29 +106,26 @@ export class Header extends LitElement {
   }
   _doChangeTitle(target: any, data: any) {
     this._changeTitle(data);
-    if (!this.customWindowsControl) document.title = this.dynamicTitle;
+    this.setDocumentTitle();
   }
   _changeTitle = (data: any = {}) => {
-    const dynamic = [];
+    let dynamicTitle = '';
     if (this.isReloading) {
-      dynamic.push(this.progress);
+      dynamicTitle = this.progress;
     }
     if (data?.title) {
       this.titleData = data;
     }
     if (this.titleData?.title) {
-      dynamic.push(`${this.titleData.title} by ${this.titleData.artist}`);
+      dynamicTitle = `${this.titleData.title} by ${this.titleData.artist}`;
     }
-    if (dynamic.length > 0) {
-      dynamic.push(''); // for the trailing bullit
-    }
-    this.dynamicTitle = `${dynamic.join(' • ')}JSMusicDB`;
+    this.dynamicTitle = dynamicTitle || 'JSMusicDB';
   };
   _changeCustomWindowControls = () => {
     this.customWindowsControl =
       // @ts-ignore
       navigator?.windowControlsOverlay?.visible || false;
-    if (!this.customWindowsControl) document.title = this.dynamicTitle;
+    this.setDocumentTitle();
   };
   _sse = ({ server: server, jwt: jwt }: { server: any; jwt: any }) => {
     setupStream(server, jwt).then((stream: any) => {
@@ -173,6 +170,12 @@ export class Header extends LitElement {
       this._changeTitle();
     }
   };
+  private setDocumentTitle() {
+    document.title = !this.customWindowsControl
+      ? this.dynamicTitle
+      : 'JSMusicDB';
+  }
+
   async attributeChangedCallback(name: any, oldval: any, newval: any) {
     super.attributeChangedCallback(name, oldval, newval);
     const mdb: any = await musicdb;
