@@ -561,16 +561,16 @@ export class Album extends LitElement {
       <button
         class="btn"
         @click=${() => this._previous()}
-        aria-label="Previous track"
-        title="Previous track"
+        aria-label="previous track"
+        title="previous track"
       >
         ${previousIcon}
       </button>
       <button
         class="btn"
         @click=${() => this._togglePlayPause()}
-        aria-label="${this.isPlaying ? 'Pause' : 'Play'} track"
-        title="${this.isPlaying ? 'Pause' : 'Play'} track"
+        aria-label="${this.isPlaying ? 'pause' : 'play'} track"
+        title="${this.isPlaying ? 'pause' : 'play'} track"
       >
         ${this.isPlaying ? pauseIcon : playIcon}
       </button>
@@ -578,7 +578,7 @@ export class Album extends LitElement {
         class="btn"
         @click=${() => this._next()}
         aria-label="next track"
-        title="Next track"
+        title="next track"
       >
         ${nextIcon}
       </button>

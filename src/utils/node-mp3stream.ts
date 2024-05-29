@@ -51,7 +51,7 @@ export const getRSSFeed = async (
   return response.text();
 };
 
-export const getCorsProxy = async (
+export const useCorsProxy = async (
   server: string,
   jwt: string,
   remote: string,

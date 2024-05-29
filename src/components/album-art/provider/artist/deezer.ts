@@ -1,13 +1,13 @@
 import {
   getJwt,
-  getCorsProxy,
+  useCorsProxy,
   getServer,
 } from '../../../../utils/node-mp3stream';
 
 const fetchArt = async (artist: string) => {
   const jwt: any = await getJwt();
   const server: any = await getServer();
-  const response = await getCorsProxy(
+  const response = await useCorsProxy(
     server,
     jwt,
     `https://api.deezer.com/search/artist?q=${encodeURIComponent(artist)}`,
