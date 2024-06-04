@@ -32,6 +32,7 @@ export default css`
     outline: none;
     opacity: 1;
   }
+  .controls .btn:active,
   .controls .btn.active {
     background: var(--primary) !important;
     color: var(--letter-color) !important;
