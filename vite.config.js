@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => {
       version(),
       VitePWA({
         devOptions: {
-          enabled: true,
+          enabled: mode === 'development',
         },
         registerType: 'autoUpdate',
         manifest: {
@@ -138,6 +138,8 @@ export default defineConfig(({ mode }) => {
           ],
         },
         workbox: {
+          // comppletely bypass service worker for these resources (in this case the EventStream and localhost entries)
+          navigateFallbackDenylist: [/.*stream.*$/i, /.*localhost:.*$/i],
           runtimeCaching: [
             {
               urlPattern: /.*\/node-music\.json$/,
@@ -180,8 +182,21 @@ export default defineConfig(({ mode }) => {
             },
             {
               urlPattern:
-                /\/listen|\/rescan|\/version|\/public-key|\/stream|localhost:|#no-sw-cache|ts=|\/proxy/,
+                /.*\/listen.*$|.*\/rescan.*$|.*#no-sw-cache$|.*ts=.*$/,
               handler: 'NetworkOnly',
+            },
+            {
+              urlPattern: /.*\/version.*$|.*\/public-key.*$|.*\/proxy.*$/i,
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'shortlived',
+                expiration: {
+                  maxAgeSeconds: 5,
+                },
+                cacheableResponse: {
+                  statuses: [200],
+                },
+              },
             },
             {
               urlPattern:
