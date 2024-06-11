@@ -15,11 +15,14 @@
 ## temp folders
 /.tmp/
 
-# build
+## build
 /_site/
 /dist/
 /out-tsc/
 dist.zip
+
+## workbox-dev
+/dev-dist/
 
 ## env
 .env

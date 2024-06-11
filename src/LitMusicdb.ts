@@ -122,6 +122,8 @@ export class LitMusicdb extends LitElement {
     EventBus.off(NAVIGATE_TO_ALBUM, this._navigateToAlbum, this);
     EventBus.off(TOGGLE_OVERFLOW_HIDDEN, this._toggleOverflowHidden, this);
   }
+
+  // TODO: how to integrate messaging into workbox?
   private _initServiceWorkerRefresh() {
     if ('serviceWorker' in window.navigator) {
       window.navigator.serviceWorker.addEventListener(
