@@ -153,6 +153,7 @@ export class AlbumArt extends LitElement {
           : ''} ${this.loading && !this.isDefault ? 'loading' : ''}"
         width="${this.dimension}"
         height="${this.dimension}"
+        crossorigin="anonymous"
       />
     `;
   }

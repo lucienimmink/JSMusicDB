@@ -222,6 +222,7 @@ export class HomeNav extends LitElement {
                         class="album-art"
                         alt="${track.artist['#text']} • ${track.name}"
                         @error="${(e: Event) => this._onError(e)}"
+                        crossorigin="anonymous"
                       />
                       ${track.loved === '1'
                         ? html`<span class="heart">${heartIcon}</span>`

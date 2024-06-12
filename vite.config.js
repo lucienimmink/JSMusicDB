@@ -171,7 +171,7 @@ export default defineConfig(({ mode }) => {
                   maxAgeSeconds: 60 * 60 * 24 * 1,
                 },
                 cacheableResponse: {
-                  statuses: [0, 200],
+                  statuses: [200],
                 },
                 broadcastUpdate: {
                   options: {
@@ -181,8 +181,7 @@ export default defineConfig(({ mode }) => {
               },
             },
             {
-              urlPattern:
-                /.*\/listen.*$|.*\/rescan.*$|.*#no-sw-cache$|.*ts=.*$/,
+              urlPattern: /.*\/listen.*$|.*\/rescan.*$|.*ts=.*$/,
               handler: 'NetworkOnly',
             },
             {
@@ -208,7 +207,7 @@ export default defineConfig(({ mode }) => {
                   maxAgeSeconds: 60 * 60 * 24 * 365,
                 },
                 cacheableResponse: {
-                  statuses: [0, 200],
+                  statuses: [200],
                 },
               },
             },
@@ -222,7 +221,7 @@ export default defineConfig(({ mode }) => {
                   maxAgeSeconds: 60 * 60 * 24 * 7,
                 },
                 cacheableResponse: {
-                  statuses: [0, 200],
+                  statuses: [200],
                 },
               },
             },

@@ -60,7 +60,7 @@ export function getDominantColorByURL(url: any, cb: any): any {
     },
     false,
   );
-  clone.src = `${url}#no-sw-cache`;
+  clone.src = `${url}`;
 }
 export function getColorsFromRGBWithBGColor(rgba: any, bgColor: string): any {
   const text = getReadableColor(rgba, bgColor);
