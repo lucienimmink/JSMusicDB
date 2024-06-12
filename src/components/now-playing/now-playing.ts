@@ -353,6 +353,24 @@ export class NowPlaying extends LitElement {
     }
     return true;
   };
+  _handleTouchEndControls = (e: any) => {
+    const x = e.changedTouches[0].screenX;
+    const y = e.changedTouches[0].screenY;
+
+    const ratio = {
+      x: Math.abs(x - this.touchstartX) / Math.abs(y - this.touchstartY),
+      y: Math.abs(y - this.touchstartY) / Math.abs(x - this.touchstartX),
+    };
+
+    if (ratio.y > 6) {
+      // swipe up or down
+      e.stopImmediatePropagation();
+      y > this.touchstartY
+        ? (this.isBottomShown = false)
+        : (this.isBottomShown = true);
+    }
+    return true;
+  };
   private _renderBackdrop() {
     return html`<div class="backdrop">
       <album-art
@@ -500,12 +518,12 @@ export class NowPlaying extends LitElement {
     </div>`;
   }
   private _renderTop() {
-    return html`<div
-      class="top ${this.classicVis ? 'classic-vis' : ''}"
-      @touchstart=${this._handleTouchStart}
-      @touchend=${this._handleTouchEnd}
-    >
-      <div class="image-wrapper">
+    return html`<div class="top ${this.classicVis ? 'classic-vis' : ''}">
+      <div
+        class="image-wrapper"
+        @touchstart=${this._handleTouchStart}
+        @touchend=${this._handleTouchEnd}
+      >
         <div id="visualisation" class="${this.hasCanvas ? 'active' : ''}"></div>
         ${this._renderArt(this._getPreviousTrack(), 'previous')}
         ${this._renderArt(this.track)} ${this._renderFloatingText()}
@@ -515,7 +533,8 @@ export class NowPlaying extends LitElement {
         ? this._renderErrorState()
         : html`<div class="controls-wrapper ${
             this.classicVis ? 'classic-vis' : ''
-          }">
+          }" @touchstart=${this._handleTouchStart}
+            @touchend=${this._handleTouchEndControls}>
                             ${this._renderTimeControls()}
                             <div class="details-wrapper">
                               ${this._renderTextDetails()}
