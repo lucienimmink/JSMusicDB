@@ -292,6 +292,12 @@ export class Album extends LitElement {
       if (!this.hasScrobbled && this.timePlayed > ONEMINUTE) {
         this._scrobble();
       }
+      if ('setPositionState' in navigator.mediaSession && player.duration) {
+        navigator.mediaSession.setPositionState({
+          duration: player.duration,
+          position: player.currentTime,
+        });
+      }
     }
   }
   _scrobble() {
@@ -301,6 +307,24 @@ export class Album extends LitElement {
     ) {
       scrobbleTrack(this.track);
       this.hasScrobbled = true;
+    }
+  }
+  _onloadstart() {
+    console.log('loaded when a new media file is loaded? would be AWESOME!');
+    // now that we have the art, we can set the media session
+    if ('mediaSession' in navigator) {
+      (navigator as any).mediaSession.metadata = new MediaMetadata({
+        title: this.track.title,
+        artist: this.track.trackArtist,
+        album: this.track.album.name,
+        artwork: [
+          {
+            src: this.art,
+            sizes: '300x300',
+            type: 'image/jpg',
+          },
+        ],
+      });
     }
   }
   _onplay() {
@@ -465,21 +489,6 @@ export class Album extends LitElement {
     this.art = e.detail.art;
     if (this.useDynamicAccentColor) {
       this._setDynamicAccentColor();
-    }
-    // now that we have the art, we can set the media session
-    if ('mediaSession' in navigator) {
-      (navigator as any).mediaSession.metadata = new MediaMetadata({
-        title: this.track.title,
-        artist: this.track.trackArtist,
-        album: this.track.album.name,
-        artwork: [
-          {
-            src: this.art,
-            sizes: '512x512',
-            type: 'image/png',
-          },
-        ],
-      });
     }
   }
   _setDynamicAccentColor() {
@@ -673,6 +682,9 @@ export class Album extends LitElement {
       }}
       @progress=${() => {
         this._onprogress();
+      }}
+      @loadstart=${() => {
+        this._onloadstart();
       }}
     ></audio>`;
   }
