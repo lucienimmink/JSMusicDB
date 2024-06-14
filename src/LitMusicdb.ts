@@ -9,7 +9,7 @@ import './components/loading-indicator/loading-indicator';
 import './components/loading-indicator/progress-bar';
 import './components/loading-indicator/progress-spinner';
 import './components/mp3stream/login';
-import musicdb, { refresh, update } from './components/musicdb';
+import musicdb, { refresh, updateAndRefresh } from './components/musicdb';
 import './components/player/player';
 import router from './routes';
 import litMusicdb from './styles/lit-musicdb';
@@ -132,7 +132,7 @@ export class LitMusicdb extends LitElement {
             meta === 'workbox-broadcast-update' &&
             payload?.updatedURL?.includes('node-music.json')
           ) {
-            await update();
+            await updateAndRefresh();
             EventBus.emit(REFRESH, this);
           }
         },
