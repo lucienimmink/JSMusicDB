@@ -161,14 +161,13 @@ export default defineConfig(({ mode }) => {
               },
             },
             {
-              urlPattern:
-                /.*user\.getrecenttracks.*$|.*\/node-music\.json\?update$/,
+              urlPattern: /.*user\.getrecenttracks.*$/,
               handler: 'NetworkFirst',
               options: {
                 cacheName: 'livedata',
                 expiration: {
                   maxEntries: 10,
-                  maxAgeSeconds: 60 * 60 * 24 * 1,
+                  maxAgeSeconds: 60,
                 },
                 cacheableResponse: {
                   statuses: [200],

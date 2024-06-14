@@ -46,7 +46,7 @@ export const update = async () => {
 export const updateAndRefresh = async () => {
   const server: any = await getServer();
   if (server) {
-    await fetchWithTimeout(`${server}/data/node-music.json?update`)
+    await fetchWithTimeout(`${server}/data/node-music.json`)
       .then((response: Response) => response.json())
       .then((data: unknown) => {
         if (data) {
