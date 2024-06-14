@@ -310,9 +310,12 @@ export class Album extends LitElement {
     }
   }
   _onloadstart() {
-    console.log('loaded when a new media file is loaded? would be AWESOME!');
     // now that we have the art, we can set the media session
-    if ('mediaSession' in navigator) {
+    let imageType;
+    if (this.art) {
+      imageType = this.art.split('.').pop();
+    }
+    if ('mediaSession' in navigator && imageType) {
       (navigator as any).mediaSession.metadata = new MediaMetadata({
         title: this.track.title,
         artist: this.track.trackArtist,
@@ -321,7 +324,7 @@ export class Album extends LitElement {
           {
             src: this.art,
             sizes: '300x300',
-            type: 'image/jpg',
+            type: `image/${imageType}`,
           },
         ],
       });
