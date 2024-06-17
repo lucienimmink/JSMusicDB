@@ -98,6 +98,12 @@ export class AlbumDetails extends LitElement {
     e.preventDefault();
     this.dispatchEvent(new Event('queue'));
   }
+  _openModal() {
+    this.shadowRoot?.querySelector('dialog')?.showModal();
+  }
+  _closeModal() {
+    this.shadowRoot?.querySelector('dialog')?.close();
+  }
 
   private _renderButtons() {
     return html`<h4>
@@ -151,7 +157,20 @@ export class AlbumDetails extends LitElement {
             mbid="${this.albumDetails?.mbid}"
             ?static=${true}
             dimension="190"
+            @click=${this._openModal}
           ></album-art>
+          <dialog>
+            <album-art
+              artist="${this.albumDetails?.artist?.albumArtist ||
+              this.albumDetails?.artist?.name}"
+              album="${this.albumDetails?.name}"
+              mbid="${this.albumDetails?.mbid}"
+              dimension="600"
+              visible="true"
+              ?static=${true}
+              @click=${this._closeModal}
+            ></album-art>
+          </dialog>
           ${this._renderDetails()}
         </div>
       </div>

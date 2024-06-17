@@ -24,6 +24,7 @@ export default css`
     box-shadow: 0px 0px 1px var(--primary);
     transition: all 0.1s ease-in-out;
     view-transition-name: album-art;
+    cursor: pointer;
   }
   .details {
     display: flex;
@@ -83,6 +84,32 @@ export default css`
   h4 span {
     display: none;
   }
+  dialog {
+    border: 1px solid var(--background2);
+    box-shadow: 0px 0px 1px var(--primary);
+    padding: 0;
+  }
+  dialog::backdrop {
+    backdrop-filter: blur(5px);
+  }
+  dialog album-art {
+    margin-right: 0;
+    margin-left: 0;
+    display: block;
+    max-width: 90vw;
+    max-height: 90vw;
+    width: 600px;
+    height: 600px;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  @media (orientation: landscape) {
+    dialog album-art {
+      max-width: 90vh;
+      max-height: 90vh;
+    }
+  }
   @media (min-width: 992px) {
     .jumbotron {
       padding: 2rem;
@@ -106,6 +133,9 @@ export default css`
       height: 190px;
       max-height: 190px;
       animation: album-art-shrink;
+    }
+    dialog album-art {
+      animation: none;
     }
     @keyframes album-art-shrink {
       to {
