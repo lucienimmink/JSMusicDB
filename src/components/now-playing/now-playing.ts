@@ -371,11 +371,14 @@ export class NowPlaying extends LitElement {
     }
     return true;
   };
-  updated() {
+  async updated() {
     const albumArtElements = this.shadowRoot?.querySelectorAll('album-art');
     albumArtElements?.forEach(albumArt => {
       // @ts-ignore
-      albumArt.setAttribute('dimension', albumArt.offsetWidth);
+      if (albumArt.offsetWidth && albumArt.dimension !== albumArt.offsetWidth) {
+        // @ts-ignore
+        albumArt.setAttribute('dimension', albumArt.offsetWidth);
+      }
     });
   }
   private _renderBackdrop() {
