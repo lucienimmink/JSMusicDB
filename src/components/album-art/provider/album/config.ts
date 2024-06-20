@@ -5,17 +5,17 @@ import { fetchArt as coverartarchive } from './coverartarchive';
 
 const config = [
   {
-    provider: lastfm,
-  },
-  {
-    provider: mp3stream,
-    key: 'mbid',
-  },
-  {
     provider: deezer,
   },
   {
+    provider: lastfm,
+  },
+  {
     provider: coverartarchive,
+    key: 'mbid',
+  },
+  {
+    provider: mp3stream,
     key: 'mbid',
   },
 ];
