@@ -375,10 +375,7 @@ export class NowPlaying extends LitElement {
     const albumArtElements = this.shadowRoot?.querySelectorAll('album-art');
     albumArtElements?.forEach(albumArt => {
       // @ts-ignore
-      if (albumArt.offsetWidth && albumArt.dimension === 300) {
-        // @ts-ignore
-        albumArt.setAttribute('dimension', albumArt.offsetWidth);
-      }
+      albumArt.setAttribute('dimension', albumArt.offsetWidth);
     });
   }
   private _renderBackdrop() {
