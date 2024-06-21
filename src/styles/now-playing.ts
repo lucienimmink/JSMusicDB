@@ -15,6 +15,32 @@ export default css`
   .backdrop {
     position: fixed;
   }
+  dialog {
+    border: 1px solid var(--background2);
+    box-shadow: 0px 0px 1px var(--primary);
+    padding: 0;
+  }
+  dialog::backdrop {
+    backdrop-filter: blur(5px);
+  }
+  dialog album-art {
+    margin-right: 0;
+    margin-left: 0;
+    display: block;
+    max-width: 90vw;
+    max-height: 90vw;
+    width: 600px;
+    height: 600px;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  @media (orientation: landscape) {
+    dialog album-art {
+      max-width: 90vh;
+      max-height: 90vh;
+    }
+  }
   @media (orientation: landscape) {
     .backdrop {
       width: 100%;
@@ -72,6 +98,7 @@ export default css`
     margin: 0px auto;
     z-index: 1;
     position: absolute;
+    pointer-events: none;
   }
   .previous-album-art {
     transform: translateX(-100%);
@@ -324,6 +351,8 @@ export default css`
       border: 1px solid var(--background2);
       background: rgba(255, 255, 255, 0.85);
       box-shadow: 0px 0px 1px var(--primary);
+      cursor: pointer;
+      pointer-events: all;
     }
     .smallArt canvas {
       height: calc(100vh - 50px);
