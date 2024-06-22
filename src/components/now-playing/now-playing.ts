@@ -377,6 +377,9 @@ export class NowPlaying extends LitElement {
   _closeModal() {
     this.shadowRoot?.querySelector('dialog')?.close();
   }
+  _getModalDimension() {
+    return Math.min(window.innerHeight, window.innerHeight) - 200;
+  }
   async updated() {
     const albumArtElements = this.shadowRoot?.querySelectorAll('album-art');
     albumArtElements?.forEach(albumArt => {
@@ -411,6 +414,20 @@ export class NowPlaying extends LitElement {
         .mbid=${track.album.mbid}
         @click=${this._openModal}
       ></album-art>
+      ${position === 'current'
+        ? html`<dialog>
+            <album-art
+              .album=${this.track.album.name}
+              .artist=${this.track.album.artist.albumArtist ||
+              this.track.album.artist.name}
+              .mbid=${this.track.album.mbid}
+              dimension="${this._getModalDimension()}"
+              visible="true"
+              ?static=${true}
+              @click=${this._closeModal}
+            ></album-art>
+          </dialog>`
+        : nothing}
     </div>`;
   }
   private _renderFloatingText() {
@@ -545,18 +562,6 @@ export class NowPlaying extends LitElement {
         ${this._renderArt(this._getPreviousTrack(), 'previous')}
         ${this._renderArt(this.track)} ${this._renderFloatingText()}
         ${this._renderArt(this._getNextTrack(), 'next')}
-        <dialog>
-          <album-art
-            .album=${this.track.album.name}
-            .artist=${this.track.album.artist.albumArtist ||
-            this.track.album.artist.name}
-            .mbid=${this.track.album.mbid}
-            dimension="600"
-            visible="true"
-            ?static=${true}
-            @click=${this._closeModal}
-          ></album-art>
-        </dialog>
       </div>
       ${this.hasError
         ? this._renderErrorState()

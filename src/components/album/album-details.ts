@@ -104,6 +104,9 @@ export class AlbumDetails extends LitElement {
   _closeModal() {
     this.shadowRoot?.querySelector('dialog')?.close();
   }
+  _getModalDimension() {
+    return Math.min(window.innerHeight, window.innerHeight) - 300;
+  }
 
   private _renderButtons() {
     return html`<h4>
@@ -165,7 +168,7 @@ export class AlbumDetails extends LitElement {
               this.albumDetails?.artist?.name}"
               album="${this.albumDetails?.name}"
               mbid="${this.albumDetails?.mbid}"
-              dimension="600"
+              dimension="${this._getModalDimension()}"
               visible="true"
               ?static=${true}
               @click=${this._closeModal}

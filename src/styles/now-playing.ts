@@ -29,8 +29,8 @@ export default css`
     display: block;
     max-width: 90vw;
     max-height: 90vw;
-    width: 600px;
-    height: 600px;
+    width: auto;
+    height: auto;
     aspect-ratio: 1 / 1;
     overflow: hidden;
     cursor: pointer;
