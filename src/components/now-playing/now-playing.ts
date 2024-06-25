@@ -116,9 +116,6 @@ export class NowPlaying extends LitElement {
     }, 100);
     this._updatePlaylist();
   }
-  async sleep(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
   async connectedCallback() {
     super.connectedCallback();
     EventBus.on(TOGGLE_SHUFFLE_UPDATED, this._doToggleShuffleUpdated, this);

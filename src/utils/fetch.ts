@@ -11,3 +11,7 @@ export async function fetchWithTimeout(resource: string, options = {}) {
   clearTimeout(id);
   return response;
 }
+
+export const sleep = (milliseconds: number | undefined) => {
+  return new Promise(resolve => setTimeout(resolve, milliseconds));
+};
