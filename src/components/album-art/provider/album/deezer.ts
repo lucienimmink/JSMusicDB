@@ -26,7 +26,7 @@ const fetchArt = async ({
       return data[0].cover_xl;
     }
     if (error.code === 4) {
-      sleep(100);
+      await sleep(100);
       return await fetchArt({ artist, album });
     }
   }
