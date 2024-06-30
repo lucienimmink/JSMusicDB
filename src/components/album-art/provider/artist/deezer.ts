@@ -1,18 +1,18 @@
+import { CacheExpiration } from 'workbox-expiration';
+
 import { sleep } from '../../../../utils/fetch';
 import {
   getJwt,
   useCorsProxy,
   getServer,
 } from '../../../../utils/node-mp3stream';
+import { SLEEPTIMER } from '../../album-art';
 
 const fetchArt = async (artist: string) => {
   const jwt: any = await getJwt();
   const server: any = await getServer();
-  const response = await useCorsProxy(
-    server,
-    jwt,
-    `https://api.deezer.com/search/artist?q=${encodeURIComponent(artist)}`,
-  );
+  const remote = `https://api.deezer.com/search/artist?q=${encodeURIComponent(artist)}`;
+  const response = await useCorsProxy(server, jwt, remote);
   if (response.status === 200) {
     const json = await response.json();
     const { data, error } = json;
@@ -21,7 +21,8 @@ const fetchArt = async (artist: string) => {
       if (!url.includes('/artist//')) return url;
     }
     if (error.code === 4) {
-      await sleep(100);
+      new CacheExpiration('shortlived').expireEntries();
+      await sleep(SLEEPTIMER);
       return await fetchArt(artist);
     }
   }

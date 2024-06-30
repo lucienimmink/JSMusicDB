@@ -25,6 +25,8 @@ const resizeObserver = new ResizeObserver((entries: any) => {
   }
 });
 
+export const SLEEPTIMER = 200;
+
 let intersectionObserver: IntersectionObserver;
 
 @customElement('album-art')
