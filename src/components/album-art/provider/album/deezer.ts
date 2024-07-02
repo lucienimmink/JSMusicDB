@@ -1,5 +1,3 @@
-import { CacheExpiration } from 'workbox-expiration';
-
 import { sleep } from '../../../../utils/fetch';
 import {
   getJwt,
@@ -26,7 +24,8 @@ const fetchArt = async ({
       return data[0].cover_xl;
     }
     if (error.code === 4) {
-      new CacheExpiration('shortlived').expireEntries();
+      const cache = await caches.open('shortlived');
+      await cache.delete(`${server}/proxy?jwt=${jwt}&remote=${remote}`);
       await sleep(SLEEPTIMER);
       return await fetchArt({ artist, album });
     }

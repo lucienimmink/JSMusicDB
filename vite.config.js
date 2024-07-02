@@ -148,7 +148,7 @@ export default defineConfig(({ mode }) => {
                 cacheName: 'node-music',
                 expiration: {
                   maxEntries: 1,
-                  maxAgeSeconds: 60 * 60 * 24 * 365,
+                  maxAgeSeconds: 60 * 60 * 24 * 7,
                 },
                 cacheableResponse: {
                   statuses: [200],
@@ -185,7 +185,7 @@ export default defineConfig(({ mode }) => {
             },
             {
               urlPattern: /.*\/version.*$|.*\/public-key.*$|.*\/proxy.*$/i,
-              handler: 'CacheFirst',
+              handler: 'StaleWhileRevalidate',
               options: {
                 cacheName: 'shortlived',
                 expiration: {
@@ -203,7 +203,7 @@ export default defineConfig(({ mode }) => {
               options: {
                 cacheName: 'images',
                 expiration: {
-                  maxAgeSeconds: 60 * 60 * 24 * 365,
+                  maxAgeSeconds: 60 * 60 * 24 * 7,
                 },
                 cacheableResponse: {
                   statuses: [200],
