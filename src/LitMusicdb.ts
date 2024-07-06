@@ -1,6 +1,7 @@
 import { LitElement, html, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import './components/album-art/album-art';
+import './components/alerts/release-alert';
 import './components/app-link/app-link';
 import './components/header/header';
 import './components/last-fm/login';
