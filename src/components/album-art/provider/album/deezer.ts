@@ -15,12 +15,12 @@ const fetchArt = async ({
 }) => {
   const jwt: any = await getJwt();
   const server: any = await getServer();
-  const remote = `https://api.deezer.com/search/album?q=${encodeURIComponent(artist)} - ${encodeURIComponent(album)}`;
+  const remote = `https://api.deezer.com/search/album?q=artist:"${encodeURIComponent(artist)}" album:"${encodeURIComponent(album)}"`;
   const response = await useCorsProxy(server, jwt, remote);
   if (response.status === 200) {
     const json = await response.json();
-    const { data, error } = json;
-    if (data) {
+    const { data, error, total } = json;
+    if (data && total > 0) {
       return data[0].cover_xl;
     }
     if (error.code === 4) {
