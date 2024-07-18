@@ -10,20 +10,13 @@
     --background-floating-text: rgb(from var(--background2) r g b / 25%);
     --background-album-art: var(--background);
   }
-  @font-face {
-    font-family: 'firasans';
-    src: url('/src/fonts/fira-sans-book.woff2') format('woff2');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
   html,
   body {
     margin: 0;
     padding: 0;
     background: var(--background);
     color: var(--text-color);
-    font-family: firasans, system-ui, 'Segoe UI', Roboto, Helvetica, Arial,
+    font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial,
       sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
     font-variant-ligatures: no-common-ligatures;
     font-size: 1rem;
@@ -38,6 +31,8 @@
     overflow-x: hidden;
     overflow-y: scroll;
     overscroll-behavior: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   html.noscroll {

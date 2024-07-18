@@ -144,6 +144,7 @@ export default css`
         width: 75px;
         height: 75px;
         max-height: 75px;
+        margin-right: 0.5rem;
       }
     }
 
@@ -163,7 +164,6 @@ export default css`
     @keyframes h2 {
       to {
         font-size: 2rem;
-        margin-top: 3px;
       }
     }
     h3,

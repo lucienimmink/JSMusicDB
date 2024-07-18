@@ -624,18 +624,20 @@ export class Album extends LitElement {
         >
           ${this.track.trackArtist}
         </app-link>
-        <span class="muted">&bull;</span>
-        <app-link
-          inline
-          href="/letter/${this.track.album.artist.letter
-            .escapedLetter}/artist/${this.track.album.artist
-            .escapedName}/album/${this.track.album.escapedName}"
-        >
-          ${this.track.album.name}
-        </app-link>
-        ${this._hasMoreDiscs()
-          ? html`<span class="small muted">(${this.track.disc})</span>`
-          : nothing}
+        <span class="album-details">
+          <span class="muted">&bull;</span>
+          <app-link
+            inline
+            href="/letter/${this.track.album.artist.letter
+              .escapedLetter}/artist/${this.track.album.artist
+              .escapedName}/album/${this.track.album.escapedName}"
+          >
+            ${this.track.album.name}
+          </app-link>
+          ${this._hasMoreDiscs()
+            ? html`<span class="small muted">(${this.track.disc})</span>`
+            : nothing}
+        </span>
       </h5>
     </div>`;
   }

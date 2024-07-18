@@ -13,20 +13,20 @@ const renderCallback = (html: any, url: string, controller: LitMusicdb) => {
   const pattern = new URLPattern({ pathname: url });
   if (!pattern.test(controller?.route, location.origin)) return; // only do the lifting if needed
   EventBus.emit(TOGGLE_MENU, {}, 'close');
+  const htmlElement = document.querySelector('html');
   if (url === '/playing') {
-    document.querySelector('html')?.classList.add('np');
+    htmlElement?.classList.add('np');
   } else {
-    document.querySelector('html')?.classList.remove('np');
+    htmlElement?.classList.remove('np');
   }
   // remove the transtion for now-playing and playlists routes
+  const outletElement = controller.shadowRoot?.querySelector('#outlet');
   if (url.includes('/playing') || url.includes('/playlists/')) {
     // @ts-ignore
-    controller.shadowRoot.querySelector('#outlet').style.viewTransitionName =
-      '';
+    outletElement.style.viewTransitionName = '';
   } else {
     // @ts-ignore
-    controller.shadowRoot.querySelector('#outlet').style.viewTransitionName =
-      'outlet';
+    outletElement.style.viewTransitionName = 'outlet';
   }
   return html;
 };

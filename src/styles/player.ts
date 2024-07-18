@@ -51,9 +51,6 @@ export default css`
     text-overflow: ellipsis;
     overflow: hidden;
   }
-  h4 span {
-    display: inline-block;
-  }
   h5 {
     font-weight: 400;
     font-size: 1rem;
@@ -61,6 +58,9 @@ export default css`
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+  }
+  h5 .album-details {
+    display: none;
   }
   .error {
     display: flex;
@@ -79,6 +79,9 @@ export default css`
     }
     .details {
       width: calc(100% - 400px);
+    }
+    h5 .album-details {
+      display: inline;
     }
   }
 `;

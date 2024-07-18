@@ -48,7 +48,7 @@ export default css`
   }
   h1 div {
     height: 100%;
-    padding-top: 8px;
+    padding-top: 4px;
   }
   app-link {
     color: var(--primary);
