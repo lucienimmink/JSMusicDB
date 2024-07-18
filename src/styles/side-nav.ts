@@ -22,7 +22,8 @@ export default css`
     height: calc(100vh - 100px);
     transition:
       color 0.5s ease-in-out,
-      background-color 0.5s ease-in-out;
+      background-color 0.5s ease-in-out,
+      border-right-color 0.5s ease-in-out;
     border-right: 1px solid var(--border-colour);
   }
   li.title {
@@ -40,8 +41,8 @@ export default css`
     border-left: 3px solid transparent;
     opacity: 0.5;
     transition:
-      color 0.5s ease-in-out,
-      background-color 0.5s ease-in-out,
+      color 0.2s ease-in-out,
+      background-color 0.2s ease-in-out,
       opacity 0.2s ease-in-out;
   }
   app-link:hover {
@@ -111,7 +112,7 @@ export default css`
   }
   h1 div {
     height: 100%;
-    padding-top: 15px;
+    padding-top: 8px;
     flex-grow: 1;
   }
   h1 a,
@@ -143,6 +144,9 @@ export default css`
     }
     h1 {
       padding-inline: 10px;
+    }
+    h1 button {
+      margin-right: 0;
     }
   }
 `;
