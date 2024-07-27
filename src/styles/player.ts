@@ -29,6 +29,7 @@ export default css`
     flex-grow: 1;
     flex-shrink: 0;
     width: calc(100% - 75px - 145px);
+    margin-top: -8px;
     max-width: calc(100% - 75px - 145px);
     overflow: hidden;
     transition: color 0.5s ease-in-out;
