@@ -165,7 +165,7 @@ export class AlbumDetails extends LitElement {
             dimension="190"
             @click=${this._openModal}
           ></album-art>
-          <dialog>
+          <dialog @close=${this._closeModal} @cancel=${this._closeModal}>
             <album-art
               artist="${this.albumDetails?.artist?.albumArtist ||
               this.albumDetails?.artist?.name}"

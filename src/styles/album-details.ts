@@ -88,10 +88,30 @@ export default css`
     border: 1px solid var(--background2);
     box-shadow: 0px 0px 1px var(--primary);
     padding: 0;
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+  }
+  dialog[open] {
+    opacity: 1;
+  }
+  @starting-style {
+    dialog[open] {
+      opacity: 0;
+    }
   }
   dialog::backdrop {
+    backdrop-filter: blur(0px);
+    transition: all 0.2s ease-in-out;
+  }
+  dialog[open]::backdrop {
     backdrop-filter: blur(5px);
   }
+  @starting-style {
+    dialog[open]::backdrop {
+      backdrop-filter: blur(0px);
+    }
+  }
+
   dialog album-art {
     margin-right: 0;
     margin-left: 0;
