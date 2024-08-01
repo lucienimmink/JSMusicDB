@@ -100,15 +100,15 @@ export default css`
     }
   }
   dialog::backdrop {
-    backdrop-filter: blur(0px);
+    backdrop-filter: blur(0px) grayscale(0);
     transition: all 0.2s ease-in-out;
   }
   dialog[open]::backdrop {
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px) grayscale(1);
   }
   @starting-style {
     dialog[open]::backdrop {
-      backdrop-filter: blur(0px);
+      backdrop-filter: blur(0px) grayscale(0);
     }
   }
 
