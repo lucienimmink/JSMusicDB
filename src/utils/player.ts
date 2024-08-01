@@ -201,6 +201,7 @@ export const getNewPlaylistForRadioPref = (playlist: any) => {
                 // @ts-ignore
                 newPlaylist.tracks.push(randomTrack);
               } catch (e) {
+                console.error(e);
                 // no simialr artists, skip this track
               }
             }

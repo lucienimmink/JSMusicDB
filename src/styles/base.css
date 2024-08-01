@@ -42,6 +42,7 @@
   html.np {
     overflow-y: hidden;
   }
+
   ::-moz-selection {
     background-color: var(--primary);
     color: var(--letter-color);

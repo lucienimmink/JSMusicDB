@@ -145,6 +145,7 @@ export class LitMusicdb extends LitElement {
       await musicdb;
       this.hasData = true;
     } catch (error) {
+      console.error(error);
       this.hasData = true;
       this.loading = false;
     }

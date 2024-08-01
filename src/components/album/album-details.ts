@@ -12,6 +12,7 @@ import { hqIcon } from '../icons/hq';
 import musicdb from '../musicdb';
 import '../track/track';
 import { LOCALE } from '../../utils/date';
+import { TOGGLE_OVERFLOW_HIDDEN } from '../side-nav/side-nav';
 
 @customElement('album-details')
 export class AlbumDetails extends LitElement {
@@ -100,9 +101,11 @@ export class AlbumDetails extends LitElement {
   }
   _openModal() {
     this.shadowRoot?.querySelector('dialog')?.showModal();
+    EventBus.emit(TOGGLE_OVERFLOW_HIDDEN, this, true);
   }
   _closeModal() {
     this.shadowRoot?.querySelector('dialog')?.close();
+    EventBus.emit(TOGGLE_OVERFLOW_HIDDEN, this, false);
   }
   _getModalDimension() {
     return Math.min(window.innerHeight, window.innerHeight) - 300;

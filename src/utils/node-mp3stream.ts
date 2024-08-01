@@ -77,6 +77,7 @@ export const authenticate = async (server: string, payload: ArrayBuffer) => {
   try {
     return await response.json();
   } catch (e: any) {
+    console.error(e);
     return false;
   }
 };

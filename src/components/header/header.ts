@@ -134,6 +134,7 @@ export class Header extends LitElement {
           const { progress, status } = JSON.parse(event.data);
           this._updateProgress(progress, status);
         } catch (e) {
+          console.error(e);
           // ignore
         }
       };

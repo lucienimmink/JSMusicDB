@@ -309,6 +309,7 @@ export class AlbumArt extends LitElement {
           this.isDefault = true;
         }
       } catch (e) {
+        console.error(e);
         this.isDefault = true;
         art = '';
       }
@@ -340,6 +341,7 @@ export class AlbumArt extends LitElement {
           this.isDefault = true;
         }
       } catch (e) {
+        console.error(e);
         this.isDefault = true;
         art = '';
       }
