@@ -33,6 +33,7 @@ export class HomeNav extends LitElement {
   newReleases: Array<any>;
   counter: any;
   @state()
+  // @ts-ignore
   currentTrack: any = window._track || null;
 
   private readonly INTERVAL = 1000 * 9;

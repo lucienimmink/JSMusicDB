@@ -420,7 +420,8 @@ export class SettingsNav extends LitElement {
       <p>Time needed to parse: ${this.stats?.parsingTime}ms</p>
       <p>Last updated: ${this.stats?.parsed}</p>
       ${this.showVersion
-        ? html`<p>Version: ${import.meta.env.PACKAGE_VERSION}</p>`
+        ? // @ts-ignore
+          html`<p>Version: ${import.meta.env.PACKAGE_VERSION}</p>`
         : nothing}
       ${this.stats?.mp3stream
         ? html` <p>Node-mp3stream version: ${this.stats?.mp3stream}</p> `

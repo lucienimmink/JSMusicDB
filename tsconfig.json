@@ -11,9 +11,7 @@
     "experimentalDecorators": true,
     "useDefineForClassFields": false,
     "importHelpers": true,
-    "outDir": "out-tsc",
-    "sourceMap": true,
-    "inlineSources": true,
+    "sourceMap": false,
     "rootDir": "./",
     "forceConsistentCasingInFileNames": true
   },
