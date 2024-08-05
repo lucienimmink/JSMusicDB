@@ -97,8 +97,11 @@ export class NowPlaying extends LitElement {
     this.isBottomShown = false;
     this.playlist = null;
     this.hasError = false;
+    // @ts-ignore
     this.track = window._track;
+    // @ts-ignore
     this._player = window._player;
+    // @ts-ignore
     this.accentColor = window._accentColour;
     this.touchstartX = 0;
     this.touchstartY = 0;
@@ -123,6 +126,7 @@ export class NowPlaying extends LitElement {
     EventBus.on(PLAYER_ERROR, this._doHasError, this);
     EventBus.on(UPDATE_PLAYER, this._doUpdate, this);
     EventBus.on(TOGGLE_SETTING, this._doToggleSetting, this);
+    // @ts-ignore
     this.track = window._track;
   }
   disconnectedCallback() {
@@ -188,14 +192,18 @@ export class NowPlaying extends LitElement {
       ) as HTMLCanvasElement;
       if (canvas) {
         let source;
+        // @ts-ignore
         if (!window._source) {
           const audioCtx = new AudioContext();
+          // @ts-ignore
           source = audioCtx.createMediaElementSource(window._player);
           source.connect(audioCtx.destination);
 
           // store in memory for reuse
+          // @ts-ignore
           window._source = source;
         } else {
+          // @ts-ignore
           source = window._source;
         }
         this.visualizer = new AudioMotionAnalyzer(canvas, {

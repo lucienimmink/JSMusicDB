@@ -135,7 +135,7 @@ export class Album extends LitElement {
     getSettingByName('dynamicTheme').then(async (dynamicTheme: any) => {
       this.useDynamicAccentColor = !!dynamicTheme;
       if (this.useDynamicAccentColor) {
-        this.bgColor = await currentBgColor();
+        this.bgColor = (await currentBgColor()) || '';
       }
     });
 
@@ -252,6 +252,7 @@ export class Album extends LitElement {
           EventBus.emit(PLAYER_ERROR, this, true);
         });
       // share player
+      // @ts-ignore
       window._player = player;
 
       if (
@@ -287,6 +288,7 @@ export class Album extends LitElement {
         current: this.track,
         type: PLAY_PLAYER,
       });
+      // @ts-ignore
       window._track = this.track;
       this.timePlayed = Math.floor(performance.now());
       if (!this.hasScrobbled && this.timePlayed > ONEMINUTE) {
@@ -497,6 +499,7 @@ export class Album extends LitElement {
   _setDynamicAccentColor() {
     getDominantColorByURL(this.art, (rgba: any) => {
       const colours = getColorsFromRGBWithBGColor(rgba, this.bgColor);
+      // @ts-ignore
       window._accentColour = colours.text;
       EventBus.emit(ACCENT_COLOR, this, colours.text);
       addCustomCss(colours);
@@ -510,7 +513,7 @@ export class Album extends LitElement {
     value: boolean;
   }) {
     if (setting === 'theme') {
-      this.bgColor = await currentBgColor();
+      this.bgColor = (await currentBgColor()) || '';
       if (this.useDynamicAccentColor) {
         this._setDynamicAccentColor();
       }
@@ -519,7 +522,7 @@ export class Album extends LitElement {
       this.useDynamicAccentColor = value;
       if (this.useDynamicAccentColor) {
         this._setDynamicAccentColor();
-        this.bgColor = await currentBgColor();
+        this.bgColor = (await currentBgColor()) || '';
       } else {
         removeCustomCss();
       }
@@ -561,7 +564,7 @@ export class Album extends LitElement {
     darkModeMediaQuery.addListener(async () => {
       const theme = await getSettingByName('theme');
       if (theme === 'system') {
-        this.bgColor = await currentBgColor();
+        this.bgColor = (await currentBgColor()) || '';
         if (this.useDynamicAccentColor) {
           this._setDynamicAccentColor();
         }
