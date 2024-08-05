@@ -62,7 +62,7 @@ export default css`
     display: none;
   }
   .full {
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px) grayscale(1);
     inset: 0;
     opacity: 0;
     pointer-events: none;
