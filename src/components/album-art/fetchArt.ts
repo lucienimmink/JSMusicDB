@@ -9,14 +9,19 @@ const fetchArtForArtist = async (artist: string, id: string) => {
   if (id) {
     iid = { mbid: id, artist };
   } else {
-    const json = await getMetaInfo({ artist, album });
-    let {
-      artist: { mbid },
-    } = json;
-    if (!mbid) {
-      mbid = await getMBID(artist);
+    try {
+      const json = await getMetaInfo({ artist, album });
+      let {
+        artist: { mbid },
+      } = json;
+      if (!mbid) {
+        mbid = await getMBID(artist);
+      }
+      iid = { mbid, artist };
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (e) {
+      return '';
     }
-    iid = { mbid, artist };
   }
   return await Promise.any(populate(iid, artistConfig));
 };
@@ -33,11 +38,16 @@ const fetchArtForAlbum = async ({
   if (id) {
     iid = { artist, album, mbid: id };
   } else {
-    const json = await getMetaInfo({ artist, album });
-    const {
-      album: { mbid },
-    } = json;
-    iid = { artist, album, mbid };
+    try {
+      const json = await getMetaInfo({ artist, album });
+      const {
+        album: { mbid },
+      } = json;
+      iid = { artist, album, mbid };
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (e) {
+      return '';
+    }
   }
   return await Promise.any(populate(iid, albumConfig));
 };
