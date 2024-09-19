@@ -383,7 +383,7 @@ export class NowPlaying extends LitElement {
     this.shadowRoot?.querySelector('dialog')?.close();
   }
   _getModalDimension() {
-    return Math.min(window.innerHeight, window.innerHeight) - 200;
+    return Math.min(window.innerHeight, window.innerWidth) - 200;
   }
   async updated() {
     const albumArtElements = this.shadowRoot?.querySelectorAll('album-art');
