@@ -209,6 +209,7 @@ export default css`
       to {
         height: 0;
         opacity: 0;
+        filter: blur(10px);
       }
     }
     h4 {
