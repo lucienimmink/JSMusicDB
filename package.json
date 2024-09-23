@@ -23,7 +23,7 @@
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.10.2",
     "@lit-labs/compiler": "^1.0.3",
-    "@rollup/plugin-typescript": "^11.1.6",
+    "@rollup/plugin-typescript": "^12.0.0",
     "@types/node": "^20.14.1",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
