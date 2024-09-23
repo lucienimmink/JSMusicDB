@@ -178,12 +178,12 @@ export default css`
       }
     }
     h2 {
-      font-size: 2.5rem;
+      font-size: 3rem;
       animation: h2;
     }
     @keyframes h2 {
       to {
-        font-size: 2rem;
+        font-size: 2.5rem;
       }
     }
     h3,
@@ -215,6 +215,10 @@ export default css`
       transform-origin: center top;
       font-size: 1rem;
       animation: h4-text;
+      height: 1rem;
+    }
+    h4 + h4 {
+      height: 40px;
     }
     :host * {
       animation-timing-function: linear;
