@@ -216,10 +216,10 @@ export default css`
       transform-origin: center top;
       font-size: 1rem;
       animation: h4-text;
-      height: 1rem;
+      height: 1.3rem;
     }
     h4 + h4 {
-      height: 40px;
+      height: 2.25rem; // 0.375rem (padding) * 2 + 1rem (font-size) + 0.5rem (line-height)
     }
     :host * {
       animation-timing-function: linear;

@@ -1,6 +1,5 @@
 import { compileLitTemplates } from '@lit-labs/compiler';
 import ts from '@rollup/plugin-typescript';
-import typescript from 'typescript';
 import { defineConfig } from 'vite';
 import version from 'vite-plugin-package-version';
 import preload from 'vite-plugin-preload';
