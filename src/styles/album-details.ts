@@ -219,7 +219,7 @@ export default css`
       height: 1.3rem;
     }
     h4 + h4 {
-      height: 2.25rem; // 0.375rem (padding) * 2 + 1rem (font-size) + 0.5rem (line-height)
+      height: 2.5rem;
     }
     :host * {
       animation-timing-function: linear;
