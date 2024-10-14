@@ -14,5 +14,6 @@ export default css`
     border-bottom: 1px solid var(--border-colour);
     box-sizing: border-box;
     width: 100%;
+    content-visibility: auto;
   }
 `;
