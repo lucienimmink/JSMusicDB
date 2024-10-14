@@ -204,12 +204,13 @@ export default css`
     }
     @keyframes h4-text {
       25% {
-        opacity: 0.25;
+        transform: scale(0.5);
+        opacity: 0.5;
       }
       to {
         height: 0;
         opacity: 0;
-        filter: blur(10px);
+        transform: scale(0);
       }
     }
     h4 {
