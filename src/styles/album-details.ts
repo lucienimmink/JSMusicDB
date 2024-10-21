@@ -227,6 +227,7 @@ export default css`
       animation-fill-mode: forwards;
       animation-timeline: scroll(root);
       animation-range: 0 160px;
+      transform-origin: left;
     }
   }
 `;
