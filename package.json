@@ -24,7 +24,7 @@
     "@custom-elements-manifest/analyzer": "^0.10.2",
     "@lit-labs/compiler": "^1.0.3",
     "@rollup/plugin-typescript": "^12.0.0",
-    "@types/node": "^20.14.1",
+    "@types/node": "^22.0.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
     "api-viewer-element": "^1.0.0-pre.10",
@@ -88,7 +88,7 @@
     "urlpattern-polyfill": "^10.0.0"
   },
   "volta": {
-    "node": "20.18.0",
+    "node": "22.11.0",
     "npm": "10.9.0"
   }
 }
