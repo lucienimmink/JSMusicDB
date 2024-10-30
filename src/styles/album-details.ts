@@ -181,6 +181,9 @@ export default css`
       font-size: 3rem;
       animation: h2;
     }
+    h2 span {
+      display: inline;
+    }
     @keyframes h2 {
       to {
         font-size: 2.5rem;
@@ -203,10 +206,6 @@ export default css`
       }
     }
     @keyframes h4-text {
-      25% {
-        transform: scale(0.5);
-        opacity: 0.5;
-      }
       to {
         height: 0;
         opacity: 0;
@@ -218,6 +217,7 @@ export default css`
       font-size: 1rem;
       animation: h4-text;
       height: 1.3rem;
+      overflow: visible;
     }
     h4 + h4 {
       height: 2.5rem;
