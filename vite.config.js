@@ -209,7 +209,7 @@ export default defineConfig(({ mode }) => {
             },
             {
               urlPattern:
-                /.*\.png$|.*\.gif$|.*\.jpg$|.*\.webp$|https:\/\/res.cloudinary\.com\/.*/i,
+                /.*\.png$|.*\.gif$|.*\.jpg$|.*\.webp$|https:\/\/res.cloudinary.com\/.*/i,
               handler: 'CacheFirst',
               options: {
                 cacheName: 'images',
