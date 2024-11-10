@@ -21,11 +21,27 @@ export default css`
     transition: background-color 0.5s ease-in-out;
     view-transition-name: letter-nav-list;
   }
+  ul::before {
+    left: anchor(--a left);
+    width: anchor-size(--a width);
+    content: '';
+    position: absolute;
+    background-color: var(--letter-background-hover);
+    height: 100%;
+    transition:
+      left 0.5s ease-in-out,
+      width 0.5s ease-in-out;
+  }
   li {
     text-align: center;
     align-self: stretch;
     flex-grow: 1;
     box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+  }
+  li:has(app-link:is(:hover, :focus-visible)) {
+    anchor-name: --a;
   }
   app-link {
     color: var(--letter-color);
@@ -33,9 +49,6 @@ export default css`
     display: block;
     height: 100%;
     transition: background-color 0.5s ease-in-out;
-  }
-  app-link:hover {
-    background-color: var(--letter-background-hover);
   }
   .active app-link {
     background-color: var(--letter-background-active);
