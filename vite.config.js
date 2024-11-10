@@ -209,7 +209,7 @@ export default defineConfig(({ mode }) => {
             },
             {
               urlPattern:
-                /.*\.png$|.*\.gif$|.*\.jpg$|.*\.webp$|https:\/\/res.cloudinary.com\/.*/i,
+                /.*\.png$|.*\.gif$|.*\.jpg$|.*\.webp$|https:\/\/res\.cloudinary\.com\/.*/i,
               handler: 'CacheFirst',
               options: {
                 cacheName: 'images',
@@ -223,7 +223,7 @@ export default defineConfig(({ mode }) => {
             },
             {
               urlPattern:
-                /https:\/\/webservice.fanart.tv\/$|.*image\?mbid.*$|https:\/\/ws.audioscrobbler.com\/2\.0\/.*$|https:\/\/coverartarchive.org\/.*$/i,
+                /https:\/\/webservice\.fanart\.tv\/$|.*image\?mbid.*$|https:\/\/ws\.audioscrobbler\.com\/2\.0\/.*$|https:\/\/coverartarchive\.org\/.*$/i,
               handler: 'CacheFirst',
               options: {
                 cacheName: 'XHR',
