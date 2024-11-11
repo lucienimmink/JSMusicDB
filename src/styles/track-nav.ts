@@ -21,7 +21,7 @@ export default css`
     border-right: 1px solid transparent;
     border-bottom: 1px solid var(--border-colour);
   }
-  .track:hover {
+  .track:not(.album-track):hover {
     background: var(--background2);
   }
   .track.active {

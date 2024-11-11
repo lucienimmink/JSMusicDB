@@ -14,6 +14,8 @@ export class Track extends LitElement {
   track: any;
   @property({ type: String })
   type: string;
+  @property({ type: String })
+  context: string;
   @property({ type: Boolean })
   showAlbum: boolean;
 
@@ -24,6 +26,7 @@ export class Track extends LitElement {
     super();
     this.track = null;
     this.type = 'album';
+    this.context = '';
     this.showAlbum = false;
   }
   _updatePlayer = (target: any, { current }: { current: any }) => {
@@ -67,7 +70,7 @@ export class Track extends LitElement {
       <div
         class="track ${this.track?.isPlaying || this.track?.isPaused
           ? 'active'
-          : ''}"
+          : ''} ${this.context === 'album' ? 'album-track' : ''}"
       >
         ${this.type === 'album'
           ? html`
