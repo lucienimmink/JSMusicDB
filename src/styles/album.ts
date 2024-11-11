@@ -24,10 +24,15 @@ export default css`
     cursor: pointer;
     display: block;
     position: relative;
+    z-index: 1;
+  }
+  .header {
+    z-index: 2;
   }
   track-in-list:is(:hover, :focus-visible) {
     anchor-name: --a;
   }
+
   @media (min-width: 992px) {
     .container {
       padding-top: 257px;
@@ -35,7 +40,7 @@ export default css`
     album-details {
       position: fixed;
       width: 100vw;
-      z-index: 2;
+      z-index: 3;
     }
   }
 `;
