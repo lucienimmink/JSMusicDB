@@ -26,11 +26,25 @@ export default css`
       border-right-color 0.5s ease-in-out;
     border-right: 1px solid var(--border-colour);
   }
+  ul::before {
+    top: anchor(--a top);
+    width: anchor-size(--a width);
+    content: '';
+    position: absolute;
+    background-color: var(--background3);
+    height: anchor-size(--a height);
+    transition:
+      top 0.5s ease-in-out,
+      height 0.5s ease-in-out;
+  }
   li.title {
     position: sticky;
     background: var(--background2-seethrough);
     top: 0;
     app-region: no-drag;
+  }
+  li:has(app-link:is(:hover, :focus-visible)) {
+    anchor-name: --a;
   }
   .player ul {
     height: calc(100vh - 100px - 81px);
@@ -40,6 +54,7 @@ export default css`
     color: var(--text-color);
     border-left: 3px solid transparent;
     opacity: 0.5;
+    position: relative;
     transition:
       color 0.2s ease-in-out,
       background-color 0.2s ease-in-out,
@@ -47,7 +62,6 @@ export default css`
   }
   app-link:hover {
     opacity: 1;
-    background: var(--background3);
   }
   svg {
     width: 20px;
