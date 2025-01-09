@@ -29,6 +29,9 @@ export default css`
   .header {
     z-index: 2;
   }
+  .album-details:not(:hover) [isActive] {
+    anchor-name: --a;
+  }
   track-in-list:is(:hover, :focus-visible) {
     anchor-name: --a;
   }

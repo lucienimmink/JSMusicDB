@@ -1,5 +1,5 @@
 import timeSpan from '@addasoft/timespan';
-import { html, LitElement, nothing } from 'lit';
+import { html, LitElement, nothing, PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import smallMuted from '../../styles/small-muted';
 import trackNav from '../../styles/track-nav';
@@ -18,6 +18,8 @@ export class Track extends LitElement {
   context: string;
   @property({ type: Boolean })
   showAlbum: boolean;
+  @property({ type: Boolean, reflect: true })
+  isActive: boolean;
 
   static get styles() {
     return [smallMuted, trackNav];
@@ -28,6 +30,7 @@ export class Track extends LitElement {
     this.type = 'album';
     this.context = '';
     this.showAlbum = false;
+    this.isActive = false;
   }
   _updatePlayer = (target: any, { current }: { current: any }) => {
     this._update(current);
@@ -40,6 +43,7 @@ export class Track extends LitElement {
     if (this.track) {
       this.track.isPlaying = false;
       this.track.isPaused = false;
+      this.isActive = false;
     }
     this.requestUpdate();
   }
@@ -49,7 +53,16 @@ export class Track extends LitElement {
   }
   disconnectedCallback() {
     super.disconnectedCallback();
+    this.isActive = false;
     EventBus.off(UPDATE_PLAYER, this._updatePlayer, this);
+  }
+  protected updated(_changedProperties: PropertyValues): void {
+    if (_changedProperties.has('track')) {
+      this.isActive = this.track?.isPlaying || this.track?.isPaused;
+      if (!this.track?.isPlaying && !this.track?.isPaused) {
+        this.isActive = false;
+      }
+    }
   }
 
   private _renderTime() {
@@ -68,14 +81,14 @@ export class Track extends LitElement {
   render() {
     return html`
       <div
-        class="track ${this.track?.isPlaying || this.track?.isPaused
-          ? 'active'
-          : ''} ${this.context === 'album' ? 'album-track' : ''}"
+        class="track ${this.isActive ? 'active' : ''} ${this.context === 'album'
+          ? 'album-track'
+          : ''}"
       >
         ${this.type === 'album'
           ? html`
               <span class="num">
-                ${this.track?.isPlaying || this.track?.isPaused
+                ${this.isActive
                   ? html`
                       ${this.track?.isPlaying
                         ? html`${playIcon}`
@@ -88,7 +101,7 @@ export class Track extends LitElement {
         <span class="title">
           ${this.type !== 'album'
             ? html`
-                ${this.track.isPlaying || this.track.isPaused
+                ${this.isActive
                   ? html`
                       ${this.track.isPlaying
                         ? html`${playIcon}`

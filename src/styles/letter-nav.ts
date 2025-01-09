@@ -40,6 +40,9 @@ export default css`
     position: relative;
     z-index: 1;
   }
+  ul:not(:hover) .active {
+    anchor-name: --a;
+  }
   li:has(app-link:is(:hover, :focus-visible)) {
     anchor-name: --a;
   }
