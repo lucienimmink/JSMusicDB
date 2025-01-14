@@ -33,7 +33,7 @@
     "api-viewer-element": "^1.0.0-pre.10",
     "dotenv": "^16.4.5",
     "eslint": "^9.0.0",
-    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-prettier": "^10.0.0",
     "eslint-plugin-html": "^8.1.1",
     "eslint-plugin-import": "^2.29.1",
     "husky": "^9.0.11",
