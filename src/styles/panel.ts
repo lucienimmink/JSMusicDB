@@ -50,6 +50,12 @@ export default css`
       height: 208px;
     }
   }
+  @media (min-width: 1600px) {
+    .panel-home {
+      width: 15vw;
+      height: 15vw;
+    }
+  }
   .panel-background {
     position: relative;
     width: 100%;

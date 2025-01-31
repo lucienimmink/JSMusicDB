@@ -44,4 +44,9 @@ export default css`
       max-width: 1140px;
     }
   }
+  @media (min-width: 1600px) {
+    .container {
+      max-width: 65vw;
+    }
+  }
 `;
