@@ -35,6 +35,8 @@ export class HomeNav extends LitElement {
   @state()
   // @ts-ignore
   currentTrack: any = window._track || null;
+  @state()
+  recentlyListenedLimit = '6';
 
   private readonly INTERVAL = 1000 * 9;
   private readonly LATEST_ADDITIONS = 10;
@@ -77,6 +79,10 @@ export class HomeNav extends LitElement {
   async _init() {
     const mdb: any = await musicdb;
     this.recentAdded = mdb.getLatestAdditions(this.LATEST_ADDITIONS);
+    this.recentlyListenedLimit = await getSettingByName(
+      'recentlyListenedLimit',
+    );
+    console.log('recentlyListenedLimit', this.recentlyListenedLimit);
     this._updateFeed();
   }
   _updatePlayer(target: any, data: any) {
@@ -125,7 +131,10 @@ export class HomeNav extends LitElement {
   async _updateRecentlyPlayed(name: string) {
     let lastFMTracks = [];
     if (name !== 'mdb-skipped') {
-      const { recenttracks } = await getRecentlyListened(name);
+      const { recenttracks } = await getRecentlyListened(
+        name,
+        this.recentlyListenedLimit,
+      );
       lastFMTracks = recenttracks?.track;
     }
     const tracks = lastFMTracks?.filter((track: any) => {

@@ -36,6 +36,24 @@ export default css`
     width: 100%;
     transition: all 0.5s ease-in-out;
   }
+  input[type='range'] {
+    accent-color: var(--primary);
+    margin-inline-end: 1em;
+    transition: all 0.5s ease-in-out;
+
+    + input[type='number'] {
+      accent-color: var(--primary);
+      background: var(--background2);
+      border: 0;
+      color: var(--text-color);
+      padding: 0.5em;
+      font-size: 1em;
+      transition: all 0.5s ease-in-out;
+      width: 2em;
+      margin-inline-end: 1em;
+      text-align: center;
+    }
+  }
   select {
     background: var(--background2);
     padding: 0.3rem 0.5rem;

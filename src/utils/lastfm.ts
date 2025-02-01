@@ -77,11 +77,11 @@ export const getTopArtists = (user: string) => {
     .then(response => response.json().catch(e => e))
     .catch(e => e);
 };
-export const getRecentlyListened = (user: string) => {
+export const getRecentlyListened = (user: string, limit = '6') => {
   const params = new URLSearchParams();
   params.set('api_key', LASTFMAPIKEY);
   params.set('format', 'json');
-  params.set('limit', '6');
+  params.set('limit', limit);
   params.set('method', 'user.getrecenttracks');
   params.set('extended', 'true');
   params.set('user', user);

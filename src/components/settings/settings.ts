@@ -183,6 +183,26 @@ export class SettingsNav extends LitElement {
   private _clearImageCache() {
     clear(createStore('album-art-db', 'album-art-store'));
   }
+  private async _setRecentlyListenedLimit(e: Event) {
+    // @ts-ignore
+    const value = e?.target?.value;
+    // @ts-ignore
+    const nextElement = e.target.nextElementSibling;
+    this.settings.recentlyListenedLimit = value;
+    setSetting('recentlyListenedLimit', value);
+    EventBus.emit(TOGGLE_SETTING, this, {
+      setting: 'recentlyListenedLimit',
+      value,
+    });
+    this.settings = await getSettings();
+    nextElement.value = value;
+  }
+  private _setRecentlyListenedLimitByNumber(e: Event) {
+    // @ts-ignore
+    const value = e?.target?.value;
+    // @ts-ignore
+    e.target.previousElementSibling.value = value;
+  }
   private _renderUserInfo() {
     return html`<div class="container container-block">
       <h2 class="header">User settings</h2>
@@ -342,6 +362,13 @@ export class SettingsNav extends LitElement {
               .checked=${this.settings?.theme === 'system'}
             />
             System theme
+          </label>
+        </p>
+        <p>
+          <label>
+            <input type="range" min="1" max="10" step="1" .value=${this.settings?.recentlyListenedLimit || 6} @change="${(e: Event) => this._setRecentlyListenedLimit(e)}" />
+            <input type="number" min="1" max="10" step="1" .value=${this.settings?.recentlyListenedLimit || 6} @change="${(e: Event) => this._setRecentlyListenedLimitByNumber(e)}" />
+            Recently listened limit
           </label>
         </p>
         </div>
