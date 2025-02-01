@@ -79,10 +79,8 @@ export class HomeNav extends LitElement {
   async _init() {
     const mdb: any = await musicdb;
     this.recentAdded = mdb.getLatestAdditions(this.LATEST_ADDITIONS);
-    this.recentlyListenedLimit = await getSettingByName(
-      'recentlyListenedLimit',
-    );
-    console.log('recentlyListenedLimit', this.recentlyListenedLimit);
+    this.recentlyListenedLimit =
+      (await getSettingByName('recentlyListenedLimit')) || '6';
     this._updateFeed();
   }
   _updatePlayer(target: any, data: any) {
