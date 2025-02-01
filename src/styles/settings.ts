@@ -38,18 +38,17 @@ export default css`
   }
   input[type='range'] {
     accent-color: var(--primary);
-    margin-inline-end: 1em;
+    margin-inline: 1em;
     transition: all 0.5s ease-in-out;
 
-    + input[type='number'] {
+    + output {
       accent-color: var(--primary);
       background: var(--background2);
-      border: 0;
+      border: 1px solid var(--background3);
       color: var(--text-color);
-      padding: 0.5em;
+      padding: 0.1em 0.5em;
       font-size: 1em;
-      transition: all 0.5s ease-in-out;
-      width: 2em;
+      transition: all 0.1s linear;
       margin-inline-end: 1em;
       text-align: center;
     }

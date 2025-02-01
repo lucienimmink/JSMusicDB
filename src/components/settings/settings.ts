@@ -186,23 +186,18 @@ export class SettingsNav extends LitElement {
   private async _setRecentlyListenedLimit(e: Event) {
     // @ts-ignore
     const value = e?.target?.value;
-    // @ts-ignore
-    const nextElement = e.target.nextElementSibling;
     this.settings.recentlyListenedLimit = value;
-    setSetting('recentlyListenedLimit', value);
+    await setSetting('recentlyListenedLimit', value);
     EventBus.emit(TOGGLE_SETTING, this, {
       setting: 'recentlyListenedLimit',
       value,
     });
     this.settings = await getSettings();
-    nextElement.value = value;
   }
-  private _setRecentlyListenedLimitByNumber(e: Event) {
-    // @ts-ignore
-    const value = e?.target?.value;
-    // @ts-ignore
-    e.target.previousElementSibling.value = value;
+  private _preventDragging(e: Event) {
+    e.stopImmediatePropagation();
   }
+
   private _renderUserInfo() {
     return html`<div class="container container-block">
       <h2 class="header">User settings</h2>
@@ -366,9 +361,10 @@ export class SettingsNav extends LitElement {
         </p>
         <p>
           <label>
-            <input type="range" min="1" max="10" step="1" .value=${this.settings?.recentlyListenedLimit || 6} @change="${(e: Event) => this._setRecentlyListenedLimit(e)}" />
-            <input type="number" min="1" max="10" step="1" .value=${this.settings?.recentlyListenedLimit || 6} @change="${(e: Event) => this._setRecentlyListenedLimitByNumber(e)}" />
             Recently listened limit
+            <input name="recentlyListenedLimit" type="range" min="1" max="10" step="1" .value=${this.settings?.recentlyListenedLimit || 6} @change="${(e: Event) => this._setRecentlyListenedLimit(e)}" @touchstart=${this._preventDragging} @touchend=${this._preventDragging} />
+            <output for="recentlyListenedLimit" onforminput="value = recentlyListenedLimit.valueAsNumber" >${this.settings?.recentlyListenedLimit}</output>
+            
           </label>
         </p>
         </div>
