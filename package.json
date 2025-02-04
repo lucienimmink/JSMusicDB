@@ -11,7 +11,6 @@
     "start": "vite && npm run analyse:watch",
     "dev": "npm run start",
     "postversion": "git push && git push --tags",
-    "prepare": "husky install",
     "zip": "node scripts/zip.js",
     "deploy": "node scripts/deploy.js",
     "zip:deploy": "npm run zip && npm run deploy",
