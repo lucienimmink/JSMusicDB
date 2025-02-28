@@ -1,4 +1,4 @@
-import timeSpan from '@addasoft/timespan';
+import timespan from '@addasoft/timespan';
 import '@lit-labs/virtualizer';
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -466,7 +466,7 @@ export class NowPlaying extends LitElement {
   }
   private _renderTimeControls() {
     return html`<div class="time-controls">
-      <span class="time start">${timeSpan(this.track.position)}</span>
+      <span class="time start">${timespan(this.track.position)}</span>
       <div class="progress" @click=${(e: Event) => this._setPosition(e)}>
         <div
           class="progress-bar progress-buffered-bar"
@@ -483,7 +483,7 @@ export class NowPlaying extends LitElement {
           })}
         ></div>
       </div>
-      <span class="time stop">${timeSpan(this.track.duration)}</span>
+      <span class="time stop">${timespan(this.track.duration)}</span>
     </div>`;
   }
   private _renderTextDetails() {

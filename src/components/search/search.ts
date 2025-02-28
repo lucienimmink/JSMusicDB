@@ -1,4 +1,4 @@
-import timeSpan from '@addasoft/timespan';
+import timespan from '@addasoft/timespan';
 import { LitElement, PropertyValueMap, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import container from '../../styles/container';
@@ -195,11 +195,11 @@ export class SearchNav extends LitElement {
                   >
                 </span>
                 <span class="time"
-                  >${timeSpan(track.duration)} <br />
+                  >${timespan(track.duration)} <br />
                   ${track.position > 0 && (track.isPlaying || track.isPaused)
                     ? html`
                         <span class="small muted"
-                          >${timeSpan(track.position)}</span
+                          >${timespan(track.position)}</span
                         >
                       `
                     : html` <span class="small muted">${track.type}</span> `}

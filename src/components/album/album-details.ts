@@ -1,4 +1,4 @@
-import timeSpan from '@addasoft/timespan';
+import timespan from '@addasoft/timespan';
 import { LitElement, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import albumDetails from '../../styles/album-details';
@@ -87,7 +87,7 @@ export class AlbumDetails extends LitElement {
       tracks.forEach(track => {
         duration += track.duration;
       });
-      return timeSpan(duration, true, LOCALE);
+      return timespan(duration, true, LOCALE);
     }
     return 0;
   }

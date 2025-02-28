@@ -1,4 +1,4 @@
-import timeSpan from '@addasoft/timespan';
+import timespan from '@addasoft/timespan';
 import { html, LitElement, nothing, PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import smallMuted from '../../styles/small-muted';
@@ -66,11 +66,11 @@ export class Track extends LitElement {
   }
 
   private _renderTime() {
-    return html`${timeSpan(this.track?.duration)} <br />
+    return html`${timespan(this.track?.duration)} <br />
       ${this.track?.isPlaying || this.track?.isPaused
         ? html`
             <span class="small muted if-active"
-              >${timeSpan(this.track?.position)}</span
+              >${timespan(this.track?.position)}</span
             >
           `
         : nothing}

@@ -1,4 +1,4 @@
-import timeSpan from '@addasoft/timespan';
+import timespan from '@addasoft/timespan';
 import { clear, createStore } from 'idb-keyval';
 import { LitElement, html, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
@@ -119,7 +119,7 @@ export class SettingsNav extends LitElement {
     this.stats.albums = this.mdb.totals.albums;
     this.stats.artists = this.mdb.totals.artists;
     this.stats.tracks = this.mdb.totals.tracks;
-    this.stats.time = timeSpan(this.mdb.totals.playingTime, true, LOCALE);
+    this.stats.time = timespan(this.mdb.totals.playingTime, true, LOCALE);
     this.stats.parsingTime = this.mdb.totals.parsingTime;
     const date = await getLastParsed();
     const formatter = new Intl.DateTimeFormat(LOCALE, {
