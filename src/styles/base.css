@@ -1,4 +1,8 @@
 :root {
+    --primary: rgb(0, 101, 179);
+    @supports (color: AccentColor) {
+      --primary: AccentColor;
+    }
     --primary-seethrough: rgb(from var(--primary) r g b / 90%);
     --darken: oklch(from var(--primary) calc(l - 0.1) c h);
     --lighten: oklch(from var(--primary) calc(l + 0.1) c h);

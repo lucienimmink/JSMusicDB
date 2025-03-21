@@ -2,7 +2,6 @@ import { css } from 'lit';
 
 export const light = css`
   :root {
-    --primary: rgb(0, 101, 179);
     --progress: var(--lighten);
     --progress-background: var(--lighten30);
     --letter-background-hover: var(--darken);
@@ -21,7 +20,6 @@ export const light = css`
 
 export const dark = css`
   :root {
-    --primary: rgb(41, 162, 255);
     --progress: var(--darken);
     --progress-background: var(--darken30);
     --letter-background-hover: var(--lighten);
