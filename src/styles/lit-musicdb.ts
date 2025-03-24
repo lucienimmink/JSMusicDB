@@ -46,6 +46,10 @@ export default css`
     z-index: 2;
     view-transition-name: player;
   }
+  track-info-modal {
+    position: fixed;
+    z-index: 5;
+  }
   .loading-wrapper {
     background: var(--background);
     color: var(--text-color);

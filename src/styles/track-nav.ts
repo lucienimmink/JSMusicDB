@@ -29,10 +29,6 @@ export default css`
     border-bottom-color: var(--primary);
     color: var(--letter-color);
   }
-  .track.active svg {
-    display: inline-block;
-    width: 9px;
-  }
   .num {
     flex-grow: 0;
     width: 35px;
@@ -44,11 +40,24 @@ export default css`
   .title {
     flex-grow: 1;
   }
+  .info {
+    flex-grow: 0;
+    width: 35px;
+    min-width: 35px;
+    text-align: end;
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+    transition-delay: 0.25s;
+  }
+  .track.active .info,
+  .track:hover .info {
+    opacity: 1;
+  }
   .time {
     flex-grow: 0;
     text-align: end;
-    width: 65px;
-    min-width: 65px;
+    width: 45px;
+    min-width: 45px;
     font-variant-numeric: tabular-nums;
     font-family: system-ui;
   }

@@ -14,6 +14,9 @@ export default css`
       border-color 0.15s ease-in-out,
       box-shadow 0.15s ease-in-out;
   }
+  .btn-min-width {
+    min-width: 10rem;
+  }
   .btn-small {
     padding: 0.25rem 0.5rem;
     font-size: 0.875rem;

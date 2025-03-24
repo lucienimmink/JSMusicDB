@@ -7,6 +7,9 @@ import { global as EventBus } from '../../utils/EventBus';
 import { UPDATE_PLAYER } from '../../utils/player';
 import { pauseIcon } from '../icons/pause';
 import { playIcon } from '../icons/play';
+import { infoIcon } from '../icons/info';
+import buttons from '../../styles/buttons';
+import { OPEN_TRACK_MODAL } from './track-info';
 
 @customElement('track-in-list')
 export class Track extends LitElement {
@@ -22,7 +25,7 @@ export class Track extends LitElement {
   isActive: boolean;
 
   static get styles() {
-    return [smallMuted, trackNav];
+    return [smallMuted, trackNav, buttons];
   }
   constructor() {
     super();
@@ -78,6 +81,11 @@ export class Track extends LitElement {
         ? html` <span class="small muted">${this.track?.type}</span> `
         : nothing}`;
   }
+  private _showInfo(e: Event) {
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    EventBus.emit(OPEN_TRACK_MODAL, this, this.track);
+  }
   render() {
     return html`
       <div
@@ -117,6 +125,7 @@ export class Track extends LitElement {
               : nothing}</span
           >
         </span>
+        <span class="info" @click=${this._showInfo}>${infoIcon}</span>
         <span class="time"> ${this._renderTime()} </span>
       </div>
     `;

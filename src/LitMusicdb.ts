@@ -10,6 +10,7 @@ import './components/loading-indicator/loading-indicator';
 import './components/loading-indicator/progress-bar';
 import './components/loading-indicator/progress-spinner';
 import './components/mp3stream/login';
+import './components/track/track-info';
 import musicdb, { refresh, updateAndRefresh } from './components/musicdb';
 import './components/player/player';
 import router from './routes';
@@ -313,6 +314,7 @@ export class LitMusicdb extends LitElement {
   };
   render() {
     return html`
+      <track-info-modal></track-info-modal>
       <main
         @touchstart=${this._handleTouchStart}
         @touchend=${this._handleTouchEnd}
