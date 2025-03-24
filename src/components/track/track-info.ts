@@ -51,6 +51,7 @@ export class Track extends LitElement {
               Properties
               <button
                 @click=${this._closeModal}
+                autofocus
                 class="btn btn-transparent btn-icon"
               >
                 ${timesIcon}
@@ -74,11 +75,11 @@ export class Track extends LitElement {
                 <td>${this.track.album.artist.albumArtist}</td>
               </tr>
               <tr>
-                <td class="small muted">Track number (disc)</td>
+                <td class="small muted">Disc &bull; track number</td>
                 <td class="small muted">Length</td>
               </tr>
               <tr>
-                <td>${this.track.number} (${this.track.disc})</td>
+                <td>${this.track.disc} &bull; ${this.track.number}</td>
                 <td>${timespan(this.track?.duration)}</td>
               </tr>
               <tr>
@@ -87,7 +88,7 @@ export class Track extends LitElement {
               </tr>
               <tr>
                 <td>${this.track.album.year}</td>
-                <td>${this.track.type}</td>
+                <td>.${this.track.type}</td>
               </tr>
               <tr>
                 <td class="small muted">Track gain</td>

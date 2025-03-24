@@ -18,7 +18,6 @@ export default css`
     transition: all 0.2s ease-in-out;
     border-radius: 0.5rem;
     max-width: 95vw;
-    pointer-events: none;
 
     @media (min-width: 768px) {
       min-width: 50vw;
@@ -56,9 +55,6 @@ export default css`
       background: var(--background2);
       border-top: 1px solid var(--primary);
       padding: 1rem;
-    }
-    button {
-      pointer-events: auto;
     }
   }
   dialog[open] {
