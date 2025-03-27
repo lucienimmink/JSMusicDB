@@ -46,12 +46,15 @@ export default css`
     min-width: 35px;
     text-align: end;
     opacity: 0;
-    transition: all 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
     transition-delay: 0.25s;
   }
   .track.active .info,
   .track:hover .info {
     opacity: 1;
+  }
+  .track.active .info {
+    transition-delay: 0s;
   }
   .time {
     flex-grow: 0;
