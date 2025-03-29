@@ -49,6 +49,18 @@ export default css`
         &.muted {
           padding-bottom: 0;
         }
+        &.album-art {
+          display: none;
+          @media (min-width: 768px) {
+            display: table-cell;
+          }
+          width: 280px;
+          album-art {
+            aspect-ratio: 1 / 1;
+            display: block;
+            height: 280px;
+          }
+        }
       }
     }
     footer {

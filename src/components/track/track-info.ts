@@ -61,10 +61,22 @@ export class Track extends LitElement {
               <tr>
                 <td class="small muted">Title</td>
                 <td class="small muted">Artist</td>
+                <td>&nbsp;</td>
               </tr>
               <tr>
                 <td>${this.track.title}</td>
                 <td>${this.track.trackArtist}</td>
+                <td rowspan="10" class="album-art">
+                  <album-art
+                    artist="${this.track?.album?.artist?.albumArtist ||
+                    this.track?.album?.artist?.name}"
+                    album="${this.track?.album?.name}"
+                    mbid="${this.track?.album?.mbid}"
+                    ?static=${true}
+                    dimension="280"
+                    visible="true"
+                  ></album-art>
+                </td>
               </tr>
               <tr>
                 <td class="small muted">Album</td>
@@ -102,7 +114,7 @@ export class Track extends LitElement {
                 <td class="small muted" colspan="2">Relative location</td>
               </tr>
               <tr>
-                <td colspan="2">${this.track.source.url}</td>
+                <td colspan="3">${this.track.source.url}</td>
               </tr>
             </table>
             <footer>
