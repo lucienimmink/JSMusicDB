@@ -24,7 +24,7 @@ export default css`
       max-width: 80vw;
     }
     @media (min-width: 1024px) {
-      max-width: 60vw;
+      max-width: 55vw;
     }
     h1 {
       font-size: 1.25rem;

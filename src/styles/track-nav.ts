@@ -22,10 +22,10 @@ export default css`
     border-bottom: 1px solid var(--border-colour);
   }
   .track:not(.album-track):hover {
-    background: var(--background2);
+    background-color: var(--background2);
   }
   .track.active {
-    background-color: var(--primary-seethrough);
+    background-color: var(--primary-seethrough) !important;
     border-bottom-color: var(--primary);
     color: var(--letter-color);
   }
@@ -39,6 +39,10 @@ export default css`
   }
   .title {
     flex-grow: 1;
+    svg {
+      display: inline-block;
+      width: 10px;
+    }
   }
   .info {
     flex-grow: 0;
