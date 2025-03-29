@@ -61,7 +61,7 @@ export class Track extends LitElement {
               <tr>
                 <td class="small muted">Title</td>
                 <td class="small muted">Artist</td>
-                <td>&nbsp;</td>
+                <td class="small muted">&nbsp;</td>
               </tr>
               <tr>
                 <td>${this.track.title}</td>
