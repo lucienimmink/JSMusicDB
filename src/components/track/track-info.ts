@@ -42,6 +42,44 @@ export class Track extends LitElement {
     this.shadowRoot?.querySelector('dialog')?.close();
     EventBus.emit(TOGGLE_OVERFLOW_HIDDEN, this, false);
   }
+  _calculateRowSpan() {
+    let rowspan = 10;
+    if (this.track?.samplerate) {
+      rowspan += 4;
+    }
+    return rowspan;
+  }
+  _renderStreamInfoIfPresent() {
+    if (this.track?.samplerate) {
+      return html`
+        <tr>
+          <td class="small muted">Sample rate</td>
+          <td class="small muted">Bit rate</td>
+        </tr>
+        <tr>
+          <td>${this.track.samplerate} Hz</td>
+          <td>${this.track.bitrate} bits per second</td>
+        </tr>
+        <tr>
+          ${this.track?.bits_per_sample
+            ? html`<td class="small muted">Channels</td>`
+            : html`<td class="small muted" colspan="2">Channels</td>`}
+          ${this.track?.bits_per_sample
+            ? html`<td class="small muted"></td>`
+            : nothing}
+        </tr>
+        <tr>
+          ${this.track?.bits_per_sample
+            ? html`<td>${this.track.channels}</td>`
+            : html`<td colspan="2">${this.track.channels}</td>`}
+          ${this.track?.bits_per_sample
+            ? html`<td>${this.track.bits_per_sample} bit</td>`
+            : nothing}
+        </tr>
+      `;
+    }
+    return nothing;
+  }
   render() {
     return html`<dialog @close=${this._closeModal} @cancel=${this._closeModal}>
       ${!this.track
@@ -66,7 +104,7 @@ export class Track extends LitElement {
               <tr>
                 <td>${this.track.title}</td>
                 <td>${this.track.trackArtist}</td>
-                <td rowspan="10" class="album-art">
+                <td rowspan="${this._calculateRowSpan()}" class="album-art">
                   <album-art
                     artist="${this.track?.album?.artist?.albumArtist ||
                     this.track?.album?.artist?.name}"
@@ -110,6 +148,7 @@ export class Track extends LitElement {
                 <td>${this.track.trackGain} dB</td>
                 <td>${this.track.album.albumGain} dB</td>
               </tr>
+              ${this._renderStreamInfoIfPresent()}
               <tr>
                 <td class="small muted" colspan="2">Relative location</td>
               </tr>

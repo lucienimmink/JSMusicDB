@@ -55,6 +55,7 @@ export default css`
             display: table-cell;
           }
           width: 280px;
+          vertical-align: middle;
           album-art {
             aspect-ratio: 1 / 1;
             display: block;
