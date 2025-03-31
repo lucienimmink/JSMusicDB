@@ -49,6 +49,16 @@ export class Track extends LitElement {
     }
     return rowspan;
   }
+  _renderChannelsInfo(channels: number) {
+    if (channels === 1) {
+      return 'Mono';
+    } else if (channels === 2) {
+      return 'Stereo';
+    } else if (channels > 2) {
+      return `${channels} channels`;
+    }
+    return '';
+  }
   _renderStreamInfoIfPresent() {
     if (this.track?.samplerate) {
       return html`
@@ -57,21 +67,23 @@ export class Track extends LitElement {
           <td class="small muted">Bit rate</td>
         </tr>
         <tr>
-          <td>${this.track.samplerate} Hz</td>
-          <td>${this.track.bitrate} bits per second</td>
+          <td>${this.track.samplerate / 1000} kHz</td>
+          <td>${Math.round(this.track.bitrate / 1024)} kbps</td>
         </tr>
         <tr>
           ${this.track?.bits_per_sample
             ? html`<td class="small muted">Channels</td>`
             : html`<td class="small muted" colspan="2">Channels</td>`}
           ${this.track?.bits_per_sample
-            ? html`<td class="small muted"></td>`
+            ? html`<td class="small muted">Bit depth</td>`
             : nothing}
         </tr>
         <tr>
           ${this.track?.bits_per_sample
-            ? html`<td>${this.track.channels}</td>`
-            : html`<td colspan="2">${this.track.channels}</td>`}
+            ? html`<td>${this._renderChannelsInfo(this.track.channels)}</td>`
+            : html`<td colspan="2">
+                ${this._renderChannelsInfo(this.track.channels)}
+              </td>`}
           ${this.track?.bits_per_sample
             ? html`<td>${this.track.bits_per_sample} bit</td>`
             : nothing}
