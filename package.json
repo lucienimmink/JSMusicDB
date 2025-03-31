@@ -45,7 +45,7 @@
     "vite": "^6.1.0",
     "vite-plugin-package-version": "^1.1.0",
     "vite-plugin-preload": "^0.4.2",
-    "vite-plugin-pwa": "^0.21.1",
+    "vite-plugin-pwa": "^1.0.0",
     "workbox-broadcast-update": "^7.3.0",
     "zip-a-folder": "^3.1.8"
   },
