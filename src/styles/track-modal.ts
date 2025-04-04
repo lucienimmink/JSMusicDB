@@ -43,8 +43,7 @@ export default css`
       margin: 0 1rem 1rem;
       width: calc(100% - 2rem);
       td {
-        width: 50%;
-        padding-bottom: 1rem;
+        padding-bottom: 0.75rem;
         vertical-align: top;
         &.muted {
           padding-bottom: 0;
