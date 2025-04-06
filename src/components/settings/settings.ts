@@ -364,7 +364,6 @@ export class SettingsNav extends LitElement {
             Recently listened limit
             <input name="recentlyListenedLimit" type="range" min="1" max="10" step="1" .value=${this.settings?.recentlyListenedLimit || 6} @change="${(e: Event) => this._setRecentlyListenedLimit(e)}" @touchstart=${this._preventDragging} @touchend=${this._preventDragging} />
             <output for="recentlyListenedLimit" onforminput="value = recentlyListenedLimit.valueAsNumber" >${this.settings?.recentlyListenedLimit}</output>
-            
           </label>
         </p>
         </div>
@@ -436,19 +435,40 @@ export class SettingsNav extends LitElement {
   private _renderInformation() {
     return html`<div class="container container-block">
       <h2 class="header">Statistics</h2>
-      <p>Artists: ${this.stats?.artists}</p>
-      <p>Albums: ${this.stats?.albums}</p>
-      <p>Tracks: ${this.stats?.tracks}</p>
-      <p>Total playing time: ${this.stats?.time}</p>
-      <p>Time needed to parse: ${this.stats?.parsingTime}ms</p>
-      <p>Last updated: ${this.stats?.parsed}</p>
-      ${this.showVersion
-        ? // @ts-ignore
-          html`<p>Version: ${import.meta.env.PACKAGE_VERSION}</p>`
-        : nothing}
-      ${this.stats?.mp3stream
-        ? html` <p>Node-mp3stream version: ${this.stats?.mp3stream}</p> `
-        : nothing}
+      <table>
+        <tr>
+          <td class="small muted">Artists</td>
+          <td class="small muted">Time needed to parse</td>
+        </tr>
+        <tr>
+          <td>${this.stats?.artists}</td>
+          <td>${this.stats?.parsingTime}ms</td>
+        </tr>
+        <tr>
+          <td class="small muted">Albums</td>
+          <td class="small muted">Last updated</td>
+        </tr>
+        <tr>
+          <td>${this.stats?.albums}</td>
+          <td>${this.stats?.parsed}</td>
+        </tr>
+        <tr>
+          <td class="small muted">Tracks</td>
+          <td class="small muted">Version</td>
+        </tr>
+        <tr>
+          <td>${this.stats?.tracks}</td>
+          <td>${import.meta.env.PACKAGE_VERSION}</td>
+        </tr>
+        <tr>
+          <td class="small muted">Total playing time</td>
+          <td class="small muted">Node-mp3stream version</td>
+        </tr>
+        <tr>
+          <td>${this.stats?.time}</td>
+          <td>${this.stats?.mp3stream}</td>
+        </tr>
+      </table>
     </div>`;
   }
   render() {

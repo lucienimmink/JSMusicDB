@@ -62,4 +62,15 @@ export default css`
   select:focus {
     outline: 2px solid var(--primary);
   }
+  table {
+    margin: 1rem;
+    width: calc(100% - 2rem);
+    td {
+      padding-bottom: 0.75rem;
+      vertical-align: top;
+      &.muted {
+        padding-bottom: 0;
+      }
+    }
+  }
 `;
