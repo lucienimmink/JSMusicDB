@@ -63,7 +63,7 @@ export default css`
     outline: 2px solid var(--primary);
   }
   table {
-    margin: 1rem;
+    margin: 0.25rem 1rem 1rem;
     width: calc(100% - 2rem);
     td {
       padding-bottom: 0.75rem;
