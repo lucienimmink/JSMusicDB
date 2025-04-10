@@ -101,36 +101,30 @@ export default css`
     position: relative;
     top: 0.1em;
   }
-  app-link album-art {
+  album-in-grid {
     display: block;
     transition: transform 0.2s ease-in-out;
-  }
-  app-link:hover album-art {
-    transform: scale(1.05);
-  }
-  app-link:active album-art {
-    transform: scale(0.95);
-  }
-  app-link .panel {
-    overflow: hidden;
-    transition: all 0.2s ease-in-out;
-  }
-  app-link:hover .panel,
-  app-link:active .panel {
-    border-color: var(--primary);
   }
   @media (min-width: 768px) {
     .grid {
       --distance: 16px;
     }
-    app-link:nth-child(11),
-    app-link:nth-child(12) {
+    album-in-grid:nth-child(9),
+    album-in-grid:nth-child(10),
+    album-in-grid:nth-child(11),
+    album-in-grid:nth-child(12) {
       display: none;
     }
   }
   @media (min-width: 992px) {
-    app-link:nth-child(11),
-    app-link:nth-child(12) {
+    album-in-grid:nth-child(9),
+    album-in-grid:nth-child(10) {
+      display: block;
+    }
+  }
+  @media (min-width: 1441px) {
+    album-in-grid:nth-child(11),
+    album-in-grid:nth-child(12) {
       display: block;
     }
   }

@@ -39,7 +39,7 @@ export class HomeNav extends LitElement {
   recentlyListenedLimit = '6';
 
   private readonly INTERVAL = 1000 * 9;
-  private readonly LATEST_ADDITIONS = 10;
+  private readonly LATEST_ADDITIONS = 12;
 
   static get styles() {
     return [container, headers, smallMuted, panel, home];

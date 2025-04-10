@@ -52,8 +52,8 @@ export default css`
   }
   @media (min-width: 1600px) {
     .panel-home {
-      width: 15vw;
-      height: 15vw;
+      width: 10vw;
+      height: 10vw;
     }
   }
   .panel-background {
