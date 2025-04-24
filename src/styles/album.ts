@@ -9,7 +9,7 @@ export default css`
     padding: 0;
     list-style: none;
   }
-  .album-details::before {
+  /* .album-details::before {
     top: anchor(--a top);
     width: anchor-size(--a width);
     height: anchor-size(--a height);
@@ -19,22 +19,26 @@ export default css`
     transition:
       top 0.5s ease-in-out,
       height 0.5s ease-in-out;
-  }
+  } */
   track-in-list {
     cursor: pointer;
     display: block;
     position: relative;
     z-index: 1;
+    transition: background-color 0.5s ease-in-out;
+    &:hover {
+      background-color: var(--background2);
+    }
   }
   .header {
     z-index: 2;
   }
-  .album-details:not(:hover) [isActive] {
+  /* .album-details:not(:hover) [isActive] {
     anchor-name: --a;
   }
   track-in-list:is(:hover, :focus-visible) {
     anchor-name: --a;
-  }
+  } */
 
   @media (min-width: 992px) {
     .container {

@@ -21,7 +21,7 @@ export default css`
     transition: background-color 0.5s ease-in-out;
     view-transition-name: letter-nav-list;
   }
-  ul::before {
+  /* ul::before {
     left: anchor(--a left);
     width: anchor-size(--a width);
     content: '';
@@ -31,7 +31,7 @@ export default css`
     transition:
       left 0.5s ease-in-out,
       width 0.5s ease-in-out;
-  }
+  } */
   li {
     text-align: center;
     align-self: stretch;
@@ -39,13 +39,17 @@ export default css`
     box-sizing: border-box;
     position: relative;
     z-index: 1;
+    transition: background-color 0.5s ease-in-out;
+    &:hover {
+      background-color: var(--letter-background-hover);
+    }
   }
-  ul:not(:hover) .active {
+  /* ul:not(:hover) .active {
     anchor-name: --a;
   }
   li:has(app-link:is(:hover, :focus-visible)) {
     anchor-name: --a;
-  }
+  } */
   app-link {
     color: var(--letter-color);
     cursor: pointer;
