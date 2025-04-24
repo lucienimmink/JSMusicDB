@@ -647,7 +647,7 @@ export class Album extends LitElement {
   private _renderArt() {
     return html`<app-link href="/playing" class="art">
       <album-art
-        @art=${(e: any) => this._setArt(e)}
+        @art=${this._setArt}
         artist=${this.track.album.artist.albumArtist ||
         this.track.album.artist.name}
         album=${this.track.album.name}

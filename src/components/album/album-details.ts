@@ -1,6 +1,11 @@
 import timespan from '@addasoft/timespan';
 import { LitElement, html, nothing } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import {
+  customElement,
+  property,
+  state,
+  eventOptions,
+} from 'lit/decorators.js';
 import albumDetails from '../../styles/album-details';
 import buttons from '../../styles/buttons';
 import container from '../../styles/container';
@@ -63,13 +68,6 @@ export class AlbumDetails extends LitElement {
       this.replayGainApplied = replaygain;
     });
   }
-  _handleScroll = () => {
-    const scroll =
-      window.scrollY >= AlbumDetails.SCROLLOFFSET
-        ? 1
-        : window.scrollY / AlbumDetails.SCROLLOFFSET;
-    this.style.setProperty('--scroll', scroll.toString());
-  };
 
   attributeChangedCallback(name: any, oldval: any, newval: any) {
     if (name === 'album') {
@@ -99,10 +97,12 @@ export class AlbumDetails extends LitElement {
     e.preventDefault();
     this.dispatchEvent(new Event('queue'));
   }
+  @eventOptions({ passive: true })
   _openModal() {
     this.shadowRoot?.querySelector('dialog')?.showModal();
     EventBus.emit(TOGGLE_OVERFLOW_HIDDEN, this, true);
   }
+  @eventOptions({ passive: true })
   _closeModal() {
     this.shadowRoot?.querySelector('dialog')?.close();
     EventBus.emit(TOGGLE_OVERFLOW_HIDDEN, this, false);
@@ -113,13 +113,10 @@ export class AlbumDetails extends LitElement {
 
   private _renderButtons() {
     return html`<h4>
-      <button class="btn btn-primary" @click=${(e: any) => this._playAlbum(e)}>
+      <button class="btn btn-primary" @click=${this._playAlbum}>
         Play <span>album</span>
       </button>
-      <button
-        class="btn btn-secondary"
-        @click=${(e: any) => this._queueAlbum(e)}
-      >
+      <button class="btn btn-secondary" @click=${this._queueAlbum}>
         Queue <span>album</span>
       </button>
     </h4>`;
