@@ -42,7 +42,7 @@
     "prettier": "^3.4.2",
     "prettier-plugin-organize-imports": "^4.1.0",
     "typescript": "^5.7.3",
-    "vite": "^6.1.0",
+    "vite": "npm:rolldown-vite@latest",
     "vite-plugin-package-version": "^1.1.0",
     "vite-plugin-preload": "^0.4.2",
     "vite-plugin-pwa": "^1.0.0",
