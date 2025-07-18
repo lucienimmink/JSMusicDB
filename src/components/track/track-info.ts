@@ -39,7 +39,8 @@ export class Track extends LitElement {
   _closeModal(e: Event) {
     e.stopPropagation();
     e.stopImmediatePropagation();
-    this.shadowRoot?.querySelector('dialog')?.close();
+    // @ts-ignore
+    this.shadowRoot?.querySelector('dialog')?.requestClose();
     EventBus.emit(TOGGLE_OVERFLOW_HIDDEN, this, false);
   }
   _calculateRowSpan() {

@@ -104,7 +104,8 @@ export class AlbumDetails extends LitElement {
   }
   @eventOptions({ passive: true })
   _closeModal() {
-    this.shadowRoot?.querySelector('dialog')?.close();
+    // @ts-ignore
+    this.shadowRoot?.querySelector('dialog')?.requestClose();
     EventBus.emit(TOGGLE_OVERFLOW_HIDDEN, this, false);
   }
   _getModalDimension() {
