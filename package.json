@@ -90,7 +90,7 @@
     "urlpattern-polyfill": "^10.1.0"
   },
   "volta": {
-    "node": "24.5.0",
+    "node": "24.6.0",
     "npm": "11.5.2"
   }
 }
