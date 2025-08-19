@@ -128,11 +128,14 @@ export default css`
     width: 25px;
   }
   input {
-    border: 1px solid var(--primary);
     padding: 8px 10px;
     display: block;
     width: 90%;
     margin: 8px 13px;
+    color: var(--text-color);
+    background-color: var(--background3);
+    background-clip: padding-box;
+    border: 1px solid var(--primary);
   }
   input:focus {
     border-radius: 0;

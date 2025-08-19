@@ -47,10 +47,10 @@ export default css`
     padding: 0.375rem 0.75rem;
     font-size: 1rem;
     line-height: 1.5;
-    color: #495057;
-    background-color: #fff;
+    color: var(--text-color);
+    background-color: var(--background3);
     background-clip: padding-box;
-    border: 1px solid #ced4da;
+    border: 1px solid var(--primary);
     border-radius: 0;
     transition:
       border-color 0.15s ease-in-out,
