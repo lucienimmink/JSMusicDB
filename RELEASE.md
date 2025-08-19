@@ -1,3 +1,7 @@
+# Next minor release
+
+- Ability to paste list of trackIds to create a playlist; data can be fed from MCP server.
+
 # JSMusicDB 4
 
 ## Architecture changes
