@@ -21,6 +21,7 @@ import {
   getNewPlaylistForRandom,
   getNewPlaylistForRandomPref,
   getTopTracksForUser,
+  getTrackById,
   setCurrentPlaylist,
   startPlaylist,
 } from '../../utils/player';
@@ -42,7 +43,12 @@ export class LetterNav extends LitElement {
   lastFMUserName: string;
   @property()
   playlistId: string;
+  @state()
   showStartArtistSelection: boolean;
+  @state()
+  showPastePlaylistSelection: boolean;
+  @state()
+  pasteError: boolean;
   @state()
   playlist: any;
   @state()
@@ -94,6 +100,7 @@ export class LetterNav extends LitElement {
   };
   _setActivePlaylist = (name = 'current') => {
     this.showStartArtistSelection = false;
+    this.showPastePlaylistSelection = false;
 
     if (name === 'current') {
       this.playlist = this.current;
@@ -103,6 +110,7 @@ export class LetterNav extends LitElement {
     this.loading = true;
     this.playlist = null;
     this.showStartArtistSelection = false;
+    this.showPastePlaylistSelection = false;
     getNewPlaylistForLovedTracks({
       username: this.lastFMUserName,
     })
@@ -115,6 +123,7 @@ export class LetterNav extends LitElement {
     this.loading = true;
     this.playlist = null;
     this.showStartArtistSelection = false;
+    this.showPastePlaylistSelection = false;
     getNewPlaylistForRandom({
       max: this.max,
     })
@@ -126,6 +135,7 @@ export class LetterNav extends LitElement {
   _generateRandomByPreference = () => {
     this.loading = true;
     this.showStartArtistSelection = false;
+    this.showPastePlaylistSelection = false;
     this.playlist = null;
     getNewPlaylistForRandomPref({
       max: this.max,
@@ -139,6 +149,7 @@ export class LetterNav extends LitElement {
   _generateRadioByPreference = () => {
     this.loading = true;
     this.showStartArtistSelection = false;
+    this.showPastePlaylistSelection = false;
     this.playlist = null;
     getNewPlaylistForRadioPref({
       max: this.max,
@@ -157,6 +168,7 @@ export class LetterNav extends LitElement {
     this.loading = true;
     this.playlist = null;
     this.showStartArtistSelection = false;
+    this.showPastePlaylistSelection = false;
     getTopTracksForUser({
       username: this.lastFMUserName,
       max: this.max,
@@ -166,8 +178,16 @@ export class LetterNav extends LitElement {
         this.loading = false;
       });
   };
+
   _startArtistRadio = () => {
     this.showStartArtistSelection = true;
+    this.showPastePlaylistSelection = false;
+    this.playlist = null;
+  };
+
+  _startPastePlaylist = () => {
+    this.showStartArtistSelection = false;
+    this.showPastePlaylistSelection = true;
     this.playlist = null;
   };
   _populateArtists = () => {
@@ -198,6 +218,77 @@ export class LetterNav extends LitElement {
         this.loading = false;
       });
   };
+  _importPlaylist = (e: Event) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const name = (form.querySelector('#playlist-name') as HTMLInputElement)
+      .value;
+    const pasteString = (
+      form.querySelector('#playlist-paste') as HTMLTextAreaElement
+    ).value;
+
+    if (!name || !pasteString) {
+      console.warn('Please provide a name and paste your playlist.');
+      this.pasteError = true;
+      return;
+    }
+
+    this.loading = true;
+    this.showStartArtistSelection = false;
+    this.showPastePlaylistSelection = false;
+
+    try {
+      const pasteJSON = JSON.parse(pasteString);
+      if (!Array.isArray(pasteJSON) || pasteJSON.length === 0) {
+        this.pasteError = true;
+        throw new Error('Invalid JSON format or empty playlist.');
+      }
+      const playlist = {
+        name,
+        tracks: [],
+        type: 'pasted',
+        max: pasteJSON.length,
+      };
+      pasteJSON.forEach(async (track: any) => {
+        if (track.id) {
+          const mdbtrack = await getTrackById(track.id);
+          if (mdbtrack) {
+            playlist.tracks.push(mdbtrack);
+            EventBus.emit(NEW_PLAYLIST_LENGTH, {}, playlist.tracks.length);
+          } else {
+            console.warn('Track not found in database:', track.id);
+          }
+        } else {
+          throw new Error(
+            'Track ID is missing for track in pasted playlist.',
+            track,
+          );
+        }
+      });
+      this._updatePlaylist(playlist);
+    } catch (e) {
+      console.error('Invalid JSON format in pasted playlist:', e);
+      this.pasteError = true;
+      this.loading = false;
+      this.showPastePlaylistSelection = true;
+      return;
+    }
+
+    // setCurrentPlaylist({
+    //   name,
+    //   tracks: paste.split('\n').map((line: string) => ({ title: line })),
+    //   type: 'custom',
+    // })
+    //   .then(() => {
+    //     this.loading = false;
+    //     this.playlistId = 'paste';
+    //     this._getPlaylists();
+    //   })
+    //   .catch((error: any) => {
+    //     console.error('Error importing playlist:', error);
+    //     this.loading = false;
+    //   });
+  };
   _update(target: any, current: any) {
     if (this.playlist) {
       const updatedTracks = this.playlist?.tracks.map((track: any) => {
@@ -226,6 +317,8 @@ export class LetterNav extends LitElement {
   _doSwitchPlaylist(switchTo: string) {
     this.currentPlaylistId = switchTo;
     this.showStartArtistSelection = false;
+    this.showPastePlaylistSelection = false;
+    console.log(`Switching to playlist: ${switchTo}`);
     switch (switchTo) {
       case 'current':
         this._setActivePlaylist('current');
@@ -249,7 +342,15 @@ export class LetterNav extends LitElement {
         this.showStartArtistSelection = true;
         this._startArtistRadio();
         break;
+      case 'paste':
+        this.showPastePlaylistSelection = true;
+        this._startPastePlaylist();
+        break;
       default:
+        console.warn(`Unknown playlist: ${switchTo}`);
+        this.showStartArtistSelection = false;
+        this.showPastePlaylistSelection = false;
+        this.playlist = null;
       // this._setActivePlaylist('current');
     }
   }
@@ -292,6 +393,8 @@ export class LetterNav extends LitElement {
     this.lastFMUserName = '';
     this.playlist = null;
     this.showStartArtistSelection = false;
+    this.showPastePlaylistSelection = false;
+    this.pasteError = false;
     this.artists = [];
     this.loading = false;
     this.max = 100;
@@ -411,6 +514,13 @@ export class LetterNav extends LitElement {
             ></app-link
           >
         </li>
+        <li class="${this.playlistId === 'paste' ? 'active' : ''}">
+          <app-link href="/playlists/paste" flex
+            >Paste playlist<span class="icon-note"
+              >${nowPlayingIcon}</span
+            ></app-link
+          >
+        </li>
       </ul>
       <select
         class="sm-only"
@@ -443,6 +553,7 @@ export class LetterNav extends LitElement {
           ? html` <option value="pref-radio">Radio by preference</option> `
           : nothing}
         <option value="radio">Artist radio</option>
+        <option value="paste">Paste playlist</option>
       </select>
     </div>`;
   }
@@ -477,6 +588,72 @@ export class LetterNav extends LitElement {
       </div>
     `;
   }
+  private _renderPastePlaylistSelector() {
+    return html`
+      <div class="playlist">
+        <ul>
+          <li class="header">Paste playlist</li>
+          <li class="no-hover paste-playlist-selector">
+            <form
+              @submit="${(e: Event) => {
+                this._importPlaylist(e);
+              }}"
+            >
+              ${this.pasteError
+                ? html`<div
+                    class="alert"
+                    role="alert"
+                    aria-live="assertive"
+                    aria-atomic="true"
+                  >
+                    <p>
+                      Give your playlist a name and paste the tracks in JSON
+                      format. <br />
+                      The JSON should be an array of objects with track IDs,
+                      like this:
+                    </p>
+                    <pre>
+[
+  {
+    "id": "track-id-1",
+  },
+  {
+    "id": "track-id-2",
+  }
+]</pre
+                    >
+                  </div>`
+                : nothing}
+
+              <div>
+                <label for="playlist-name" class="md-up"
+                  >Name your playlist:
+                </label>
+                <input
+                  type="text"
+                  id="playlist-name"
+                  placeholder="playlist name"
+                />
+              </div>
+              <div>
+                <label for="playlist-paste" class="md-up"
+                  >Paste your playlist:
+                </label>
+                <textarea
+                  id="playlist-paste"
+                  rows="10"
+                  placeholder="paste your JSON playlist"
+                ></textarea>
+              </div>
+              <div>
+                <button class="btn btn-primary">Import playlist</button>
+              </div>
+            </form>
+          </li>
+        </ul>
+      </div>
+    `;
+  }
   render() {
     return html` <div class="container">
       ${this._renderPlaylistSelector()}
@@ -501,6 +678,9 @@ export class LetterNav extends LitElement {
           `
         : nothing}
       ${this.showStartArtistSelection ? this._renderArtistSelector() : nothing}
+      ${this.showPastePlaylistSelection
+        ? this._renderPastePlaylistSelector()
+        : nothing}
       ${this.loading
         ? html`
             <loading-indicator

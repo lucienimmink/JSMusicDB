@@ -74,6 +74,20 @@ export const setIsShuffled = (state: boolean) => {
 export const getIsShuffled = () => {
   return get(IS_SHUFFLED);
 };
+export const getTrackById = (id: string) => {
+  return new Promise((resolve, reject) => {
+    musicdb
+      .then((mdb: any) => {
+        const tracks = mdb.trackList();
+        const track = tracks.find((t: any) => t.id === id);
+        if (track) {
+          return resolve(track);
+        }
+        return reject(`Track with id ${id} not found`);
+      })
+      .catch(e => reject(e));
+  });
+};
 export const getNewPlaylistForRandom = (playlist: any) => {
   return new Promise((resolve, reject) => {
     musicdb
@@ -97,7 +111,7 @@ export const getNewPlaylistForRandom = (playlist: any) => {
         });
         return resolve(nextPlaylist);
       })
-      .catch(() => reject());
+      .catch(e => reject(e));
   });
 };
 export const getNewPlaylistForRandomPref = (playlist: any) => {
