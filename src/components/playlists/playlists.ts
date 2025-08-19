@@ -253,6 +253,7 @@ export class LetterNav extends LitElement {
         if (track.id) {
           const mdbtrack = await getTrackById(track.id);
           if (mdbtrack) {
+            // @ts-ignore
             playlist.tracks.push(mdbtrack);
             EventBus.emit(NEW_PLAYLIST_LENGTH, {}, playlist.tracks.length);
           } else {
