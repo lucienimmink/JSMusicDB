@@ -127,22 +127,11 @@ export default css`
   h1 svg {
     width: 25px;
   }
-  input {
-    padding: 8px 10px;
-    display: block;
+  input[type='search'] {
     width: 90%;
-    margin: 8px 13px;
-    color: var(--text-color);
-    background-color: var(--background3);
-    background-clip: padding-box;
-    border: 1px solid var(--primary);
-  }
-  input:focus {
-    border-radius: 0;
-    border: 1px solid var(--primary);
   }
   @media (min-width: 576px) {
-    input {
+    input[type='search'] {
       width: 88%;
       margin: 8px 25px;
     }

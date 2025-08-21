@@ -37,24 +37,8 @@ export default css`
     align-items: center;
   }
   label {
-    font-size: 0.875rem;
-  }
-  input {
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-    height: calc(1.5em + 0.75rem + 2px);
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: var(--text-color);
-    background-color: var(--background3);
-    background-clip: padding-box;
-    border: 1px solid var(--primary);
-    border-radius: 0;
-    transition:
-      border-color 0.15s ease-in-out,
-      box-shadow 0.15s ease-in-out;
+    margin-bottom: 0.25rem;
+    cursor: pointer;
   }
   @media (min-width: 768px) {
     .container {

@@ -14,6 +14,7 @@ import {
 } from '../../utils/lastfm';
 import { infoIcon } from '../icons/info';
 import { timesIcon } from '../icons/times';
+import forms from '../../styles/forms';
 
 @customElement('lastfm-login')
 export class LetterNav extends LitElement {
@@ -26,7 +27,7 @@ export class LetterNav extends LitElement {
   @state()
   showInfoModal: boolean;
   static get styles() {
-    return [animationCSS, container, headers, login, buttons, modals];
+    return [animationCSS, container, headers, login, buttons, modals, forms];
   }
   constructor() {
     super();

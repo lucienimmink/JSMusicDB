@@ -16,6 +16,7 @@ import { settingsIcon } from '../icons/settings.js';
 import { timesIcon } from '../icons/times.js';
 import { yearsIcon } from '../icons/years.js';
 import './../app-link/app-link';
+import forms from '../../styles/forms';
 
 export const TOGGLE_MENU = 'toggle-menu';
 export const TOGGLE_OVERFLOW_HIDDEN = 'toggle-overflow-hidden';
@@ -37,7 +38,7 @@ export class SideNav extends LitElement {
   touchstartX: number = 0;
 
   static get styles() {
-    return [responsive, sideNav];
+    return [responsive, forms, sideNav];
   }
   constructor() {
     super();

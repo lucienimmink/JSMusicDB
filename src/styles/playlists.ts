@@ -108,14 +108,7 @@ export default css`
     width: 180px;
     margin: 4rem auto 0;
   }
-  select {
-    background: var(--background2);
-    padding: 0.3rem 0.5rem;
-    color: var(--text-color);
-  }
-  select:focus {
-    outline: 2px solid var(--primary);
-  }
+
   .playlist .paste-playlist-selector {
     display: flex;
     flex-direction: column;
@@ -127,22 +120,9 @@ export default css`
       background: rgba(255, 0, 0, 0.2);
       padding: 0.5rem 1rem;
     }
-
-    input,
-    textarea {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 0.375rem 0.75rem;
-      font-size: 1rem;
-      line-height: 1.5;
-      color: var(--text-color);
-      background-color: var(--background3);
-      background-clip: padding-box;
-      border: 1px solid var(--primary);
-      border-radius: 0;
-      transition:
-        border-color 0.15s ease-in-out,
-        box-shadow 0.15s ease-in-out;
+    label {
+      margin-bottom: 0.25rem;
+      cursor: pointer;
     }
     form div + div {
       margin-block-start: 1rem;

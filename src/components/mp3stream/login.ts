@@ -18,6 +18,7 @@ import {
 } from '../../utils/node-mp3stream';
 import { infoIcon } from '../icons/info';
 import { timesIcon } from '../icons/times';
+import forms from '../../styles/forms';
 
 @customElement('mp3stream-login')
 export class LetterNav extends LitElement {
@@ -33,7 +34,7 @@ export class LetterNav extends LitElement {
   @state()
   versionError: boolean;
   static get styles() {
-    return [animationCSS, container, headers, login, buttons, modals];
+    return [animationCSS, container, headers, login, buttons, modals, forms];
   }
   constructor() {
     super();

@@ -31,6 +31,7 @@ import { redoIcon } from '../icons/redo';
 import musicdb from '../musicdb';
 import '../loading-indicator/loading-indicator';
 import './../track/track.js';
+import forms from '../../styles/forms';
 
 @customElement('playlists-nav')
 export class LetterNav extends LitElement {
@@ -60,7 +61,15 @@ export class LetterNav extends LitElement {
   currentPlaylistId: string;
 
   static get styles() {
-    return [headers, container, smallMuted, responsive, playlists, buttons];
+    return [
+      headers,
+      container,
+      smallMuted,
+      responsive,
+      playlists,
+      buttons,
+      forms,
+    ];
   }
   protected async willUpdate(
     _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>,
@@ -274,21 +283,6 @@ export class LetterNav extends LitElement {
       this.showPastePlaylistSelection = true;
       return;
     }
-
-    // setCurrentPlaylist({
-    //   name,
-    //   tracks: paste.split('\n').map((line: string) => ({ title: line })),
-    //   type: 'custom',
-    // })
-    //   .then(() => {
-    //     this.loading = false;
-    //     this.playlistId = 'paste';
-    //     this._getPlaylists();
-    //   })
-    //   .catch((error: any) => {
-    //     console.error('Error importing playlist:', error);
-    //     this.loading = false;
-    //   });
   };
   _update(target: any, current: any) {
     if (this.playlist) {
@@ -574,8 +568,13 @@ export class LetterNav extends LitElement {
         <ul>
           <li class="header">Create artist radio</li>
           <li class="no-hover artist-selector">
-            <span class="md-up">Start with this artist: </span>
-            <select @change="${(e: Event) => this._generateArtistRadio(e)}">
+            <label for="selectArtist" class="md-up"
+              >Start with this artist:
+            </label>
+            <select
+              id="selectArtist"
+              @change="${(e: Event) => this._generateArtistRadio(e)}"
+            >
               <option disabled selected>Select an artist from the list</option>
               ${this.artists.map(
                 (artist: any) =>

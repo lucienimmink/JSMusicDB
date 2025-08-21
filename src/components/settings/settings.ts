@@ -40,6 +40,7 @@ import { trashIcon } from '../icons/trash';
 import { unlinkIcon } from '../icons/unlink';
 import musicdb, { updateAndRefresh } from '../musicdb';
 import { LOCALE } from '../../utils/date';
+import forms from '../../styles/forms';
 
 @customElement('settings-nav')
 export class SettingsNav extends LitElement {
@@ -58,7 +59,15 @@ export class SettingsNav extends LitElement {
   canGetRSSFeed = false;
 
   static get styles() {
-    return [buttons, container, headers, smallMuted, responsive, settings];
+    return [
+      buttons,
+      container,
+      headers,
+      smallMuted,
+      responsive,
+      settings,
+      forms,
+    ];
   }
   constructor() {
     super();
