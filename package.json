@@ -91,7 +91,7 @@
   },
   "volta": {
     "node": "24.7.0",
-    "npm": "11.5.2"
+    "npm": "11.6.0"
   },
   "customElements": "dist/custom-elements.json"
 }
