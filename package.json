@@ -90,7 +90,7 @@
     "urlpattern-polyfill": "^10.1.0"
   },
   "volta": {
-    "node": "24.8.0",
+    "node": "24.9.0",
     "npm": "11.6.1"
   },
   "customElements": "dist/custom-elements.json"
