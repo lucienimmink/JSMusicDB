@@ -2,9 +2,10 @@ import { css } from 'lit';
 
 export default css`
   :host {
-    background: var(--background2);
+    background: var(--background2-extreme-seethrough);
+    backdrop-filter: blur(5px);
     box-shadow: 0 7px 11px var(--text-color);
-    transition: background-color 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
   }
   ::-moz-selection {
     background-color: var(--primary);

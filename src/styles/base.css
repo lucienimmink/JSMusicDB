@@ -11,6 +11,7 @@
 
     --background-seethrough: rgb(from var(--background) r g b / 90%);
     --background2-seethrough: rgb(from var(--background2) r g b / 90%);
+    --background2-extreme-seethrough: rgb(from var(--background2) r g b / 75%);
     --background-floating-text: rgb(from var(--background2) r g b / 25%);
     --background-album-art: var(--background);
   }
