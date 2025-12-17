@@ -1,6 +1,7 @@
 import '@lit-labs/virtualizer';
 import { LitElement, PropertyValueMap, html, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
+import { LanguageModelPolyfill } from 'language-model-polyfill';
 import buttons from '../../styles/buttons';
 import container from '../../styles/container';
 import headers from '../../styles/headers';
@@ -48,6 +49,8 @@ export class LetterNav extends LitElement {
   showStartArtistSelection: boolean;
   @state()
   showPastePlaylistSelection: boolean;
+  @state()
+  showAIPlaylistSelection: boolean;
   @state()
   pasteError: boolean;
   @state()
@@ -191,12 +194,20 @@ export class LetterNav extends LitElement {
   _startArtistRadio = () => {
     this.showStartArtistSelection = true;
     this.showPastePlaylistSelection = false;
+    this.showAIPlaylistSelection = false;
     this.playlist = null;
   };
 
   _startPastePlaylist = () => {
     this.showStartArtistSelection = false;
     this.showPastePlaylistSelection = true;
+    this.showAIPlaylistSelection = false;
+    this.playlist = null;
+  };
+  _startAIPlaylist = () => {
+    this.showStartArtistSelection = false;
+    this.showPastePlaylistSelection = false;
+    this.showAIPlaylistSelection = true;
     this.playlist = null;
   };
   _populateArtists = () => {
@@ -227,6 +238,65 @@ export class LetterNav extends LitElement {
         this.loading = false;
       });
   };
+  _generateAIPlaylist = async (e: Event) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const name = (form.querySelector('#playlist-name') as HTMLInputElement)
+      .value;
+    const description = (
+      form.querySelector('#playlist-description') as HTMLTextAreaElement
+    ).value;
+
+    if (!name || !description) {
+      console.warn(
+        'Please provide a name and description for your AI playlist.',
+      );
+      return;
+    }
+
+    this.loading = true;
+    this.showStartArtistSelection = false;
+    this.showPastePlaylistSelection = false;
+    this.showAIPlaylistSelection = false;
+
+    const playlist = {
+      name,
+      tracks: [], // This should be populated with AI-generated tracks
+      type: 'ai',
+      max: 0,
+    };
+    this._updatePlaylist(playlist);
+
+    // time to use the AI prompt to generate tracks
+    // Apply polyfill if native API is not available
+    // @ts-ignore
+    if (!window.LanguageModel) {
+      // @ts-ignore
+      window.LanguageModel = LanguageModelPolyfill;
+    }
+    const musicdbInstance: any = await musicdb;
+    const allArtists = JSON.stringify(
+      musicdbInstance.artistsList().map((a: any) => a.name),
+    );
+    // const trackIds = musicdbInstance.getAllTrackIds().join(', ');
+    // @ts-ignore
+    const session = await window.LanguageModel.create({
+      initialPrompts: [
+        {
+          role: 'system',
+          content: `You are a skilled DJ that can create the perfect playlist based on user descriptions.
+            The music database contains the following artists: ${allArtists}
+            Do not include any other text or commentary.
+            Prefix each artists name with 'Artist: ' and each track with 'Track: '. Do not include the artist when returning a track.
+          `,
+        },
+      ],
+    });
+    const result = await session.prompt(`${description}`);
+    console.log(result);
+    // After processing all chunks, update the playlist with the final tracks.
+    this.loading = false;
+  };
   _importPlaylist = (e: Event) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
@@ -245,6 +315,7 @@ export class LetterNav extends LitElement {
     this.loading = true;
     this.showStartArtistSelection = false;
     this.showPastePlaylistSelection = false;
+    this.showAIPlaylistSelection = false;
 
     try {
       const pasteJSON = JSON.parse(pasteString);
@@ -313,7 +384,6 @@ export class LetterNav extends LitElement {
     this.currentPlaylistId = switchTo;
     this.showStartArtistSelection = false;
     this.showPastePlaylistSelection = false;
-    console.log(`Switching to playlist: ${switchTo}`);
     switch (switchTo) {
       case 'current':
         this._setActivePlaylist('current');
@@ -341,10 +411,15 @@ export class LetterNav extends LitElement {
         this.showPastePlaylistSelection = true;
         this._startPastePlaylist();
         break;
+      case 'ai':
+        this.showAIPlaylistSelection = true;
+        this._startAIPlaylist();
+        break;
       default:
         console.warn(`Unknown playlist: ${switchTo}`);
         this.showStartArtistSelection = false;
         this.showPastePlaylistSelection = false;
+        this.showAIPlaylistSelection = false;
         this.playlist = null;
       // this._setActivePlaylist('current');
     }
@@ -389,6 +464,7 @@ export class LetterNav extends LitElement {
     this.playlist = null;
     this.showStartArtistSelection = false;
     this.showPastePlaylistSelection = false;
+    this.showAIPlaylistSelection = false;
     this.pasteError = false;
     this.artists = [];
     this.loading = false;
@@ -516,6 +592,13 @@ export class LetterNav extends LitElement {
             ></app-link
           >
         </li>
+        <li class="${this.playlistId === 'ai' ? 'active' : ''}">
+          <app-link href="/playlists/ai" flex
+            >AI playlist<span class="icon-note"
+              >${nowPlayingIcon}</span
+            ></app-link
+          >
+        </li>
       </ul>
       <select
         class="sm-only"
@@ -549,6 +632,7 @@ export class LetterNav extends LitElement {
           : nothing}
         <option value="radio">Artist radio</option>
         <option value="paste">Paste playlist</option>
+        <option value="ai">AI playlist</option>
       </select>
     </div>`;
   }
@@ -583,6 +667,46 @@ export class LetterNav extends LitElement {
                   </option>`,
               )}
             </select>
+          </li>
+        </ul>
+      </div>
+    `;
+  }
+  private _renderAIPlaylistSelector() {
+    return html`
+      <div class="playlist">
+        <ul>
+          <li class="header">AI generated playlist</li>
+          <li class="no-hover paste-playlist-selector">
+            <form
+              @submit="${(e: Event) => {
+                this._generateAIPlaylist(e);
+              }}"
+            >
+              <div>
+                <label for="playlist-name" class="md-up"
+                  >Name your playlist:
+                </label>
+                <input
+                  type="text"
+                  id="playlist-name"
+                  placeholder="playlist name"
+                />
+              </div>
+              <div>
+                <label for="playlist-description" class="md-up"
+                  >Describe your playlist:
+                </label>
+                <textarea
+                  id="playlist-description"
+                  rows="10"
+                  placeholder="Describe the kind of playlist you want the AI to create"
+                ></textarea>
+              </div>
+              <div>
+                <button class="btn btn-primary">Generate playlist</button>
+              </div>
+            </form>
           </li>
         </ul>
       </div>
@@ -680,6 +804,9 @@ export class LetterNav extends LitElement {
       ${this.showStartArtistSelection ? this._renderArtistSelector() : nothing}
       ${this.showPastePlaylistSelection
         ? this._renderPastePlaylistSelector()
+        : nothing}
+      ${this.showAIPlaylistSelection
+        ? this._renderAIPlaylistSelector()
         : nothing}
       ${this.loading
         ? html`

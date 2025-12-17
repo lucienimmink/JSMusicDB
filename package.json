@@ -86,6 +86,7 @@
     "fast-average-color": "^9.5.0",
     "fuse.js": "^7.1.0",
     "idb-keyval": "^6.2.2",
+    "language-model-polyfill": "^0.1.7",
     "lit": "^3.3.1",
     "urlpattern-polyfill": "^10.1.0"
   },

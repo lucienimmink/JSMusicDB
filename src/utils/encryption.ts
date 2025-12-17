@@ -65,14 +65,14 @@ export class Encryption {
     let output = '';
     for (let i = 0; i < input.length * 32; i += 8) {
       // tslint:disable-next-line:no-bitwise
-      output += String.fromCharCode((input[i >> 5] >>> i % 32) & 0xff);
+      output += String.fromCharCode((input[i >> 5] >>> (i % 32)) & 0xff);
     }
     return output;
   }
   private binl_md5(x: any, len: number) {
     /* append padding */
     // tslint:disable-next-line:no-bitwise
-    x[len >> 5] |= 0x80 << len % 32;
+    x[len >> 5] |= 0x80 << (len % 32);
     // tslint:disable-next-line:no-bitwise
     x[(((len + 64) >>> 9) << 4) + 14] = len;
 
@@ -170,7 +170,7 @@ export class Encryption {
     }
     for (let i = 0; i < input.length * 8; i += 8) {
       // tslint:disable-next-line:no-bitwise
-      output[i >> 5] |= (input.charCodeAt(i / 8) & 0xff) << i % 32;
+      output[i >> 5] |= (input.charCodeAt(i / 8) & 0xff) << (i % 32);
     }
     return output;
   }
