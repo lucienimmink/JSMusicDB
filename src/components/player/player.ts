@@ -314,18 +314,24 @@ export class Album extends LitElement {
   _onloadstart() {
     // now that we have the art, we can set the media session
     let imageType;
+    let artlocation;
     if (this.art) {
       imageType = this.art.split('.').pop();
+      const url = this.art.split('https://');
+      if (url.length > 1) {
+        artlocation = `https://${url.pop()}`;
+      }
     }
-    if ('mediaSession' in navigator && imageType) {
+    if ('mediaSession' in navigator && imageType && artlocation) {
+      console.log({ artlocation });
       (navigator as any).mediaSession.metadata = new MediaMetadata({
         title: this.track.title,
         artist: this.track.trackArtist,
         album: this.track.album.name,
         artwork: [
           {
-            src: this.art,
-            sizes: '300x300',
+            src: artlocation,
+            sizes: '1000x1000',
             type: `image/${imageType}`,
           },
         ],
@@ -495,6 +501,7 @@ export class Album extends LitElement {
     if (this.useDynamicAccentColor) {
       this._setDynamicAccentColor();
     }
+    this._onloadstart();
   }
   _setDynamicAccentColor() {
     getDominantColorByURL(this.art, (rgba: any) => {

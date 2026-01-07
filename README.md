@@ -52,9 +52,9 @@ A music player and database written using LIT and TypeScript. Using modern JavaS
 Add the following to your local `.env` file to use last.fm and fanart
 
 ```ruby
-LASTFM_APIKEY=[your key]
-LASTFM_SECRET=[your secret]
-FANART_APIKEY=[your key]
+VITE_LASTFM_APIKEY=[your key]
+VITE_LASTFM_SECRET=[your secret]
+VITE_FANART_APIKEY=[your key]
 ```
 
 ## Development server
