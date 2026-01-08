@@ -185,7 +185,6 @@ export class HomeNav extends LitElement {
     // @ts-ignore
     e.target.src = `data:image/svg+xml;base64,${btoa(cdSVG)}`;
   }
-
   private _renderRecentTracks() {
     return html`${this.recenttracks?.length > 0 || this.currentTrack
       ? html`
@@ -228,7 +227,7 @@ export class HomeNav extends LitElement {
                       <img
                         src="${track?.image[2]['#text']}"
                         class="album-art"
-                        alt="${track.artist['#text']} • ${track.name}"
+                        alt="${track.artist.name} • ${track.name}"
                         @error="${(e: Event) => this._onError(e)}"
                         crossorigin="anonymous"
                       />
