@@ -323,7 +323,6 @@ export class Album extends LitElement {
       }
     }
     if ('mediaSession' in navigator && imageType && artlocation) {
-      console.log({ artlocation });
       (navigator as any).mediaSession.metadata = new MediaMetadata({
         title: this.track.title,
         artist: this.track.trackArtist,
