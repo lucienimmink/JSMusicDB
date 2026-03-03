@@ -51,7 +51,7 @@ export default css`
     text-align: end;
     opacity: 0;
     transition: opacity 0.2s ease-in-out;
-    transition-delay: 0.25s;
+    transition-delay: 0.2s;
   }
   .track.active .info,
   .track:hover .info {
