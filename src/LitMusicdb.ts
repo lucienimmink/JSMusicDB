@@ -253,6 +253,7 @@ export class LitMusicdb extends LitElement {
       dark,
       system,
     };
+    // eslint-disable-next-line no-useless-assignment
     let css = null;
     switch (theme) {
       case 'dark':
