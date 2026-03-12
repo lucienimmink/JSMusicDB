@@ -46,7 +46,7 @@
     "vite-plugin-preload": "^0.4.4",
     "vite-plugin-pwa": "^1.2.0",
     "workbox-broadcast-update": "^7.4.0",
-    "zip-a-folder": "^4.0.4"
+    "zip-a-folder": "^6.0.0"
   },
   "eslintConfig": {
     "extends": [
