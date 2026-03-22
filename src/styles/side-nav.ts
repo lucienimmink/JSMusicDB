@@ -128,13 +128,10 @@ export default css`
     width: 25px;
   }
   input[type='search'] {
-    width: 90%;
+    width: calc(100% - 2rem);
+    margin: 8px 1rem;
   }
   @media (min-width: 576px) {
-    input[type='search'] {
-      width: 88%;
-      margin: 8px 25px;
-    }
     h1 {
       padding-inline: 10px;
     }
