@@ -6,7 +6,7 @@
     "format:prettier": "prettier \"**/*.js\" \"**/*.ts\" --write --ignore-path .gitignore",
     "lint": "npm run lint:prettier && npm run lint:eslint",
     "format": "npm run format:prettier && npm run format:eslint",
-    "build": "vite build . && npm run analyse",
+    "build": "vite build .",
     "preview": "vite preview .",
     "start": "vite && npm run analyse:watch",
     "dev": "npm run start",
