@@ -601,12 +601,7 @@ export class NowPlaying extends LitElement {
   private _renderBottom() {
     return html`<div class="bottom">
       <div class="playlist">
-        <lit-virtualizer
-          .scrollTarget=${window}
-          .items=${this.playlist?.tracks}
-          .renderItem=${(track: any) => this._renderTrack(track)}
-        >
-        </lit-virtualizer>
+        ${this.playlist?.tracks.map((track: any) => this._renderTrack(track))}
       </div>
     </div>`;
   }
