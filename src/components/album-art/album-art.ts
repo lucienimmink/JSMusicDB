@@ -189,6 +189,7 @@ export class AlbumArt extends LitElement {
     intersectionObserver.observe(this);
     EventBus.on(TOGGLE_SETTING, this._doToggleSetting, this);
   }
+  // @ts-ignore
   async _doToggleSetting(target: any, setting: any) {
     if (setting.setting === 'theme') {
       this.setTheme();

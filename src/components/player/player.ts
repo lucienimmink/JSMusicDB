@@ -169,6 +169,7 @@ export class Album extends LitElement {
   _shuffleCollection() {
     if (!this.playlist.shuffledIndices) {
       const availableIndices = this.playlist.tracks.map(
+        // @ts-ignore
         (track: any, index: number) => index,
       );
       this.playlist.shuffledIndices = shuffle(availableIndices);
@@ -196,6 +197,7 @@ export class Album extends LitElement {
     EventBus.off(TOGGLE_SHUFFLE, this._toggleShuffled, this);
     EventBus.off(TOGGLE_SETTING, this._doToggleSetting, this);
   }
+  // @ts-ignore
   _startCurrentPlaylist(target: any, data: any) {
     const startPosition = data?.startPosition || 0;
     getCurrentPlaylist().then((playlist: any) => {
@@ -203,9 +205,11 @@ export class Album extends LitElement {
       this._play(startPosition);
     });
   }
+  // @ts-ignore
   _doSetPosition(target: any, position: any) {
     this._play(position);
   }
+  // @ts-ignore
   _doToggleSetting(target: any, setting: any) {
     this._toggleSetting(setting);
   }

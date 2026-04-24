@@ -197,6 +197,7 @@ export class LitMusicdb extends LitElement {
       'fadeOut',
     );
   }
+  // @ts-ignore
   protected _changeUrl(target: any, url = '/') {
     if (this.route === url) return;
     this.route = url;
@@ -220,6 +221,7 @@ export class LitMusicdb extends LitElement {
       });
     }
   }
+  // @ts-ignore
   private _navigateToAlbum(target: any, current: any) {
     const track = current.current as Track;
     const { artist, album, id } = track;
@@ -280,6 +282,7 @@ export class LitMusicdb extends LitElement {
       this._getTheme();
     }
   }
+  // @ts-ignore
   _toggleOverflowHidden(target: any, state = false) {
     if (document.querySelector('html')?.classList.contains('np')) {
       return;

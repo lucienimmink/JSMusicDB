@@ -35,6 +35,7 @@ export class Track extends LitElement {
     this.showAlbum = false;
     this.isActive = false;
   }
+  // @ts-ignore
   _updatePlayer = (target: any, { current }: { current: any }) => {
     this._update(current);
   };

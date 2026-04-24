@@ -382,6 +382,7 @@ const _stripFromName = (name: string, strip: string[]) => {
   return f;
 };
 const _getNextTrack = (artist: any, mdb: any, playlist: any) =>
+  // @ts-ignore
   new Promise((resolve, reject) => {
     _getNextSimilarArtist(artist, mdb)
       .then((similarartists: any) => {

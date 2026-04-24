@@ -284,6 +284,7 @@ export class LetterNav extends LitElement {
       return;
     }
   };
+  // @ts-ignore
   _update(target: any, current: any) {
     if (this.playlist) {
       const updatedTracks = this.playlist?.tracks.map((track: any) => {
@@ -363,6 +364,7 @@ export class LetterNav extends LitElement {
     }
     this.playlist = await getCurrentPlaylist();
   }
+  // @ts-ignore
   _updatePlaylistLength(target: any, length: number) {
     this.newPlaylistLength = length;
   }

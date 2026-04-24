@@ -23,6 +23,7 @@ export class Letter extends LitElement {
     this.letter = '';
     this.artists = [];
   }
+  // @ts-ignore
   async getArtists(event: any, l = this.letter) {
     l = decodeURIComponent(l);
     const mdb: any = await musicdb;

@@ -58,6 +58,7 @@ export class SideNav extends LitElement {
     super.disconnectedCallback();
     EventBus.off(TOGGLE_MENU, this._doToggleMenu, this);
   }
+  // @ts-ignore
   _doToggleMenu(target: any, state: string) {
     this._handleEvent(state);
   }

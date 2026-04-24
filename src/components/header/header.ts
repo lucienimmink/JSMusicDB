@@ -104,6 +104,7 @@ export class Header extends LitElement {
       );
     }
   }
+  // @ts-ignore
   _doChangeTitle(target: any, data: any) {
     this._changeTitle(data);
     this.setDocumentTitle();

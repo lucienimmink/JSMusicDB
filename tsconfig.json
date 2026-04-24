@@ -1,20 +1,22 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "noEmitOnError": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "lib": ["ESNext", "dom"],
     "strict": true,
-    "esModuleInterop": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "useDefineForClassFields": false,
     "importHelpers": true,
-    "sourceMap": false,
-    "rootDir": "./",
-    "forceConsistentCasingInFileNames": true,
-    "types": ["vite/client"],
+    "noEmitOnError": true,
+    "types": ["vite/client"]
   },
   "include": ["**/*.ts"]
 }

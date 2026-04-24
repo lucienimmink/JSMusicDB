@@ -121,6 +121,7 @@ export class SettingsNav extends LitElement {
     this.isReloading = false;
     await this._refreshCollection();
   }
+  // @ts-ignore
   private _updateSEE(event: Event, value: boolean) {
     this.stats.isUsingSSE = value;
   }
@@ -139,6 +140,7 @@ export class SettingsNav extends LitElement {
     this.stats.parsed = formatter.format(date);
     this.requestUpdate();
   }
+  // @ts-ignore
   private async _toggle(prop: string, e: Event, value: any = null) {
     const current = this.settings ? this.settings[prop] : false;
     if (!value) {

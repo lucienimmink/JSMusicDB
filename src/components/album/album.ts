@@ -84,6 +84,7 @@ export class Album extends LitElement {
       this.sortedDiscs.push(this.albumDetails.discs[disc.name]);
     });
   }
+  // @ts-ignore
   async _setPlaylist(e: Event, track = { id: undefined }) {
     let startIndex = 0;
     if (track?.id) {

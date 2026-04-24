@@ -83,6 +83,7 @@ export class HomeNav extends LitElement {
       (await getSettingByName('recentlyListenedLimit')) || '6';
     this._updateFeed();
   }
+  // @ts-ignore
   _updatePlayer(target: any, data: any) {
     this.currentTrack = data?.current;
     this.requestUpdate();

@@ -138,12 +138,15 @@ export class NowPlaying extends LitElement {
     EventBus.off(TOGGLE_SETTING, this._doToggleSetting, this);
     EventBus.off(PLAYER_ERROR, this._doHasError, this);
   }
+  // @ts-ignore
   _doUpdate(target: any, data: any) {
     this._update(data);
   }
+  // @ts-ignore
   _doToggleShuffleUpdated(target: any, isShuffled: boolean) {
     this.isShuffled = isShuffled;
   }
+  // @ts-ignore
   _doAccentColor(target: any, accentColor: any) {
     this.accentColor = accentColor;
     if (this.hasCanvas) {
@@ -168,6 +171,7 @@ export class NowPlaying extends LitElement {
       gradient: 'accentColor',
     });
   }
+  // @ts-ignore
   _doToggleSetting(target: any, setting: any) {
     if (setting.setting === 'smallArt') {
       this.smallArt = setting.value;
@@ -181,6 +185,7 @@ export class NowPlaying extends LitElement {
       this._visualize();
     }
   }
+  // @ts-ignore
   _doHasError(target: any, error: any) {
     this.hasError = error;
   }

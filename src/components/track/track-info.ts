@@ -31,6 +31,7 @@ export class Track extends LitElement {
     super.disconnectedCallback();
     EventBus.off(OPEN_TRACK_MODAL, this._openModal, this);
   }
+  // @ts-ignore
   _openModal(target: any, track: any) {
     this.track = track;
     this.shadowRoot?.querySelector('dialog')?.showModal();
