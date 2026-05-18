@@ -88,9 +88,5 @@
     "lit": "^3.3.2",
     "urlpattern-polyfill": "^10.1.0"
   },
-  "volta": {
-    "node": "24.15.0",
-    "npm": "11.14.1"
-  },
   "customElements": "dist/custom-elements.json"
 }
