@@ -1,6 +1,7 @@
 import timespan from '@addasoft/timespan';
 import { html, LitElement, nothing } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import smallMuted from '../../styles/small-muted';
 import trackModal from '../../styles/track-modal';
 import { global as EventBus } from '../../utils/EventBus';
@@ -131,12 +132,13 @@ export class Track extends LitElement {
                 </td>
               </tr>
               <tr>
-                <td class="small muted">Album</td>
-                <td class="small muted">Album artist</td>
+                <td class="small muted" colspan=${ifDefined(this.track.album.artist.albumArtist ? undefined : "2")}>Album</td>
+                ${this.track.album.artist.albumArtist ? html`<td class="small muted">Album artist</td>` : nothing }
+
               </tr>
               <tr>
-                <td>${this.track.album.name}</td>
-                <td>${this.track.album.artist.albumArtist}</td>
+                <td colspan=${ifDefined(this.track.album.artist.albumArtist ? undefined : "2")}>${this.track.album.name}</td>
+                ${this.track.album.artist.albumArtist ? html`<td>${this.track.album.artist.albumArtist}</td>` : nothing}
               </tr>
               <tr>
                 <td class="small muted">Disc &bull; track number</td>
