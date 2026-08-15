@@ -1,5 +1,3 @@
-import { compileLitTemplates } from '@lit-labs/compiler';
-import ts from '@rollup/plugin-typescript';
 import { defineConfig } from 'vite';
 import version from 'vite-plugin-package-version';
 import preload from 'vite-plugin-preload';
@@ -16,16 +14,6 @@ export default defineConfig(({ mode }) => {
     build: {
       target: 'esnext',
       entry: 'index.html',
-      rolldownOptions: {
-        plugins: [
-          ts({
-            transformers: {
-              before: [compileLitTemplates()],
-            },
-          }),
-        ],
-        external: ['lit-html/private-ssr-support.js'],
-      },
     },
     plugins: [
       preload(),
