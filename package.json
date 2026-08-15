@@ -93,5 +93,12 @@
     "esbuild@0.25.12": true,
     "pinst@3.0.0": true,
     "rs-module-lexer@2.8.0": true
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "26.7.0",
+      "onFail": "download"
+    }
   }
 }
