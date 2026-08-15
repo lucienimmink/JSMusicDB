@@ -201,40 +201,49 @@ export class Header extends LitElement {
     }
   }
   private _renderReloading() {
-    return html`${this.isReloading
-      ? html`${!this.customWindowsControl
-          ? html`<progress-spinner>${this.progress}</progress-spinner>`
-          : html`<progress-bar progress="${this.progressInt}"
-              >${this.progress}</progress-bar
-            >`}`
-      : nothing}`;
+    return html`${
+      this.isReloading
+        ? html`${
+            !this.customWindowsControl
+              ? html`<progress-spinner>${this.progress}</progress-spinner>`
+              : html`<progress-bar progress="${this.progressInt}"
+                  >${this.progress}</progress-bar
+                >`
+          }`
+        : nothing
+    }`;
   }
   render() {
     return html`<h1
-      class="${this.customWindowsControl ? 'customWindowControls' : ''} ${this
-        .route === '/playing'
-        ? 'playing'
-        : ''}"
+      class="${this.customWindowsControl ? 'customWindowControls' : ''} ${
+        this.route === '/playing' ? 'playing' : ''
+      }"
     >
       <button @click=${this._toggleMenu} title="open menu">${barsIcon}</button>
       <div>
-        ${this.alb
-          ? html`
-              <span class="md-up">
-                <app-link
-                  inline
-                  href="/letter/${this.alb.artist.letter
-                    .escapedLetter}/artist/${this.alb.artist.escapedName}"
-                  >${this.alb.artist.albumArtist ||
-                  this.alb.artist.name}</app-link
-                >
-                <span>• </span></span
-              ><span class="album">${this.alb.name}</span>
-            `
-          : nothing}
-        ${this.art && !this.alb
-          ? html`${this.art.albumArtist || this.art.name}`
-          : nothing}
+        ${
+          this.alb
+            ? html`
+                <span class="md-up">
+                  <app-link
+                    inline
+                    href="/letter/${
+                      this.alb.artist.letter.escapedLetter
+                    }/artist/${this.alb.artist.escapedName}"
+                    >${
+                      this.alb.artist.albumArtist || this.alb.artist.name
+                    }</app-link
+                  >
+                  <span>• </span></span
+                ><span class="album">${this.alb.name}</span>
+              `
+            : nothing
+        }
+        ${
+          this.art && !this.alb
+            ? html`${this.art.albumArtist || this.art.name}`
+            : nothing
+        }
         ${!this.alb && !this.art ? html`JSMusicDB` : nothing}
       </div>
       ${this._renderReloading()}

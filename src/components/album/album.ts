@@ -151,9 +151,11 @@ export class Album extends LitElement {
   private _renderDisc(disc: any) {
     return html`
       <div class="album-details">
-        ${this.sortedDiscs.length > 1
-          ? html` <div class="header">Disc ${disc[0].disc}</div>`
-          : nothing}
+        ${
+          this.sortedDiscs.length > 1
+            ? html` <div class="header">Disc ${disc[0].disc}</div>`
+            : nothing
+        }
         ${disc.map((track: any) => this._renderTrack(track))}
       </div>
     `;

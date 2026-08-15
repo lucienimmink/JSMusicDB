@@ -120,65 +120,71 @@ export class LetterNav extends LitElement {
   }
   render() {
     return html`
-      ${!this.hasSK
-        ? html`
-            <div class="login">
-              <div class="container">
-                <h2 class="header">
-                  Login to last.fm
-                  <button
-                    class="btn btn-transparent btn-icon"
-                    aria-label="toggle information"
-                    @click=${this._toggleInfo}
-                  >
-                    ${infoIcon}
-                  </button>
-                </h2>
-                ${this.hasError
-                  ? html`
-                      <div class="alert">
-                        Please check your username and password
-                      </div>
-                    `
-                  : nothing}
-                <form @submit="${(e: Event) => this._onSubmit(e)}">
-                  <div class="row">
-                    <label for="username">Username</label>
-                    <input
-                      type="text"
-                      placeholder="John Doe"
-                      required
-                      id="username"
-                      name="name"
-                      .value=${this.username}
-                    />
-                  </div>
-                  <div class="row">
-                    <label for="password">Password</label>
-                    <input
-                      type="password"
-                      placeholder="password"
-                      required
-                      id="password"
-                      name="password"
-                      .value=${this.password}
-                    />
-                  </div>
-                  <div class="row buttons">
-                    <button class="btn btn-primary" type="submit">Login</button>
+      ${
+        !this.hasSK
+          ? html`
+              <div class="login">
+                <div class="container">
+                  <h2 class="header">
+                    Login to last.fm
                     <button
-                      class="btn btn-link"
-                      type="button"
-                      @click="${(e: Event) => this._onSkip(e)}"
+                      class="btn btn-transparent btn-icon"
+                      aria-label="toggle information"
+                      @click=${this._toggleInfo}
                     >
-                      Skip
+                      ${infoIcon}
                     </button>
-                  </div>
-                </form>
+                  </h2>
+                  ${
+                    this.hasError
+                      ? html`
+                          <div class="alert">
+                            Please check your username and password
+                          </div>
+                        `
+                      : nothing
+                  }
+                  <form @submit="${(e: Event) => this._onSubmit(e)}">
+                    <div class="row">
+                      <label for="username">Username</label>
+                      <input
+                        type="text"
+                        placeholder="John Doe"
+                        required
+                        id="username"
+                        name="name"
+                        .value=${this.username}
+                      />
+                    </div>
+                    <div class="row">
+                      <label for="password">Password</label>
+                      <input
+                        type="password"
+                        placeholder="password"
+                        required
+                        id="password"
+                        name="password"
+                        .value=${this.password}
+                      />
+                    </div>
+                    <div class="row buttons">
+                      <button class="btn btn-primary" type="submit">
+                        Login
+                      </button>
+                      <button
+                        class="btn btn-link"
+                        type="button"
+                        @click="${(e: Event) => this._onSkip(e)}"
+                      >
+                        Skip
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
-            </div>
-          `
-        : nothing}
+            `
+          : nothing
+      }
       ${this.showInfoModal ? this._renderModal() : nothing}
     `;
   }

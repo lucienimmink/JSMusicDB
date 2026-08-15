@@ -74,14 +74,16 @@ export default class ReleaseAlert extends LitElement {
     }
   }
   render() {
-    return html` ${this.newReleases.length > 0
-      ? html`
-          <div class="alert alert-new-release">
-            ${this.newReleases.map(
-              (release: any) => html`${this._renderRelease(release)}`,
-            )}
-          </div>
-        `
-      : nothing}`;
+    return html` ${
+      this.newReleases.length > 0
+        ? html`
+            <div class="alert alert-new-release">
+              ${this.newReleases.map(
+                (release: any) => html`${this._renderRelease(release)}`,
+              )}
+            </div>
+          `
+        : nothing
+    }`;
   }
 }

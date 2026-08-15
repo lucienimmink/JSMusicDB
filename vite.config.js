@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => {
     build: {
       target: 'esnext',
       entry: 'index.html',
-      rollupOptions: {
+      rolldownOptions: {
         plugins: [
           ts({
             transformers: {
@@ -24,6 +24,7 @@ export default defineConfig(({ mode }) => {
             },
           }),
         ],
+        external: ['lit-html/private-ssr-support.js'],
       },
     },
     plugins: [

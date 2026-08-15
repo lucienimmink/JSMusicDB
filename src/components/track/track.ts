@@ -71,16 +71,20 @@ export class Track extends LitElement {
 
   private _renderTime() {
     return html`${timespan(this.track?.duration)} <br />
-      ${this.track?.isPlaying || this.track?.isPaused
-        ? html`
-            <span class="small muted if-active"
-              >${timespan(this.track?.position)}</span
-            >
-          `
-        : nothing}
-      ${this.type !== 'album' && !this.track?.isPlaying && !this.track?.isPaused
-        ? html` <span class="small muted">${this.track?.type}</span> `
-        : nothing}`;
+      ${
+        this.track?.isPlaying || this.track?.isPaused
+          ? html`
+              <span class="small muted if-active"
+                >${timespan(this.track?.position)}</span
+              >
+            `
+          : nothing
+      }
+      ${
+        this.type !== 'album' && !this.track?.isPlaying && !this.track?.isPaused
+          ? html` <span class="small muted">${this.track?.type}</span> `
+          : nothing
+      }`;
   }
   private _showInfo(e: Event) {
     e.stopPropagation();
@@ -90,40 +94,52 @@ export class Track extends LitElement {
   render() {
     return html`
       <div
-        class="track ${this.isActive ? 'active' : ''} ${this.context === 'album'
-          ? 'album-track'
-          : ''}"
+        class="track ${this.isActive ? 'active' : ''} ${
+          this.context === 'album' ? 'album-track' : ''
+        }"
       >
-        ${this.type === 'album'
-          ? html`
-              <span class="num">
-                ${this.isActive
-                  ? html`
-                      ${this.track?.isPlaying
-                        ? html`${playIcon}`
-                        : html`${pauseIcon}`}
-                    `
-                  : html` ${this.track?.number} `}
-              </span>
-            `
-          : nothing}
-        <span class="title">
-          ${this.type !== 'album'
+        ${
+          this.type === 'album'
             ? html`
-                ${this.isActive
-                  ? html`
-                      ${this.track.isPlaying
-                        ? html`${playIcon}`
-                        : html`${pauseIcon}`}
-                    `
-                  : nothing}
+                <span class="num">
+                  ${
+                    this.isActive
+                      ? html`
+                          ${
+                            this.track?.isPlaying
+                              ? html`${playIcon}`
+                              : html`${pauseIcon}`
+                          }
+                        `
+                      : html` ${this.track?.number} `
+                  }
+                </span>
               `
-            : nothing}
+            : nothing
+        }
+        <span class="title">
+          ${
+            this.type !== 'album'
+              ? html`
+                  ${
+                    this.isActive
+                      ? html`
+                          ${
+                            this.track.isPlaying
+                              ? html`${playIcon}`
+                              : html`${pauseIcon}`
+                          }
+                        `
+                      : nothing
+                  }
+                `
+              : nothing
+          }
           ${this.track?.title} <br />
           <span class="small muted"
-            >${this.track?.trackArtist}${this.showAlbum
-              ? html` • ${this.track?.album?.name}`
-              : nothing}</span
+            >${this.track?.trackArtist}${
+              this.showAlbum ? html` • ${this.track?.album?.name}` : nothing
+            }</span
           >
         </span>
         <span class="info" @click=${this._showInfo}>${infoIcon}</span>

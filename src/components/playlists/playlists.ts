@@ -403,107 +403,129 @@ export class LetterNav extends LitElement {
     return html`<div class="playlists">
       <ul class="md-up">
         <li class="header">Playlists</li>
-        ${this.current?.tracks?.length > 0
-          ? html`
-              <li class="${this.playlistId === 'current' ? 'active' : ''}">
-                <app-link href="/playlists/current" flex
-                  >Current playlist
-                  <span class="icon-note">${nowPlayingIcon}</span></app-link
-                >
-              </li>
-            `
-          : nothing}
-        ${this.lastFMUserName
-          ? html`
-              <li class="${this.playlistId === 'loved' ? 'active' : ''}">
-                <app-link href="/playlists/loved" flex
-                  >Loved tracks on last.fm<span class="icon-note"
-                    >${nowPlayingIcon}</span
+        ${
+          this.current?.tracks?.length > 0
+            ? html`
+                <li class="${this.playlistId === 'current' ? 'active' : ''}">
+                  <app-link href="/playlists/current" flex
+                    >Current playlist
+                    <span class="icon-note">${nowPlayingIcon}</span></app-link
                   >
-                  ${this.currentPlaylistId === 'loved'
-                    ? html`
-                        <button
-                          class="btn btn-small btn-primary btn-refresh"
-                          @click="${() => this._reloadPlaylist('loved')}"
-                        >
-                          <span class="icon">${redoIcon}</span>
-                        </button>
-                      `
-                    : nothing}</app-link
-                >
-              </li>
-            `
-          : nothing}
-        ${this.lastFMUserName
-          ? html`
-              <li class="${this.playlistId === 'top' ? 'active' : ''}">
-                <app-link href="/playlists/top" flex
-                  >Most played tracks by ${this.lastFMUserName}<span
-                    class="icon-note"
-                    >${nowPlayingIcon}</span
+                </li>
+              `
+            : nothing
+        }
+        ${
+          this.lastFMUserName
+            ? html`
+                <li class="${this.playlistId === 'loved' ? 'active' : ''}">
+                  <app-link href="/playlists/loved" flex
+                    >Loved tracks on last.fm<span class="icon-note"
+                      >${nowPlayingIcon}</span
+                    >
+                    ${
+                      this.currentPlaylistId === 'loved'
+                        ? html`
+                            <button
+                              class="btn btn-small btn-primary btn-refresh"
+                              @click="${() => this._reloadPlaylist('loved')}"
+                            >
+                              <span class="icon">${redoIcon}</span>
+                            </button>
+                          `
+                        : nothing
+                    }</app-link
                   >
-                  ${this.currentPlaylistId === 'top'
-                    ? html` <button
-                        class="btn btn-small btn-primary btn-refresh"
-                        @click="${() => this._reloadPlaylist('top')}"
-                      >
-                        <span class="icon">${redoIcon}</span>
-                      </button>`
-                    : nothing}
-                </app-link>
-              </li>
-            `
-          : nothing}
+                </li>
+              `
+            : nothing
+        }
+        ${
+          this.lastFMUserName
+            ? html`
+                <li class="${this.playlistId === 'top' ? 'active' : ''}">
+                  <app-link href="/playlists/top" flex
+                    >Most played tracks by ${this.lastFMUserName}<span
+                      class="icon-note"
+                      >${nowPlayingIcon}</span
+                    >
+                    ${
+                      this.currentPlaylistId === 'top'
+                        ? html` <button
+                            class="btn btn-small btn-primary btn-refresh"
+                            @click="${() => this._reloadPlaylist('top')}"
+                          >
+                            <span class="icon">${redoIcon}</span>
+                          </button>`
+                        : nothing
+                    }
+                  </app-link>
+                </li>
+              `
+            : nothing
+        }
         <li class="${this.playlistId === 'random' ? 'active' : ''}">
           <app-link href="/playlists/random" flex
             >${this.max} random tracks
             <span class="icon-note">${nowPlayingIcon}</span>
-            ${this.currentPlaylistId === 'random'
-              ? html` <button
-                  class="btn btn-small btn-primary btn-refresh"
-                  @click="${() => this._reloadPlaylist('random')}"
-                >
-                  <span class="icon">${redoIcon}</span>
-                </button>`
-              : nothing}
+            ${
+              this.currentPlaylistId === 'random'
+                ? html` <button
+                    class="btn btn-small btn-primary btn-refresh"
+                    @click="${() => this._reloadPlaylist('random')}"
+                  >
+                    <span class="icon">${redoIcon}</span>
+                  </button>`
+                : nothing
+            }
           </app-link>
         </li>
-        ${this.lastFMUserName
-          ? html`
-              <li class="${this.playlistId === 'random-pref' ? 'active' : ''}">
-                <app-link href="/playlists/random-pref" flex
-                  >${this.max} tracks by preference
-                  <span class="icon-note">${nowPlayingIcon}</span>
-                  ${this.currentPlaylistId === 'random-pref'
-                    ? html` <button
-                        class="btn btn-small btn-primary btn-refresh"
-                        @click="${() => this._reloadPlaylist('random-pref')}"
-                      >
-                        <span class="icon">${redoIcon}</span>
-                      </button>`
-                    : nothing}
-                </app-link>
-              </li>
-            `
-          : nothing}
-        ${this.lastFMUserName
-          ? html`
-              <li class="${this.playlistId === 'pref-radio' ? 'active' : ''}">
-                <app-link href="/playlists/pref-radio" flex
-                  >Radio by preference
-                  <span class="icon-note">${nowPlayingIcon}</span>
-                  ${this.currentPlaylistId === 'pref-radio'
-                    ? html` <button
-                        class="btn btn-small btn-primary btn-refresh"
-                        @click="${() => this._reloadPlaylist('pref-radio')}"
-                      >
-                        <span class="icon">${redoIcon}</span>
-                      </button>`
-                    : nothing}
-                </app-link>
-              </li>
-            `
-          : nothing}
+        ${
+          this.lastFMUserName
+            ? html`
+                <li
+                  class="${this.playlistId === 'random-pref' ? 'active' : ''}"
+                >
+                  <app-link href="/playlists/random-pref" flex
+                    >${this.max} tracks by preference
+                    <span class="icon-note">${nowPlayingIcon}</span>
+                    ${
+                      this.currentPlaylistId === 'random-pref'
+                        ? html` <button
+                            class="btn btn-small btn-primary btn-refresh"
+                            @click="${() => this._reloadPlaylist('random-pref')}"
+                          >
+                            <span class="icon">${redoIcon}</span>
+                          </button>`
+                        : nothing
+                    }
+                  </app-link>
+                </li>
+              `
+            : nothing
+        }
+        ${
+          this.lastFMUserName
+            ? html`
+                <li class="${this.playlistId === 'pref-radio' ? 'active' : ''}">
+                  <app-link href="/playlists/pref-radio" flex
+                    >Radio by preference
+                    <span class="icon-note">${nowPlayingIcon}</span>
+                    ${
+                      this.currentPlaylistId === 'pref-radio'
+                        ? html` <button
+                            class="btn btn-small btn-primary btn-refresh"
+                            @click="${() => this._reloadPlaylist('pref-radio')}"
+                          >
+                            <span class="icon">${redoIcon}</span>
+                          </button>`
+                        : nothing
+                    }
+                  </app-link>
+                </li>
+              `
+            : nothing
+        }
         <li class="${this.playlistId === 'radio' ? 'active' : ''}">
           <app-link href="/playlists/radio" flex
             >Artist radio<span class="icon-note"
@@ -525,30 +547,40 @@ export class LetterNav extends LitElement {
         id="playlist-selector"
       >
         <option disabled selected>Choose playlist</option>
-        ${this.current?.tracks?.length > 0
-          ? html` <option value="current">Current playlist</option> `
-          : nothing}
-        ${this.lastFMUserName
-          ? html` <option value="loved">Loved tracks on last.fm</option> `
-          : nothing}
-        ${this.lastFMUserName
-          ? html`
-              <option value="top">
-                Most played tracks by ${this.lastFMUserName}
-              </option>
-            `
-          : nothing}
+        ${
+          this.current?.tracks?.length > 0
+            ? html` <option value="current">Current playlist</option> `
+            : nothing
+        }
+        ${
+          this.lastFMUserName
+            ? html` <option value="loved">Loved tracks on last.fm</option> `
+            : nothing
+        }
+        ${
+          this.lastFMUserName
+            ? html`
+                <option value="top">
+                  Most played tracks by ${this.lastFMUserName}
+                </option>
+              `
+            : nothing
+        }
         <option value="random">${this.max} random tracks</option>
-        ${this.lastFMUserName
-          ? html`
-              <option value="random-pref">
-                ${this.max} tracks by preference
-              </option>
-            `
-          : nothing}
-        ${this.lastFMUserName
-          ? html` <option value="pref-radio">Radio by preference</option> `
-          : nothing}
+        ${
+          this.lastFMUserName
+            ? html`
+                <option value="random-pref">
+                  ${this.max} tracks by preference
+                </option>
+              `
+            : nothing
+        }
+        ${
+          this.lastFMUserName
+            ? html` <option value="pref-radio">Radio by preference</option> `
+            : nothing
+        }
         <option value="radio">Artist radio</option>
         <option value="paste">Paste playlist</option>
       </select>
@@ -601,20 +633,21 @@ export class LetterNav extends LitElement {
                 this._importPlaylist(e);
               }}"
             >
-              ${this.pasteError
-                ? html`<div
-                    class="alert"
-                    role="alert"
-                    aria-live="assertive"
-                    aria-atomic="true"
-                  >
-                    <p>
-                      Give your playlist a name and paste the tracks in JSON
-                      format. <br />
-                      The JSON should be an array of objects with track IDs,
-                      like this:
-                    </p>
-                    <pre>
+              ${
+                this.pasteError
+                  ? html`<div
+                      class="alert"
+                      role="alert"
+                      aria-live="assertive"
+                      aria-atomic="true"
+                    >
+                      <p>
+                        Give your playlist a name and paste the tracks in JSON
+                        format. <br />
+                        The JSON should be an array of objects with track IDs,
+                        like this:
+                      </p>
+                      <pre>
 [
   {
     "id": "track-id-1",
@@ -622,10 +655,10 @@ export class LetterNav extends LitElement {
   {
     "id": "track-id-2",
   }
-]</pre
-                    >
-                  </div>`
-                : nothing}
+]</pre>
+                    </div>`
+                  : nothing
+              }
 
               <div>
                 <label for="playlist-name" class="md-up"
@@ -659,45 +692,53 @@ export class LetterNav extends LitElement {
   render() {
     return html` <div class="container">
       ${this._renderPlaylistSelector()}
-      ${this.playlist
-        ? html`
-            <div class="playlist">
-              <ul>
-                <li class="header">
-                  ${this.playlist.name}
-                  <span class="small muted"
-                    >(${this.playlist.tracks.length})</span
+      ${
+        this.playlist
+          ? html`
+              <div class="playlist">
+                <ul>
+                  <li class="header">
+                    ${this.playlist.name}
+                    <span class="small muted"
+                      >(${this.playlist.tracks.length})</span
+                    >
+                  </li>
+                  <lit-virtualizer
+                    .scrollTarget=${window}
+                    .items=${this.playlist.tracks}
+                    .renderItem=${(track: any) => this._renderTrack(track)}
                   >
-                </li>
-                <lit-virtualizer
-                  .scrollTarget=${window}
-                  .items=${this.playlist.tracks}
-                  .renderItem=${(track: any) => this._renderTrack(track)}
-                >
-                </lit-virtualizer>
-              </ul>
-            </div>
-          `
-        : nothing}
+                  </lit-virtualizer>
+                </ul>
+              </div>
+            `
+          : nothing
+      }
       ${this.showStartArtistSelection ? this._renderArtistSelector() : nothing}
-      ${this.showPastePlaylistSelection
-        ? this._renderPastePlaylistSelector()
-        : nothing}
-      ${this.loading
-        ? html`
-            <loading-indicator
-              ><div slot="text">
-                Loading...
-                ${this.newPlaylistLength
-                  ? html`${(
-                      (this.newPlaylistLength / this.max) *
-                      100
-                    ).toFixed()}%`
-                  : nothing}
-              </div></loading-indicator
-            >
-          `
-        : nothing}
+      ${
+        this.showPastePlaylistSelection
+          ? this._renderPastePlaylistSelector()
+          : nothing
+      }
+      ${
+        this.loading
+          ? html`
+              <loading-indicator
+                ><div slot="text">
+                  Loading...
+                  ${
+                    this.newPlaylistLength
+                      ? html`${(
+                          (this.newPlaylistLength / this.max) *
+                          100
+                        ).toFixed()}%`
+                      : nothing
+                  }
+                </div></loading-indicator
+              >
+            `
+          : nothing
+      }
     </div>`;
   }
 }

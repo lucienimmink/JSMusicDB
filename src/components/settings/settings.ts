@@ -215,29 +215,34 @@ export class SettingsNav extends LitElement {
       <p>
         Linked to node-mp3stream server:
         ${this.mp3stream ? this.mp3stream : 'false'}
-        ${this.mp3stream
-          ? html`<button
-              class="btn btn-secondary btn-small"
-              @click=${this._resetmp3Stream}
-            >
-              <span class="icon">${disconnectIcon}</span> Disconnect
-            </button>`
-          : nothing}
+        ${
+          this.mp3stream
+            ? html`<button
+                class="btn btn-secondary btn-small"
+                @click=${this._resetmp3Stream}
+              >
+                <span class="icon">${disconnectIcon}</span> Disconnect
+              </button>`
+            : nothing
+        }
       </p>
       <p>
         Linked to last.fm account:
         ${this?.lastFMUsername !== 'mdb-skipped' ? this.lastFMUsername : 'none'}
-        ${this?.lastFMUsername
-          ? html`<button
-              class="btn btn-secondary btn-small"
-              @click=${this._resetLastfM}
-            >
-              <span class="icon">${unlinkIcon}</span> ${this?.lastFMUsername !==
-              'mdb-skipped'
-                ? html`Unlink`
-                : html`Link`}
-            </button>`
-          : nothing}
+        ${
+          this?.lastFMUsername
+            ? html`<button
+                class="btn btn-secondary btn-small"
+                @click=${this._resetLastfM}
+              >
+                <span class="icon">${unlinkIcon}</span> ${
+                  this?.lastFMUsername !== 'mdb-skipped'
+                    ? html`Unlink`
+                    : html`Link`
+                }
+              </button>`
+            : nothing
+        }
       </p>
     </div>`;
   }
@@ -427,21 +432,23 @@ export class SettingsNav extends LitElement {
       </div>`;
   }
   private _renderRSSFeedSettings() {
-    return html`${this.canGetRSSFeed
-      ? html`
-          <div class="container container-block">
-            <h2 class="header">RSS Feed for showing upcoming releases</h2>
-            <p>
-              <input
-                type="url"
-                placeholder="RSS feed URL for upcoming releases. Leave empty to disable."
-                .value=${this.settings?.feed || ''}
-                @change="${(e: Event) => this._setFeed(e)}"
-              />
-            </p>
-          </div>
-        `
-      : nothing}`;
+    return html`${
+      this.canGetRSSFeed
+        ? html`
+            <div class="container container-block">
+              <h2 class="header">RSS Feed for showing upcoming releases</h2>
+              <p>
+                <input
+                  type="url"
+                  placeholder="RSS feed URL for upcoming releases. Leave empty to disable."
+                  .value=${this.settings?.feed || ''}
+                  @change="${(e: Event) => this._setFeed(e)}"
+                />
+              </p>
+            </div>
+          `
+        : nothing
+    }`;
   }
   private _renderInformation() {
     return html`<div class="container container-block">

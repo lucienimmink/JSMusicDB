@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit';
-import { ifDefined } from 'lit-html/directives/if-defined.js';
+import { ifDefined } from 'lit/directives/if-defined.js';
 import { customElement, property } from 'lit/decorators.js';
 import appLink from '../../styles/app-link';
 import { global as EventBus } from '../../utils/EventBus';
@@ -42,10 +42,9 @@ export default class Link extends LitElement {
         title="${ifDefined(this.title)}"
         href="${ifDefined(this.href)}"
         @click="${this.linkClick}"
-        class="${this.inline ? 'inline ' : ''}${this.flex ? 'flex ' : ''}${this
-          .letter
-          ? 'letter '
-          : ''}
+        class="${this.inline ? 'inline ' : ''}${this.flex ? 'flex ' : ''}${
+          this.letter ? 'letter ' : ''
+        }
             ${this.menu ? 'menu ' : ''}${this.text ? 'text ' : ''}
           "
       >

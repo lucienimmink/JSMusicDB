@@ -126,25 +126,31 @@ export class AlbumDetails extends LitElement {
     return html`<div class="details">
       <h2><span>${this.albumDetails?.name}</span></h2>
       <h3>
-        ${this.albumDetails?.artist?.albumArtist ||
-        this.albumDetails?.artist?.name}
-        ${this.albumDetails?.type === 'mp4' ||
-        this.albumDetails?.type === 'flac'
-          ? html`<span class="small muted">${hqIcon}</span>`
-          : nothing}
+        ${
+          this.albumDetails?.artist?.albumArtist ||
+          this.albumDetails?.artist?.name
+        }
+        ${
+          this.albumDetails?.type === 'mp4' ||
+          this.albumDetails?.type === 'flac'
+            ? html`<span class="small muted">${hqIcon}</span>`
+            : nothing
+        }
       </h3>
       <h4>
-        ${this.albumDetails?.year
-          ? html`${this.albumDetails?.year} •`
-          : nothing}
+        ${
+          this.albumDetails?.year ? html`${this.albumDetails?.year} •` : nothing
+        }
         ${this.albumDetails?.tracks?.length}
         track${this.albumDetails?.tracks?.length !== 1 ? 's' : ''} •
         ${this.calculateLength(this.albumDetails?.tracks)}
         <span class="small muted md-up-inline">
           • ${this.albumDetails?.type}
-          ${this.replayGainApplied && this.albumDetails?.albumGain !== 0
-            ? html` • Album gain: ${this.albumDetails?.albumGain} dB `
-            : nothing}
+          ${
+            this.replayGainApplied && this.albumDetails?.albumGain !== 0
+              ? html` • Album gain: ${this.albumDetails?.albumGain} dB `
+              : nothing
+          }
         </span>
       </h4>
       ${this._renderButtons()}
@@ -155,8 +161,10 @@ export class AlbumDetails extends LitElement {
       <div class="jumbotron">
         <div class="container ${this.albumDetails?.dummy ? 'dummy ' : ''}">
           <album-art
-            artist="${this.albumDetails?.artist?.albumArtist ||
-            this.albumDetails?.artist?.name}"
+            artist="${
+              this.albumDetails?.artist?.albumArtist ||
+              this.albumDetails?.artist?.name
+            }"
             album="${this.albumDetails?.name}"
             mbid="${this.albumDetails?.mbid}"
             ?static=${true}
@@ -165,8 +173,10 @@ export class AlbumDetails extends LitElement {
           ></album-art>
           <dialog @close=${this._closeModal} @cancel=${this._closeModal}>
             <album-art
-              artist="${this.albumDetails?.artist?.albumArtist ||
-              this.albumDetails?.artist?.name}"
+              artist="${
+                this.albumDetails?.artist?.albumArtist ||
+                this.albumDetails?.artist?.name
+              }"
               album="${this.albumDetails?.name}"
               mbid="${this.albumDetails?.mbid}"
               dimension="${this._getModalDimension()}"

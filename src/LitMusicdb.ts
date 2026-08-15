@@ -323,35 +323,41 @@ export class LitMusicdb extends LitElement {
         @touchstart=${this._handleTouchStart}
         @touchend=${this._handleTouchEnd}
       >
-        ${this.hasToken && this.hasData
-          ? html`
-              <main-header
-                artist="${this.artist}"
-                album="${this.album}"
-                route="${this.route}"
-              ></main-header>
-              <letter-nav letter="${this.letter}"></letter-nav>
-              <side-nav
-                route="${this.route}"
-                .hasVisiblePlayer=${this.showPlayer}
-              ></side-nav>
-              <div id="outlet" class="${this.showPlayer ? 'player' : ''}">
-                ${this.appRouter.outlet()}
-              </div>
-              ${this.showPlayer
-                ? html` <lit-player route="${this.route}"></lit-player> `
-                : nothing}
-              <side-nav route="${this.route}" ?full=${true}></side-nav>
-            `
-          : nothing}
+        ${
+          this.hasToken && this.hasData
+            ? html`
+                <main-header
+                  artist="${this.artist}"
+                  album="${this.album}"
+                  route="${this.route}"
+                ></main-header>
+                <letter-nav letter="${this.letter}"></letter-nav>
+                <side-nav
+                  route="${this.route}"
+                  .hasVisiblePlayer=${this.showPlayer}
+                ></side-nav>
+                <div id="outlet" class="${this.showPlayer ? 'player' : ''}">
+                  ${this.appRouter.outlet()}
+                </div>
+                ${
+                  this.showPlayer
+                    ? html` <lit-player route="${this.route}"></lit-player> `
+                    : nothing
+                }
+                <side-nav route="${this.route}" ?full=${true}></side-nav>
+              `
+            : nothing
+        }
         ${!this.hasSK ? html`<lastfm-login></lastfm-login>` : nothing}
         ${!this.hasToken ? html`<mp3stream-login></mp3stream-login>` : nothing}
-        ${this.loading
-          ? html`<div class="loading-wrapper">
-              Loading...
-              <loading-indicator></loading-indicator>
-            </div>`
-          : nothing}
+        ${
+          this.loading
+            ? html`<div class="loading-wrapper">
+                Loading...
+                <loading-indicator></loading-indicator>
+              </div>`
+            : nothing
+        }
       </main>
     `;
   }

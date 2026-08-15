@@ -159,79 +159,85 @@ export class LetterNav extends LitElement {
   }
   render() {
     return html`
-      ${!this.token
-        ? html`
-            <div class="login">
-              <div class="container">
-                <h2 class="header">
-                  Login to node-mp3stream
-                  <button
-                    class="btn btn-transparent btn-icon"
-                    aria-label="toggle information"
-                    @click=${this._toggleInfo}
-                  >
-                    ${infoIcon}
-                  </button>
-                </h2>
-                ${this.hasError
-                  ? html`
-                      <div class="alert">
-                        Please check your username and password
-                      </div>
-                    `
-                  : nothing}
-                ${this.versionError
-                  ? html`
-                      <div class="alert">
-                        Version of node-mp3stream is too low. Please update to
-                        at least version ${MINIMALSTREAMVERSION}
-                      </div>
-                    `
-                  : nothing}
-                <form @submit="${(e: Event) => this._onSubmit(e)}">
-                  <div class="row">
-                    <label for="username">Username: </label>
-                    <input
-                      type="text"
-                      placeholder="John Doe"
-                      required
-                      id="username"
-                      name="name"
-                      .value=${this.username}
-                    />
-                  </div>
-                  <div class="row">
-                    <label for="password">Password:</label>
-                    <input
-                      type="password"
-                      placeholder="Password"
-                      required
-                      id="password"
-                      name="password"
-                      .value=${this.password}
-                    />
-                  </div>
-                  <div class="row">
-                    <label for="server">Server:</label>
-                    <input
-                      type="text"
-                      placeholder="http://localhost"
-                      required
-                      id="server"
-                      name="server"
-                      .value=${this.server}
-                    />
-                  </div>
-                  <div class="row buttons">
-                    <button class="btn btn-primary" type="submit">
-                      Submit
+      ${
+        !this.token
+          ? html`
+              <div class="login">
+                <div class="container">
+                  <h2 class="header">
+                    Login to node-mp3stream
+                    <button
+                      class="btn btn-transparent btn-icon"
+                      aria-label="toggle information"
+                      @click=${this._toggleInfo}
+                    >
+                      ${infoIcon}
                     </button>
-                  </div>
-                </form>
+                  </h2>
+                  ${
+                    this.hasError
+                      ? html`
+                          <div class="alert">
+                            Please check your username and password
+                          </div>
+                        `
+                      : nothing
+                  }
+                  ${
+                    this.versionError
+                      ? html`
+                          <div class="alert">
+                            Version of node-mp3stream is too low. Please update
+                            to at least version ${MINIMALSTREAMVERSION}
+                          </div>
+                        `
+                      : nothing
+                  }
+                  <form @submit="${(e: Event) => this._onSubmit(e)}">
+                    <div class="row">
+                      <label for="username">Username: </label>
+                      <input
+                        type="text"
+                        placeholder="John Doe"
+                        required
+                        id="username"
+                        name="name"
+                        .value=${this.username}
+                      />
+                    </div>
+                    <div class="row">
+                      <label for="password">Password:</label>
+                      <input
+                        type="password"
+                        placeholder="Password"
+                        required
+                        id="password"
+                        name="password"
+                        .value=${this.password}
+                      />
+                    </div>
+                    <div class="row">
+                      <label for="server">Server:</label>
+                      <input
+                        type="text"
+                        placeholder="http://localhost"
+                        required
+                        id="server"
+                        name="server"
+                        .value=${this.server}
+                      />
+                    </div>
+                    <div class="row buttons">
+                      <button class="btn btn-primary" type="submit">
+                        Submit
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
-            </div>
-          `
-        : nothing}
+            `
+          : nothing
+      }
       ${this.showInfoModal ? this._renderModal() : nothing}
     `;
   }

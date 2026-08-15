@@ -110,8 +110,9 @@ export class SearchNav extends LitElement {
                 <app-link
                   flex
                   text
-                  href="/letter/${artist.letter
-                    .escapedLetter}/artist/${artist.escapedName}"
+                  href="/letter/${
+                    artist.letter.escapedLetter
+                  }/artist/${artist.escapedName}"
                 >
                   <album-art
                     artist="${artist.albumArtist || artist.name}"
@@ -148,9 +149,9 @@ export class SearchNav extends LitElement {
                 <app-link
                   flex
                   text
-                  href="/letter/${album.artist.letter
-                    .escapedLetter}/artist/${album.artist
-                    .escapedName}/album/${album.escapedName}"
+                  href="/letter/${album.artist.letter.escapedLetter}/artist/${
+                    album.artist.escapedName
+                  }/album/${album.escapedName}"
                 >
                   <album-art
                     artist="${album.artist.albumArtist || album.artist.name}"
@@ -159,11 +160,13 @@ export class SearchNav extends LitElement {
                   ></album-art>
                   <div class="details">
                     <span class="album">${album.name}</span>
-                    ${album.year
-                      ? html`
-                          <span class="small muted">Year: ${album.year}</span>
-                        `
-                      : nothing}
+                    ${
+                      album.year
+                        ? html`
+                            <span class="small muted">Year: ${album.year}</span>
+                          `
+                        : nothing
+                    }
                   </div>
                 </app-link>
               </li>
@@ -196,13 +199,15 @@ export class SearchNav extends LitElement {
                 </span>
                 <span class="time"
                   >${timespan(track.duration)} <br />
-                  ${track.position > 0 && (track.isPlaying || track.isPaused)
-                    ? html`
-                        <span class="small muted"
-                          >${timespan(track.position)}</span
-                        >
-                      `
-                    : html` <span class="small muted">${track.type}</span> `}
+                  ${
+                    track.position > 0 && (track.isPlaying || track.isPaused)
+                      ? html`
+                          <span class="small muted"
+                            >${timespan(track.position)}</span
+                          >
+                        `
+                      : html` <span class="small muted">${track.type}</span> `
+                  }
                 </span>
               </li>
             `,

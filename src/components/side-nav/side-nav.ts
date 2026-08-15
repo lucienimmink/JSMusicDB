@@ -120,67 +120,71 @@ export class SideNav extends LitElement {
     return html`
       <div class="${this.full ? 'full' : ''} ${this.open ? 'open' : ''}"></div>
       <div
-        class="${this.full ? 'slide-menu' : ''} ${this.open
-          ? 'open'
-          : ''} ${this.hasVisiblePlayer ? 'player' : ''}"
+        class="${this.full ? 'slide-menu' : ''} ${
+          this.open ? 'open' : ''
+        } ${this.hasVisiblePlayer ? 'player' : ''}"
         @touchstart=${this._handleTouchStart}
         @touchend=${this._handleTouchEnd}
       >
         <ul>
-          ${this.full
-            ? html`
-                <li class="title">
-                  <h1>
-                    <div>JSMusicDB</div>
-                    <button
-                      title="Close menu"
-                      @click=${(e: Event) => {
-                        this._handleClick(e);
+          ${
+            this.full
+              ? html`
+                  <li class="title">
+                    <h1>
+                      <div>JSMusicDB</div>
+                      <button
+                        title="Close menu"
+                        @click=${(e: Event) => {
+                          this._handleClick(e);
+                        }}
+                      >
+                        ${timesIcon}
+                      </button>
+                    </h1>
+                  </li>
+                  <li>
+                    <form
+                      @submit=${(e: Event) => {
+                        this._search(e);
                       }}
                     >
-                      ${timesIcon}
-                    </button>
-                  </h1>
-                </li>
-                <li>
-                  <form
-                    @submit=${(e: Event) => {
-                      this._search(e);
-                    }}
-                  >
-                    <label for="search" class="sr-only">Search:</label>
-                    <input
-                      type="search"
-                      placeholder="Search for"
-                      id="search"
-                      @focus="${() => {
-                        this.hasFocus = true;
-                      }}"
-                      @blur="${() => {
-                        this.hasFocus = false;
-                      }}"
-                      .value=${this.query}
-                    />
-                  </form>
-                </li>
-              `
-            : nothing}
+                      <label for="search" class="sr-only">Search:</label>
+                      <input
+                        type="search"
+                        placeholder="Search for"
+                        id="search"
+                        @focus="${() => {
+                          this.hasFocus = true;
+                        }}"
+                        @blur="${() => {
+                          this.hasFocus = false;
+                        }}"
+                        .value=${this.query}
+                      />
+                    </form>
+                  </li>
+                `
+              : nothing
+          }
           <li class="${this.route === '/' ? 'active' : ''}">
             <app-link href="/" title="Home" menu flex
               >${homeIcon} <span>Home</span></app-link
             >
           </li>
-          ${this.full
-            ? html`
-                <li
-                  class="md-down ${this.route === '/letters' ? 'active' : ''}"
-                >
-                  <app-link href="/letters" title="Letters" menu flex
-                    >${lettersIcon} <span>Letters</span></app-link
+          ${
+            this.full
+              ? html`
+                  <li
+                    class="md-down ${this.route === '/letters' ? 'active' : ''}"
                   >
-                </li>
-              `
-            : nothing}
+                    <app-link href="/letters" title="Letters" menu flex
+                      >${lettersIcon} <span>Letters</span></app-link
+                    >
+                  </li>
+                `
+              : nothing
+          }
           <li class="${this.route === '/artists' ? 'active' : ''}">
             <app-link href="/artists" title="Artists" menu flex
               >${artistsIcon} <span>Artists</span></app-link
@@ -206,20 +210,24 @@ export class SideNav extends LitElement {
               >${nowPlayingIcon} <span>Now playing</span></app-link
             >
           </li>
-          ${this.hasScrobbleCache
-            ? html`
-                <li class="${this.route === '/scrobble-cache' ? 'active' : ''}">
-                  <app-link
-                    href="/scrobble-cache"
-                    title="Local scrobble cache"
-                    menu
-                    flex
-                    >${scrobbleCacheIcon}
-                    <span>Local scrobble cache</span></app-link
+          ${
+            this.hasScrobbleCache
+              ? html`
+                  <li
+                    class="${this.route === '/scrobble-cache' ? 'active' : ''}"
                   >
-                </li>
-              `
-            : nothing}
+                    <app-link
+                      href="/scrobble-cache"
+                      title="Local scrobble cache"
+                      menu
+                      flex
+                      >${scrobbleCacheIcon}
+                      <span>Local scrobble cache</span></app-link
+                    >
+                  </li>
+                `
+              : nothing
+          }
           <li class="${this.route === '/settings' ? 'active' : ''}">
             <app-link href="/settings" title="Settings" menu flex
               >${settingsIcon} <span>Settings</span></app-link

@@ -71,10 +71,9 @@ export class LetterNav extends LitElement {
   }
   private _renderJumplist() {
     return html`<ul
-      class="jumplist ${this.showJumpList ? 'show ' : ''} ${this
-        .hasVisiblePlayer
-        ? 'player'
-        : ''}"
+      class="jumplist ${this.showJumpList ? 'show ' : ''} ${
+        this.hasVisiblePlayer ? 'player' : ''
+      }"
     >
       ${this.letters.map(
         (letter: any) => html`
@@ -100,19 +99,21 @@ export class LetterNav extends LitElement {
     </li>`;
   }
   private _rendderAlbums(album: any) {
-    return html`${album?.header
-      ? html`
-          <li
-            class="header"
-            @click="${() => {
-              this.showJumpList = true;
-            }}"
-          >
-            ${album.header}
-            <span class="small muted">(${album.albums})</span>
-          </li>
-        `
-      : this._renderAlbum(album)}`;
+    return html`${
+      album?.header
+        ? html`
+            <li
+              class="header"
+              @click="${() => {
+                this.showJumpList = true;
+              }}"
+            >
+              ${album.header}
+              <span class="small muted">(${album.albums})</span>
+            </li>
+          `
+        : this._renderAlbum(album)
+    }`;
   }
   private _renderList() {
     return html`<lit-virtualizer

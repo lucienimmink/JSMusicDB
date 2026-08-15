@@ -14,32 +14,35 @@ export class AlbumInList extends LitElement {
 
   render() {
     return html`
-      ${this.artist
-        ? html`
-            <app-link
-              flex
-              text
-              href="/letter/${this.artist?.letter?.escapedLetter}/artist/${this
-                .artist.escapedName}"
-            >
-              <album-art
-                artist="${this.artist.albumArtist || this.artist.name}"
-                mbid="${this.artist.mbid}"
-                dimension="50"
-                no-lazy
-                static
-              ></album-art>
-              <div class="details">
-                <span class="artist"
-                  >${this.artist.albumArtist || this.artist.name}</span
-                >
-                <span class="small muted"
-                  >Albums: ${this.artist?.albums?.length}</span
-                >
-              </div>
-            </app-link>
-          `
-        : nothing}
+      ${
+        this.artist
+          ? html`
+              <app-link
+                flex
+                text
+                href="/letter/${this.artist?.letter?.escapedLetter}/artist/${
+                  this.artist.escapedName
+                }"
+              >
+                <album-art
+                  artist="${this.artist.albumArtist || this.artist.name}"
+                  mbid="${this.artist.mbid}"
+                  dimension="50"
+                  no-lazy
+                  static
+                ></album-art>
+                <div class="details">
+                  <span class="artist"
+                    >${this.artist.albumArtist || this.artist.name}</span
+                  >
+                  <span class="small muted"
+                    >Albums: ${this.artist?.albums?.length}</span
+                  >
+                </div>
+              </app-link>
+            `
+          : nothing
+      }
     `;
   }
 }

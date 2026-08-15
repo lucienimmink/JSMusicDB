@@ -171,9 +171,11 @@ export class HomeNav extends LitElement {
     }
     if (track) {
       return html`
-        ${track.isPlaying
-          ? html`<span class="playing">Playing</span>`
-          : html`<span class="playing">Paused</span>`}
+        ${
+          track.isPlaying
+            ? html`<span class="playing">Playing</span>`
+            : html`<span class="playing">Paused</span>`
+        }
         <span class="small muted">right now</span>
       `;
     }
@@ -187,122 +189,142 @@ export class HomeNav extends LitElement {
     e.target.src = `data:image/svg+xml;base64,${btoa(cdSVG)}`;
   }
   private _renderRecentTracks() {
-    return html`${this.recenttracks?.length > 0 || this.currentTrack
-      ? html`
-          <div class="container">
-            <h2 class="header">Recently listened</h2>
-            <ol>
-              ${this.currentTrack
-                ? html`
-                    <li>
+    return html`${
+      this.recenttracks?.length > 0 || this.currentTrack
+        ? html`
+            <div class="container">
+              <h2 class="header">Recently listened</h2>
+              <ol>
+                ${
+                  this.currentTrack
+                    ? html`
+                        <li>
+                          <div>
+                            <album-art
+                              artist="${
+                                this.currentTrack?.artist?.albumArtist ||
+                                this.currentTrack?.artist?.name
+                              }"
+                              album="${this.currentTrack?.album?.name}"
+                              mbid="${this.currentTrack?.album?.mbid}"
+                              dimension="70"
+                              static
+                            ></album-art>
+                          </div>
+                          <span class="details">
+                            <span
+                              >${this.currentTrack?.trackArtist} •
+                              ${this.currentTrack?.title}
+                              <br />
+                              <span class="small muted"
+                                >${this.currentTrack?.album?.name}</span
+                              >
+                            </span>
+                          </span>
+                          <span class="time">
+                            ${this._formatDate('0', this.currentTrack)}
+                          </span>
+                        </li>
+                      `
+                    : nothing
+                }
+                ${this.recenttracks?.map(
+                  (track: any) => html`
+                    <li class="${track.dummy ? 'dummy ' : ''}">
                       <div>
-                        <album-art
-                          artist="${this.currentTrack?.artist?.albumArtist ||
-                          this.currentTrack?.artist?.name}"
-                          album="${this.currentTrack?.album?.name}"
-                          mbid="${this.currentTrack?.album?.mbid}"
-                          dimension="70"
-                          static
-                        ></album-art>
+                        <img
+                          src="${track?.image[2]['#text']}"
+                          class="album-art"
+                          alt="${track.artist.name} • ${track.name}"
+                          @error="${(e: Event) => this._onError(e)}"
+                          crossorigin="anonymous"
+                        />
+                        ${
+                          track.loved === '1'
+                            ? html`<span class="heart">${heartIcon}</span>`
+                            : nothing
+                        }
                       </div>
                       <span class="details">
                         <span
-                          >${this.currentTrack?.trackArtist} •
-                          ${this.currentTrack?.title}
+                          >${track.artist.name} • ${track.name}
                           <br />
                           <span class="small muted"
-                            >${this.currentTrack?.album?.name}</span
+                            >${track.album['#text']}</span
                           >
                         </span>
                       </span>
                       <span class="time">
-                        ${this._formatDate('0', this.currentTrack)}
+                        ${this._formatDate(track?.date?.uts || '0', track)}
                       </span>
                     </li>
-                  `
-                : nothing}
-              ${this.recenttracks?.map(
-                (track: any) => html`
-                  <li class="${track.dummy ? 'dummy ' : ''}">
-                    <div>
-                      <img
-                        src="${track?.image[2]['#text']}"
-                        class="album-art"
-                        alt="${track.artist.name} • ${track.name}"
-                        @error="${(e: Event) => this._onError(e)}"
-                        crossorigin="anonymous"
-                      />
-                      ${track.loved === '1'
-                        ? html`<span class="heart">${heartIcon}</span>`
-                        : nothing}
-                    </div>
-                    <span class="details">
-                      <span
-                        >${track.artist.name} • ${track.name}
-                        <br />
-                        <span class="small muted">${track.album['#text']}</span>
-                      </span>
-                    </span>
-                    <span class="time">
-                      ${this._formatDate(track?.date?.uts || '0', track)}
-                    </span>
-                  </li>
-                `,
-              )}
-            </ol>
-          </div>
-        `
-      : nothing}`;
+                  `,
+                )}
+              </ol>
+            </div>
+          `
+        : nothing
+    }`;
   }
   private _renderRecentlyAdded() {
-    return html`${this.recentAdded.length > 0
-      ? html`
-          <div class="container">
-            <h2 class="header">Recently added</h2>
-            <div class="grid">
-              ${this.recentAdded?.map(
-                (album: any) => html`
-                  <album-in-grid .album=${album} home></album-in-grid>
-                `,
-              )}
+    return html`${
+      this.recentAdded.length > 0
+        ? html`
+            <div class="container">
+              <h2 class="header">Recently added</h2>
+              <div class="grid">
+                ${this.recentAdded?.map(
+                  (album: any) => html`
+                    <album-in-grid .album=${album} home></album-in-grid>
+                  `,
+                )}
+              </div>
             </div>
-          </div>
-        `
-      : nothing}`;
+          `
+        : nothing
+    }`;
   }
   private _renderNewReleases() {
-    return html`${this.newReleases.length > 0
-      ? html` <div class="container">
-          <h2 class="header">
-            New releases
-            <span class="small muted">(${this.newReleases.length})</span>
-          </h2>
-          <ol>
-            ${this.newReleases?.map(
-              (release: any) =>
-                html` <a href="${release.link}" target="_blank" rel="noopener">
-                  <div>
-                    <album-art
-                      artist="${release.artist}"
-                      album="${release.album}"
-                      static
-                    ></album-art>
-                  </div>
-                  <span class="details"
-                    ><span>
-                      ${release.artist} &bull; ${release.album}
-                      ${release.isHires
-                        ? html`<span class="small muted hq-icon"
-                            >${hqIcon}</span
-                          >`
-                        : nothing}
+    return html`${
+      this.newReleases.length > 0
+        ? html` <div class="container">
+            <h2 class="header">
+              New releases
+              <span class="small muted">(${this.newReleases.length})</span>
+            </h2>
+            <ol>
+              ${this.newReleases?.map(
+                (release: any) =>
+                  html` <a
+                    href="${release.link}"
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    <div>
+                      <album-art
+                        artist="${release.artist}"
+                        album="${release.album}"
+                        static
+                      ></album-art>
+                    </div>
+                    <span class="details"
+                      ><span>
+                        ${release.artist} &bull; ${release.album}
+                        ${
+                          release.isHires
+                            ? html`<span class="small muted hq-icon"
+                                >${hqIcon}</span
+                              >`
+                            : nothing
+                        }
+                      </span>
                     </span>
-                  </span>
-                </a>`,
-            )}
-          </ol>
-        </div>`
-      : nothing}`;
+                  </a>`,
+              )}
+            </ol>
+          </div>`
+        : nothing
+    }`;
   }
 
   render() {

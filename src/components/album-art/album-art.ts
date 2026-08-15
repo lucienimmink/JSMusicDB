@@ -150,9 +150,9 @@ export class AlbumArt extends LitElement {
           // @ts-ignore
           e.target.src = this.defaultArt();
         }}
-        class="${this.transparent ? 'transparent ' : ''} ${this.isDefault
-          ? 'default'
-          : ''} ${this.loading && !this.isDefault ? 'loading' : ''}"
+        class="${this.transparent ? 'transparent ' : ''} ${
+          this.isDefault ? 'default' : ''
+        } ${this.loading && !this.isDefault ? 'loading' : ''}"
         width="${this.dimension}"
         height="${this.dimension}"
         crossorigin="anonymous"

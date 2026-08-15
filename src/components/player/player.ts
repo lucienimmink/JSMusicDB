@@ -632,8 +632,9 @@ export class Album extends LitElement {
       <h5>
         <app-link
           inline
-          href="/letter/${this.track.album.artist.letter
-            .escapedLetter}/artist/${this.track.album.artist.escapedName}"
+          href="/letter/${
+            this.track.album.artist.letter.escapedLetter
+          }/artist/${this.track.album.artist.escapedName}"
         >
           ${this.track.trackArtist}
         </app-link>
@@ -641,15 +642,19 @@ export class Album extends LitElement {
           <span class="muted">&bull;</span>
           <app-link
             inline
-            href="/letter/${this.track.album.artist.letter
-              .escapedLetter}/artist/${this.track.album.artist
-              .escapedName}/album/${this.track.album.escapedName}"
+            href="/letter/${
+              this.track.album.artist.letter.escapedLetter
+            }/artist/${
+              this.track.album.artist.escapedName
+            }/album/${this.track.album.escapedName}"
           >
             ${this.track.album.name}
           </app-link>
-          ${this._hasMoreDiscs()
-            ? html`<span class="small muted">(${this.track.disc})</span>`
-            : nothing}
+          ${
+            this._hasMoreDiscs()
+              ? html`<span class="small muted">(${this.track.disc})</span>`
+              : nothing
+          }
         </span>
       </h5>
     </div>`;
@@ -658,8 +663,9 @@ export class Album extends LitElement {
     return html`<app-link href="/playing" class="art">
       <album-art
         @art=${this._setArt}
-        artist=${this.track.album.artist.albumArtist ||
-        this.track.album.artist.name}
+        artist=${
+          this.track.album.artist.albumArtist || this.track.album.artist.name
+        }
         album=${this.track.album.name}
         mbid="${this.track.album.mbid}"
         dimension="75"
@@ -709,19 +715,23 @@ export class Album extends LitElement {
   render() {
     return html`
       ${this._renderAudioTag()}
-      ${this.track
-        ? html`
-            <div class="player">
-              ${this._renderProgressBar()}
-              <div class="row">
-                ${this._renderArt()}
-                ${this.hasErrorWhilePlaying
-                  ? this._renderErrorState()
-                  : html` ${this._renderDetails()} ${this._renderControls()}`}
+      ${
+        this.track
+          ? html`
+              <div class="player">
+                ${this._renderProgressBar()}
+                <div class="row">
+                  ${this._renderArt()}
+                  ${
+                    this.hasErrorWhilePlaying
+                      ? this._renderErrorState()
+                      : html` ${this._renderDetails()} ${this._renderControls()}`
+                  }
+                </div>
               </div>
-            </div>
-          `
-        : nothing}
+            `
+          : nothing
+      }
     `;
   }
 }

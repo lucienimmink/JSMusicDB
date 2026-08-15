@@ -16,27 +16,30 @@ export class ArtistInGrid extends LitElement {
 
   render() {
     return html`
-      ${this.artist
-        ? html`
-            <app-link
-              href="/letter/${this.artist?.letter?.escapedLetter}/artist/${this
-                .artist.escapedName}"
-            >
-              <div class="panel">
-                <album-art
-                  artist="${this.artist.albumArtist || this.artist.name}"
-                  mbid="${this.artist.mbid}"
-                ></album-art>
-                <div class="panel-info color-type-primary-alt">
-                  <span>${this.artist.albumArtist || this.artist.name}</span>
-                  <span class="small muted"
-                    >Albums: ${this.artist?.albums?.length}</span
-                  >
+      ${
+        this.artist
+          ? html`
+              <app-link
+                href="/letter/${this.artist?.letter?.escapedLetter}/artist/${
+                  this.artist.escapedName
+                }"
+              >
+                <div class="panel">
+                  <album-art
+                    artist="${this.artist.albumArtist || this.artist.name}"
+                    mbid="${this.artist.mbid}"
+                  ></album-art>
+                  <div class="panel-info color-type-primary-alt">
+                    <span>${this.artist.albumArtist || this.artist.name}</span>
+                    <span class="small muted"
+                      >Albums: ${this.artist?.albums?.length}</span
+                    >
+                  </div>
                 </div>
-              </div>
-            </app-link>
-          `
-        : nothing}
+              </app-link>
+            `
+          : nothing
+      }
     `;
   }
 }

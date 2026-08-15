@@ -15,35 +15,41 @@ export class AlbumInList extends LitElement {
 
   render() {
     return html`
-      ${this.album
-        ? html`
-            <app-link
-              flex
-              text
-              href="/letter/${this.album?.artist?.letter
-                ?.escapedLetter}/artist/${this.album?.artist
-                ?.escapedName}/album/${this?.album?.escapedName}"
-            >
-              <album-art
-                artist=${ifDefined(
-                  this.album?.artist?.albumArtist || this.album?.artist?.name,
-                )}
-                album="${this.album?.name}"
-                mbid="${this.album?.mbid}"
-                dimension="50"
-                no-lazy
-                static
-              ></album-art>
-              <div class="details">
-                <span class="artist">${this.album.name}</span>
-                <span class="small muted"
-                  >${this.album?.artist?.albumArtist ||
-                  this.album?.artist?.name}</span
-                >
-              </div>
-            </app-link>
-          `
-        : nothing}
+      ${
+        this.album
+          ? html`
+              <app-link
+                flex
+                text
+                href="/letter/${
+                  this.album?.artist?.letter?.escapedLetter
+                }/artist/${
+                  this.album?.artist?.escapedName
+                }/album/${this?.album?.escapedName}"
+              >
+                <album-art
+                  artist=${ifDefined(
+                    this.album?.artist?.albumArtist || this.album?.artist?.name,
+                  )}
+                  album="${this.album?.name}"
+                  mbid="${this.album?.mbid}"
+                  dimension="50"
+                  no-lazy
+                  static
+                ></album-art>
+                <div class="details">
+                  <span class="artist">${this.album.name}</span>
+                  <span class="small muted"
+                    >${
+                      this.album?.artist?.albumArtist ||
+                      this.album?.artist?.name
+                    }</span
+                  >
+                </div>
+              </app-link>
+            `
+          : nothing
+      }
     `;
   }
 }

@@ -407,8 +407,9 @@ export class NowPlaying extends LitElement {
         no-lazy
         static
         .album=${this.track.album.name}
-        .artist=${this.track.album.artist.albumArtist ||
-        this.track.album.artist.name}
+        .artist=${
+          this.track.album.artist.albumArtist || this.track.album.artist.name
+        }
       ></album-art>
     </div>`;
   }
@@ -423,20 +424,24 @@ export class NowPlaying extends LitElement {
         .mbid=${track.album.mbid}
         @click=${this._openModal}
       ></album-art>
-      ${position === 'current'
-        ? html`<dialog>
-            <album-art
-              .album=${this.track.album.name}
-              .artist=${this.track.album.artist.albumArtist ||
-              this.track.album.artist.name}
-              .mbid=${this.track.album.mbid}
-              dimension="${this._getModalDimension()}"
-              visible="true"
-              ?static=${true}
-              @click=${this._closeModal}
-            ></album-art>
-          </dialog>`
-        : nothing}
+      ${
+        position === 'current'
+          ? html`<dialog>
+              <album-art
+                .album=${this.track.album.name}
+                .artist=${
+                  this.track.album.artist.albumArtist ||
+                  this.track.album.artist.name
+                }
+                .mbid=${this.track.album.mbid}
+                dimension="${this._getModalDimension()}"
+                visible="true"
+                ?static=${true}
+                @click=${this._closeModal}
+              ></album-art>
+            </dialog>`
+          : nothing
+      }
     </div>`;
   }
   private _renderFloatingText() {
@@ -445,23 +450,28 @@ export class NowPlaying extends LitElement {
       <h5>
         <app-link
           inline
-          href="/letter/${this.track.album.artist.letter
-            .escapedLetter}/artist/${this.track.album.artist.escapedName}"
+          href="/letter/${
+            this.track.album.artist.letter.escapedLetter
+          }/artist/${this.track.album.artist.escapedName}"
         >
           ${this.track.trackArtist}
         </app-link>
         <span class="muted">&bull;</span>
         <app-link
           inline
-          href="/letter/${this.track.album.artist.letter
-            .escapedLetter}/artist/${this.track.album.artist
-            .escapedName}/album/${this.track.album.escapedName}"
+          href="/letter/${
+            this.track.album.artist.letter.escapedLetter
+          }/artist/${
+            this.track.album.artist.escapedName
+          }/album/${this.track.album.escapedName}"
         >
           ${this.track.album.name}
         </app-link>
-        ${this._hasMoreDiscs()
-          ? html`<span class="small muted">(${this.track.disc})</span>`
-          : nothing}
+        ${
+          this._hasMoreDiscs()
+            ? html`<span class="small muted">(${this.track.disc})</span>`
+            : nothing
+        }
       </h5>
     </div>`;
   }
@@ -496,17 +506,20 @@ export class NowPlaying extends LitElement {
       <h5>
         <app-link
           inline
-          href="/letter/${this.track.album.artist.letter
-            .escapedLetter}/artist/${this.track.album.artist.escapedName}"
+          href="/letter/${
+            this.track.album.artist.letter.escapedLetter
+          }/artist/${this.track.album.artist.escapedName}"
         >
           ${this.track.trackArtist}
         </app-link>
         &bull;
         <app-link
           inline
-          href="/letter/${this.track.album.artist.letter
-            .escapedLetter}/artist/${this.track.album.artist
-            .escapedName}/album/${this.track.album.escapedName}"
+          href="/letter/${
+            this.track.album.artist.letter.escapedLetter
+          }/artist/${
+            this.track.album.artist.escapedName
+          }/album/${this.track.album.escapedName}"
         >
           ${this.track.album.name}
         </app-link>
@@ -572,11 +585,12 @@ export class NowPlaying extends LitElement {
         ${this._renderArt(this.track)} ${this._renderFloatingText()}
         ${this._renderArt(this._getNextTrack(), 'next')}
       </div>
-      ${this.hasError
-        ? this._renderErrorState()
-        : html`<div class="controls-wrapper ${
-            this.classicVis ? 'classic-vis' : ''
-          }" @touchstart=${this._handleTouchStart}
+      ${
+        this.hasError
+          ? this._renderErrorState()
+          : html`<div class="controls-wrapper ${
+              this.classicVis ? 'classic-vis' : ''
+            }" @touchstart=${this._handleTouchStart}
             @touchend=${this._handleTouchEndControls}>
                             ${this._renderTimeControls()}
                             <div class="details-wrapper">
@@ -585,7 +599,8 @@ export class NowPlaying extends LitElement {
                               ${this._renderMetaControls()}
                             </div>
                           </div>
-                    </div>`}
+                    </div>`
+      }
     </div>`;
   }
   private _renderTrack(track: any) {
@@ -633,10 +648,9 @@ export class NowPlaying extends LitElement {
     if (this.track) {
       return html`
         <div
-          class="wrapper ${this.smallArt ? 'smallArt ' : ''} ${this
-            .isBottomShown
-            ? 'bottomShown '
-            : ''}"
+          class="wrapper ${this.smallArt ? 'smallArt ' : ''} ${
+            this.isBottomShown ? 'bottomShown ' : ''
+          }"
         >
           ${this._renderBackdrop()} ${this._renderTop()} ${this._renderBottom()}
         </div>
