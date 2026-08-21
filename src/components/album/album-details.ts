@@ -13,6 +13,7 @@ import responsive from '../../styles/responsive';
 import smallMuted from '../../styles/small-muted';
 import { global as EventBus } from '../../utils/EventBus';
 import { TOGGLE_SETTING, getSettingByName } from '../../utils/settings';
+import { UPDATE_PLAYER } from '../../utils/player';
 import { hqIcon } from '../icons/hq';
 import musicdb from '../musicdb';
 import '../track/track';
@@ -30,6 +31,10 @@ export class AlbumDetails extends LitElement {
   albumDetails: any;
   @state()
   replayGainApplied: boolean;
+  @state()
+  showNowPlayingInAlbumOverlay: boolean;
+  @state()
+  track: any;
 
   static readonly SCROLLOFFSET = 160;
 
@@ -49,24 +54,38 @@ export class AlbumDetails extends LitElement {
       tracks: [],
       type: 'dummy',
     };
+    this.track = null;
     this.replayGainApplied = false;
+    this.showNowPlayingInAlbumOverlay = false;
     getSettingByName('replaygain').then(async (replaygain: any) => {
       this.replayGainApplied = replaygain;
     });
+    getSettingByName('showNowPlayingInAlbumOverlay').then(
+      async (showNowPlayingInAlbumOverlay: any) => {
+        this.showNowPlayingInAlbumOverlay = showNowPlayingInAlbumOverlay;
+      },
+    );
   }
 
   connectedCallback() {
     super.connectedCallback();
-    EventBus.on(TOGGLE_SETTING, this._doToggleReplayGainSetting, this);
+    EventBus.on(TOGGLE_SETTING, this._doToggleSettings, this);
+    EventBus.on(UPDATE_PLAYER, this._updatePlayer, this);
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    EventBus.off(TOGGLE_SETTING, this._doToggleReplayGainSetting, this);
+    EventBus.off(TOGGLE_SETTING, this._doToggleSettings, this);
+    EventBus.on(UPDATE_PLAYER, this._updatePlayer, this);
   }
-  _doToggleReplayGainSetting() {
+  _doToggleSettings() {
     getSettingByName('replaygain').then(async (replaygain: any) => {
       this.replayGainApplied = replaygain;
     });
+    getSettingByName('showNowPlayingInAlbumOverlay').then(
+      async (showNowPlayingInAlbumOverlay: any) => {
+        this.showNowPlayingInAlbumOverlay = showNowPlayingInAlbumOverlay;
+      },
+    );
   }
 
   attributeChangedCallback(name: any, oldval: any, newval: any) {
@@ -110,6 +129,18 @@ export class AlbumDetails extends LitElement {
   }
   _getModalDimension() {
     return Math.min(window.innerHeight, window.innerHeight) - 300;
+  }
+
+  _updatePlayer = (target: any, { current }: { current: any }) => {
+    // this._update(current);
+    this.track = { ...current };
+    this.requestUpdate();
+  };
+
+  private _renderNowPlaying() {
+    return html`<div class="now-playing" style="width: ${this._getModalDimension()}px">
+      ${this.track.isPlaying ? 'Playing' : 'Paused'}: ${this.track?.title}
+    </div>`;
   }
 
   private _renderButtons() {
@@ -171,19 +202,22 @@ export class AlbumDetails extends LitElement {
             dimension="190"
             @click=${this._openModal}
           ></album-art>
-          <dialog @close=${this._closeModal} @cancel=${this._closeModal}>
-            <album-art
-              artist="${
-                this.albumDetails?.artist?.albumArtist ||
-                this.albumDetails?.artist?.name
-              }"
-              album="${this.albumDetails?.name}"
-              mbid="${this.albumDetails?.mbid}"
-              dimension="${this._getModalDimension()}"
-              visible="true"
-              ?static=${true}
-              @click=${this._closeModal}
-            ></album-art>
+          <dialog @close=${this._closeModal} @cancel=${this._closeModal} class="album-art-modal">
+            <div class="wrapper">
+              <album-art
+                artist="${
+                  this.albumDetails?.artist?.albumArtist ||
+                  this.albumDetails?.artist?.name
+                }"
+                album="${this.albumDetails?.name}"
+                mbid="${this.albumDetails?.mbid}"
+                dimension="${this._getModalDimension()}"
+                visible="true"
+                ?static=${true}
+                @click=${this._closeModal}
+              ></album-art>
+              ${this.showNowPlayingInAlbumOverlay ? this._renderNowPlaying() : nothing}
+            </div>
           </dialog>
           ${this._renderDetails()}
         </div>

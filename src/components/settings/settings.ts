@@ -334,6 +334,16 @@ export class SettingsNav extends LitElement {
           View follows track change
         </label>
       </p>
+      <p>
+        <label>
+          <input
+            type="checkbox"
+            @click="${(e: Event) => this._toggle('showNowPlayingInAlbumOverlay', e)}"
+            ?checked=${this.settings?.showNowPlayingInAlbumOverlay}
+          />
+          Show now playing in album modal overlay
+        </label>
+      </p>
     </div>`;
   }
   private _renderThemeSettings() {

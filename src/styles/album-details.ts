@@ -91,6 +91,11 @@ export default css`
     opacity: 0;
     transition: all 0.2s ease-in-out;
   }
+  dialog.album-art-modal {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
   dialog[open] {
     opacity: 1;
   }
@@ -116,13 +121,33 @@ export default css`
     margin-right: 0;
     margin-left: 0;
     display: block;
-    max-width: 90vw;
-    max-height: 90vw;
+    max-width: 97vw;
+    max-height: 97vw;
     width: auto;
     height: auto;
     aspect-ratio: 1 / 1;
     overflow: hidden;
     cursor: pointer;
+  }
+  dialog.album-art-modal album-art{
+    border: 1px solid var(--background2);
+    box-shadow: 0px 0px 1px var(--primary);
+  }
+  dialog .now-playing {
+    box-sizing: border-box;
+    width: calc(100% - 1rem);
+    background: var(--background2-seethrough);
+    backdrop-filter: blur(5px) grayscale(1);
+    margin: 0.75rem 0;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 1.5rem;
+    color: var(--text-color);
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+
   }
   @media (orientation: landscape) {
     dialog album-art {
@@ -156,6 +181,9 @@ export default css`
     }
     dialog album-art {
       animation: none;
+    }
+    dialog .now-playing {
+      margin: 0.75rem 0.5rem;
     }
     @keyframes album-art-shrink {
       to {
