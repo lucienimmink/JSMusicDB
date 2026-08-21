@@ -144,7 +144,7 @@ export class AlbumDetails extends LitElement {
       style="width: ${this._getModalDimension()}px"
     >
       <span class="small muted">
-        ${this.track.isPlaying ? 'Playing ' : 'Paused '} </span
+        ${this.track?.isPlaying ? 'Playing ' : 'Paused '} </span
       ><span class="playing">${this.track?.title}</span>
       ${this.track?.isLoved ? html`${heartIcon}` : nothing}
     </div>`;
