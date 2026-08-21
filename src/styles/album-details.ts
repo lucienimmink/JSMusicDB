@@ -129,7 +129,7 @@ export default css`
     overflow: hidden;
     cursor: pointer;
   }
-  dialog.album-art-modal album-art{
+  dialog.album-art-modal album-art {
     border: 1px solid var(--background2);
     box-shadow: 0px 0px 1px var(--primary);
   }
@@ -137,17 +137,28 @@ export default css`
     box-sizing: border-box;
     width: calc(100% - 1rem);
     background: var(--background2-seethrough);
-    backdrop-filter: blur(5px) grayscale(1);
     margin: 0.75rem 0;
     padding: 0.5rem;
-    border-radius: 0.25rem;
     font-size: 1.5rem;
     color: var(--text-color);
-    text-align: center;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
 
+    .playing {
+      color: var(--primary);
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    svg {
+      width: 1rem;
+      min-width: 1rem;
+      margin-inline: 0.5rem;
+    }
   }
   @media (orientation: landscape) {
     dialog album-art {

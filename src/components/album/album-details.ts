@@ -19,6 +19,7 @@ import musicdb from '../musicdb';
 import '../track/track';
 import { LOCALE } from '../../utils/date';
 import { TOGGLE_OVERFLOW_HIDDEN } from '../side-nav/side-nav';
+import { heartIcon } from '../icons/heart';
 
 @customElement('album-details')
 export class AlbumDetails extends LitElement {
@@ -138,8 +139,14 @@ export class AlbumDetails extends LitElement {
   };
 
   private _renderNowPlaying() {
-    return html`<div class="now-playing" style="width: ${this._getModalDimension()}px">
-      ${this.track.isPlaying ? 'Playing' : 'Paused'}: ${this.track?.title}
+    return html`<div
+      class="now-playing"
+      style="width: ${this._getModalDimension()}px"
+    >
+      <span class="small muted">
+        ${this.track.isPlaying ? 'Playing ' : 'Paused '} </span
+      ><span class="playing">${this.track?.title}</span>
+      ${this.track?.isLoved ? html`${heartIcon}` : nothing}
     </div>`;
   }
 
@@ -202,7 +209,11 @@ export class AlbumDetails extends LitElement {
             dimension="190"
             @click=${this._openModal}
           ></album-art>
-          <dialog @close=${this._closeModal} @cancel=${this._closeModal} class="album-art-modal">
+          <dialog
+            @close=${this._closeModal}
+            @cancel=${this._closeModal}
+            class="album-art-modal"
+          >
             <div class="wrapper">
               <album-art
                 artist="${
