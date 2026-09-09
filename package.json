@@ -4,18 +4,18 @@
     "format:eslint": "eslint . --fix",
     "lint:prettier": "prettier \"**/*.js\" \"**/*.ts\" --check --ignore-path .gitignore",
     "format:prettier": "prettier \"**/*.js\" \"**/*.ts\" --write --ignore-path .gitignore",
-    "lint": "npm run lint:prettier && npm run lint:eslint",
-    "format": "npm run format:prettier && npm run format:eslint",
+    "lint": "pnpm run lint:prettier && pnpm run lint:eslint",
+    "format": "pnpm run format:prettier && pnpm run format:eslint",
     "build": "vite build .",
     "preview": "vite preview .",
-    "start": "vite && npm run analyse:watch",
-    "dev": "npm run start",
+    "start": "vite && pnpm run analyse:watch",
+    "dev": "pnpm run start",
     "postversion": "git push --follow-tags",
     "zip": "node scripts/zip.js",
     "deploy": "node scripts/deploy.js",
-    "zip:deploy": "npm run zip && npm run deploy",
-    "build:zip:deploy": "npm run build && npm run zip && npm run deploy",
-    "bzd": "npm run build:zip:deploy",
+    "zip:deploy": "pnpm run zip && pnpm run deploy",
+    "build:zip:deploy": "pnpm run build && pnpm run zip && pnpm run deploy",
+    "bzd": "pnpm run build:zip:deploy",
     "analyse": "custom-elements-manifest analyze --litelement --outdir dist --globs \"src/**/*.ts\"",
     "analyse:watch": "custom-elements-manifest analyze --litelement --outdir dist --globs \"src/**/*.ts\" --watch"
   },
@@ -58,8 +58,8 @@
   },
   "lint-staged": {
     "*.ts": [
-      "npm run lint",
-      "npm run format"
+      "pnpm run lint",
+      "pnpm run format"
     ]
   },
   "name": "jsmusicdb",
