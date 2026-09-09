@@ -148,7 +148,9 @@ export default css`
 
     .playing {
       color: var(--primary);
-      display: inline-block;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -166,6 +168,8 @@ export default css`
         border: 0;
         height: 40px;
         padding: 0.5rem 0 0;
+        background-color: transparent;
+        color: var(--text-color);
       }
     }
   }

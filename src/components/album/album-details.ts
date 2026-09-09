@@ -97,9 +97,9 @@ export class AlbumDetails extends LitElement {
     );
   }
 
-  attributeChangedCallback(name: any, oldval: any, newval: any) {
+  async attributeChangedCallback(name: any, oldval: any, newval: any) {
     if (name === 'album') {
-      this.getDetails(this.artist, newval);
+      await this.getDetails(this.artist, newval);
     }
     super.attributeChangedCallback(name, oldval, newval);
   }
@@ -188,10 +188,13 @@ export class AlbumDetails extends LitElement {
     return this.track
       ? html`<div class="now-playing">
             ${this._renderControls()}
-            <span class="playing"
-              >${this.track?.title}
-              ${this.track?.isLoved ? html`${heartIcon}` : nothing}</span
-            >
+            <div class="playing">
+              <span class="small muted"
+                >${this.track?.isPlaying ? html`playing` : `paused`}</span
+              >
+              ${this.track?.title}
+              ${this.track?.isLoved ? html`${heartIcon}` : nothing}
+            </div>
           </div>
           ${this._renderProgressBar()}`
       : nothing;
