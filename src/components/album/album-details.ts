@@ -8,18 +8,20 @@ import {
 } from 'lit/decorators.js';
 import albumDetails from '../../styles/album-details';
 import buttons from '../../styles/buttons';
+import progress from '../../styles/progress-bar';
 import container from '../../styles/container';
 import responsive from '../../styles/responsive';
 import smallMuted from '../../styles/small-muted';
 import { global as EventBus } from '../../utils/EventBus';
 import { TOGGLE_SETTING, getSettingByName } from '../../utils/settings';
-import { UPDATE_PLAYER } from '../../utils/player';
+import { SET_POSITION, UPDATE_PLAYER } from '../../utils/player';
 import { hqIcon } from '../icons/hq';
 import musicdb from '../musicdb';
 import '../track/track';
 import { LOCALE } from '../../utils/date';
 import { TOGGLE_OVERFLOW_HIDDEN } from '../side-nav/side-nav';
 import { heartIcon } from '../icons/heart';
+import { styleMap } from 'lit/directives/style-map.js';
 
 @customElement('album-details')
 export class AlbumDetails extends LitElement {
@@ -40,7 +42,7 @@ export class AlbumDetails extends LitElement {
   static readonly SCROLLOFFSET = 160;
 
   static get styles() {
-    return [container, buttons, albumDetails, smallMuted, responsive];
+    return [container, buttons, albumDetails, progress, smallMuted, responsive];
   }
 
   constructor() {
@@ -138,13 +140,35 @@ export class AlbumDetails extends LitElement {
     this.requestUpdate();
   };
 
+  _setPosition(e: any) {
+    const perc = e.offsetX / e.currentTarget.offsetWidth;
+    const pos = (this.track.duration / 1000) * perc;
+    EventBus.emit(SET_POSITION, this, pos);
+  }
+
+  private _renderProgressBar() {
+    return html`<div
+      class="progress"
+      @click=${(e: Event) => this._setPosition(e)}
+    >
+      <div
+        class="progress-bar ${this.track?.isPlaying ? '' : 'paused'}"
+        style=${styleMap({
+          '--progress-perc':
+            (this.track?.position / this.track?.duration) * 100 + '%',
+        })}
+      ></div>
+    </div>`;
+  }
+
   private _renderNowPlaying() {
     return html`<div class="now-playing">
-      <span class="small muted">
-        ${this.track?.isPlaying ? 'Playing ' : 'Paused '} </span
-      ><span class="playing">${this.track?.title}</span>
-      ${this.track?.isLoved ? html`${heartIcon}` : nothing}
-    </div>`;
+        <span class="small muted">
+          ${this.track?.isPlaying ? 'Playing ' : 'Paused '} </span
+        ><span class="playing">${this.track?.title}</span>
+        ${this.track?.isLoved ? html`${heartIcon}` : nothing}
+      </div>
+      ${this._renderProgressBar()}`;
   }
 
   private _renderButtons() {

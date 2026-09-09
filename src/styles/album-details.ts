@@ -193,7 +193,7 @@ export default css`
     }
     dialog .now-playing {
       font-size: 1.5rem;
-      margin: 0.75rem 0.5rem 0;
+      margin-top: 0.75rem;
     }
     @keyframes album-art-shrink {
       to {
