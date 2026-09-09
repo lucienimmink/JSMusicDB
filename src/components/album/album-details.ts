@@ -14,7 +14,11 @@ import responsive from '../../styles/responsive';
 import smallMuted from '../../styles/small-muted';
 import { global as EventBus } from '../../utils/EventBus';
 import { TOGGLE_SETTING, getSettingByName } from '../../utils/settings';
-import { SET_POSITION, UPDATE_PLAYER } from '../../utils/player';
+import {
+  SET_POSITION,
+  TOGGLE_PLAY_PAUSE_PLAYER,
+  UPDATE_PLAYER,
+} from '../../utils/player';
 import { hqIcon } from '../icons/hq';
 import musicdb from '../musicdb';
 import '../track/track';
@@ -22,6 +26,8 @@ import { LOCALE } from '../../utils/date';
 import { TOGGLE_OVERFLOW_HIDDEN } from '../side-nav/side-nav';
 import { heartIcon } from '../icons/heart';
 import { styleMap } from 'lit/directives/style-map.js';
+import { playIcon } from '../icons/play';
+import { pauseIcon } from '../icons/pause';
 
 @customElement('album-details')
 export class AlbumDetails extends LitElement {
@@ -146,6 +152,23 @@ export class AlbumDetails extends LitElement {
     EventBus.emit(SET_POSITION, this, pos);
   }
 
+  _togglePlayPause() {
+    EventBus.emit(TOGGLE_PLAY_PAUSE_PLAYER, this);
+  }
+
+  private _renderControls() {
+    return html`<div class="controls">
+      <button
+        class="btn"
+        @click=${() => this._togglePlayPause()}
+        aria-label="${this.track?.isPlaying ? 'pause' : 'play'} track"
+        title="${this.track?.isPlaying ? 'pause' : 'play'} track"
+      >
+        ${this.track?.isPlaying ? pauseIcon : playIcon}
+      </button>
+    </div>`;
+  }
+
   private _renderProgressBar() {
     return html`<div
       class="progress"
@@ -162,13 +185,16 @@ export class AlbumDetails extends LitElement {
   }
 
   private _renderNowPlaying() {
-    return html`<div class="now-playing">
-        <span class="small muted">
-          ${this.track?.isPlaying ? 'Playing ' : 'Paused '} </span
-        ><span class="playing">${this.track?.title}</span>
-        ${this.track?.isLoved ? html`${heartIcon}` : nothing}
-      </div>
-      ${this._renderProgressBar()}`;
+    return this.track
+      ? html`<div class="now-playing">
+            ${this._renderControls()}
+            <span class="playing"
+              >${this.track?.title}
+              ${this.track?.isLoved ? html`${heartIcon}` : nothing}</span
+            >
+          </div>
+          ${this._renderProgressBar()}`
+      : nothing;
   }
 
   private _renderButtons() {

@@ -90,6 +90,7 @@ export default css`
     padding: 0;
     opacity: 0;
     transition: all 0.2s ease-in-out;
+    outline: none;
   }
   dialog.album-art-modal {
     border: 0;
@@ -139,7 +140,8 @@ export default css`
     margin: 0.75rem 0 0;
     padding: 0.5rem;
     color: var(--text-color);
-    display: flex;
+    display: grid;
+    grid-template-columns: 40px 1fr;
     justify-content: center;
     align-items: center;
     gap: 1rem;
@@ -156,6 +158,15 @@ export default css`
       width: 1rem;
       min-width: 1rem;
       margin-inline: 0.5rem;
+    }
+
+    .controls {
+      .btn {
+        outline: none;
+        border: 0;
+        height: 40px;
+        padding: 0.5rem 0 0;
+      }
     }
   }
   @media (orientation: landscape) {
