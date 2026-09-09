@@ -135,11 +135,9 @@ export default css`
   }
   dialog .now-playing {
     box-sizing: border-box;
-    width: calc(100% - 1rem);
     background: var(--background2-seethrough);
-    margin: 0.75rem 0;
+    margin: 0.75rem 0 0;
     padding: 0.5rem;
-    font-size: 1.5rem;
     color: var(--text-color);
     display: flex;
     justify-content: center;
@@ -194,7 +192,8 @@ export default css`
       animation: none;
     }
     dialog .now-playing {
-      margin: 0.75rem 0.5rem;
+      font-size: 1.5rem;
+      margin: 0.75rem 0.5rem 0;
     }
     @keyframes album-art-shrink {
       to {

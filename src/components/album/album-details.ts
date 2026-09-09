@@ -139,10 +139,7 @@ export class AlbumDetails extends LitElement {
   };
 
   private _renderNowPlaying() {
-    return html`<div
-      class="now-playing"
-      style="width: ${this._getModalDimension()}px"
-    >
+    return html`<div class="now-playing">
       <span class="small muted">
         ${this.track?.isPlaying ? 'Playing ' : 'Paused '} </span
       ><span class="playing">${this.track?.title}</span>
