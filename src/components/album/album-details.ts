@@ -264,7 +264,10 @@ export class AlbumDetails extends LitElement {
             @cancel=${this._closeModal}
             class="album-art-modal"
           >
-            <div class="wrapper">
+            <div
+              class="wrapper"
+              style="max-width: ${this._getModalDimension()}px"
+            >
               <album-art
                 artist="${
                   this.albumDetails?.artist?.albumArtist ||
