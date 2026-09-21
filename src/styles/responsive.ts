@@ -3,7 +3,10 @@ import { css } from 'lit';
 export default css`
   .md-up,
   .md-up-inline,
-  .md-up-flex {
+  .md-up-flex,
+  .lg-up,
+  .lg-up-inline,
+  .lg-up-flex {
     display: none;
   }
   .sr-only {
@@ -34,8 +37,17 @@ export default css`
     }
   }
   @media (min-width: 992px) {
-    .md-down {
+    .lg-down {
       display: none;
+    }
+    .lg-up {
+      display: block;
+    }
+    .lg-up-inline {
+      display: inline;
+    }
+    .lg-up-flex {
+      display: flex;
     }
   }
 `;

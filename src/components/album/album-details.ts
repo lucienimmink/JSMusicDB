@@ -24,7 +24,6 @@ import musicdb from '../musicdb';
 import '../track/track';
 import { LOCALE } from '../../utils/date';
 import { TOGGLE_OVERFLOW_HIDDEN } from '../side-nav/side-nav';
-import { heartIcon } from '../icons/heart';
 import { styleMap } from 'lit/directives/style-map.js';
 import { playIcon } from '../icons/play';
 import { pauseIcon } from '../icons/pause';
@@ -184,17 +183,39 @@ export class AlbumDetails extends LitElement {
     </div>`;
   }
 
+  private _renderTime() {
+    return html`<div class="time">
+      <span class="current small"
+        >${timespan(this.track?.position, false, LOCALE)}</span
+      >
+      <span class="total small lg-up-inline"
+        >&nbsp;/&nbsp;${timespan(this.track?.duration, false, LOCALE)}</span
+      >
+    </div>`;
+  }
+
+  private _renderCloseButton() {
+    return html`<button
+      class="btn close"
+      @click=${this._closeModal}
+      aria-label="close album art modal"
+      title="close album art modal"
+    >
+      &times;
+    </button>`;
+  }
+
   private _renderNowPlaying() {
     return this.track
       ? html`<div class="now-playing">
             ${this._renderControls()}
             <div class="playing">
-              <span class="small muted"
+              <span class="small"
                 >${this.track?.isPlaying ? html`playing` : `paused`}</span
               >
-              ${this.track?.title}
-              ${this.track?.isLoved ? html`${heartIcon}` : nothing}
+              <span class="title">${this.track?.title}</span>
             </div>
+            ${this._renderTime()}
           </div>
           ${this._renderProgressBar()}`
       : nothing;
@@ -280,6 +301,7 @@ export class AlbumDetails extends LitElement {
                 ?static=${true}
                 @click=${this._closeModal}
               ></album-art>
+              ${this._renderCloseButton()}
               ${this.showNowPlayingInAlbumOverlay ? this._renderNowPlaying() : nothing}
             </div>
           </dialog>

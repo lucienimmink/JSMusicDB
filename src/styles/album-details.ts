@@ -117,6 +117,22 @@ export default css`
       backdrop-filter: blur(0px) grayscale(0);
     }
   }
+  dialog .close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background-color: var(--background2-seethrough);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 2rem;
+    border: 0;
+  }
 
   dialog album-art {
     margin-right: 0;
@@ -141,7 +157,7 @@ export default css`
     padding: 0.5rem;
     color: var(--text-color);
     display: grid;
-    grid-template-columns: 40px 1fr;
+    grid-template-columns: 40px 1fr 40px;
     justify-content: center;
     align-items: center;
     gap: 1rem;
@@ -154,6 +170,12 @@ export default css`
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+
+      .title {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
     }
 
     svg {
@@ -170,6 +192,14 @@ export default css`
         padding: 0.5rem 0 0;
         background-color: transparent;
         color: var(--text-color);
+      }
+    }
+    .time {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      .current {
+        color: var(--primary);
       }
     }
   }
@@ -209,6 +239,7 @@ export default css`
     dialog .now-playing {
       font-size: 1.5rem;
       margin-top: 0.75rem;
+      grid-template-columns: 40px 1fr 90px;
     }
     @keyframes album-art-shrink {
       to {
