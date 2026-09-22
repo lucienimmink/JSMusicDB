@@ -163,15 +163,13 @@ export default css`
     gap: 1rem;
 
     .playing {
-      color: var(--primary);
       display: flex;
       gap: 1rem;
       align-items: center;
       overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
 
       .title {
+        color: var(--primary);
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
