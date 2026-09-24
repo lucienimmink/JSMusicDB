@@ -31,7 +31,7 @@
     "dotenv": "^18.0.1",
     "eslint": "^10.11.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-html": "8.2.0",
+    "eslint-plugin-html": "8.2.1",
     "husky": "^9.1.7",
     "lint-staged": "^17.5.1",
     "node-fetch": "^3.3.2",
