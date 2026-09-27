@@ -125,13 +125,23 @@ export default css`
     height: 3rem;
     border-radius: 50%;
     background-color: var(--background2-seethrough);
-    color: var(--text-color);
+    color: var(--primary);
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     font-size: 2rem;
-    border: 0;
+    border: 2px solid transparent;
+    outline: none;
+    &:hover {
+      background-color: var(--background3);
+    }
+    &:focus {
+      border: 2px solid var(--primary);
+    }
+    &:active {
+      background-color: var(--background2);
+    }
   }
 
   dialog album-art {
