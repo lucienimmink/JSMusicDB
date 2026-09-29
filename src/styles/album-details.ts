@@ -189,7 +189,6 @@ export default css`
     svg {
       width: 1rem;
       min-width: 1rem;
-      margin-inline: 0.5rem;
     }
 
     .controls {
@@ -197,9 +196,13 @@ export default css`
         outline: none;
         border: 0;
         height: 40px;
-        padding: 0.5rem 0 0;
+        width: 40px;
         background-color: transparent;
         color: var(--text-color);
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
     .time {
@@ -245,9 +248,12 @@ export default css`
       animation: none;
     }
     dialog .now-playing {
-      font-size: 1.5rem;
       margin-top: 0.75rem;
       grid-template-columns: 40px 1fr 90px;
+
+      .title {
+        font-size: 1.5rem;
+      }
     }
     @keyframes album-art-shrink {
       to {
