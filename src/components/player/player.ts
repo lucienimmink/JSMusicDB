@@ -27,6 +27,10 @@ import {
   scrobbleTrack,
   toggleLoved,
 } from '../../utils/lastfm';
+import {
+  announceListenBrainzNowPlaying,
+  scrobbleListenBrainzTrack,
+} from '../../utils/listenbrainz';
 import { getJwt, getServer } from '../../utils/node-mp3stream';
 import {
   CHANGE_TITLE,
@@ -96,6 +100,8 @@ export class Album extends LitElement {
   @state()
   hasErrorWhilePlaying: boolean;
   doNavigateToAlbum: boolean;
+  @state()
+  listenbrainzToken: string;
 
   static get styles() {
     return [
@@ -124,6 +130,7 @@ export class Album extends LitElement {
     this.gain = -9;
     this.hasErrorWhilePlaying = false;
     this.doNavigateToAlbum = false;
+    this.listenbrainzToken = '';
 
     getCurrentPlaylist().then((playlist: any) => {
       this.playlist = playlist;
@@ -141,6 +148,10 @@ export class Album extends LitElement {
 
     getSettingByName('followTrack').then((followTrack: any) => {
       this.doNavigateToAlbum = !!followTrack;
+    });
+
+    getSettingByName('listenbrainzToken').then((listenbrainzToken: any) => {
+      this.listenbrainzToken = listenbrainzToken;
     });
 
     getIsShuffled().then((isShuffled: any) => {
@@ -312,6 +323,18 @@ export class Album extends LitElement {
       this.track.position > this.track.duration / 2
     ) {
       scrobbleTrack(this.track);
+      if (this.listenbrainzToken) {
+        scrobbleListenBrainzTrack(
+          this.listenbrainzToken,
+          {
+            artist: this.track.trackArtist,
+            title: this.track.title,
+            album: this.track.album.name,
+            durationMs: this.track.duration,
+          },
+          Math.floor(Date.now()),
+        );
+      }
       this.hasScrobbled = true;
     }
   }
@@ -346,6 +369,15 @@ export class Album extends LitElement {
     this.track.isPlaying = true;
     this.track.isPaused = false;
     announceNowPlaying(this.track);
+    if (this.listenbrainzToken) {
+      announceListenBrainzNowPlaying(this.listenbrainzToken, {
+        artist: this.track.trackArtist,
+        title: this.track.title,
+        album: this.track.album.name,
+        durationMs: this.track.duration,
+      });
+    }
+
     EventBus.emit(UPDATE_PLAYER, this, {
       current: this.track,
       type: PLAY_PLAYER_START,

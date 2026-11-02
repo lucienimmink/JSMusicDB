@@ -244,6 +244,15 @@ export class SettingsNav extends LitElement {
             : nothing
         }
       </p>
+      <p>
+        ListenBrainz token:
+        <input
+          type="password"
+          placeholder="ListenBrainz token for scrobbling. Leave empty to disable."
+          .value=${this.settings?.listenbrainzToken || ''}
+          @change="${(e: Event) => this._toggle('listenbrainzToken', e, (e?.target as HTMLInputElement)?.value)}"
+        />
+      </p>
     </div>`;
   }
   private _renderCollectionSettings() {
