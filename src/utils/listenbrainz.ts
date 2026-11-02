@@ -31,6 +31,22 @@ interface ListenBrainzPayloadItem {
   track_metadata: ListenBrainzTrackMetadata;
 }
 
+interface Track {
+  artist: { name: string };
+  title: string;
+  album?: { name: string };
+  trackMbid?: string;
+}
+
+interface ListenBrainzLookupResponse {
+  recording_mbid?: string;
+  recording_name?: string;
+  artist_credit_name?: string;
+  release_name?: string;
+}
+
+type ListenBrainzFeedback = -1 | 0 | 1;
+
 function createTrackMetadata(
   track: ListenBrainzTrack,
 ): ListenBrainzTrackMetadata {
@@ -114,4 +130,87 @@ export async function scrobbleListenBrainzTrack(
       track_metadata: createTrackMetadata(track),
     },
   ]);
+}
+
+async function lookupTrackMbid(
+  track: Track,
+  token: string,
+): Promise<string | undefined> {
+  const params = new URLSearchParams({
+    artist_name: track.artist.name,
+    recording_name: track.title,
+  });
+
+  if (track.album) {
+    params.set('release_name', track.album.name);
+  }
+
+  const response = await fetch(
+    `https://api.listenbrainz.org/1/metadata/lookup/?${params.toString()}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Token ${token}`,
+        Accept: 'application/json',
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      `ListenBrainz metadata lookup failed: ` +
+        `${response.status} ${await response.text()}`,
+    );
+  }
+
+  const metadata = (await response.json()) as ListenBrainzLookupResponse;
+
+  return metadata.recording_mbid;
+}
+
+async function ensureTrackMbid(track: Track, token: string): Promise<string> {
+  if (track.trackMbid) {
+    return track.trackMbid;
+  }
+
+  const trackMbid = await lookupTrackMbid(track, token);
+
+  if (!trackMbid) {
+    throw new Error(
+      `Could not resolve MusicBrainz recording for ` +
+        `"${track.artist} - ${track.title}"`,
+    );
+  }
+
+  track.trackMbid = trackMbid;
+
+  return trackMbid;
+}
+
+export async function setRecordingFeedback(
+  token: string,
+  track: Track,
+  score: ListenBrainzFeedback,
+) {
+  const trackMbid = await ensureTrackMbid(track, token);
+  const response = await fetch(
+    'https://api.listenbrainz.org/1/feedback/recording-feedback',
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Token ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        recording_msid: trackMbid,
+        score,
+      }),
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      `ListenBrainz feedback failed: ${response.status} ${await response.text()}`,
+    );
+  }
 }

@@ -30,6 +30,7 @@ import {
 import {
   announceListenBrainzNowPlaying,
   scrobbleListenBrainzTrack,
+  setRecordingFeedback,
 } from '../../utils/listenbrainz';
 import { getJwt, getServer } from '../../utils/node-mp3stream';
 import {
@@ -525,6 +526,13 @@ export class Album extends LitElement {
         type: TOGGLE_LOVED_UPDATED,
       });
     });
+    if (this.listenbrainzToken) {
+      setRecordingFeedback(
+        this.listenbrainzToken,
+        this.track,
+        this.isLoved ? 1 : 0,
+      );
+    }
   }
   _toggleShuffled() {
     this.isShuffled = !this.isShuffled;

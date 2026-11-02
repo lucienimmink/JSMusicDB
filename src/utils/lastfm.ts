@@ -130,6 +130,7 @@ export const toggleLoved = async (track: any, isLoved = true) => {
   if (!sk) {
     throw Error('No sign key');
   }
+  if (sk === 'dummy') return;
   const method = isLoved ? 'track.love' : 'track.unlove';
   const params = new URLSearchParams();
   params.set('method', method);
