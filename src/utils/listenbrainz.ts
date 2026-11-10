@@ -61,6 +61,7 @@ function createTrackMetadata(
     }),
     additional_info: {
       submission_client: 'JSMusicDB',
+      submission_client_version: packageJson.version,
       ...(track.durationMs !== undefined && {
         duration_ms: track.durationMs,
       }),
