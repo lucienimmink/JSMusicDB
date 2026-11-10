@@ -16,7 +16,8 @@
     "useDefineForClassFields": false,
     "importHelpers": true,
     "noEmitOnError": true,
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+    "resolveJsonModule": true
   },
   "include": ["**/*.ts"]
 }

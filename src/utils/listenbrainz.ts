@@ -1,4 +1,7 @@
+import packageJson from '../../package.json';
+
 const LISTENBRAINZ_API_URL = 'https://api.listenbrainz.org/1/submit-listens';
+const USER_AGENT = `JSMusicDB/${packageJson.version} ( https://github.com/lucienimmink/JSMusicDB )`;
 
 export interface ListenBrainzTrack {
   artist: string;
@@ -84,6 +87,7 @@ async function submit(
     headers: {
       Authorization: `Token ${token}`,
       'Content-Type': 'application/json',
+      'User-Agent': USER_AGENT,
     },
     body: JSON.stringify({
       listen_type: listenType,
@@ -152,6 +156,7 @@ async function lookupTrackMbid(
       headers: {
         Authorization: `Token ${token}`,
         Accept: 'application/json',
+        'User-Agent': USER_AGENT,
       },
     },
   );
@@ -200,6 +205,7 @@ export async function setRecordingFeedback(
       headers: {
         Authorization: `Token ${token}`,
         'Content-Type': 'application/json',
+        'User-Agent': USER_AGENT,
       },
       body: JSON.stringify({
         recording_msid: trackMbid,
