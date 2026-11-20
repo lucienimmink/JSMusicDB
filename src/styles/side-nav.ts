@@ -19,7 +19,7 @@ export default css`
     overflow-x: hidden;
     overflow-y: auto;
     margin: 0;
-    padding: 0;
+    padding: 0.5rem 0 0;
     height: calc(100vh - 100px);
     transition:
       color 0.5s ease-in-out,

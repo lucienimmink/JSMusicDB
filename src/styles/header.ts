@@ -64,6 +64,7 @@ export default css`
     div {
       height: 100%;
       padding-top: 0;
+      line-height: 1.4;
     }
     &.customWindowControls div {
       max-width: calc(env(titlebar-area-width, 100%) - 60px);
