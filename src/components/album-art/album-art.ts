@@ -14,6 +14,17 @@ import sharedCache from './shared-cache';
 import { TOGGLE_SETTING, getSettingByName } from './../../utils/settings';
 import { global as EventBus } from './../../utils/EventBus';
 
+type ArtKey = {
+  artist: string;
+  album: string;
+  dimension: number;
+};
+
+type ArtRequest = ArtKey & {
+  mbid: string;
+  generation: number;
+};
+
 const resizeObserver = new ResizeObserver((entries: any) => {
   for (const entry of entries) {
     const element = entry.target as HTMLElement;
@@ -67,6 +78,7 @@ export class AlbumArt extends LitElement {
   isDefault: boolean;
   @state()
   theme: string;
+  private artRequestGeneration = 0;
 
   ARTBASE = `https://res.cloudinary.com/jsmusicdb-com/image/fetch/f_auto,q_auto`;
 
@@ -99,40 +111,24 @@ export class AlbumArt extends LitElement {
       .replace(/h_\d+/g, `h_${dimension}`);
   }
   async willUpdate(changedProperties: PropertyValues) {
+    if (!this.artist || this.artist === 'undefined') return;
+
     const artPropertiesChanged =
       !this.hasUpdated ||
       changedProperties.has('artist') ||
       changedProperties.has('album') ||
       changedProperties.has('mbid') ||
       changedProperties.has('dimension') ||
-      changedProperties.has('visible') ||
       changedProperties.has('noLazy');
-    if (!artPropertiesChanged) return;
+    const becameVisible =
+      changedProperties.has('visible') && this.visible === 'true';
+    if (!this.noLazy && this.visible !== 'true') return;
+    if (!artPropertiesChanged && !becameVisible) return;
 
     const cached = await this.getCachedUrl();
-    if (this.noLazy) {
-      this.initArt();
-    } else if (
-      (this.visible === 'true' || changedProperties.get('visible')) &&
-      this.art !== cached
-    ) {
-      this.initArt();
-    } else if (
-      changedProperties.get('artist') &&
-      changedProperties.get('artist') !== this.artist
-    ) {
-      this.initArt();
-    } else if (
-      changedProperties.get('album') &&
-      changedProperties.get('album') !== this.album
-    ) {
-      this.initArt();
-    } else if (
-      changedProperties.get('mbid') &&
-      changedProperties.get('mbid') !== this.mbid
-    ) {
-      this.initArt();
-    }
+    if (this.art === cached && (becameVisible || !artPropertiesChanged)) return;
+
+    this.initArt();
   }
   defaultArt() {
     if (this.album) {
@@ -187,9 +183,6 @@ export class AlbumArt extends LitElement {
     void this.setTheme();
     this.artist = this.artist === 'undefined' ? undefined : this.artist;
     this.album = this.album === 'undefined' ? undefined : this.album;
-    if (!this.artist) {
-      return;
-    }
     if (!this.static) {
       resizeObserver.observe(this);
     }
@@ -213,33 +206,47 @@ export class AlbumArt extends LitElement {
   async initArt() {
     if (!this.noLazy) this.loading = true;
     this.getDimensions();
-    const key = {
+    const request: ArtRequest = {
       artist: this.artist,
       album: this.album,
       dimension: this.dimension,
+      mbid: this.mbid,
+      generation: ++this.artRequestGeneration,
     };
-    let cacheKey = `${this.artist}-${this.album}`;
-    if (!key.album) {
-      cacheKey = `${this.artist}`;
-    }
-    await this.updateCache(cacheKey, key);
+    const cacheKey = request.album
+      ? `${request.artist}-${request.album}`
+      : request.artist;
+    await this.updateCache(cacheKey, request);
   }
-  async updateCache(
-    cacheKey: string | number,
-    key: { artist: string; album: string; dimension: number },
-  ) {
+  private _isCurrentArtRequest(request: ArtRequest) {
+    return (
+      request.generation === this.artRequestGeneration &&
+      request.artist === this.artist &&
+      request.album === this.album &&
+      request.mbid === this.mbid &&
+      request.dimension === this.dimension
+    );
+  }
+  private async updateCache(cacheKey: string, request: ArtRequest) {
     if (sharedCache[cacheKey]) {
-      this.art = this.replaceDimensions(sharedCache[cacheKey], this.dimension);
+      if (!this._isCurrentArtRequest(request)) return;
+      this.isDefault = false;
+      this.art = this.replaceDimensions(
+        sharedCache[cacheKey],
+        request.dimension,
+      );
       this.dispatch();
       return;
     }
-    const cache = await this.getArt(key);
+    const cache = await this.getArt(request);
+    if (!this._isCurrentArtRequest(request)) return;
     if (cache) {
       sharedCache[cacheKey] = cache;
-      this.art = this.replaceDimensions(cache, this.dimension);
+      this.isDefault = false;
+      this.art = this.replaceDimensions(cache, request.dimension);
       this.dispatch();
     } else {
-      this.updateArt(key);
+      await this.updateArt(request);
     }
   }
   async getCachedUrl() {
@@ -263,55 +270,51 @@ export class AlbumArt extends LitElement {
     }
     return false;
   }
-  async getArt({
-    artist,
-    album,
-  }: {
-    artist: string;
-    album: string;
-    dimension: number;
-  }) {
+  async getArt({ artist, album }: ArtKey) {
     if (!album) {
       return await get(`${artist}`, this.customStore);
     }
     return await get(`${artist}-${album}`, this.customStore);
   }
-  async updateArt({
-    artist,
-    album,
-    dimension,
-  }: {
-    artist: string;
-    album: string;
-    dimension: number;
-  }) {
+  async updateArt(request: ArtRequest) {
+    const { artist, album, dimension, mbid } = request;
     let art = this.ARTBASE;
+    let isDefault = false;
     if (!album) {
       // let's resize those larger artist arts we get; using face detection to crop to their faces
       art += `,w_${dimension},h_${dimension},c_thumb,g_faces/`;
       try {
         let remoteURL = await get(`remoteURL-${artist}`, this.customStore);
         if (!remoteURL) {
-          remoteURL = await fetchArtForArtist(artist, this.mbid);
-          if (remoteURL)
-            await set(`remoteURL-${artist}`, remoteURL, this.customStore);
+          remoteURL = await fetchArtForArtist(artist, mbid);
+          if (remoteURL) {
+            try {
+              await set(`remoteURL-${artist}`, remoteURL, this.customStore);
+            } catch (error) {
+              console.error('Unable to cache artist artwork URL:', error);
+            }
+          }
         }
-        art += remoteURL;
-        if (this.isEmptyArt(art)) {
+        if (remoteURL) {
+          art += remoteURL;
+        }
+        if (!remoteURL || this.isEmptyArt(art)) {
           art = '';
-          this.isDefault = true;
+          isDefault = true;
         }
       } catch (e) {
         console.error(e);
-        this.isDefault = true;
+        isDefault = true;
         art = '';
       }
       if (art) {
         sharedCache[`${artist}`] = art;
-        set(`${artist}`, art, this.customStore);
+        try {
+          await set(`${artist}`, art, this.customStore);
+        } catch (error) {
+          console.error('Unable to cache artist artwork:', error);
+        }
       }
-      this.art =
-        art || this.theme === 'dark' ? defaultArtistDark : defaultArtistLight;
     } else {
       // let's resize those larger album arts we get.
       art += `,w_${dimension},h_${dimension},c_fill/`;
@@ -321,30 +324,45 @@ export class AlbumArt extends LitElement {
           this.customStore,
         );
         if (!remoteURL) {
-          remoteURL = await fetchArtForAlbum({ artist, album, id: this.mbid });
-          await set(
-            `remoteURL-${artist}-${album}`,
-            remoteURL,
-            this.customStore,
-          );
+          remoteURL = await fetchArtForAlbum({ artist, album, id: mbid });
+          if (remoteURL) {
+            try {
+              await set(
+                `remoteURL-${artist}-${album}`,
+                remoteURL,
+                this.customStore,
+              );
+            } catch (error) {
+              console.error('Unable to cache album artwork URL:', error);
+            }
+          }
         }
-        art += remoteURL;
-        if (this.isEmptyArt(art)) {
+        if (remoteURL) {
+          art += remoteURL;
+        }
+        if (!remoteURL || this.isEmptyArt(art)) {
           art = '';
-          this.isDefault = true;
+          isDefault = true;
         }
       } catch (e) {
         console.error(e);
-        this.isDefault = true;
+        isDefault = true;
         art = '';
       }
       if (art) {
         sharedCache[`${artist}-${album}`] = art;
-        set(`${artist}-${album}`, art, this.customStore);
+        try {
+          await set(`${artist}-${album}`, art, this.customStore);
+        } catch (error) {
+          console.error('Unable to cache album artwork:', error);
+        }
       }
-      this.art =
-        art || this.theme === 'dark' ? defaultAlbumDark : defaultAlbumLight;
     }
+
+    if (!this._isCurrentArtRequest(request)) return;
+
+    this.isDefault = isDefault;
+    this.art = art || this.defaultArt();
     this.dispatch();
   }
 }
