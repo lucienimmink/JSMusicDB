@@ -2,15 +2,17 @@ import { css } from 'lit';
 
 export const light = css`
   :root {
+    color-scheme: light;
+
     --progress: var(--lighten);
     --progress-background: var(--lighten30);
     --letter-background-hover: var(--darken);
     --letter-background-active: var(--darken30);
 
-    --background: white;
-    --background2: oklch(from var(--background) calc(l - 0.03) c h);
-    --border-colour: oklch(from var(--background) calc(l - 0.15) c h);
-    --background3: oklch(from var(--background) calc(l - 0.06) c h);
+    --background: #faf9f8;
+    --background2: #f1f0ef;
+    --border-colour: #d5d3d1;
+    --background3: #e8e7e6;
 
     --primary-hover: var(--darken);
   }
@@ -18,15 +20,17 @@ export const light = css`
 
 export const dark = css`
   :root {
+    color-scheme: dark;
+
     --progress: var(--darken);
     --progress-background: var(--darken30);
     --letter-background-hover: var(--lighten);
     --letter-background-active: var(--lighten30);
 
-    --background: rgb(31, 31, 31);
-    --background2: oklch(from var(--background) calc(l + 0.03) c h);
-    --border-colour: oklch(from var(--background) calc(l + 0.15) c h);
-    --background3: oklch(from var(--background) calc(l + 0.06) c h);
+    --background: #242424;
+    --background2: #303030;
+    --border-colour: #484848;
+    --background3: #3a3a3a;
 
     --primary-hover: var(--lighten);
   }

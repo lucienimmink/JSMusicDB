@@ -40,7 +40,7 @@ export const loadingIndicator = css`
     text-align: center;
 
     font-variant-numeric: tabular-nums;
-    font-family: system-ui;
+    font-family: inherit;
   }
   @keyframes progress-bar-animation {
     0% {

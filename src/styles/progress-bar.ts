@@ -27,7 +27,7 @@ export default css`
   }
   .progress .text {
     font-variant-numeric: tabular-nums;
-    font-family: system-ui;
+    font-family: inherit;
   }
   @keyframes pulsate-animation {
     0% {

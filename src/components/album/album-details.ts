@@ -27,6 +27,7 @@ import { TOGGLE_OVERFLOW_HIDDEN } from '../side-nav/side-nav';
 import { styleMap } from 'lit/directives/style-map.js';
 import { playIcon } from '../icons/play';
 import { pauseIcon } from '../icons/pause';
+import { timesIcon } from '../icons/times';
 
 @customElement('album-details')
 export class AlbumDetails extends LitElement {
@@ -201,7 +202,7 @@ export class AlbumDetails extends LitElement {
       aria-label="close album art modal"
       title="close album art modal"
     >
-      &times;
+      ${timesIcon}
     </button>`;
   }
 

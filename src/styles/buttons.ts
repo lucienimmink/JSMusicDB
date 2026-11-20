@@ -2,9 +2,11 @@ import { css } from 'lit';
 
 export default css`
   .btn {
+    font-family: inherit;
     padding: 0.375rem 0.75rem;
     font-size: 1rem;
     line-height: 1.5;
+    border-radius: var(--radius-small);
     cursor: pointer;
     text-align: center;
     vertical-align: middle;
@@ -22,33 +24,34 @@ export default css`
     font-size: 0.875rem;
   }
   .btn-primary {
-    border: 2px solid var(--primary);
+    border: 1px solid var(--primary);
     background-color: var(--primary);
     color: var(--letter-color);
   }
   .btn-primary:hover,
   .btn-primary:focus {
-    border-color: var(--darken30);
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
     outline: none;
   }
   .btn-primary:active {
-    border-color: var(--darken30);
+    border-color: var(--primary-hover);
     background-color: var(--darken);
   }
   .btn-secondary {
-    border: 2px solid var(--border-colour);
+    border: 1px solid var(--border-colour);
     background-color: var(--background2);
     color: var(--text-color);
   }
   .btn-secondary:hover,
   .btn-secondary:focus {
     border-color: var(--primary);
+    background-color: var(--background3);
     outline: none;
   }
   .btn-secondary:active {
-    border-color: var(--darken30);
-    background-color: var(--darken);
-    color: var(--letter-color);
+    border-color: var(--primary);
+    background-color: var(--background3);
   }
   .btn-transparent,
   .btn-link {
@@ -64,7 +67,7 @@ export default css`
   .btn-transparent:focus {
     outline: none;
     border: 0;
-    color: var(--darken30);
+    color: var(--primary-hover);
   }
   .btn-link:hover,
   .btn-link:focus {

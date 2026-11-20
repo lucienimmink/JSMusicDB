@@ -154,7 +154,7 @@ export default css`
     flex-grow: 0;
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
-    font-family: system-ui;
+    font-family: inherit;
   }
   .progress {
     flex-grow: 1;

@@ -121,8 +121,10 @@ export default css`
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
+    box-sizing: border-box;
     width: 3rem;
     height: 3rem;
+    padding: 0;
     border-radius: 50%;
     background-color: var(--background2-seethrough);
     color: var(--primary);
@@ -130,9 +132,14 @@ export default css`
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    font-size: 2rem;
     border: 2px solid transparent;
     outline: none;
+    svg {
+      display: block;
+      flex: none;
+      width: 2rem;
+      height: 2rem;
+    }
     &:hover {
       background-color: var(--background3);
     }

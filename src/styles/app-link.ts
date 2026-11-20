@@ -33,6 +33,12 @@ export default css`
   .flex span {
     display: flex;
   }
+  .menu.flex {
+    box-sizing: border-box;
+  }
+  .menu.flex span {
+    justify-content: var(--menu-content-justify, flex-start);
+  }
   .letter {
     color: var(--letter-color, default);
   }
@@ -61,7 +67,7 @@ export default css`
   } */
   @media (min-width: 576px) {
     .menu {
-      padding: 25px;
+      padding: 21px 0;
     }
   }
 `;

@@ -26,7 +26,9 @@ export default css`
     accent-color: var(--primary);
     color: var(--text-color);
     background: var(--background2);
-    transition: all 0.5s ease-in-out;
+    transition:
+      color 0.2s ease-in-out,
+      background-color 0.2s ease-in-out;
   }
   input[type='checkbox'],
   input[type='radio'] {
@@ -57,7 +59,7 @@ export default css`
     margin-inline-start: 0.5em;
   }
   select:focus {
-    outline: 2px solid var(--primary);
+    border-color: var(--primary);
   }
   table {
     margin: 0.25rem 1rem 1rem;

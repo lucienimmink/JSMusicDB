@@ -66,7 +66,7 @@ export default css`
     width: 45px;
     min-width: 45px;
     font-variant-numeric: tabular-nums;
-    font-family: system-ui;
+    font-family: inherit;
   }
   .if-active {
     display: none;

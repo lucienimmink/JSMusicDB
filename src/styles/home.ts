@@ -52,7 +52,7 @@ export default css`
     white-space: nowrap;
     justify-content: center;
     font-variant-numeric: tabular-nums;
-    font-family: system-ui;
+    font-family: inherit;
     text-transform: capitalize;
   }
   ol .playing {

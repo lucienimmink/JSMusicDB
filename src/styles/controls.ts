@@ -8,7 +8,14 @@ export default css`
     align-items: center;
   }
   .controls .btn {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 50%;
     color: var(--text-color);
     background-color: transparent;
     border: 0;
@@ -16,9 +23,8 @@ export default css`
       color 0.2s ease-in-out,
       background-color 0.2s ease-in-out,
       opacity 0.2s ease-in-out;
-    height: 100%;
     position: relative;
-    opacity: 0.5;
+    opacity: 1;
   }
   .controls .btn svg {
     margin: 0 1px;
@@ -28,26 +34,17 @@ export default css`
   }
   .controls .btn:hover {
     color: var(--primary);
-    background: var(--background3);
+    background-color: var(--background3);
     outline: none;
-    opacity: 1;
+  }
+  .controls .btn:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
   }
   .controls .btn:active,
   .controls .btn.active {
-    background: var(--primary) !important;
-    color: var(--letter-color) !important;
-    opacity: 1;
-  }
-  .controls .btn:hover:before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 9px;
-    width: 100%;
-    display: block;
-    background-color: var(--primary);
-    z-index: 1;
+    background-color: var(--primary-subtle);
+    color: var(--primary);
   }
   .controls .btn svg {
     width: 18px;

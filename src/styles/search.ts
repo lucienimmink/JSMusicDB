@@ -73,6 +73,6 @@ export default css`
     width: 65px;
     min-width: 65px;
     font-variant-numeric: tabular-nums;
-    font-family: system-ui;
+    font-family: inherit;
   }
 `;

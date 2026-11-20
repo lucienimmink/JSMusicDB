@@ -1,11 +1,5 @@
-import { html } from 'lit';
+import { symbolIcon } from './symbol';
 
-export const previousIcon = html`
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-    <path
-      fill="currentColor"
-      d="M76 479h8c6.6 0 12-5.4 12-12V276.7c1.1 1.2 2.2 2.4 3.5 3.4l232 191.4c20.6 17.2 52.5 2.8 52.5-24.6V63c0-27.4-31.9-41.8-52.5-24.6L99.5 231c-1.3 1.1-2.4 2.2-3.5 3.4V43c0-6.6-5.4-12-12-12h-8c-6.6 0-12 5.4-12 12v424c0 6.6 5.4 12 12 12zm40.5-223.4L351.8 63.2l.1-.1.1-.1v384l-.1-.1-.2-.1-235.2-191.2z"
-      class=""
-    ></path>
-  </svg>
-`;
+export const previousIcon = symbolIcon(
+  `<path d="M5 5v14M19 5v14" /><path d="m16 6.5-8 5.5 8 5.5Z" fill="currentColor" stroke="none" />`,
+);

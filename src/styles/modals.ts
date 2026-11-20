@@ -23,18 +23,21 @@ export default css`
     box-sizing: border-box;
     width: 90vw;
     background: var(--background);
-    border: 1px solid var(--darken);
+    border: 1px solid var(--border-colour);
+    border-radius: var(--radius-large);
     color: var(--text-color);
     margin: 5vh auto 0;
     position: relative;
     z-index: 1001;
   }
   .modal-header {
-    padding: 0.25rem 1rem;
+    padding: 0.75rem 1rem;
   }
   .modal-header h2 {
     height: auto;
-    padding: 0;
+    padding: 0px;
+    min-height: 40px;
+    margin-top: 0;
   }
   .modal-header button {
     position: absolute;
@@ -43,7 +46,7 @@ export default css`
     z-index: 1;
   }
   .modal-body {
-    padding: 0.25rem 1rem;
+    padding: 0 1rem 0.75rem;
   }
   .modal-body a {
     color: var(--primary);
@@ -53,7 +56,7 @@ export default css`
     text-decoration: underline;
   }
   .modal-footer {
-    padding: 0.25rem 1rem 0.5rem;
+    padding: 0.25rem 1rem 1rem;
   }
   @media (min-width: 768px) {
     .modal {

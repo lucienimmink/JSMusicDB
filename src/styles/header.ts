@@ -20,16 +20,28 @@ export default css`
     align-items: center;
   }
   button {
+    font-family: inherit;
     cursor: pointer;
     background: none;
     border: 0;
     padding: 0;
+    border-radius: 50%;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+  }
+  button:hover {
+    background: var(--background3);
+  }
+  button:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
   }
   svg {
     width: 25px;
+    fill: currentColor;
   }
   h1 {
-    backdrop-filter: blur(2px);
     background: var(--background2-seethrough);
     color: var(--text-color);
     margin: 0px;
@@ -40,15 +52,15 @@ export default css`
     display: flex;
     align-items: center;
     height: 50px;
-    font-weight: 400;
+    font-weight: 600;
     padding-left: 1rem;
     transition:
-      color 0.5s ease-in-out,
-      background-color 0.5s ease-in-out;
+      color 0.2s ease-in-out,
+      background-color 0.2s ease-in-out;
   }
   h1 div {
     height: 100%;
-    padding-top: 4px;
+    padding-top: 0;
   }
   app-link {
     color: var(--primary);
@@ -67,15 +79,8 @@ export default css`
     app-region: drag;
   }
   h1 .album {
-    -webkit-background-clip: text !important;
-    -moz-background-clip: text !important;
-    background-clip: text !important;
-    -webkit-text-fill-color: transparent;
-    background: linear-gradient(90deg, var(--primary), var(--text-color));
+    color: var(--primary);
     display: inline-block;
-  }
-  h1 .album::selection {
-    -webkit-text-fill-color: var(--letter-color);
   }
   progress-spinner {
     display: inline-block;
@@ -92,10 +97,9 @@ export default css`
     }
     h1.playing {
       background: var(--background2-seethrough);
-      backdrop-filter: blur(5px);
     }
     button {
-      padding-inline: 10px;
+      padding: 0;
     }
   }
 `;

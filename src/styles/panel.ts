@@ -7,8 +7,8 @@ export default css`
     cursor: pointer;
     background-size: contain;
     position: relative;
-    border: 1px solid var(--background2);
-    box-shadow: 0px 0px 1px var(--primary);
+    border: 1px solid var(--border-colour);
+    border-radius: var(--radius-medium);
     box-sizing: border-box;
     transition: transform 0.15s ease-in-out;
   }
@@ -61,6 +61,7 @@ export default css`
     width: 100%;
     height: 100%;
     overflow: hidden;
+    border-radius: inherit;
     transition: 0.15s ease-in-out;
     background-size: cover;
     background-position: 50%;

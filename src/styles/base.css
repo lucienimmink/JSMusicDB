@@ -1,7 +1,11 @@
 :root {
-    --primary: rgb(0, 101, 179);
+    --primary: #3584e4;
+    --radius-small: 6px;
+    --radius-medium: 10px;
+    --radius-large: 12px;
 
     --primary-seethrough: rgb(from var(--primary) r g b / 90%);
+    --primary-subtle: color-mix(in srgb, var(--primary) 12%, var(--background2));
     --darken: oklch(from var(--primary) calc(l - 0.1) c h);
     --lighten: oklch(from var(--primary) calc(l + 0.1) c h);
     --darken30: oklch(from var(--primary) calc(l - 0.3) c h);
@@ -22,9 +26,9 @@
     padding: 0;
     background: var(--background);
     color: var(--text-color);
-    font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial,
+    font-family: 'Adwaita Sans', Cantarell, system-ui, 'Segoe UI', Roboto, Helvetica, Arial,
       sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-    font-variant-ligatures: no-common-ligatures;
+    font-variant-ligatures: normal;
     font-size: 1rem;
     line-height: 1.3;
     transition: color 0.5s ease-in-out, background 0.5s ease-in-out;

@@ -10,13 +10,13 @@ export default css`
     color: var(--letter-color);
   }
   dialog {
-    border: 1px solid var(--primary);
+    border: 1px solid var(--border-colour);
     background: var(--background);
     color: var(--text-color);
     padding: 0;
     opacity: 0;
     transition: all 0.2s ease-in-out;
-    border-radius: 0.5rem;
+    border-radius: var(--radius-large);
     max-width: 95vw;
 
     @media (min-width: 768px) {
@@ -29,7 +29,7 @@ export default css`
     h1 {
       font-size: 1.25rem;
       font-weight: 400;
-      border-bottom: 1px solid var(--primary);
+      border-bottom: 1px solid var(--border-colour);
       padding: 1.25rem 1rem 1rem;
       margin: 0;
       background: var(--background2);
@@ -66,7 +66,7 @@ export default css`
     }
     footer {
       background: var(--background2);
-      border-top: 1px solid var(--primary);
+      border-top: 1px solid var(--border-colour);
       padding: 1rem;
     }
   }
