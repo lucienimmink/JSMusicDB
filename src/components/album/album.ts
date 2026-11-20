@@ -27,7 +27,7 @@ export class Album extends LitElement {
   @state()
   sortedDiscs: Array<any>;
 
-  willScrollToTrack: boolean = false;
+  private trackIdToScroll: string | null = null;
 
   static get styles() {
     return [container, headers, album];
@@ -55,14 +55,12 @@ export class Album extends LitElement {
     EventBus.off(REFRESH, this._getTracks, this);
   }
   async _getTracks(artist: any = this.artist, album = this.album) {
-    this.willScrollToTrack = false;
-    if (window.location.search.includes('id')) {
-      this.willScrollToTrack = true;
-    }
+    const trackId = new URLSearchParams(window.location.search).get('id');
+    this.trackIdToScroll = null;
+    this.sortedDiscs = [];
     if (artist instanceof Object) {
       artist = this.artist;
     }
-    this.sortedDiscs = [];
     const mdb: any = await musicdb;
     this.albumDetails = mdb.albums[`${artist}|${album}`];
     const namedDiscs = Object.keys(this.albumDetails?.discs || {});
@@ -80,19 +78,28 @@ export class Album extends LitElement {
       }
       return 1;
     });
-    discnrs.forEach(disc => {
-      this.sortedDiscs.push(this.albumDetails.discs[disc.name]);
-    });
+    this.sortedDiscs = discnrs.map(disc => this.albumDetails.discs[disc.name]);
+    this.trackIdToScroll = trackId;
+  }
+  protected updated() {
+    if (!this.trackIdToScroll) return;
+
+    const trackId = this.trackIdToScroll;
+    this.trackIdToScroll = null;
+
+    const track = this.shadowRoot?.querySelector(
+      `[data-id="${CSS.escape(trackId)}"]`,
+    );
+    track?.scrollIntoView({ block: 'center' });
   }
   // @ts-ignore
   async _setPlaylist(e: Event, track = { id: undefined }) {
     let startIndex = 0;
     if (track?.id) {
-      this.albumDetails.tracks.map((t: any, index: number) => {
-        if (t.id === track.id) {
-          startIndex = index;
-        }
-      });
+      const trackIndex = this.albumDetails.tracks.findIndex(
+        (albumTrack: any) => albumTrack.id === track.id,
+      );
+      if (trackIndex !== -1) startIndex = trackIndex;
     }
     // sort before
     this._sort(this.albumDetails);
@@ -160,18 +167,6 @@ export class Album extends LitElement {
       </div>
     `;
   }
-  private handleScroll(): any {
-    if (this.willScrollToTrack) {
-      setTimeout(() => {
-        const track = this.shadowRoot?.querySelector(
-          `[data-id="${window.location.search.split('id=')[1]}"]`,
-        );
-        if (track) {
-          track.scrollIntoView({ block: 'center' });
-        }
-      }, 100);
-    }
-  }
   render() {
     return html` <album-details
         artist="${this.artist}"
@@ -181,7 +176,6 @@ export class Album extends LitElement {
       ></album-details>
       <div class="container">
         ${this.sortedDiscs.map((disc: any) => this._renderDisc(disc))}
-        ${this.handleScroll()}
       </div>`;
   }
 }

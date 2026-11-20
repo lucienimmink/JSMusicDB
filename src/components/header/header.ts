@@ -20,6 +20,12 @@ import musicdb from '../musicdb';
 import { TOGGLE_MENU } from '../side-nav/side-nav';
 import './../app-link/app-link';
 
+type ProgressConnection = {
+  server: string;
+  jwt: string;
+  generation: number;
+};
+
 @customElement('main-header')
 export class Header extends LitElement {
   @property()
@@ -45,6 +51,9 @@ export class Header extends LitElement {
   progressInt: number;
   @state()
   dynamicTitle: string;
+  private progressStream: EventSource | undefined;
+  private pollTimer: number | undefined;
+  private progressGeneration = 0;
 
   static get styles() {
     return [responsive, header];
@@ -63,18 +72,6 @@ export class Header extends LitElement {
     this.customWindowsControl =
       // @ts-ignore
       navigator?.windowControlsOverlay?.visible || false;
-    getJwt().then((jwt: any) => {
-      if (jwt) {
-        getServer().then(async (server: any) => {
-          const capableOfSSE = (await canUseSSE(server)) && window.EventSource;
-          if (capableOfSSE) {
-            this._sse({ server, jwt });
-          } else {
-            this._poll({ server, jwt });
-          }
-        });
-      }
-    });
   }
   _toggleMenu = (e: Event) => {
     e.preventDefault();
@@ -91,9 +88,11 @@ export class Header extends LitElement {
         this._changeCustomWindowControls,
       );
     }
+    void this._startProgressUpdates();
   }
   disconnectedCallback() {
     super.disconnectedCallback();
+    this._stopProgressUpdates();
     EventBus.off(CHANGE_TITLE, this._doChangeTitle, this);
     // @ts-ignore
     if (navigator.windowControlsOverlay) {
@@ -128,37 +127,89 @@ export class Header extends LitElement {
       navigator?.windowControlsOverlay?.visible || false;
     this.setDocumentTitle();
   };
-  _sse = ({ server: server, jwt: jwt }: { server: any; jwt: any }) => {
-    setupStream(server, jwt).then((stream: any) => {
-      stream.onmessage = (event: any) => {
-        try {
-          const { progress, status } = JSON.parse(event.data);
-          this._updateProgress(progress, status);
-        } catch (e) {
-          console.error(e);
-          // ignore
-        }
-      };
-      stream.onopen = () => {
-        EventBus.emit(HAS_SSE, this, true);
-      };
-      stream.onerror = () => {
-        EventBus.emit(HAS_SSE, this, false);
-      };
-    });
-  };
-  _poll = ({ server, jwt }: { server: any; jwt: any }) => {
-    getProgress(server, jwt).then(
-      ({ progress, status }: { progress: any; status: any }) => {
+  private async _startProgressUpdates() {
+    const generation = ++this.progressGeneration;
+    try {
+      const jwt = await getJwt();
+      if (!jwt || !this._isCurrentProgressConnection(generation)) return;
+
+      const server = await getServer();
+      if (!server || !this._isCurrentProgressConnection(generation)) return;
+
+      let supportsSSE = false;
+      try {
+        supportsSSE = await canUseSSE(server);
+      } catch (error) {
+        console.error('Unable to check progress stream support:', error);
+      }
+      if (!this._isCurrentProgressConnection(generation)) return;
+
+      const connection = { server, jwt, generation };
+      if (supportsSSE && window.EventSource) {
+        await this._sse(connection);
+      } else {
+        void this._poll(connection);
+      }
+    } catch (error) {
+      console.error('Unable to start progress updates:', error);
+    }
+  }
+  private _isCurrentProgressConnection(generation: number) {
+    return this.isConnected && this.progressGeneration === generation;
+  }
+  private _stopProgressUpdates() {
+    this.progressGeneration++;
+    this.progressStream?.close();
+    this.progressStream = undefined;
+    if (this.pollTimer !== undefined) {
+      window.clearTimeout(this.pollTimer);
+      this.pollTimer = undefined;
+    }
+  }
+  private async _sse({ server, jwt, generation }: ProgressConnection) {
+    const stream = await setupStream(server, jwt);
+    if (!this._isCurrentProgressConnection(generation)) {
+      stream.close();
+      return;
+    }
+
+    this.progressStream = stream;
+    stream.onmessage = (event: MessageEvent) => {
+      try {
+        const { progress, status } = JSON.parse(event.data);
         this._updateProgress(progress, status);
-        if (status !== 'error') {
-          setTimeout(() => {
-            this._poll({ server, jwt });
-          }, POLL_INTERVALL);
-        }
-      },
-    );
-  };
+      } catch (error) {
+        console.error('Unable to parse progress update:', error);
+      }
+    };
+    stream.onopen = () => {
+      EventBus.emit(HAS_SSE, this, true);
+    };
+    stream.onerror = () => {
+      EventBus.emit(HAS_SSE, this, false);
+    };
+  }
+  private async _poll(connection: ProgressConnection) {
+    const { server, jwt, generation } = connection;
+    try {
+      const { progress, status } = await getProgress(server, jwt);
+      if (!this._isCurrentProgressConnection(generation)) return;
+
+      this._updateProgress(progress, status);
+      if (status !== 'error') this._schedulePoll(connection);
+    } catch (error) {
+      if (!this._isCurrentProgressConnection(generation)) return;
+      console.error('Unable to poll progress:', error);
+    }
+  }
+  private _schedulePoll(connection: ProgressConnection) {
+    if (!this._isCurrentProgressConnection(connection.generation)) return;
+
+    this.pollTimer = window.setTimeout(() => {
+      this.pollTimer = undefined;
+      void this._poll(connection);
+    }, POLL_INTERVALL);
+  }
   _updateProgress = (progress: string, status: string) => {
     if (status !== 'ready' && status !== 'error') {
       this.isReloading = true;

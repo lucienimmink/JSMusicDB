@@ -74,6 +74,7 @@ export class NowPlaying extends LitElement {
   touchstartX: number;
   touchstartY: number;
   visualizer: AudioMotionAnalyzer | undefined;
+  private visualizeTimer: number | undefined;
 
   static get styles() {
     return [
@@ -104,18 +105,16 @@ export class NowPlaying extends LitElement {
     this.accentColor = window._accentColour;
     this.touchstartX = 0;
     this.touchstartY = 0;
-    getSettingByName('visual').then(async (hasVisual: any) => {
+    Promise.all([
+      getSettingByName('visual'),
+      getSettingByName('classicVis'),
+      getSettingByName('smallArt'),
+    ]).then(([hasVisual, classicVis, smallArt]) => {
       this.hasCanvas = !!hasVisual;
-    });
-    getSettingByName('classicVis').then(async (classicVis: any) => {
       this.classicVis = !!classicVis;
-    });
-    getSettingByName('smallArt').then((smallArt: any) => {
       this.smallArt = !!smallArt;
+      void this._visualizeWhenReady();
     });
-    setTimeout(() => {
-      this._visualize();
-    }, 100);
     this._updatePlaylist();
   }
   async connectedCallback() {
@@ -127,10 +126,16 @@ export class NowPlaying extends LitElement {
     EventBus.on(TOGGLE_SETTING, this._doToggleSetting, this);
     // @ts-ignore
     this.track = window._track;
+    void this._visualizeWhenReady();
   }
   disconnectedCallback() {
     super.disconnectedCallback();
+    if (this.visualizeTimer !== undefined) {
+      window.clearTimeout(this.visualizeTimer);
+      this.visualizeTimer = undefined;
+    }
     this.visualizer?.destroy();
+    this.visualizer = undefined;
     EventBus.off(UPDATE_PLAYER, this._doUpdate, this);
     EventBus.off(TOGGLE_LOVED_UPDATED, this._doUpdate, this);
     EventBus.off(TOGGLE_SHUFFLE_UPDATED, this._doToggleShuffleUpdated, this);
@@ -178,11 +183,11 @@ export class NowPlaying extends LitElement {
     }
     if (setting.setting === 'visual') {
       this.hasCanvas = setting.value;
-      this._visualize();
+      void this._visualizeWhenReady();
     }
     if (setting.setting === 'classicVis') {
       this.classicVis = setting.value;
-      this._visualize();
+      void this._visualizeWhenReady();
     }
   }
   // @ts-ignore
@@ -190,60 +195,85 @@ export class NowPlaying extends LitElement {
     this.hasError = error;
   }
   _visualize() {
-    if (this.hasCanvas) {
-      const canvas = this.shadowRoot?.querySelector(
-        '#visualisation',
-      ) as HTMLCanvasElement;
-      if (canvas) {
-        let source;
-        // @ts-ignore
-        if (!window._source) {
-          const audioCtx = new AudioContext();
-          // @ts-ignore
-          source = audioCtx.createMediaElementSource(window._player);
-          source.connect(audioCtx.destination);
+    this.visualizer?.destroy();
+    this.visualizer = undefined;
+    if (!this.hasCanvas) return;
+    const canvas =
+      this.shadowRoot?.querySelector<HTMLCanvasElement>('#visualisation');
+    if (!canvas) return;
+    const source = this._getAudioSource();
+    if (!source) return;
 
-          // store in memory for reuse
-          // @ts-ignore
-          window._source = source;
-        } else {
-          // @ts-ignore
-          source = window._source;
-        }
-        this.visualizer = new AudioMotionAnalyzer(canvas, {
-          source,
-          alphaBars: !this.classicVis,
-          bgAlpha: 0,
-          channelLayout: 'single',
-          colorMode: this.classicVis ? 'gradient' : 'bar-level',
-          gradient: this.classicVis ? 'classic' : 'steelblue',
-          ledBars: this.classicVis,
-          mode: this.classicVis ? 5 : 4,
-          smoothing: 0.7,
-          overlay: true,
-          connectSpeakers: false,
-          showPeaks: true,
-          showScaleX: false,
-          showScaleY: false,
-          reflexRatio: this.classicVis ? 0.035 : 0,
-          maxFPS: 60,
-          maxDecibels: -27,
-        });
-        if (!this.classicVis) {
-          this._doApplyAccentColorToVisualizer();
-        }
-      }
+    this.visualizer = new AudioMotionAnalyzer(canvas, {
+      source,
+      ...this._getVisualizerOptions(),
+    });
+    if (!this.classicVis) {
+      this._doApplyAccentColorToVisualizer();
     }
+  }
+  private async _visualizeWhenReady() {
+    await this.updateComplete;
+    if (!this.isConnected) return;
+
+    if (this.visualizeTimer !== undefined) {
+      window.clearTimeout(this.visualizeTimer);
+      this.visualizeTimer = undefined;
+    }
+    if (!this.hasCanvas) {
+      this.visualizer?.destroy();
+      this.visualizer = undefined;
+      return;
+    }
+
+    this.visualizeTimer = window.setTimeout(() => {
+      this.visualizeTimer = undefined;
+      if (this.isConnected) this._visualize();
+    }, 100);
+  }
+  private _getAudioSource(): MediaElementAudioSourceNode | null {
+    const appWindow = window as Window & {
+      _source?: MediaElementAudioSourceNode;
+      _player?: HTMLAudioElement;
+    };
+    if (appWindow._source) return appWindow._source;
+    if (!appWindow._player) return null;
+
+    const audioContext = new AudioContext();
+    const source = audioContext.createMediaElementSource(appWindow._player);
+    source.connect(audioContext.destination);
+    appWindow._source = source;
+    return source;
+  }
+  private _getVisualizerOptions() {
+    return {
+      alphaBars: !this.classicVis,
+      bgAlpha: 0,
+      channelLayout: 'single',
+      colorMode: this.classicVis ? 'gradient' : 'bar-level',
+      gradient: this.classicVis ? 'classic' : 'steelblue',
+      ledBars: this.classicVis,
+      mode: this.classicVis ? 5 : 4,
+      smoothing: 0.7,
+      overlay: true,
+      connectSpeakers: false,
+      showPeaks: true,
+      showScaleX: false,
+      showScaleY: false,
+      reflexRatio: this.classicVis ? 0.035 : 0,
+      maxFPS: 60,
+      maxDecibels: -27,
+    };
   }
   async _updatePlaylist() {
     const playlist: any = await getCurrentPlaylist();
-    const tracks = playlist?.tracks.map((t: any) => {
-      if (t.id === this.track?.id) {
-        return this.track;
+    playlist?.tracks?.forEach((track: any, index: number) => {
+      if (track.id === this.track?.id) {
+        playlist.tracks[index] = this.track;
+      } else {
+        this._resetTrack(track);
       }
-      return this._resetTrack(t);
     });
-    playlist.tracks = tracks;
     this.playlist = playlist;
   }
   private _getPreviousTrack() {
@@ -311,7 +341,7 @@ export class NowPlaying extends LitElement {
   }
   async _setPlaylist(track: any) {
     let startIndex = 0;
-    this.playlist.tracks.map((t: any, index: number) => {
+    this.playlist.tracks.forEach((t: any, index: number) => {
       if (t.id === track.id) {
         startIndex = index;
       } else {

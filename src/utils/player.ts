@@ -74,181 +74,150 @@ export const setIsShuffled = (state: boolean) => {
 export const getIsShuffled = () => {
   return get(IS_SHUFFLED);
 };
-export const getTrackById = (id: string) => {
-  return new Promise((resolve, reject) => {
-    musicdb
-      .then((mdb: any) => {
-        const tracks = mdb.trackList();
-        const track = tracks.find((t: any) => t.id === id);
-        if (track) {
-          return resolve(track);
-        }
-        return reject(`Track with id ${id} not found`);
-      })
-      .catch(e => reject(e));
-  });
+export const getTrackById = async (id: string) => {
+  const mdb: any = await musicdb;
+  const track = mdb.trackList().find((item: any) => item.id === id);
+  if (!track) {
+    throw new Error(`Track with id ${id} not found`);
+  }
+  return track;
 };
-export const getNewPlaylistForRandom = (playlist: any) => {
-  return new Promise((resolve, reject) => {
-    musicdb
-      .then((mdb: any) => {
-        EventBus.emit(NEW_PLAYLIST_LENGTH, {}, 0);
-        const trackIDs = Object.keys(mdb.tracks);
-        const randomTracks: string[] = _shuffle(trackIDs).splice(
-          0,
-          playlist.max,
+export const getNewPlaylistForRandom = async (playlist: any) => {
+  const mdb: any = await musicdb;
+  EventBus.emit(NEW_PLAYLIST_LENGTH, {}, 0);
+  const tracks = _shuffle(Object.keys(mdb.tracks))
+    .slice(0, playlist.max)
+    .map(id => mdb.tracks[id]);
+
+  tracks.forEach((_, index) =>
+    EventBus.emit(NEW_PLAYLIST_LENGTH, {}, index + 1),
+  );
+  return {
+    name: `${playlist.max} random tracks`,
+    tracks,
+    type: 'random',
+    max: playlist.max,
+  };
+};
+const _getArtistRotations = async (
+  username: string,
+  mdb: any,
+  highRotationLimit: number,
+) => {
+  const { topartists } = await getTopArtists(username);
+  const highRotation: any[] = [];
+  const mediumRotation: any[] = [];
+
+  (topartists?.artist || []).forEach((artist: any, index: number) => {
+    const coreArtist = mdb.artists[_getSortName(artist.name)];
+    if (!coreArtist) return;
+    (index < highRotationLimit ? highRotation : mediumRotation).push(
+      coreArtist,
+    );
+  });
+
+  return { highRotation, mediumRotation };
+};
+
+const _createPreferencePlaylist = (playlist: any, name: string) => ({
+  name,
+  tracks: [] as any[],
+  type: 'random-pref',
+  max: playlist.max,
+  username: playlist.username,
+});
+const _isHighRotationIndex = (index: number) =>
+  index % 3 === 0 || index % 5 === 0;
+const _isMediumRotationIndex = (index: number) =>
+  index % 4 === 0 || index % 7 === 0;
+
+export const getNewPlaylistForRandomPref = async (playlist: any) => {
+  const mdb: any = await musicdb;
+  EventBus.emit(NEW_PLAYLIST_LENGTH, {}, 0);
+  const { highRotation, mediumRotation } = await _getArtistRotations(
+    playlist.username,
+    mdb,
+    10,
+  );
+  const newPlaylist = _createPreferencePlaylist(
+    playlist,
+    `Random tracks based on ${playlist.username} recently listened tracks`,
+  );
+  const allArtists = mdb.artistsList();
+
+  for (let index = 0; index < playlist.max; index++) {
+    let artists = allArtists;
+    if (_isHighRotationIndex(index)) {
+      artists = highRotation;
+    } else if (_isMediumRotationIndex(index)) {
+      artists = mediumRotation;
+    }
+    newPlaylist.tracks.push(_getRandomTrackFromArtists(artists, newPlaylist));
+    EventBus.emit(NEW_PLAYLIST_LENGTH, {}, newPlaylist.tracks.length);
+  }
+
+  return newPlaylist;
+};
+
+export const getNewPlaylistForRadioPref = async (playlist: any) => {
+  const mdb: any = await musicdb;
+  EventBus.emit(NEW_PLAYLIST_LENGTH, {}, 0);
+  const { highRotation, mediumRotation } = await _getArtistRotations(
+    playlist.username,
+    mdb,
+    15,
+  );
+  const newPlaylist = _createPreferencePlaylist(
+    playlist,
+    `Radio based on ${playlist.username} recently listened tracks`,
+  );
+
+  for (let index = 0; index < playlist.max; index++) {
+    if (_isHighRotationIndex(index)) {
+      newPlaylist.tracks.push(
+        _getRandomTrackFromArtists(highRotation, newPlaylist),
+      );
+    } else if (_isMediumRotationIndex(index)) {
+      newPlaylist.tracks.push(
+        _getRandomTrackFromArtists(mediumRotation, newPlaylist),
+      );
+    } else {
+      try {
+        const preferredArtist = _shuffle(highRotation)[0];
+        const relatedArtists = await _getNextSimilarArtist(
+          preferredArtist,
+          mdb,
         );
-        const nextPlaylist = {
-          name: `${playlist.max} random tracks`,
-          tracks: [],
-          type: 'random',
-          max: playlist.max,
-        };
-        randomTracks.forEach(id => {
-          // @ts-ignore
-          nextPlaylist.tracks.push(mdb.tracks[id]);
-          EventBus.emit(NEW_PLAYLIST_LENGTH, {}, nextPlaylist.tracks.length);
-        });
-        return resolve(nextPlaylist);
-      })
-      .catch(e => reject(e));
-  });
+        newPlaylist.tracks.push(
+          _getRandomTrackFromArtists(relatedArtists, newPlaylist),
+        );
+      } catch (error) {
+        console.error('Unable to find a related radio track:', error);
+      }
+    }
+
+    EventBus.emit(NEW_PLAYLIST_LENGTH, {}, newPlaylist.tracks.length);
+  }
+
+  return newPlaylist;
 };
-export const getNewPlaylistForRandomPref = (playlist: any) => {
-  return new Promise((resolve, reject) =>
-    musicdb.then((mdb: any) => {
-      EventBus.emit(NEW_PLAYLIST_LENGTH, {}, 0);
-      const highRotation: Array<any> = [];
-      const mediumRotation: Array<any> = [];
-      getTopArtists(playlist.username)
-        .then(({ topartists }: { topartists: any }) => {
-          topartists?.artist.forEach((artist: any, index: number) => {
-            const sortName = _getSortName(artist.name);
-            const coreArtist = mdb.artists[sortName];
-            if (coreArtist && index < 10) {
-              highRotation.push(coreArtist);
-            } else {
-              mediumRotation.push(coreArtist);
-            }
-          });
-          const newPlaylist = {
-            name: `Random tracks based on ${playlist.username} recently listened tracks`,
-            tracks: [],
-            type: 'random-pref',
-            max: playlist.max,
-            username: playlist.username,
-          };
-          for (let i = 0; i < playlist.max; i++) {
-            if (i % 3 === 0 || i % 5 === 0) {
-              newPlaylist.tracks.push(
-                // @ts-ignore
-                _getRandomTrackFromArtists(highRotation, newPlaylist),
-              );
-            } else if (i % 4 === 0 || i % 7 === 0) {
-              newPlaylist.tracks.push(
-                // @ts-ignore
-                _getRandomTrackFromArtists(mediumRotation, newPlaylist),
-              );
-            } else {
-              newPlaylist.tracks.push(
-                // @ts-ignore
-                _getRandomTrackFromArtists(mdb.artistsList(), newPlaylist),
-              );
-            }
-            EventBus.emit(NEW_PLAYLIST_LENGTH, {}, newPlaylist.tracks.length);
-          }
-          return resolve(newPlaylist);
-        })
-        .catch(e => {
-          return reject(e);
-        });
-    }),
-  );
-};
-export const getNewPlaylistForRadioPref = (playlist: any) => {
-  return new Promise((resolve, reject) =>
-    musicdb.then((mdb: any) => {
-      EventBus.emit(NEW_PLAYLIST_LENGTH, {}, 0);
-      const highRotation: Array<any> = [];
-      const mediumRotation: Array<any> = [];
-      getTopArtists(playlist.username)
-        .then(async ({ topartists }: { topartists: any }) => {
-          topartists?.artist.forEach((artist: any, index: number) => {
-            const sortName = _getSortName(artist.name);
-            const coreArtist = mdb.artists[sortName];
-            if (coreArtist && index < 15) {
-              highRotation.push(coreArtist);
-            } else {
-              mediumRotation.push(coreArtist);
-            }
-          });
-          const newPlaylist = {
-            name: `Radio based on ${playlist.username} recently listened tracks`,
-            tracks: [],
-            type: 'random-pref',
-            max: playlist.max,
-            username: playlist.username,
-          };
-          for (let i = 0; i < playlist.max; i++) {
-            if (i % 3 === 0 || i % 5 === 0) {
-              newPlaylist.tracks.push(
-                // @ts-ignore
-                _getRandomTrackFromArtists(highRotation, newPlaylist),
-              );
-            } else if (i % 4 === 0 || i % 7 === 0) {
-              newPlaylist.tracks.push(
-                // @ts-ignore
-                _getRandomTrackFromArtists(mediumRotation, newPlaylist),
-              );
-            } else {
-              // use the preferences to get a related random track
-              const randomHighRotationArtist = _shuffle(highRotation)[0];
-              try {
-                const relatedArtists = await _getNextSimilarArtist(
-                  randomHighRotationArtist,
-                  mdb,
-                );
-                const randomTrack = await _getRandomTrackFromArtists(
-                  relatedArtists,
-                  newPlaylist,
-                );
-                // @ts-ignore
-                newPlaylist.tracks.push(randomTrack);
-              } catch (e) {
-                console.error(e);
-                // no simialr artists, skip this track
-              }
-            }
-            EventBus.emit(NEW_PLAYLIST_LENGTH, {}, newPlaylist.tracks.length);
-          }
-          return resolve(newPlaylist);
-        })
-        .catch(e => {
-          return reject(e);
-        });
-    }),
-  );
-};
-export const getNewPlaylistForRadio = (playlist: any) => {
-  return new Promise((resolve, reject) =>
-    musicdb
-      .then((mdb: any) => {
-        EventBus.emit(NEW_PLAYLIST_LENGTH, {}, 0);
-        const startArtist = mdb.artists[playlist.artist];
-        const newPlaylist = {
-          name: `Artist radio for ${startArtist.name}`,
-          tracks: [_getRandomTrackFromArtists([startArtist], null)],
-          type: 'radio',
-          max: playlist.max,
-          artist: playlist.artist,
-        };
-        _getNextTrack(startArtist, mdb, newPlaylist).catch(() => {
-          // once rejected the playlist is done
-          resolve(newPlaylist);
-        });
-      })
-      .catch(() => reject()),
-  );
+export const getNewPlaylistForRadio = async (playlist: any) => {
+  const mdb: any = await musicdb;
+  const startArtist = mdb.artists[playlist.artist];
+  if (!startArtist) {
+    throw new Error(`Artist not found: ${playlist.artist}`);
+  }
+
+  EventBus.emit(NEW_PLAYLIST_LENGTH, {}, 0);
+  const newPlaylist = {
+    name: `Artist radio for ${startArtist.name}`,
+    tracks: [_getRandomTrackFromArtists([startArtist], null)],
+    type: 'radio',
+    max: playlist.max,
+    artist: playlist.artist,
+  };
+  await _getNextTrack(startArtist, mdb, newPlaylist);
+  return newPlaylist;
 };
 export const getNewPlaylistForLovedTracks = (playlist: any) =>
   new Promise((resolve, reject) =>
@@ -339,33 +308,41 @@ const _getNewPlaylistForAlbum = (playlist: any) =>
       })
       .catch(() => reject()),
   );
-const _getRandomTrackFromArtists = (
-  artists: Array<any>,
-  playlist: any,
-): any => {
-  const randomArtist = _shuffle(artists)[0];
-  if (!randomArtist) {
-    return _getRandomTrackFromArtists(artists, playlist);
+const MAX_TRACK_SELECTION_ATTEMPTS = 100;
+const _getRandomTrackFromArtists = (artists: any[], playlist: any): any => {
+  for (let attempt = 0; attempt < MAX_TRACK_SELECTION_ATTEMPTS; attempt++) {
+    const artist = _sample(artists);
+    const album = _sample(artist?.albums || []);
+    const track = _sample(album?.tracks || []);
+    if (_isEligibleTrack(track, playlist)) return track;
   }
-  const randomAlbum = _shuffle(randomArtist.albums)[0];
-  const randomTrack = _shuffle(randomAlbum.tracks)[0];
-  if (randomTrack.duration <= 1000 * 60 * 10) {
-    // skip long songs, skips songs already present in list
-    if (playlist?.tracks.includes(randomTrack)) {
-      return _getRandomTrackFromArtists(artists, playlist);
+
+  for (const artist of _shuffle(artists)) {
+    for (const album of _shuffle(artist?.albums || [])) {
+      const tracks = _shuffle(
+        (album?.tracks || []).filter((track: any) =>
+          _isEligibleTrack(track, playlist),
+        ),
+      );
+      if (tracks.length) return tracks[0];
     }
-    return randomTrack;
   }
-  return _getRandomTrackFromArtists(artists, playlist);
+
+  throw new Error('No eligible tracks found for playlist.');
 };
+const _isEligibleTrack = (track: any, playlist: any) =>
+  track?.duration <= 1000 * 60 * 10 && !playlist?.tracks.includes(track);
+const _sample = (items: any[]) =>
+  items[Math.floor(Math.random() * items.length)];
 const _shuffle = (list: any[]): any[] => {
-  for (let i = list.length - 1; i > 0; i--) {
+  const shuffled = [...list];
+  for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    const temp = list[i];
-    list[i] = list[j];
-    list[j] = temp;
+    const temp = shuffled[i];
+    shuffled[i] = shuffled[j];
+    shuffled[j] = temp;
   }
-  return list;
+  return shuffled;
 };
 export const shuffle = _shuffle;
 const _getSortName = (artistname: string) =>
@@ -381,37 +358,22 @@ const _stripFromName = (name: string, strip: string[]) => {
   });
   return f;
 };
-const _getNextTrack = (artist: any, mdb: any, playlist: any) =>
-  // @ts-ignore
-  new Promise((resolve, reject) => {
-    _getNextSimilarArtist(artist, mdb)
-      .then((similarartists: any) => {
-        // add a new track to the playlist
-        const randomTrack = _getRandomTrackFromArtists(
-          similarartists,
-          playlist,
-        );
-        playlist.tracks.push(randomTrack);
-        EventBus.emit(NEW_PLAYLIST_LENGTH, {}, playlist.tracks.length);
-        return playlist.tracks.length < playlist.max
-          ? _getNextTrack(randomTrack.album.artist, mdb, playlist)
-          : reject();
-      })
-      .catch(() => reject());
-  });
-const _getNextSimilarArtist = (artist: any, mdb: any): Promise<any> =>
-  new Promise((resolve, reject) => {
-    getSimilairArtists(artist.name).then(({ similarartists }) => {
-      const foundSimilar: Array<any> = [];
-      similarartists?.artist.forEach(({ name }: { name: string }) => {
-        const mdbartist = mdb.getArtistByName(name);
-        if (mdbartist) {
-          foundSimilar.push(mdbartist);
-        }
-      });
-      if (foundSimilar.length > 0) {
-        resolve(foundSimilar);
-      }
-      reject('no similair artist found');
-    });
-  });
+const _getNextTrack = async (artist: any, mdb: any, playlist: any) => {
+  while (playlist.tracks.length < playlist.max) {
+    const similarArtists = await _getNextSimilarArtist(artist, mdb);
+    if (!similarArtists.length) return;
+
+    const track = _getRandomTrackFromArtists(similarArtists, playlist);
+    playlist.tracks.push(track);
+    EventBus.emit(NEW_PLAYLIST_LENGTH, {}, playlist.tracks.length);
+    artist = track.album.artist;
+  }
+};
+const _getNextSimilarArtist = async (artist: any, mdb: any): Promise<any[]> => {
+  const { similarartists } = await getSimilairArtists(artist.name);
+  const foundSimilar = (similarartists?.artist || [])
+    .map(({ name }: { name: string }) => mdb.getArtistByName(name))
+    .filter(Boolean);
+
+  return foundSimilar;
+};

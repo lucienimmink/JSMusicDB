@@ -39,17 +39,19 @@ export class LetterNav extends LitElement {
     this.albums = [];
     this.letters = mdb.sortedLetters;
     this.letters.forEach((letter: any) => {
-      letter.sortAndReturnArtistsBy('sortName', 'asc').map((artist: any) => {
-        const header = {
-          header: artist.albumArtist || artist.name,
-          albums: artist.albums.length,
-          id: artist.letter.letter,
-        };
-        this.albums.push(header);
-        artist.albums.map((album: any) => {
-          this.albums.push(album);
+      letter
+        .sortAndReturnArtistsBy('sortName', 'asc')
+        .forEach((artist: any) => {
+          const header = {
+            header: artist.albumArtist || artist.name,
+            albums: artist.albums.length,
+            id: artist.letter.letter,
+          };
+          this.albums.push(header);
+          artist.albums.forEach((album: any) => {
+            this.albums.push(album);
+          });
         });
-      });
     });
   };
   connectedCallback() {

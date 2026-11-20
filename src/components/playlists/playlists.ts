@@ -33,6 +33,12 @@ import '../loading-indicator/loading-indicator';
 import './../track/track.js';
 import forms from '../../styles/forms';
 
+type PlaylistOption = {
+  id: string;
+  label: string;
+  refreshable?: boolean;
+};
+
 @customElement('playlists-nav')
 export class LetterNav extends LitElement {
   @property()
@@ -95,13 +101,10 @@ export class LetterNav extends LitElement {
     }
   };
   setPlaylist = async (track: any) => {
-    let startIndex = 0;
-    this.playlist.tracks.map((t: any, index: number) => {
-      if (t.id === track.id) {
-        startIndex = index;
-      }
-    });
-    this.playlist.index = startIndex;
+    const trackIndex = this.playlist.tracks.findIndex(
+      (playlistTrack: any) => playlistTrack.id === track.id,
+    );
+    this.playlist.index = trackIndex === -1 ? 0 : trackIndex;
     await setCurrentPlaylist(this.playlist).then(() => {
       this.current = this.playlist;
     });
@@ -115,77 +118,48 @@ export class LetterNav extends LitElement {
       this.playlist = this.current;
     }
   };
-  _getLovedTracks = () => {
+  private async _generatePlaylist(createPlaylist: () => Promise<any>) {
     this.loading = true;
     this.playlist = null;
     this.showStartArtistSelection = false;
     this.showPastePlaylistSelection = false;
-    getNewPlaylistForLovedTracks({
-      username: this.lastFMUserName,
-    })
-      .then((playlist: any) => this._updatePlaylist(playlist))
-      .catch(() => {
-        this.loading = false;
-      });
-  };
-  _generateRandom = () => {
-    this.loading = true;
-    this.playlist = null;
-    this.showStartArtistSelection = false;
-    this.showPastePlaylistSelection = false;
-    getNewPlaylistForRandom({
-      max: this.max,
-    })
-      .then((playlist: any) => this._updatePlaylist(playlist))
-      .catch(() => {
-        this.loading = false;
-      });
-  };
-  _generateRandomByPreference = () => {
-    this.loading = true;
-    this.showStartArtistSelection = false;
-    this.showPastePlaylistSelection = false;
-    this.playlist = null;
-    getNewPlaylistForRandomPref({
-      max: this.max,
-      username: this.lastFMUserName,
-    })
-      .then((playlist: any) => this._updatePlaylist(playlist))
-      .catch(() => {
-        this.loading = false;
-      });
-  };
-  _generateRadioByPreference = () => {
-    this.loading = true;
-    this.showStartArtistSelection = false;
-    this.showPastePlaylistSelection = false;
-    this.playlist = null;
-    getNewPlaylistForRadioPref({
-      max: this.max,
-      username: this.lastFMUserName,
-    })
-      .then((playlist: any) => this._updatePlaylist(playlist))
-      .catch(() => {
-        this.loading = false;
-      });
-  };
+    try {
+      this._updatePlaylist(await createPlaylist());
+    } catch (error) {
+      console.error('Unable to generate playlist:', error);
+      this.loading = false;
+    }
+  }
+  _getLovedTracks = () =>
+    this._generatePlaylist(() =>
+      getNewPlaylistForLovedTracks({ username: this.lastFMUserName }),
+    );
+  _generateRandom = () =>
+    this._generatePlaylist(() => getNewPlaylistForRandom({ max: this.max }));
+  _generateRandomByPreference = () =>
+    this._generatePlaylist(() =>
+      getNewPlaylistForRandomPref({
+        max: this.max,
+        username: this.lastFMUserName,
+      }),
+    );
+  _generateRadioByPreference = () =>
+    this._generatePlaylist(() =>
+      getNewPlaylistForRadioPref({
+        max: this.max,
+        username: this.lastFMUserName,
+      }),
+    );
+  _getTopTracks = () =>
+    this._generatePlaylist(() =>
+      getTopTracksForUser({
+        username: this.lastFMUserName,
+        max: this.max,
+      }),
+    );
   _updatePlaylist = (playlist: any) => {
     this.playlist = playlist;
     this.loading = false;
-  };
-  _getTopTracks = () => {
-    this.loading = true;
-    this.playlist = null;
-    this.showStartArtistSelection = false;
-    this.showPastePlaylistSelection = false;
-    getTopTracksForUser({
-      username: this.lastFMUserName,
-      max: this.max,
-    })
-      .then((playlist: any) => this._updatePlaylist(playlist))
-      .catch(() => {
-        this.loading = false;
-      });
   };
 
   _startArtistRadio = () => {
@@ -213,21 +187,52 @@ export class LetterNav extends LitElement {
     });
   };
   _generateArtistRadio = (e: Event) => {
-    this.loading = true;
-    this.playlist = null;
-    // @ts-ignore
-    const startArtistID = e.target.value;
-    this.showStartArtistSelection = false;
-    getNewPlaylistForRadio({
-      max: this.max,
-      artist: startArtistID,
-    })
-      .then((playlist: any) => this._updatePlaylist(playlist))
-      .catch(() => {
-        this.loading = false;
-      });
+    const artist = (e.currentTarget as HTMLSelectElement).value;
+    return this._generatePlaylist(() =>
+      getNewPlaylistForRadio({ max: this.max, artist }),
+    );
   };
-  _importPlaylist = (e: Event) => {
+  private async _resolvePastedTracks(pasteString: string) {
+    const pastedTracks = JSON.parse(pasteString);
+    if (!Array.isArray(pastedTracks) || pastedTracks.length === 0) {
+      throw new Error('Expected a non-empty array of tracks.');
+    }
+
+    return Promise.all(
+      pastedTracks.map(async (track: any) => {
+        if (!track?.id) {
+          throw new Error('Track ID is missing from pasted playlist.');
+        }
+        return {
+          id: track.id,
+          track: await getTrackById(track.id),
+        };
+      }),
+    );
+  }
+  private _createPastedPlaylist(
+    name: string,
+    resolvedTracks: { id: string; track: any }[],
+    max: number,
+  ) {
+    const tracks = [];
+    for (const result of resolvedTracks) {
+      if (!result.track) {
+        console.warn('Track not found in database:', result.id);
+        continue;
+      }
+      tracks.push(result.track);
+      EventBus.emit(NEW_PLAYLIST_LENGTH, {}, tracks.length);
+    }
+    return { name, tracks, type: 'pasted', max };
+  }
+  private _showPastePlaylistError(error: unknown) {
+    console.error('Unable to import pasted playlist:', error);
+    this.pasteError = true;
+    this.loading = false;
+    this.showPastePlaylistSelection = true;
+  }
+  _importPlaylist = async (e: Event) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const name = (form.querySelector('#playlist-name') as HTMLInputElement)
@@ -243,45 +248,20 @@ export class LetterNav extends LitElement {
     }
 
     this.loading = true;
+    this.pasteError = false;
     this.showStartArtistSelection = false;
     this.showPastePlaylistSelection = false;
 
     try {
-      const pasteJSON = JSON.parse(pasteString);
-      if (!Array.isArray(pasteJSON) || pasteJSON.length === 0) {
-        this.pasteError = true;
-        throw new Error('Invalid JSON format or empty playlist.');
-      }
-      const playlist = {
+      const resolvedTracks = await this._resolvePastedTracks(pasteString);
+      const playlist = this._createPastedPlaylist(
         name,
-        tracks: [],
-        type: 'pasted',
-        max: pasteJSON.length,
-      };
-      pasteJSON.forEach(async (track: any) => {
-        if (track.id) {
-          const mdbtrack = await getTrackById(track.id);
-          if (mdbtrack) {
-            // @ts-ignore
-            playlist.tracks.push(mdbtrack);
-            EventBus.emit(NEW_PLAYLIST_LENGTH, {}, playlist.tracks.length);
-          } else {
-            console.warn('Track not found in database:', track.id);
-          }
-        } else {
-          throw new Error(
-            'Track ID is missing for track in pasted playlist.',
-            track,
-          );
-        }
-      });
+        resolvedTracks,
+        resolvedTracks.length,
+      );
       this._updatePlaylist(playlist);
-    } catch (e) {
-      console.error('Invalid JSON format in pasted playlist:', e);
-      this.pasteError = true;
-      this.loading = false;
-      this.showPastePlaylistSelection = true;
-      return;
+    } catch (error) {
+      this._showPastePlaylistError(error);
     }
   };
   // @ts-ignore
@@ -399,192 +379,98 @@ export class LetterNav extends LitElement {
     this.currentPlaylistId = '';
     this.newPlaylistLength = 0;
   }
-  private _renderPlaylistSelector() {
-    return html`<div class="playlists">
-      <ul class="md-up">
-        <li class="header">Playlists</li>
-        ${
-          this.current?.tracks?.length > 0
-            ? html`
-                <li class="${this.playlistId === 'current' ? 'active' : ''}">
-                  <app-link href="/playlists/current" flex
-                    >Current playlist
-                    <span class="icon-note">${nowPlayingIcon}</span></app-link
-                  >
-                </li>
-              `
-            : nothing
-        }
-        ${
-          this.lastFMUserName
-            ? html`
-                <li class="${this.playlistId === 'loved' ? 'active' : ''}">
-                  <app-link href="/playlists/loved" flex
-                    >Loved tracks on last.fm<span class="icon-note"
-                      >${nowPlayingIcon}</span
-                    >
-                    ${
-                      this.currentPlaylistId === 'loved'
-                        ? html`
-                            <button
-                              class="btn btn-small btn-primary btn-refresh"
-                              @click="${() => this._reloadPlaylist('loved')}"
-                            >
-                              <span class="icon">${redoIcon}</span>
-                            </button>
-                          `
-                        : nothing
-                    }</app-link
-                  >
-                </li>
-              `
-            : nothing
-        }
-        ${
-          this.lastFMUserName
-            ? html`
-                <li class="${this.playlistId === 'top' ? 'active' : ''}">
-                  <app-link href="/playlists/top" flex
-                    >Most played tracks by ${this.lastFMUserName}<span
-                      class="icon-note"
-                      >${nowPlayingIcon}</span
-                    >
-                    ${
-                      this.currentPlaylistId === 'top'
-                        ? html` <button
-                            class="btn btn-small btn-primary btn-refresh"
-                            @click="${() => this._reloadPlaylist('top')}"
-                          >
-                            <span class="icon">${redoIcon}</span>
-                          </button>`
-                        : nothing
-                    }
-                  </app-link>
-                </li>
-              `
-            : nothing
-        }
-        <li class="${this.playlistId === 'random' ? 'active' : ''}">
-          <app-link href="/playlists/random" flex
-            >${this.max} random tracks
-            <span class="icon-note">${nowPlayingIcon}</span>
-            ${
-              this.currentPlaylistId === 'random'
-                ? html` <button
-                    class="btn btn-small btn-primary btn-refresh"
-                    @click="${() => this._reloadPlaylist('random')}"
-                  >
-                    <span class="icon">${redoIcon}</span>
-                  </button>`
-                : nothing
-            }
-          </app-link>
-        </li>
-        ${
-          this.lastFMUserName
-            ? html`
-                <li
-                  class="${this.playlistId === 'random-pref' ? 'active' : ''}"
+  private _getPlaylistOptions(): PlaylistOption[] {
+    const options: PlaylistOption[] = [];
+    if (this.current?.tracks?.length) {
+      options.push({ id: 'current', label: 'Current playlist' });
+    }
+
+    if (this.lastFMUserName) {
+      options.push(
+        { id: 'loved', label: 'Loved tracks on last.fm', refreshable: true },
+        {
+          id: 'top',
+          label: `Most played tracks by ${this.lastFMUserName}`,
+          refreshable: true,
+        },
+      );
+    }
+
+    options.push({
+      id: 'random',
+      label: `${this.max} random tracks`,
+      refreshable: true,
+    });
+
+    if (this.lastFMUserName) {
+      options.push(
+        {
+          id: 'random-pref',
+          label: `${this.max} tracks by preference`,
+          refreshable: true,
+        },
+        {
+          id: 'pref-radio',
+          label: 'Radio by preference',
+          refreshable: true,
+        },
+      );
+    }
+
+    options.push(
+      { id: 'radio', label: 'Artist radio' },
+      { id: 'paste', label: 'Paste playlist' },
+    );
+    return options;
+  }
+
+  private _renderPlaylistOption({ id, label, refreshable }: PlaylistOption) {
+    return html`
+      <li class="${this.playlistId === id ? 'active' : ''}">
+        <app-link href="/playlists/${id}" flex>
+          ${label}
+          <span class="icon-note">${nowPlayingIcon}</span>
+          ${
+            refreshable && this.currentPlaylistId === id
+              ? html`<button
+                  class="btn btn-small btn-primary btn-refresh"
+                  @click="${() => this._reloadPlaylist(id)}"
                 >
-                  <app-link href="/playlists/random-pref" flex
-                    >${this.max} tracks by preference
-                    <span class="icon-note">${nowPlayingIcon}</span>
-                    ${
-                      this.currentPlaylistId === 'random-pref'
-                        ? html` <button
-                            class="btn btn-small btn-primary btn-refresh"
-                            @click="${() => this._reloadPlaylist('random-pref')}"
-                          >
-                            <span class="icon">${redoIcon}</span>
-                          </button>`
-                        : nothing
-                    }
-                  </app-link>
-                </li>
-              `
-            : nothing
-        }
-        ${
-          this.lastFMUserName
-            ? html`
-                <li class="${this.playlistId === 'pref-radio' ? 'active' : ''}">
-                  <app-link href="/playlists/pref-radio" flex
-                    >Radio by preference
-                    <span class="icon-note">${nowPlayingIcon}</span>
-                    ${
-                      this.currentPlaylistId === 'pref-radio'
-                        ? html` <button
-                            class="btn btn-small btn-primary btn-refresh"
-                            @click="${() => this._reloadPlaylist('pref-radio')}"
-                          >
-                            <span class="icon">${redoIcon}</span>
-                          </button>`
-                        : nothing
-                    }
-                  </app-link>
-                </li>
-              `
-            : nothing
-        }
-        <li class="${this.playlistId === 'radio' ? 'active' : ''}">
-          <app-link href="/playlists/radio" flex
-            >Artist radio<span class="icon-note"
-              >${nowPlayingIcon}</span
-            ></app-link
-          >
-        </li>
-        <li class="${this.playlistId === 'paste' ? 'active' : ''}">
-          <app-link href="/playlists/paste" flex
-            >Paste playlist<span class="icon-note"
-              >${nowPlayingIcon}</span
-            ></app-link
-          >
-        </li>
-      </ul>
+                  <span class="icon">${redoIcon}</span>
+                </button>`
+              : ''
+          }
+        </app-link>
+      </li>
+    `;
+  }
+
+  private _renderPlaylistDropdown(options: PlaylistOption[]) {
+    return html`
       <select
         class="sm-only"
-        @change=${(e: Event) => this._switchPlaylist(e)}
+        @change=${(event: Event) => this._switchPlaylist(event)}
         id="playlist-selector"
       >
         <option disabled selected>Choose playlist</option>
-        ${
-          this.current?.tracks?.length > 0
-            ? html` <option value="current">Current playlist</option> `
-            : nothing
-        }
-        ${
-          this.lastFMUserName
-            ? html` <option value="loved">Loved tracks on last.fm</option> `
-            : nothing
-        }
-        ${
-          this.lastFMUserName
-            ? html`
-                <option value="top">
-                  Most played tracks by ${this.lastFMUserName}
-                </option>
-              `
-            : nothing
-        }
-        <option value="random">${this.max} random tracks</option>
-        ${
-          this.lastFMUserName
-            ? html`
-                <option value="random-pref">
-                  ${this.max} tracks by preference
-                </option>
-              `
-            : nothing
-        }
-        ${
-          this.lastFMUserName
-            ? html` <option value="pref-radio">Radio by preference</option> `
-            : nothing
-        }
-        <option value="radio">Artist radio</option>
-        <option value="paste">Paste playlist</option>
+        ${options.map(
+          ({ id, label }) => html`<option value="${id}">${label}</option>`,
+        )}
       </select>
-    </div>`;
+    `;
+  }
+
+  private _renderPlaylistSelector() {
+    const options = this._getPlaylistOptions();
+    return html`
+      <div class="playlists">
+        <ul class="md-up">
+          <li class="header">Playlists</li>
+          ${options.map(option => this._renderPlaylistOption(option))}
+        </ul>
+        ${this._renderPlaylistDropdown(options)}
+      </div>
+    `;
   }
   private _renderTrack(track: any) {
     return html`<track-in-list
@@ -622,44 +508,37 @@ export class LetterNav extends LitElement {
       </div>
     `;
   }
+  private _renderPastePlaylistError() {
+    if (!this.pasteError) return nothing;
+    return html`<div
+      class="alert"
+      role="alert"
+      aria-live="assertive"
+      aria-atomic="true"
+    >
+      <p>
+        Give your playlist a name and paste the tracks in JSON format. <br />
+        The JSON should be an array of objects with track IDs, like this:
+      </p>
+      <pre>
+[
+  {
+    "id": "track-id-1"
+  },
+  {
+    "id": "track-id-2",
+  }
+]</pre>
+    </div>`;
+  }
   private _renderPastePlaylistSelector() {
     return html`
       <div class="playlist">
         <ul>
           <li class="header">Paste playlist</li>
           <li class="no-hover paste-playlist-selector">
-            <form
-              @submit="${(e: Event) => {
-                this._importPlaylist(e);
-              }}"
-            >
-              ${
-                this.pasteError
-                  ? html`<div
-                      class="alert"
-                      role="alert"
-                      aria-live="assertive"
-                      aria-atomic="true"
-                    >
-                      <p>
-                        Give your playlist a name and paste the tracks in JSON
-                        format. <br />
-                        The JSON should be an array of objects with track IDs,
-                        like this:
-                      </p>
-                      <pre>
-[
-  {
-    "id": "track-id-1",
-  },
-  {
-    "id": "track-id-2",
-  }
-]</pre>
-                    </div>`
-                  : nothing
-              }
-
+            <form @submit="${this._importPlaylist}">
+              ${this._renderPastePlaylistError()}
               <div>
                 <label for="playlist-name" class="md-up"
                   >Name your playlist:

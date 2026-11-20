@@ -239,67 +239,81 @@ export class Album extends LitElement {
     return Object.keys(this.track.album.discs).length > 1;
   }
   async _play(startPosition = 0, track: any = null) {
-    this.track = track || this.playlist?.tracks[this.playlist.index || 0];
-    if (this.isShuffled) {
-      this._shuffleCollection();
-      this.track =
-        track ||
-        this.playlist?.tracks[
-          this.playlist.shuffledIndices[this.playlist.index] || 0
-        ];
-    }
+    this.track = this._selectTrack(track);
     const server = await getServer();
     const jwt = await getJwt();
     const player = this.shadowRoot?.querySelector('audio');
     await this._setGain();
-    if (player && this.track) {
-      player.crossOrigin = 'anonymous';
-      player.src = `${server}/listen?path=${encodeURIComponent(
-        this.track.source.url,
-      )}&jwt=${jwt}`;
-      player
-        .play()
-        .then(async () => {
-          this.hasErrorWhilePlaying = false;
-          EventBus.emit(PLAYER_ERROR, this, false);
-          player.currentTime = startPosition;
-          await setCurrentPlaylist(this.playlist);
-          const username: any = await getLastFMUserName();
-          const trackinfo: any = await getTrackInfo(this.track, username);
-          this.isLoved = false;
-          if (trackinfo?.track?.userloved === '1') {
-            this.isLoved = true;
-          }
-          this.track.isLoved = this.isLoved;
-        })
-        .catch(e => {
-          console.error(e);
-          this.hasErrorWhilePlaying = true;
-          EventBus.emit(PLAYER_ERROR, this, true);
-        });
-      // share player
-      // @ts-ignore
-      window._player = player;
-
-      if (
-        this.doNavigateToAlbum &&
-        this.playlist.type !== 'album' &&
-        this.route !== '/playing'
-      ) {
-        EventBus.emit(NAVIGATE_TO_ALBUM, this, {
-          current: this.track,
-        });
-      }
-
-      setTimeout(() => {
-        EventBus.emit(UPDATE_TRACK, this, {
-          current: this.track,
-          type: PLAY_PLAYER_START,
-        });
-      }, 100);
-    } else {
+    if (!player || !this.track) {
       console.warn('no player found :(');
+      return;
     }
+
+    player.crossOrigin = 'anonymous';
+    player.src = this._getTrackURL(server, jwt);
+    player
+      .play()
+      .then(() => this._handlePlaybackStart(player, startPosition))
+      .catch(error => this._handlePlaybackError(error));
+
+    // @ts-ignore
+    window._player = player;
+    this._navigateToCurrentAlbum();
+    this._scheduleTrackUpdate();
+  }
+  private _selectTrack(track: any) {
+    if (!this.isShuffled) {
+      return track || this.playlist?.tracks[this.playlist.index || 0];
+    }
+
+    this._shuffleCollection();
+    return (
+      track ||
+      this.playlist?.tracks[
+        this.playlist.shuffledIndices[this.playlist.index] || 0
+      ]
+    );
+  }
+  private _getTrackURL(server: string, jwt: string) {
+    return `${server}/listen?path=${encodeURIComponent(
+      this.track.source.url,
+    )}&jwt=${jwt}`;
+  }
+  private async _handlePlaybackStart(
+    player: HTMLAudioElement,
+    startPosition: number,
+  ) {
+    this.hasErrorWhilePlaying = false;
+    EventBus.emit(PLAYER_ERROR, this, false);
+    player.currentTime = startPosition;
+    await setCurrentPlaylist(this.playlist);
+
+    const username = await getLastFMUserName();
+    const trackInfo = await getTrackInfo(this.track, username);
+    this.isLoved = trackInfo?.track?.userloved === '1';
+    this.track.isLoved = this.isLoved;
+  }
+  private _handlePlaybackError(error: unknown) {
+    console.error(error);
+    this.hasErrorWhilePlaying = true;
+    EventBus.emit(PLAYER_ERROR, this, true);
+  }
+  private _navigateToCurrentAlbum() {
+    if (
+      this.doNavigateToAlbum &&
+      this.playlist.type !== 'album' &&
+      this.route !== '/playing'
+    ) {
+      EventBus.emit(NAVIGATE_TO_ALBUM, this, { current: this.track });
+    }
+  }
+  private _scheduleTrackUpdate() {
+    setTimeout(() => {
+      EventBus.emit(UPDATE_TRACK, this, {
+        current: this.track,
+        type: PLAY_PLAYER_START,
+      });
+    }, 100);
   }
   _onended() {
     this.hasScrobbled = false;

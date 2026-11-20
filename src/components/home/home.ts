@@ -24,6 +24,12 @@ import musicdb from '../musicdb';
 import '../album/album-in-grid';
 import { LOCALE, getRelativeTime } from '../../utils/date';
 
+const DATE_TIME_FORMATTER = new Intl.DateTimeFormat(LOCALE, {
+  // @ts-ignore
+  dateStyle: 'medium',
+  timeStyle: 'short',
+});
+
 @customElement('home-nav')
 export class HomeNav extends LitElement {
   @state()
@@ -31,7 +37,7 @@ export class HomeNav extends LitElement {
   @state()
   recentAdded: Array<any>;
   newReleases: Array<any>;
-  counter: any;
+  private pollTimer: number | undefined;
   @state()
   // @ts-ignore
   currentTrack: any = window._track || null;
@@ -49,82 +55,102 @@ export class HomeNav extends LitElement {
     this.recenttracks = [];
     this.recentAdded = [];
     this.newReleases = [];
-    this.counter = -1;
-    this._init();
   }
-  async connectedCallback() {
+  connectedCallback() {
     super.connectedCallback();
 
     EventBus.on(REFRESH, this._init, this);
     EventBus.on(TOGGLE_SETTING, this._updateFeed, this);
     EventBus.on(UPDATE_TRACK, this._updatePlayer, this);
 
-    getLastFMUserName().then(async (name: string) => {
-      if (name !== 'mdb-skipped') {
-        this._setDummyData();
-        this.recenttracks = await getRecentlyPlayed();
-        this._updateRecentlyPlayed(name);
-        this._poll(name);
-      }
-    });
-    this._updateFeed();
+    void this._init();
+    void this._loadRecentTracks();
   }
   disconnectedCallback() {
     super.disconnectedCallback();
     EventBus.off(REFRESH, this._init, this);
     EventBus.off(TOGGLE_SETTING, this._updateFeed, this);
     EventBus.off(UPDATE_TRACK, this._updatePlayer, this);
-    clearInterval(this.counter);
+    if (this.pollTimer !== undefined) {
+      window.clearTimeout(this.pollTimer);
+      this.pollTimer = undefined;
+    }
   }
   async _init() {
     const mdb: any = await musicdb;
+    if (!this.isConnected) return;
     this.recentAdded = mdb.getLatestAdditions(this.LATEST_ADDITIONS);
     this.recentlyListenedLimit =
       (await getSettingByName('recentlyListenedLimit')) || '6';
-    this._updateFeed();
+    await this._updateFeed();
+  }
+  private async _loadRecentTracks() {
+    const name = await getLastFMUserName();
+    if (!this.isConnected || name === 'mdb-skipped') return;
+
+    try {
+      this._setDummyData();
+      this.recenttracks = await getRecentlyPlayed();
+      if (this.isConnected) await this._updateRecentlyPlayed(name);
+    } catch (error) {
+      console.error('Unable to load recently played tracks:', error);
+    } finally {
+      if (this.isConnected) this._poll(name);
+    }
   }
   // @ts-ignore
   _updatePlayer(target: any, data: any) {
     this.currentTrack = data?.current;
     this.requestUpdate();
   }
-  async _updateFeed() {
+  async _updateFeed(_target?: object, setting?: { setting?: string }) {
+    if (setting?.setting && setting.setting !== 'feed') return;
+
     const feedURL = await getSettingByName('feed');
-    if (feedURL) {
-      const jwt: any = await getJwt();
-      const server: any = await getServer();
-      if (jwt && server) {
-        this.newReleases = [];
-        const list: any = [];
-        const feed = await getRSSFeed(server, jwt, feedURL);
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(feed, 'application/xml');
-        const items = doc.querySelectorAll('item');
-        const mdb: any = await musicdb;
-        items.forEach(item => {
-          const release = item.querySelector('title')?.innerHTML;
-          const splitted = release?.split('-');
-          const artist = splitted?.splice(0, 1)[0].trim();
-          const album = splitted
-            ?.join('-')
-            .trim()
-            .replaceAll(` (Lossless)`, '');
-          const isHires = release?.includes(` (Lossless)`);
-          const link = item.querySelector('link')?.innerHTML;
-          const mbdArtist = mdb.getArtistByName(artist);
-          if (mbdArtist) {
-            list.push({ artist, album, link, isHires });
-          }
-        });
-        this.newReleases = list;
-      }
-    } else {
+    if (!feedURL) {
       this.newReleases = [];
+      return;
     }
+
+    const [jwt, server] = await Promise.all([getJwt(), getServer()]);
+    if (!jwt || !server) return;
+
+    this.newReleases = [];
+    const feed = await getRSSFeed(server, jwt, feedURL);
+    const document = new DOMParser().parseFromString(feed, 'application/xml');
+    const mdb: any = await musicdb;
+    const releases: any[] = [];
+    document.querySelectorAll('item').forEach(item => {
+      const release = this._parseReleaseItem(item, mdb);
+      if (release) releases.push(release);
+    });
+    this.newReleases = releases;
+  }
+  private _parseReleaseItem(item: Element, mdb: any) {
+    const title = item.querySelector('title')?.textContent;
+    if (!title) return null;
+
+    const [rawArtist, ...albumParts] = title.split('-');
+    const artist = rawArtist.trim();
+    const album = albumParts.join('-').trim().replaceAll(' (Lossless)', '');
+    if (!artist || !album || !mdb.getArtistByName(artist)) return null;
+
+    return {
+      artist,
+      album,
+      link: item.querySelector('link')?.textContent,
+      isHires: title.includes(' (Lossless)'),
+    };
   }
   _poll(name: string) {
-    this.counter = setInterval(() => {
-      this._updateRecentlyPlayed(name);
+    this.pollTimer = window.setTimeout(async () => {
+      try {
+        if (this.isConnected) await this._updateRecentlyPlayed(name);
+      } catch (error) {
+        console.error('Unable to update recently played tracks:', error);
+      } finally {
+        if (this.isConnected) this._poll(name);
+      }
     }, this.INTERVAL);
   }
   async _updateRecentlyPlayed(name: string) {
@@ -155,116 +181,86 @@ export class HomeNav extends LitElement {
   }
   _formatDate(dateString: string, track: any = null) {
     const date = new Date(Number(dateString) * 1000);
-    if (dateString !== '0') {
-      const formatter = new Intl.DateTimeFormat(LOCALE, {
-        // @ts-ignore
-        dateStyle: 'medium',
-        timeStyle: 'short',
-      });
-      const dateTime = formatter.format(date).split(', ');
-      return html`
-        <span>${dateTime[1]}</span>
-        <span class="small muted"
-          >${getRelativeTime(date.getTime(), { skipToday: true })}</span
-        >
-      `;
+    if (dateString === '0') {
+      const state = !track || track.isPlaying ? 'Playing' : 'Paused';
+      return html`<span class="playing">${state}</span>
+        <span class="small muted">right now</span>`;
     }
-    if (track) {
-      return html`
-        ${
-          track.isPlaying
-            ? html`<span class="playing">Playing</span>`
-            : html`<span class="playing">Paused</span>`
-        }
-        <span class="small muted">right now</span>
-      `;
-    }
+
+    const dateTime = DATE_TIME_FORMATTER.format(date).split(', ');
     return html`
-      <span class="playing">Playing</span>
-      <span class="small muted">right now</span>
+      <span>${dateTime[1]}</span>
+      <span class="small muted"
+        >${getRelativeTime(date.getTime(), { skipToday: true })}</span
+      >
     `;
   }
   _onError(e: Event) {
     // @ts-ignore
     e.target.src = `data:image/svg+xml;base64,${btoa(cdSVG)}`;
   }
+  private _renderCurrentTrack() {
+    return html`<li>
+      <div>
+        <album-art
+          artist="${
+            this.currentTrack?.artist?.albumArtist ||
+            this.currentTrack?.artist?.name
+          }"
+          album="${this.currentTrack?.album?.name}"
+          mbid="${this.currentTrack?.album?.mbid}"
+          dimension="70"
+          static
+        ></album-art>
+      </div>
+      <span class="details">
+        <span>
+          ${this.currentTrack?.trackArtist} • ${this.currentTrack?.title}
+          <br />
+          <span class="small muted">${this.currentTrack?.album?.name}</span>
+        </span>
+      </span>
+      <span class="time">${this._formatDate('0', this.currentTrack)}</span>
+    </li>`;
+  }
+  private _renderRecentTrack(track: any) {
+    return html`<li class="${track.dummy ? 'dummy ' : ''}">
+      <div>
+        <img
+          src="${track?.image?.[2]?.['#text']}"
+          class="album-art"
+          alt="${track.artist.name} • ${track.name}"
+          @error="${this._onError}"
+          crossorigin="anonymous"
+        />
+        ${
+          track.loved === '1'
+            ? html`<span class="heart">${heartIcon}</span>`
+            : nothing
+        }
+      </div>
+      <span class="details">
+        <span>
+          ${track.artist.name} • ${track.name}
+          <br />
+          <span class="small muted">${track.album['#text']}</span>
+        </span>
+      </span>
+      <span class="time">
+        ${this._formatDate(track?.date?.uts || '0', track)}
+      </span>
+    </li>`;
+  }
   private _renderRecentTracks() {
-    return html`${
-      this.recenttracks?.length > 0 || this.currentTrack
-        ? html`
-            <div class="container">
-              <h2 class="header">Recently listened</h2>
-              <ol>
-                ${
-                  this.currentTrack
-                    ? html`
-                        <li>
-                          <div>
-                            <album-art
-                              artist="${
-                                this.currentTrack?.artist?.albumArtist ||
-                                this.currentTrack?.artist?.name
-                              }"
-                              album="${this.currentTrack?.album?.name}"
-                              mbid="${this.currentTrack?.album?.mbid}"
-                              dimension="70"
-                              static
-                            ></album-art>
-                          </div>
-                          <span class="details">
-                            <span
-                              >${this.currentTrack?.trackArtist} •
-                              ${this.currentTrack?.title}
-                              <br />
-                              <span class="small muted"
-                                >${this.currentTrack?.album?.name}</span
-                              >
-                            </span>
-                          </span>
-                          <span class="time">
-                            ${this._formatDate('0', this.currentTrack)}
-                          </span>
-                        </li>
-                      `
-                    : nothing
-                }
-                ${this.recenttracks?.map(
-                  (track: any) => html`
-                    <li class="${track.dummy ? 'dummy ' : ''}">
-                      <div>
-                        <img
-                          src="${track?.image[2]['#text']}"
-                          class="album-art"
-                          alt="${track.artist.name} • ${track.name}"
-                          @error="${(e: Event) => this._onError(e)}"
-                          crossorigin="anonymous"
-                        />
-                        ${
-                          track.loved === '1'
-                            ? html`<span class="heart">${heartIcon}</span>`
-                            : nothing
-                        }
-                      </div>
-                      <span class="details">
-                        <span
-                          >${track.artist.name} • ${track.name}
-                          <br />
-                          <span class="small muted"
-                            >${track.album['#text']}</span
-                          >
-                        </span>
-                      </span>
-                      <span class="time">
-                        ${this._formatDate(track?.date?.uts || '0', track)}
-                      </span>
-                    </li>
-                  `,
-                )}
-              </ol>
-            </div>
-          `
-        : nothing
-    }`;
+    if (!this.recenttracks?.length && !this.currentTrack) return nothing;
+
+    return html`<div class="container">
+      <h2 class="header">Recently listened</h2>
+      <ol>
+        ${this.currentTrack ? this._renderCurrentTrack() : nothing}
+        ${this.recenttracks.map(track => this._renderRecentTrack(track))}
+      </ol>
+    </div>`;
   }
   private _renderRecentlyAdded() {
     return html`${

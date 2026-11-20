@@ -42,6 +42,12 @@ import musicdb, { updateAndRefresh } from '../musicdb';
 import { LOCALE } from '../../utils/date';
 import forms from '../../styles/forms';
 
+const PARSED_DATE_FORMATTER = new Intl.DateTimeFormat(LOCALE, {
+  // @ts-ignore
+  dateStyle: 'full',
+  timeStyle: 'medium',
+});
+
 @customElement('settings-nav')
 export class SettingsNav extends LitElement {
   @state()
@@ -132,12 +138,7 @@ export class SettingsNav extends LitElement {
     this.stats.time = timespan(this.mdb.totals.playingTime, true, LOCALE);
     this.stats.parsingTime = this.mdb.totals.parsingTime;
     const date = await getLastParsed();
-    const formatter = new Intl.DateTimeFormat(LOCALE, {
-      // @ts-ignore
-      dateStyle: 'full',
-      timeStyle: 'medium',
-    });
-    this.stats.parsed = formatter.format(date);
+    this.stats.parsed = PARSED_DATE_FORMATTER.format(date);
     this.requestUpdate();
   }
   // @ts-ignore
@@ -290,73 +291,41 @@ export class SettingsNav extends LitElement {
       </p>
     </div>`;
   }
+  private _renderPlayerSetting(setting: string, label: string) {
+    return html`<p>
+      <label>
+        <input
+          type="checkbox"
+          ?checked=${this.settings?.[setting]}
+          @click="${(e: Event) => this._toggle(setting, e)}"
+        />
+        ${label}
+      </label>
+    </p>`;
+  }
   private _renderPlayerSettings() {
+    const toggles = [
+      ['playliststate', 'Save playlist state'],
+      ['manualScrobble', 'Manual scrobbling'],
+      ['continues', 'Continues play mode'],
+      ['replaygain', 'Apply replaygain'],
+      ['followTrack', 'View follows track change'],
+      [
+        'showNowPlayingInAlbumOverlay',
+        'Show now playing in album modal overlay',
+      ],
+    ];
+
     return html`<div class="container container-block">
       <h2 class="header">Player settings</h2>
-      <p>
-        <label>
-          <input
-            type="checkbox"
-            ?checked=${this.settings?.playliststate}
-            @click="${(e: Event) => this._toggle('playliststate', e)}"
-          />
-          Save playlist state
-        </label>
-      </p>
-      <p>
-        <label>
-          <input
-            type="checkbox"
-            @click="${(e: Event) => this._toggle('manualScrobble', e)}"
-            ?checked=${this.settings?.manualScrobble}
-          />
-          Manual scrobbling
-        </label>
-      </p>
-      <p>
-        <label>
-          <input
-            type="checkbox"
-            @click="${(e: Event) => this._toggle('continues', e)}"
-            ?checked=${this.settings?.continues}
-          />
-          Continues play mode
-        </label>
-      </p>
-      <p>
-        <label>
-          <input
-            type="checkbox"
-            @click="${(e: Event) => this._toggle('replaygain', e)}"
-            ?checked=${this.settings?.replaygain}
-          />
-          Apply replaygain
-        </label>
-      </p>
-      <p>
-        <label>
-          <input
-            type="checkbox"
-            @click="${(e: Event) => this._toggle('followTrack', e)}"
-            ?checked=${this.settings?.followTrack}
-          />
-          View follows track change
-        </label>
-      </p>
-      <p>
-        <label>
-          <input
-            type="checkbox"
-            @click="${(e: Event) => this._toggle('showNowPlayingInAlbumOverlay', e)}"
-            ?checked=${this.settings?.showNowPlayingInAlbumOverlay}
-          />
-          Show now playing in album modal overlay
-        </label>
-      </p>
+      ${toggles.map(([setting, label]) =>
+        this._renderPlayerSetting(setting, label),
+      )}
     </div>`;
   }
   private _renderThemeSettings() {
-    return html`<div class="container container-block">
+    return html`
+      <div class="container container-block">
         <h2 class="header">Theme settings</h2>
         <p>
           <label>
@@ -397,58 +366,69 @@ export class SettingsNav extends LitElement {
         <p>
           <label>
             Recently listened limit
-            <input name="recentlyListenedLimit" type="range" min="1" max="10" step="1" .value=${this.settings?.recentlyListenedLimit || 6} @change="${(e: Event) => this._setRecentlyListenedLimit(e)}" @touchstart=${this._preventDragging} @touchend=${this._preventDragging} />
-            <output for="recentlyListenedLimit" onforminput="value = recentlyListenedLimit.valueAsNumber" >${this.settings?.recentlyListenedLimit}</output>
+            <input
+              name="recentlyListenedLimit"
+              type="range"
+              min="1"
+              max="10"
+              step="1"
+              .value=${this.settings?.recentlyListenedLimit || 6}
+              @change="${(e: Event) => this._setRecentlyListenedLimit(e)}"
+              @touchstart=${this._preventDragging}
+              @touchend=${this._preventDragging}
+            />
+            <output
+              for="recentlyListenedLimit"
+              onforminput="value = recentlyListenedLimit.valueAsNumber"
+              >${this.settings?.recentlyListenedLimit}</output
+            >
           </label>
         </p>
-        </div>
-        <div class="container container-block md-up">
-          <h2 class="header">Now playing screen settings</h2>
-            <p>
-              <label>
-                <input
-                  type="checkbox"
-                  @click="${(e: Event) => this._toggle('visual', e)}"
-                  .checked=${this.settings?.visual}
-                />
-                Show visualisation during playback
-              </label>
-            </p>
-            <p>
-              ${
-                this.settings?.visual
-                  ? html`
-                      <label>
-                        <input
-                          type="checkbox"
-                          @click="${(e: Event) =>
-                            this._toggle('classicVis', e)}"
-                          .checked=${this.settings?.classicVis}
-                        />
-                        Show classic LED visualisation
-                      </label>
-                    `
-                  : nothing
-              }
-            </p>
-            <p>
-              ${
-                this.settings?.visual
-                  ? html`
-                      <label>
-                        <input
-                          type="checkbox"
-                          @click="${(e: Event) => this._toggle('smallArt', e)}"
-                          .checked=${this.settings?.smallArt}
-                        />
-                        Show smaller album art
-                      </label>
-                    `
-                  : nothing
-              }
-            </p>
-          </div>
-      </div>`;
+      </div>
+    `;
+  }
+  private _renderNowPlayingSettings() {
+    return html`
+      <div class="container container-block md-up">
+        <h2 class="header">Now playing screen settings</h2>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+              @click="${(e: Event) => this._toggle('visual', e)}"
+              .checked=${this.settings?.visual}
+            />
+            Show visualisation during playback
+          </label>
+        </p>
+        ${
+          this.settings?.visual
+            ? html`
+                <p>
+                  <label>
+                    <input
+                      type="checkbox"
+                      @click="${(e: Event) => this._toggle('classicVis', e)}"
+                      .checked=${this.settings?.classicVis}
+                    />
+                    Show classic LED visualisation
+                  </label>
+                </p>
+                <p>
+                  <label>
+                    <input
+                      type="checkbox"
+                      @click="${(e: Event) => this._toggle('smallArt', e)}"
+                      .checked=${this.settings?.smallArt}
+                    />
+                    Show smaller album art
+                  </label>
+                </p>
+              `
+            : nothing
+        }
+      </div>
+    `;
   }
   private _renderRSSFeedSettings() {
     return html`${
@@ -512,7 +492,8 @@ export class SettingsNav extends LitElement {
     return html`
       ${this._renderUserInfo()} ${this._renderCollectionSettings()}
       ${this._renderPlayerSettings()} ${this._renderThemeSettings()}
-      ${this._renderRSSFeedSettings()} ${this._renderInformation()}
+      ${this._renderNowPlayingSettings()} ${this._renderRSSFeedSettings()}
+      ${this._renderInformation()}
     `;
   }
 }

@@ -16,18 +16,26 @@ import { global as EventBus } from './../../utils/EventBus';
 
 const resizeObserver = new ResizeObserver((entries: any) => {
   for (const entry of entries) {
-    const element = entry.target as HTMLImageElement;
-    element.setAttribute(
-      'dimension',
-      Math.round(Number(entry.contentRect.width)).toString(),
-    );
-    element.dispatchEvent(new CustomEvent('resize', { bubbles: true }));
+    const element = entry.target as HTMLElement;
+    const dimension = Math.round(Number(entry.contentRect.width)).toString();
+    if (element.getAttribute('dimension') !== dimension) {
+      element.setAttribute('dimension', dimension);
+    }
   }
 });
 
 export const SLEEPTIMER = 500;
 
-let intersectionObserver: IntersectionObserver;
+const intersectionObserver = new IntersectionObserver(
+  entries => {
+    for (const entry of entries) {
+      entry.target.setAttribute('visible', entry.isIntersecting.toString());
+    }
+  },
+  {
+    rootMargin: '250px 0px',
+  },
+);
 
 @customElement('album-art')
 export class AlbumArt extends LitElement {
@@ -79,17 +87,6 @@ export class AlbumArt extends LitElement {
     this.isDefault = false;
     this.theme = 'light';
     this.mbid = '';
-
-    intersectionObserver = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          entry.target.setAttribute('visible', entry.isIntersecting.toString());
-        });
-      },
-      {
-        rootMargin: '250px 0px',
-      },
-    );
   }
   public getDimensions() {
     this.dimension =
@@ -102,33 +99,40 @@ export class AlbumArt extends LitElement {
       .replace(/h_\d+/g, `h_${dimension}`);
   }
   async willUpdate(changedProperties: PropertyValues) {
+    const artPropertiesChanged =
+      !this.hasUpdated ||
+      changedProperties.has('artist') ||
+      changedProperties.has('album') ||
+      changedProperties.has('mbid') ||
+      changedProperties.has('dimension') ||
+      changedProperties.has('visible') ||
+      changedProperties.has('noLazy');
+    if (!artPropertiesChanged) return;
+
     const cached = await this.getCachedUrl();
-    if (!this.noLazy) {
-      if (
-        (this.visible === 'true' || changedProperties.get('visible')) &&
-        this.art !== cached
-      ) {
-        this.initArt();
-      } else if (
-        changedProperties.get('artist') &&
-        changedProperties.get('artist') !== this.artist
-      ) {
-        this.initArt();
-      } else if (
-        changedProperties.get('album') &&
-        changedProperties.get('album') !== this.album
-      ) {
-        this.initArt();
-      } else if (
-        changedProperties.get('mbid') &&
-        changedProperties.get('mbid') !== this.mbid
-      ) {
-        this.initArt();
-      }
-    } else {
+    if (this.noLazy) {
+      this.initArt();
+    } else if (
+      (this.visible === 'true' || changedProperties.get('visible')) &&
+      this.art !== cached
+    ) {
+      this.initArt();
+    } else if (
+      changedProperties.get('artist') &&
+      changedProperties.get('artist') !== this.artist
+    ) {
+      this.initArt();
+    } else if (
+      changedProperties.get('album') &&
+      changedProperties.get('album') !== this.album
+    ) {
+      this.initArt();
+    } else if (
+      changedProperties.get('mbid') &&
+      changedProperties.get('mbid') !== this.mbid
+    ) {
       this.initArt();
     }
-    this.setTheme();
   }
   defaultArt() {
     if (this.album) {
@@ -161,8 +165,8 @@ export class AlbumArt extends LitElement {
       />
     `;
   }
-  private async setTheme() {
-    const theme = await getSettingByName('theme');
+  private async setTheme(themeSetting?: string) {
+    const theme = themeSetting ?? (await getSettingByName('theme'));
     if (theme === 'system') {
       this.theme = window.matchMedia('(prefers-color-scheme: dark)').matches
         ? 'dark'
@@ -175,11 +179,12 @@ export class AlbumArt extends LitElement {
     super.disconnectedCallback();
     // @ts-ignore
     resizeObserver.unobserve(this);
-    intersectionObserver.disconnect();
+    intersectionObserver.unobserve(this);
     EventBus.off(TOGGLE_SETTING, this._doToggleSetting, this);
   }
   async connectedCallback() {
     super.connectedCallback();
+    void this.setTheme();
     this.artist = this.artist === 'undefined' ? undefined : this.artist;
     this.album = this.album === 'undefined' ? undefined : this.album;
     if (!this.artist) {
@@ -194,7 +199,7 @@ export class AlbumArt extends LitElement {
   // @ts-ignore
   async _doToggleSetting(target: any, setting: any) {
     if (setting.setting === 'theme') {
-      this.setTheme();
+      this.setTheme(setting.value);
     }
   }
   dispatch() {
@@ -216,21 +221,6 @@ export class AlbumArt extends LitElement {
     let cacheKey = `${this.artist}-${this.album}`;
     if (!key.album) {
       cacheKey = `${this.artist}`;
-    }
-    if (!this.static) {
-      this.shadowRoot
-        ?.querySelector('img')
-        ?.addEventListener('resize', async () => {
-          this.getDimensions();
-          key.dimension = this.dimension;
-          key.artist = this.artist;
-          key.album = this.album;
-          let cacheKey = `${this.artist}-${this.album}`;
-          if (!key.album) {
-            cacheKey = `${this.artist}`;
-          }
-          await this.updateCache(cacheKey, key);
-        });
     }
     await this.updateCache(cacheKey, key);
   }

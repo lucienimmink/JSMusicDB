@@ -49,9 +49,11 @@ export class LetterNav extends LitElement {
         artists: letter.artists.length,
       };
       this.artists.push(header);
-      letter.sortAndReturnArtistsBy('sortName', 'asc').map((artist: any) => {
-        this.artists.push(artist);
-      });
+      letter
+        .sortAndReturnArtistsBy('sortName', 'asc')
+        .forEach((artist: any) => {
+          this.artists.push(artist);
+        });
     });
   };
   connectedCallback() {
