@@ -29,13 +29,17 @@ export default css`
     justify-content: center;
     width: 36px;
     height: 36px;
-  }
-  button:hover {
-    background: var(--background3);
-  }
-  button:focus-visible {
-    outline: 2px solid var(--primary);
-    outline-offset: 2px;
+
+    &:hover {
+      background: var(--background3);
+    }
+    &:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+    @media (min-width: 576px) {
+      padding: 0;
+    }
   }
   svg {
     width: 25px;
@@ -57,10 +61,24 @@ export default css`
     transition:
       color 0.2s ease-in-out,
       background-color 0.2s ease-in-out;
-  }
-  h1 div {
-    height: 100%;
-    padding-top: 0;
+    div {
+      height: 100%;
+      padding-top: 0;
+    }
+    &.customWindowControls div {
+      max-width: calc(env(titlebar-area-width, 100%) - 60px);
+      app-region: drag;
+    }
+    .album {
+      color: var(--primary);
+      display: inline-block;
+    }
+    @media (min-width: 576px) {
+      background: var(--background2);
+      &.playing {
+        background: var(--background2-seethrough);
+      }
+    }
   }
   app-link {
     color: var(--primary);
@@ -74,32 +92,15 @@ export default css`
     text-overflow: ellipsis;
     view-transition-name: main-header-text;
   }
-  h1.customWindowControls div {
-    max-width: calc(env(titlebar-area-width, 100%) - 60px);
-    app-region: drag;
-  }
-  h1 .album {
-    color: var(--primary);
-    display: inline-block;
-  }
   progress-spinner {
     display: inline-block;
     flex-grow: 0;
     margin: 25px -14px 0px 0px;
     font-size: 0.875rem;
   }
-  @media (min-width: 576px) {
-    .md-up {
+  .md-up {
+    @media (min-width: 576px) {
       display: inline;
-    }
-    h1 {
-      background: var(--background2);
-    }
-    h1.playing {
-      background: var(--background2-seethrough);
-    }
-    button {
-      padding: 0;
     }
   }
 `;

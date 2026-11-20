@@ -69,25 +69,25 @@ export default css`
       border-top: 1px solid var(--border-colour);
       padding: 1rem;
     }
-  }
-  dialog[open] {
-    opacity: 1;
-  }
-  @starting-style {
-    dialog[open] {
-      opacity: 0;
+    &[open] {
+      opacity: 1;
     }
-  }
-  dialog::backdrop {
-    backdrop-filter: blur(0px) grayscale(0);
-    transition: all 0.2s ease-in-out;
-  }
-  dialog[open]::backdrop {
-    backdrop-filter: blur(5px) grayscale(1);
-  }
-  @starting-style {
-    dialog[open]::backdrop {
+    @starting-style {
+      &[open] {
+        opacity: 0;
+      }
+    }
+    &::backdrop {
       backdrop-filter: blur(0px) grayscale(0);
+      transition: all 0.2s ease-in-out;
+    }
+    &[open]::backdrop {
+      backdrop-filter: blur(5px) grayscale(1);
+    }
+    @starting-style {
+      &[open]::backdrop {
+        backdrop-filter: blur(0px) grayscale(0);
+      }
     }
   }
 `;

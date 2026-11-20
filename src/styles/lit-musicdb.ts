@@ -20,21 +20,35 @@ export default css`
     z-index: 2;
     display: none;
     view-transition-name: letter-nav;
+    @media (min-width: 992px) {
+      display: block;
+    }
   }
   side-nav {
     display: none;
-  }
-  side-nav[full] {
-    display: block;
+    &[full] {
+      display: block;
+    }
+    @media (min-width: 992px) {
+      display: block;
+    }
   }
   #outlet {
     margin-top: 50px;
     display: block;
     padding-bottom: 50px;
     min-height: calc(100vh - 100px);
-  }
-  #outlet.player {
-    padding-bottom: 90px;
+    &.player {
+      padding-bottom: 90px;
+    }
+    @media (min-width: 992px) {
+      margin-top: 100px;
+      margin-left: 75px;
+      min-height: calc(100vh - 150px);
+      &.player {
+        min-height: calc(100vh - 190px);
+      }
+    }
   }
   lit-player {
     position: fixed;
@@ -63,21 +77,5 @@ export default css`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-  }
-  @media (min-width: 992px) {
-    side-nav {
-      display: block;
-    }
-    #outlet {
-      margin-top: 100px;
-      margin-left: 75px;
-      min-height: calc(100vh - 150px);
-    }
-    #outlet.player {
-      min-height: calc(100vh - 190px);
-    }
-    letter-nav {
-      display: block;
-    }
   }
 `;

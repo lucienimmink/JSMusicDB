@@ -6,10 +6,11 @@ export default css`
     padding: 0 1rem;
     height: 100%;
     transition: background-color 0.2s ease-in-out;
-  }
-  app-link:hover {
-    border-top-color: var(--border-colour);
-    background: var(--background2);
+
+    &:hover {
+      border-top-color: var(--border-colour);
+      background: var(--background2);
+    }
   }
   album-art {
     width: 50px;
@@ -27,12 +28,12 @@ export default css`
     flex-direction: column;
     justify-content: center;
     max-width: calc(100vw - 2rem - 50px - 0.75rem);
-  }
-  .details .artist,
-  .details .album {
-    display: block;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+    .artist,
+    .album {
+      display: block;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
   }
 `;

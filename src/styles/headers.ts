@@ -18,23 +18,29 @@ export default css`
     font-size: 1.25rem;
     font-weight: 600;
   }
-  .virtual-scroll .header {
-    top: 0;
-    color: var(--text-color);
-    font-weight: 600;
-    transition: none;
-    height: auto !important;
-    cursor: pointer;
+  .virtual-scroll {
+    .header {
+      top: 0;
+      color: var(--text-color);
+      font-weight: 600;
+      transition: none;
+      height: auto !important;
+      cursor: pointer;
+    }
   }
   @media (min-width: 992px) {
     .header {
       top: 100px;
     }
-    .virtual-scroll .header {
-      top: 0;
+    .virtual-scroll {
+      .header {
+        top: 0;
+      }
     }
-    .album-details .header {
-      top: 209px;
+    .album-details {
+      .header {
+        top: 209px;
+      }
     }
   }
 `;

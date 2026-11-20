@@ -29,38 +29,36 @@ export default css`
     margin: 5vh auto 0;
     position: relative;
     z-index: 1001;
+    @media (min-width: 768px) {
+      max-width: 500px;
+    }
   }
   .modal-header {
     padding: 0.75rem 1rem;
-  }
-  .modal-header h2 {
-    height: auto;
-    padding: 0px;
-    min-height: 40px;
-    margin-top: 0;
-  }
-  .modal-header button {
-    position: absolute;
-    right: 1rem;
-    top: 10px;
-    z-index: 1;
+    h2 {
+      height: auto;
+      padding: 0px;
+      min-height: 40px;
+      margin-top: 0;
+    }
+    button {
+      position: absolute;
+      right: 1rem;
+      top: 10px;
+      z-index: 1;
+    }
   }
   .modal-body {
     padding: 0 1rem 0.75rem;
-  }
-  .modal-body a {
-    color: var(--primary);
-    text-decoration: none;
-  }
-  .modal-body a:hover {
-    text-decoration: underline;
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
   .modal-footer {
     padding: 0.25rem 1rem 1rem;
-  }
-  @media (min-width: 768px) {
-    .modal {
-      max-width: 500px;
-    }
   }
 `;

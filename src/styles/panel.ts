@@ -11,47 +11,38 @@ export default css`
     border-radius: var(--radius-medium);
     box-sizing: border-box;
     transition: transform 0.15s ease-in-out;
-  }
-  .panel-home {
-    width: 45vw;
-    height: 45vw;
-  }
-  @media (min-width: 576px) {
-    .panel {
+
+    @media (min-width: 576px) {
       width: 19vw;
       height: 19vw;
     }
-  }
-  @media (min-width: 768px) {
-    .panel {
+    @media (min-width: 768px) {
       width: 15vw;
       height: 15vw;
     }
-    .panel-home {
-      width: 167px;
-      height: 167px;
-    }
-  }
-  @media (min-width: 992px) {
-    .panel {
+    @media (min-width: 992px) {
       width: 14vw;
       height: 14vw;
       max-width: 300px;
       max-height: 300px;
     }
-    .panel-home {
+  }
+  .panel-home {
+    width: 45vw;
+    height: 45vw;
+    @media (min-width: 768px) {
+      width: 167px;
+      height: 167px;
+    }
+    @media (min-width: 992px) {
       width: 159px;
       height: 159px;
     }
-  }
-  @media (min-width: 1200px) {
-    .panel-home {
+    @media (min-width: 1200px) {
       width: 208px;
       height: 208px;
     }
-  }
-  @media (min-width: 1600px) {
-    .panel-home {
+    @media (min-width: 1600px) {
       width: 10vw;
       height: 10vw;
     }
@@ -79,13 +70,13 @@ export default css`
     overflow: hidden;
     text-align: center;
     text-shadow: 0 0 3px #000;
-  }
-  .panel-info > span {
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    color: white;
-    padding: 0 10px;
+    > span {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: white;
+      padding: 0 10px;
+    }
   }
 `;

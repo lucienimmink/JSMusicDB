@@ -34,10 +34,12 @@ export default css`
     max-width: calc(100% - 75px - 145px);
     overflow: hidden;
     transition: color 0.5s ease-in-out;
+    app-link {
+      color: var(--primary);
+      transition: color 0.2s ease-in-out;
   }
-  .details app-link {
-    color: var(--primary);
-    transition: color 0.2s ease-in-out;
+  @media (min-width: 576px) {
+    width: calc(100% - 400px);
   }
   .art {
     width: 75px;
@@ -52,6 +54,9 @@ export default css`
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    @media (min-width: 576px) {
+      font-size: 1.5rem;
+    }
   }
   h5 {
     font-weight: 400;
@@ -60,30 +65,24 @@ export default css`
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-  }
-  h5 .album-details {
-    display: none;
+    .album-details {
+      display: none;
+      @media (min-width: 576px) {
+        display: inline;
+      }
+    }
+    @media (min-width: 576px) {
+      font-size: 1.25rem;
+    }
   }
   .error {
     display: flex;
     align-items: center;
     justify-content: center;
   }
-  @media (min-width: 576px) {
-    album-art {
+  album-art {
+    @media (min-width: 576px) {
       margin-right: 1rem;
-    }
-    h4 {
-      font-size: 1.5rem;
-    }
-    h5 {
-      font-size: 1.25rem;
-    }
-    .details {
-      width: calc(100% - 400px);
-    }
-    h5 .album-details {
-      display: inline;
     }
   }
 `;

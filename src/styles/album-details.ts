@@ -12,6 +12,10 @@ export default css`
     overflow: hidden;
     transition: all 0.1s ease-in-out;
     border-bottom: 1px solid var(--border-colour);
+    @media (min-width: 992px) {
+      padding: 2rem;
+      animation: jumbotron;
+    }
   }
   album-art {
     flex: 0 0 125px;
@@ -25,11 +29,23 @@ export default css`
     transition: all 0.1s ease-in-out;
     view-transition-name: album-art;
     cursor: pointer;
+    @media (min-width: 992px) {
+      margin-left: -42px;
+      flex: 0 0 190px;
+      max-width: 190px;
+      width: 190px;
+      height: 190px;
+      max-height: 190px;
+      animation: album-art-shrink;
+    }
   }
   .details {
     display: flex;
     flex-direction: column;
     width: calc(100% - 127px - 1rem);
+    @media (min-width: 992px) {
+      width: calc(100% - 190px - 1rem);
+    }
   }
   h2,
   h3,
@@ -44,45 +60,49 @@ export default css`
   h2 {
     margin-top: -5px;
     font-size: 1.5rem;
-  }
-  h2 span {
-    -webkit-background-clip: text !important;
-    -moz-background-clip: text !important;
-    background-clip: text !important;
-    -webkit-text-fill-color: transparent;
-    background: linear-gradient(90deg, var(--primary), var(--text-color));
-  }
-  h2 span {
-    display: inline-block;
-  }
-  h2 span::selection {
-    -webkit-text-fill-color: var(--letter-color);
+    span {
+      -webkit-background-clip: text !important;
+      -moz-background-clip: text !important;
+      background-clip: text !important;
+      -webkit-text-fill-color: transparent;
+      background: linear-gradient(90deg, var(--primary), var(--text-color));
+      display: inline-block;
+
+      &::selection {
+        -webkit-text-fill-color: var(--letter-color);
+      }
+    }
   }
   h3 {
     font-size: 1.25rem;
+    flex-grow: 1;
   }
   h4 {
     font-size: 1rem;
     text-overflow: unset;
+    & + h4 {
+      margin-top: 0.3rem;
+    }
+    .muted svg {
+      width: 1rem;
+      position: relative;
+      top: 3px;
+      transition: all 0.1s ease-in-out;
+    }
+    span {
+      display: none;
+    }
   }
-  h4 + h4 {
-    margin-top: 0.3rem;
-  }
-  h3 {
-    flex-grow: 1;
-  }
-  h3 .muted svg,
-  h4 .muted svg {
+  h3 .muted svg {
     width: 1rem;
     position: relative;
     top: 3px;
     transition: all 0.1s ease-in-out;
   }
-  h3 .muted svg {
-    top: 2px;
-  }
-  h4 span {
-    display: none;
+  h3 {
+    .muted svg {
+      top: 2px;
+    }
   }
   dialog {
     border: 1px solid var(--background2);
@@ -91,147 +111,141 @@ export default css`
     opacity: 0;
     transition: all 0.2s ease-in-out;
     outline: none;
-  }
-  dialog.album-art-modal {
-    border: 0;
-    background: transparent;
-    box-shadow: none;
-  }
-  dialog[open] {
-    opacity: 1;
-  }
-  @starting-style {
-    dialog[open] {
-      opacity: 0;
+    &.album-art-modal {
+      border: 0;
+      background: transparent;
+      box-shadow: none;
     }
-  }
-  dialog::backdrop {
-    backdrop-filter: blur(0px) grayscale(0);
-    transition: all 0.2s ease-in-out;
-  }
-  dialog[open]::backdrop {
-    backdrop-filter: blur(5px) grayscale(1);
-  }
-  @starting-style {
-    dialog[open]::backdrop {
+    &[open] {
+      opacity: 1;
+    }
+    @starting-style {
+      &[open] {
+        opacity: 0;
+      }
+    }
+    &::backdrop {
       backdrop-filter: blur(0px) grayscale(0);
+      transition: all 0.2s ease-in-out;
     }
-  }
-  dialog .close {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    box-sizing: border-box;
-    width: 3rem;
-    height: 3rem;
-    padding: 0;
-    border-radius: 50%;
-    background-color: var(--background2-seethrough);
-    color: var(--primary);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    border: 2px solid transparent;
-    outline: none;
-    svg {
+    &[open]::backdrop {
+      backdrop-filter: blur(5px) grayscale(1);
+    }
+    @starting-style {
+      &[open]::backdrop {
+        backdrop-filter: blur(0px) grayscale(0);
+      }
+    }
+    .close {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      box-sizing: border-box;
+      width: 3rem;
+      height: 3rem;
+      padding: 0;
+      border-radius: 50%;
+      background-color: var(--background2-seethrough);
+      color: var(--primary);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      border: 2px solid transparent;
+      outline: none;
+      svg {
+        display: block;
+        flex: none;
+        width: 2rem;
+        height: 2rem;
+      }
+      &:hover {
+        background-color: var(--background3);
+      }
+      &:focus {
+        border: 2px solid var(--primary);
+      }
+      &:active {
+        background-color: var(--background2);
+      }
+    }
+    album-art {
+      margin-right: 0;
+      margin-left: 0;
       display: block;
-      flex: none;
-      width: 2rem;
-      height: 2rem;
-    }
-    &:hover {
-      background-color: var(--background3);
-    }
-    &:focus {
-      border: 2px solid var(--primary);
-    }
-    &:active {
-      background-color: var(--background2);
-    }
-  }
-
-  dialog album-art {
-    margin-right: 0;
-    margin-left: 0;
-    display: block;
-    max-width: 97vw;
-    max-height: 97vw;
-    width: auto;
-    height: auto;
-    aspect-ratio: 1 / 1;
-    overflow: hidden;
-    cursor: pointer;
-  }
-  dialog.album-art-modal album-art {
-    border: 1px solid var(--background2);
-    box-shadow: 0px 0px 1px var(--primary);
-  }
-  dialog .now-playing {
-    box-sizing: border-box;
-    background: var(--background2-seethrough);
-    margin: 0.75rem 0 0;
-    padding: 0.5rem;
-    color: var(--text-color);
-    display: grid;
-    grid-template-columns: 40px 1fr 40px;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-
-    .playing {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
+      max-width: 97vw;
+      max-height: 97vw;
+      width: auto;
+      height: auto;
+      aspect-ratio: 1 / 1;
       overflow: hidden;
-
-      .title {
-        color: var(--primary);
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-      }
+      cursor: pointer;
     }
-
-    svg {
-      width: 1rem;
-      min-width: 1rem;
+    &.album-art-modal album-art {
+      border: 1px solid var(--background2);
+      box-shadow: 0px 0px 1px var(--primary);
     }
-
-    .controls {
-      .btn {
-        outline: none;
-        border: 0;
-        height: 40px;
-        width: 40px;
-        background-color: transparent;
-        color: var(--text-color);
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-    }
-    .time {
-      display: flex;
+    .now-playing {
+      box-sizing: border-box;
+      background: var(--background2-seethrough);
+      margin: 0.75rem 0 0;
+      padding: 0.5rem;
+      color: var(--text-color);
+      display: grid;
+      grid-template-columns: 40px 1fr 40px;
+      justify-content: center;
       align-items: center;
-      justify-content: flex-end;
-      .current {
-        color: var(--primary);
+      gap: 1rem;
+
+      .playing {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        overflow: hidden;
+
+        .title {
+          color: var(--primary);
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+      svg {
+        width: 1rem;
+        min-width: 1rem;
+      }
+      .controls {
+        .btn {
+          outline: none;
+          border: 0;
+          height: 40px;
+          width: 40px;
+          background-color: transparent;
+          color: var(--text-color);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+      .time {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        .current {
+          color: var(--primary);
+        }
       }
     }
   }
   @media (orientation: landscape) {
-    dialog album-art {
-      max-width: 90vh;
-      max-height: 90vh;
+    dialog {
+      album-art {
+        max-width: 90vh;
+        max-height: 90vh;
+      }
     }
   }
   @media (min-width: 992px) {
-    .jumbotron {
-      padding: 2rem;
-      animation: jumbotron;
-    }
     @keyframes jumbotron {
       to {
         backdrop-filter: blur(2px);
@@ -239,27 +253,17 @@ export default css`
         padding: 1rem 2rem;
       }
     }
-    .details {
-      width: calc(100% - 190px - 1rem);
-    }
-    album-art {
-      margin-left: -42px;
-      flex: 0 0 190px;
-      max-width: 190px;
-      width: 190px;
-      height: 190px;
-      max-height: 190px;
-      animation: album-art-shrink;
-    }
-    dialog album-art {
-      animation: none;
-    }
-    dialog .now-playing {
-      margin-top: 0.75rem;
-      grid-template-columns: 40px 1fr 90px;
+    dialog {
+      album-art {
+        animation: none;
+      }
+      .now-playing {
+        margin-top: 0.75rem;
+        grid-template-columns: 40px 1fr 90px;
 
-      .title {
-        font-size: 1.5rem;
+        .title {
+          font-size: 1.5rem;
+        }
       }
     }
     @keyframes album-art-shrink {
@@ -273,9 +277,11 @@ export default css`
       }
     }
 
-    h3 .muted {
-      opacity: 0;
-      animation: h3muted;
+    h3 {
+      .muted {
+        opacity: 0;
+        animation: h3muted;
+      }
     }
     @keyframes h3muted {
       to {
@@ -285,9 +291,9 @@ export default css`
     h2 {
       font-size: 3rem;
       animation: h2;
-    }
-    h2 span {
-      display: inline;
+      span {
+        display: inline;
+      }
     }
     @keyframes h2 {
       to {
@@ -302,8 +308,10 @@ export default css`
     h3 {
       animation: h3;
     }
-    h4 span {
-      display: inline;
+    h4 {
+      span {
+        display: inline;
+      }
     }
     @keyframes h3 {
       to {
@@ -324,8 +332,10 @@ export default css`
       height: 1.3rem;
       overflow: visible;
     }
-    h4 + h4 {
-      height: 2.5rem;
+    h4 {
+      & + h4 {
+        height: 2.5rem;
+      }
     }
     :host * {
       animation-timing-function: linear;

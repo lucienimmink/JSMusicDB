@@ -9,24 +9,26 @@ export default css`
     margin: 0 0 20px;
     padding: 0;
     width: 100%;
-  }
-  ol li {
-    display: block;
-    height: 70px;
-    border-top: 1px solid var(--border-colour);
-    box-sizing: border-box;
-    width: 100%;
+
+    li {
+      display: block;
+      height: 70px;
+      border-top: 1px solid var(--border-colour);
+      box-sizing: border-box;
+      width: 100%;
+    }
+    app-link {
+      display: flex;
+      padding: 10px 1rem;
+      transition: background-color 0.2s ease-in-out;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.1);
+      }
+    }
   }
   .header {
     border-top-color: transparent;
-  }
-  ol app-link {
-    display: flex;
-    padding: 10px 1rem;
-    transition: background-color 0.2s ease-in-out;
-  }
-  ol app-link:hover {
-    background: rgba(0, 0, 0, 0.1);
   }
   album-art {
     width: 50px;
@@ -42,13 +44,14 @@ export default css`
     display: flex;
     flex-direction: column;
     max-width: calc(100vw - 80px);
-  }
-  .details .artist,
-  .details .album {
-    display: block;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+
+    .artist,
+    .album {
+      display: block;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
   }
   .track {
     display: flex;
@@ -60,19 +63,20 @@ export default css`
     min-height: 60px;
     width: 100%;
     cursor: pointer;
-  }
-  .track:hover {
-    background: rgba(0, 0, 0, 0.1);
-  }
-  .track .title {
-    flex-grow: 1;
-  }
-  .track .time {
-    flex-grow: 0;
-    text-align: end;
-    width: 65px;
-    min-width: 65px;
-    font-variant-numeric: tabular-nums;
-    font-family: inherit;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.1);
+    }
+    .title {
+      flex-grow: 1;
+    }
+    .time {
+      flex-grow: 0;
+      text-align: end;
+      width: 65px;
+      min-width: 65px;
+      font-variant-numeric: tabular-nums;
+      font-family: inherit;
+    }
   }
 `;

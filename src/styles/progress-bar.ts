@@ -16,18 +16,21 @@ export default css`
     width: 100%;
     transform: translateX(calc(-100% + var(--progress-perc, 0%)));
     transition: transform 0.1666666s linear;
-  }
-  .progress-bar.paused {
-    animation: pulsate-animation 1s infinite;
+
+    &.paused {
+      animation: pulsate-animation 1s infinite;
+    }
   }
   .progress-buffered-bar {
     opacity: 0.3;
     transform: translateX(calc(-100% + var(--progress-perc, 0%)));
     transition: transform 0.1666666s linear;
   }
-  .progress .text {
-    font-variant-numeric: tabular-nums;
-    font-family: inherit;
+  .progress {
+    .text {
+      font-variant-numeric: tabular-nums;
+      font-family: inherit;
+    }
   }
   @keyframes pulsate-animation {
     0% {

@@ -57,7 +57,9 @@ export default css`
     height: 100%;
     transition: background-color 0.5s ease-in-out;
   }
-  .active app-link {
-    background-color: var(--letter-background-active);
+  .active {
+    app-link {
+      background-color: var(--letter-background-active);
+    }
   }
 `;

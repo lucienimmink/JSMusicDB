@@ -31,10 +31,10 @@ export default css`
     align-items: left;
     padding: 0.5rem 0;
     margin: 0 1rem;
-  }
-  .row.buttons {
-    flex-direction: row;
-    align-items: center;
+    &.buttons {
+      flex-direction: row;
+      align-items: center;
+    }
   }
   label {
     margin-bottom: 0.25rem;

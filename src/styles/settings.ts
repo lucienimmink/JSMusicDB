@@ -8,10 +8,11 @@ export default css`
     margin: 0.5rem 1rem 0.7rem;
     display: flex;
     align-items: center;
-  }
-  p.radio-group {
-    flex-direction: column;
-    align-items: flex-start;
+
+    &.radio-group {
+      flex-direction: column;
+      align-items: flex-start;
+    }
   }
   label {
     display: flex;
@@ -57,9 +58,9 @@ export default css`
   select {
     padding: 0.3rem 0.5rem;
     margin-inline-start: 0.5em;
-  }
-  select:focus {
-    border-color: var(--primary);
+    &:focus {
+      border-color: var(--primary);
+    }
   }
   table {
     margin: 0.25rem 1rem 1rem;

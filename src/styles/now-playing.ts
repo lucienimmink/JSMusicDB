@@ -14,43 +14,39 @@ export default css`
   }
   .backdrop {
     position: fixed;
+    @media (orientation: landscape) {
+      width: 100%;
+      margin-top: calc((100vh - 100vw) / 4);
+    }
+    @media (orientation: portrait) {
+      height: 100%;
+      margin-left: calc((100vw - 100vh) / 4);
+    }
   }
   dialog {
     border: 1px solid var(--background2);
     box-shadow: 0px 0px 1px var(--primary);
     padding: 0;
-  }
-  dialog::backdrop {
-    backdrop-filter: blur(5px);
-  }
-  dialog album-art {
-    margin-right: 0;
-    margin-left: 0;
-    display: block;
-    max-width: 90vw;
-    max-height: 90vw;
-    width: auto;
-    height: auto;
-    aspect-ratio: 1 / 1;
-    overflow: hidden;
-    cursor: pointer;
-  }
-  @media (orientation: landscape) {
-    dialog album-art {
-      max-width: 90vh;
-      max-height: 90vh;
+    &::backdrop {
+      backdrop-filter: blur(5px);
     }
-  }
-  @media (orientation: landscape) {
-    .backdrop {
-      width: 100%;
-      margin-top: calc((100vh - 100vw) / 4);
+    album-art {
+      margin-right: 0;
+      margin-left: 0;
+      display: block;
+      max-width: 90vw;
+      max-height: 90vw;
+      width: auto;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      cursor: pointer;
     }
-  }
-  @media (orientation: portrait) {
-    .backdrop {
-      height: 100%;
-      margin-left: calc((100vw - 100vh) / 4);
+    @media (orientation: landscape) {
+      album-art {
+        max-width: 90vh;
+        max-height: 90vh;
+      }
     }
   }
   .top {
@@ -62,9 +58,9 @@ export default css`
     height: calc(100vh - 50px);
     position: relative;
     transition: transform 0.2s ease-in-out;
-  }
-  .top.classic-vis {
-    background: rgba(0, 0, 0, 0.85);
+    &.classic-vis {
+      background: rgba(0, 0, 0, 0.85);
+    }
   }
   .bottom {
     backdrop-filter: blur(5px);
@@ -80,11 +76,13 @@ export default css`
     transform: translateY(100vh);
     transition: transform 0.2s ease-in-out;
   }
-  .bottomShown .top {
-    transform: translateY(calc(-100vh + 135px));
-  }
-  .bottomShown .bottom {
-    transform: translateY(calc(35px));
+  .bottomShown {
+    .top {
+      transform: translateY(calc(-100vh + 135px));
+    }
+    .bottom {
+      transform: translateY(calc(35px));
+    }
   }
   .image-wrapper {
     flex-grow: 1;
@@ -108,11 +106,11 @@ export default css`
     transform: translateX(100%);
     z-index: 2;
   }
-  .smallArt .previous-album-art {
-    display: none;
-  }
-  .smallArt .next-album-art {
-    display: none;
+  .smallArt {
+    .previous-album-art,
+    .next-album-art {
+      display: none;
+    }
   }
   .controls-wrapper {
     height: 135px;
@@ -124,9 +122,9 @@ export default css`
       transparent 0%,
       var(--background) 100%
     );
-  }
-  .controls-wrapper.classic-vis {
-    background: var(--background);
+    &.classic-vis {
+      background: var(--background);
+    }
   }
   .container {
     display: block;
@@ -176,30 +174,33 @@ export default css`
     text-overflow: ellipsis;
     overflow: hidden;
   }
-  .controls .btn {
-    margin-left: 1rem;
-    height: 45px;
-    width: 45px;
-    border-radius: 50%;
-  }
-  .controls .btn svg {
-    width: 20px;
-    margin-top: 5px;
-  }
-  .controls .btn-toggle {
-    position: absolute;
-    bottom: -20px;
-    height: 25px;
-    padding-left: 18px;
-  }
-  .controls .btn-toggle:hover {
-    background: transparent;
-  }
-  .controls .btn-toggle:active {
-    background: none;
-  }
-  .controls .btn:hover::before {
-    display: none;
+  .controls {
+    .btn {
+      margin-left: 1rem;
+      height: 45px;
+      width: 45px;
+      border-radius: 50%;
+      svg {
+        width: 20px;
+        margin-top: 5px;
+      }
+      &:hover::before {
+        display: none;
+      }
+    }
+    .btn-toggle {
+      position: absolute;
+      bottom: -20px;
+      height: 25px;
+      padding-left: 18px;
+
+      &:hover {
+        background: transparent;
+      }
+      &:active {
+        background: none;
+      }
+    }
   }
 
   .details-wrapper {
@@ -220,14 +221,16 @@ export default css`
     right: -10px;
     padding-right: 0;
   }
-  .controls-meta .btn {
-    margin-left: 0.5rem;
-    height: 35px;
-    width: 35px;
-    padding: 0;
-  }
-  .controls-meta .btn svg {
-    width: 15x;
+  .controls-meta {
+    .btn {
+      margin-left: 0.5rem;
+      height: 35px;
+      width: 35px;
+      padding: 0;
+      svg {
+        width: 15x;
+      }
+    }
   }
   .floating-text-details {
     display: none;
@@ -238,36 +241,40 @@ export default css`
     backdrop-filter: blur(10px);
     padding: 0 10px 5px;
     max-width: calc(100vw - 250px);
+    h4 {
+      font-size: 4rem;
+    }
+    h5 {
+      font-size: 2rem;
+    }
+    app-link {
+      transition: all 0.2s ease-in-out 0s;
+    }
   }
-  .classic-vis .floating-text-details {
-    background: rgba(0, 0, 0, 0.6);
+  .classic-vis {
+    .floating-text-details {
+      background: rgba(0, 0, 0, 0.6);
+      h4 {
+        color: white;
+      }
+      h5 {
+        color: white;
+        --primary: lightgray;
+        --primary-hover: gray;
+      }
+    }
   }
-  .floating-text-details h4 {
-    font-size: 4rem;
-  }
-  .classic-vis .floating-text-details h4 {
-    color: white;
-  }
-  .floating-text-details h5 {
-    font-size: 2rem;
-  }
-  .classic-vis .floating-text-details h5 {
-    color: white;
-    --primary: lightgray;
-    --primary-hover: gray;
-  }
-  .floating-text-details app-link {
-    transition: all 0.2s ease-in-out 0s;
-  }
-  .bottom .playlist {
-    height: calc(100vh - 155px);
-  }
-  .bottom .playlist lit-virtualizer {
-    height: calc(100vh - 155px);
-  }
-  .bottom .playlist track-in-list {
-    width: 100%;
-    cursor: pointer;
+  .bottom {
+    .playlist {
+      height: calc(100vh - 155px);
+      lit-virtualizer {
+        height: calc(100vh - 155px);
+      }
+      track-in-list {
+        width: 100%;
+        cursor: pointer;
+      }
+    }
   }
   .error {
     background: var(--background);
@@ -279,14 +286,16 @@ export default css`
     justify-content: center;
   }
   @media (min-width: 576px) {
-    #visualisation.active {
-      display: block;
-      width: 100vw;
-      height: 100vh;
-      position: absolute;
-    }
-    #visualisation.active canvas {
-      display: block;
+    #visualisation {
+      &.active {
+        display: block;
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        canvas {
+          display: block;
+        }
+      }
     }
     .details-wrapper {
       flex-direction: row;
@@ -302,33 +311,33 @@ export default css`
       width: 33%;
       flex-grow: 1;
       padding-right: 0;
+      .btn {
+        margin-left: 1.5rem;
+        svg {
+          height: 1.5rem;
+          width: 1.5rem;
+          margin: 5px 0;
+        }
+      }
+      .btn-toggle {
+        bottom: -14px;
+        height: 25px;
+        padding-left: 22px;
+      }
     }
     .error {
       height: 85px;
     }
-    .controls .btn {
-      margin-left: 1.5rem;
-    }
-    .controls .btn svg {
-      height: 1.5rem;
-      width: 1.5rem;
-      margin: 5px 0;
-    }
-    .controls .btn-toggle {
-      bottom: -14px;
-      height: 25px;
-      padding-left: 22px;
-    }
     .controls-meta {
       position: static;
-    }
-    .controls-meta .btn {
-      margin-left: 1rem;
-      height: 45px;
-      width: 45px;
-    }
-    .controls-meta .btn svg {
-      width: 20x;
+      .btn {
+        margin-left: 1rem;
+        height: 45px;
+        width: 45px;
+        svg {
+          width: 20x;
+        }
+      }
     }
     .time {
       background: var(--background-floating-text);
@@ -336,38 +345,42 @@ export default css`
       padding: 0px 10px;
       margin: 0 -1px;
     }
-    .smallArt .controls-wrapper {
-      height: 85px;
-      max-height: 85px;
+    .smallArt {
+      .controls-wrapper {
+        height: 85px;
+        max-height: 85px;
+      }
+      .current-album-art {
+        height: 200px;
+        width: 200px;
+        margin: 0;
+        bottom: 0.5rem;
+        left: 0.5rem;
+        position: absolute;
+        padding: 0;
+        border: 1px solid var(--background2);
+        background: rgba(255, 255, 255, 0.85);
+        box-shadow: 0px 0px 1px var(--primary);
+        cursor: pointer;
+        pointer-events: all;
+      }
+      canvas {
+        height: calc(100vh - 50px);
+      }
+      .floating-text-details {
+        display: block;
+      }
+      .text-details {
+        opacity: 0;
+      }
     }
-    .smallArt .current-album-art {
-      height: 200px;
-      width: 200px;
-      margin: 0;
-      bottom: 0.5rem;
-      left: 0.5rem;
-      position: absolute;
-      padding: 0;
-      border: 1px solid var(--background2);
-      background: rgba(255, 255, 255, 0.85);
-      box-shadow: 0px 0px 1px var(--primary);
-      cursor: pointer;
-      pointer-events: all;
-    }
-    .smallArt canvas {
-      height: calc(100vh - 50px);
-    }
-    .smallArt .floating-text-details {
-      display: block;
-    }
-    .smallArt .text-details {
-      opacity: 0;
-    }
-    .bottom .playlist {
-      padding: 0 10vw;
-    }
-    .bottom .playlist track-in-list {
-      width: 80vw;
+    .bottom {
+      .playlist {
+        padding: 0 10vw;
+        track-in-list {
+          width: 80vw;
+        }
+      }
     }
 
     .album-art {
@@ -387,16 +400,16 @@ export default css`
   app-link {
     color: var(--primary);
     transition: color 0.2s ease-in-out;
+    .icon {
+      width: 20px;
+      margin: 0 0.25rem;
+      display: inline-block;
+      top: 5px;
+      position: relative;
+    }
   }
-  app-link .icon {
-    width: 20px;
-    margin: 0 0.25rem;
-    display: inline-block;
-    top: 5px;
-    position: relative;
-  }
-  @media (min-width: 576px) {
-    h3 {
+  h3 {
+    @media (min-width: 576px) {
       padding-top: 1.5rem;
     }
   }

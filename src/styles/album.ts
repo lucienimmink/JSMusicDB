@@ -3,6 +3,9 @@ import { css } from 'lit';
 export default css`
   .container {
     display: block;
+    @media (min-width: 992px) {
+      padding-top: 257px;
+    }
   }
   .album-details {
     margin: 0;
@@ -41,9 +44,6 @@ export default css`
   } */
 
   @media (min-width: 992px) {
-    .container {
-      padding-top: 257px;
-    }
     album-details {
       position: fixed;
       width: 100vw;
