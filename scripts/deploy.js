@@ -1,12 +1,11 @@
 /* eslint-disable no-undef */
 import * as dotenv from 'dotenv';
-import fetch, { fileFromSync } from 'node-fetch';
+import { openAsBlob } from 'node:fs';
 dotenv.config();
 
-const blob = fileFromSync('./dist.zip', 'application/zip');
-
 try {
-  await fetch(
+  const blob = await openAsBlob('./dist.zip', { type: 'application/zip' });
+  const response = await fetch(
     `https://api.netlify.com/api/v1/sites/${process.env.NETLIFY_SITE_ID}/deploys`,
     {
       method: 'POST',
@@ -17,7 +16,13 @@ try {
       },
     },
   );
-  process.exit(0);
+
+  if (!response.ok) {
+    throw new Error(
+      `Netlify deployment failed: ${response.status} ${response.statusText}`,
+    );
+  }
 } catch (error) {
-  process.exit(1);
+  console.error(error);
+  process.exitCode = 1;
 }

@@ -34,7 +34,6 @@
     "eslint-plugin-html": "8.2.1",
     "husky": "^9.1.7",
     "lint-staged": "^17.6.1",
-    "node-fetch": "^3.3.2",
     "pinst": "^3.0.0",
     "prettier": "^3.10.1",
     "prettier-plugin-organize-imports": "^4.3.0",

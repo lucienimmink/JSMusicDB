@@ -104,6 +104,8 @@ export class Album extends LitElement {
   @state()
   listenbrainzToken: string;
 
+  private darkModeMediaQuery: MediaQueryList;
+
   static get styles() {
     return [
       animationCSS,
@@ -127,7 +129,7 @@ export class Album extends LitElement {
     this.isShuffled = false;
     this.useDynamicAccentColor = false;
     this.bgColor = LIGHT;
-    this._updateBgColorIfSystemTheme();
+    this.darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     this.gain = -9;
     this.hasErrorWhilePlaying = false;
     this.doNavigateToAlbum = false;
@@ -189,6 +191,10 @@ export class Album extends LitElement {
   }
   connectedCallback() {
     super.connectedCallback();
+    this.darkModeMediaQuery.addEventListener(
+      'change',
+      this._updateBgColorIfSystemTheme,
+    );
     EventBus.on(START_CURRENT_PLAYLIST, this._startCurrentPlaylist, this);
     EventBus.on(TOGGLE_PLAY_PAUSE_PLAYER, this._togglePlayPause, this);
     EventBus.on(TOGGLE_LOVED, this._toggleLoved, this);
@@ -200,6 +206,10 @@ export class Album extends LitElement {
   }
   disconnectedCallback() {
     super.disconnectedCallback();
+    this.darkModeMediaQuery.removeEventListener(
+      'change',
+      this._updateBgColorIfSystemTheme,
+    );
     EventBus.off(START_CURRENT_PLAYLIST, this._startCurrentPlaylist, this);
     EventBus.off(TOGGLE_PLAY_PAUSE_PLAYER, this._togglePlayPause, this);
     EventBus.off(TOGGLE_LOVED, this._toggleLoved, this);
@@ -609,20 +619,15 @@ export class Album extends LitElement {
       return true;
     });
   }
-  _updateBgColorIfSystemTheme() {
-    const darkModeMediaQuery = window.matchMedia(
-      '(prefers-color-scheme: dark)',
-    );
-    darkModeMediaQuery.addListener(async () => {
-      const theme = await getSettingByName('theme');
-      if (theme === 'system') {
-        this.bgColor = (await currentBgColor()) || '';
-        if (this.useDynamicAccentColor) {
-          this._setDynamicAccentColor();
-        }
+  private _updateBgColorIfSystemTheme = async () => {
+    const theme = await getSettingByName('theme');
+    if (theme === 'system') {
+      this.bgColor = (await currentBgColor()) || '';
+      if (this.useDynamicAccentColor) {
+        this._setDynamicAccentColor();
       }
-    });
-  }
+    }
+  };
   private _renderControls() {
     return html`<div class="controls">
       <button

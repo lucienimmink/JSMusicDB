@@ -84,13 +84,10 @@ export class LitMusicdb extends LitElement {
     this._player = null;
 
     this.appRouter = router(this);
-
-    window.onpopstate = (e: any) => {
-      this._changeUrl(this, e?.state?.path);
-    };
   }
   connectedCallback() {
     super.connectedCallback();
+    window.addEventListener('popstate', this._handlePopState);
     EventBus.on(START_CURRENT_PLAYLIST, this._startCurrentPlaylist, this);
     EventBus.on(STOP_PLAYER, this._stopPlayer, this);
     EventBus.on(DONE_RELOADING, this._doRefresh, this);
@@ -104,6 +101,7 @@ export class LitMusicdb extends LitElement {
   }
   disconnectedCallback() {
     super.disconnectedCallback();
+    window.removeEventListener('popstate', this._handlePopState);
     EventBus.off(START_CURRENT_PLAYLIST, this._startCurrentPlaylist, this);
     EventBus.off(STOP_PLAYER, this._stopPlayer, this);
     EventBus.off(DONE_RELOADING, this._doRefresh, this);
@@ -114,6 +112,9 @@ export class LitMusicdb extends LitElement {
     EventBus.off(NAVIGATE_TO_ALBUM, this._navigateToAlbum, this);
     EventBus.off(TOGGLE_OVERFLOW_HIDDEN, this._toggleOverflowHidden, this);
   }
+  private _handlePopState = (event: PopStateEvent) => {
+    this._changeUrl(this, event.state?.path);
+  };
   private _initServiceWorkerRefresh() {
     if ('serviceWorker' in window.navigator) {
       window.navigator.serviceWorker.addEventListener(
