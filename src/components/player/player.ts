@@ -562,26 +562,28 @@ export class Album extends LitElement {
     setting: string;
     value: boolean;
   }) {
-    if (setting === 'theme') {
-      this.bgColor = (await currentBgColor()) || '';
-      if (this.useDynamicAccentColor) {
-        this._setDynamicAccentColor();
-      }
-    }
-    if (setting === 'dynamicTheme') {
-      this.useDynamicAccentColor = value;
-      if (this.useDynamicAccentColor) {
-        this._setDynamicAccentColor();
+    switch (setting) {
+      case 'theme':
         this.bgColor = (await currentBgColor()) || '';
-      } else {
-        removeCustomCss();
-      }
-    }
-    if (setting === 'replaygain') {
-      this._setGain();
-    }
-    if (setting === 'followTrack') {
-      this.doNavigateToAlbum = value;
+        if (this.useDynamicAccentColor) {
+          this._setDynamicAccentColor();
+        }
+        break;
+      case 'dynamicTheme':
+        this.useDynamicAccentColor = value;
+        this.bgColor = (await currentBgColor()) || '';
+        if (this.useDynamicAccentColor) {
+          this._setDynamicAccentColor();
+        } else {
+          removeCustomCss();
+        }
+        break;
+      case 'replaygain':
+        this._setGain();
+        break;
+      case 'followTrack':
+        this.doNavigateToAlbum = value;
+        break;
     }
   }
   async _setGain() {

@@ -37,10 +37,8 @@ import {
 
 @customElement('lit-musicdb')
 export class LitMusicdb extends LitElement {
-  letters: Array<any>;
   @state()
   showPlayer: boolean;
-  themeSwitchCycle: any;
   @state()
   loading: boolean;
   @state()
@@ -52,10 +50,6 @@ export class LitMusicdb extends LitElement {
 
   @state()
   route: string;
-  @state()
-  params: any;
-  @state()
-  query: any;
 
   @state()
   letter: any;
@@ -77,11 +71,7 @@ export class LitMusicdb extends LitElement {
   constructor() {
     super();
     this.route = '';
-    this.params = {};
-    this.query = {};
-    this.letters = [];
     this.showPlayer = false;
-    this.themeSwitchCycle = null;
     this.loading = true;
     this.hasData = false;
     this.hasSK = true;
@@ -155,7 +145,6 @@ export class LitMusicdb extends LitElement {
     const start = await getSettingByName('playliststate');
     if (start) {
       this._startCurrentPlaylist();
-      await this._getTheme();
     }
     await this._getTheme();
   }
@@ -197,43 +186,27 @@ export class LitMusicdb extends LitElement {
       'fadeOut',
     );
   }
-  // @ts-ignore
-  protected _changeUrl(target: any, url = '/') {
+  protected _changeUrl(_target: object, url = '/') {
     if (this.route === url) return;
     this.route = url;
     this.letter = url.split('/letter/')?.[1]?.split('/')[0];
     this.artist = url.split('/artist/')?.[1]?.split('/')[0];
     this.album = url.split('/album/')?.[1]?.split('/')[0];
     window.scrollTo(0, 0);
+    const outlet = this.shadowRoot?.querySelector<HTMLElement>('#outlet');
+    if (outlet) outlet.style.viewTransitionName = 'outlet';
+
+    const navigate = () => this.appRouter.goto(url);
+    if (!document.startViewTransition) return navigate();
     // @ts-ignore
-    if (this.shadowRoot.querySelector('#outlet')) {
-      // @ts-ignore
-      this.shadowRoot.querySelector('#outlet').style.viewTransitionName =
-        'outlet';
-    }
-    // @ts-ignore
-    if (!document?.startViewTransition) {
-      this.appRouter.goto(url);
-    } else {
-      // @ts-ignore
-      document.startViewTransition(() => {
-        this.appRouter.goto(url);
-      });
-    }
+    document.startViewTransition(navigate);
   }
-  // @ts-ignore
-  private _navigateToAlbum(target: any, current: any) {
-    const track = current.current as Track;
+  private _navigateToAlbum(_target: object, current: { current: Track }) {
+    const track = current.current;
     const { artist, album, id } = track;
-    history.replaceState(
-      {},
-      '',
-      `/letter/${artist?.letter?.escapedLetter}/artist/${artist?.escapedName}/album/${album?.escapedName}?id=${id}`,
-    );
-    this._changeUrl(
-      this,
-      `/letter/${artist?.letter?.escapedLetter}/artist/${artist?.escapedName}/album/${album?.escapedName}`,
-    );
+    const path = `/letter/${artist?.letter?.escapedLetter}/artist/${artist?.escapedName}/album/${album?.escapedName}`;
+    history.replaceState({}, '', `${path}?id=${id}`);
+    this._changeUrl(this, path);
   }
   async _doRefresh() {
     await refresh();
@@ -250,26 +223,7 @@ export class LitMusicdb extends LitElement {
   }
   async _getTheme() {
     const theme = await getSettingByName('theme');
-    const cssMap: any = {
-      light,
-      dark,
-      system,
-    };
-    // eslint-disable-next-line no-useless-assignment
-    let css = null;
-    switch (theme) {
-      case 'dark':
-        css = cssMap.dark;
-        clearTimeout(this.themeSwitchCycle);
-        break;
-      case 'system':
-        css = cssMap.system;
-        clearTimeout(this.themeSwitchCycle);
-        break;
-      default:
-        clearTimeout(this.themeSwitchCycle);
-        css = cssMap.light;
-    }
+    const css = theme === 'dark' ? dark : theme === 'system' ? system : light;
     EventBus.emit(TOGGLE_SETTING, this, {
       setting: 'theme',
       value: css,
@@ -282,16 +236,10 @@ export class LitMusicdb extends LitElement {
       this._getTheme();
     }
   }
-  // @ts-ignore
-  _toggleOverflowHidden(target: any, state = false) {
-    if (document.querySelector('html')?.classList.contains('np')) {
-      return;
-    }
-    if (state) {
-      document.querySelector('html')?.classList.add('noscroll');
-    } else {
-      document.querySelector('html')?.classList.remove('noscroll');
-    }
+  _toggleOverflowHidden(_target: object, state = false) {
+    const html = document.documentElement;
+    if (html.classList.contains('np')) return;
+    html.classList.toggle('noscroll', state);
   }
   _resetServer() {
     this.hasToken = false;

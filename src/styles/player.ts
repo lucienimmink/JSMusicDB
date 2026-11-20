@@ -37,9 +37,11 @@ export default css`
     app-link {
       color: var(--primary);
       transition: color 0.2s ease-in-out;
-  }
-  @media (min-width: 576px) {
-    width: calc(100% - 400px);
+    }
+    @media (min-width: 576px) {
+      padding-inline: 0.25rem;
+      width: calc(100% - 400px);
+    }
   }
   .art {
     width: 75px;
