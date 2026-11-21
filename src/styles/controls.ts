@@ -13,7 +13,7 @@ export default css`
       justify-content: center;
       box-sizing: border-box;
       width: 44px;
-      height: 44px;
+      aspect-ratio: 1/1;
       padding: 0;
       border-radius: 50%;
       color: var(--text-color);
@@ -26,8 +26,7 @@ export default css`
       position: relative;
       opacity: 1;
       svg {
-        margin: 0 1px;
-        width: 18px;
+        width: 24px;
       }
       & + .btn {
         margin: 0;
@@ -50,9 +49,11 @@ export default css`
   }
   @media (min-width: 576px) {
     .controls {
-      .btn svg {
-        width: 22px;
-        margin: 3px 9px 0;
+      .btn {
+        width: 60px;
+        .svg {
+          width: 33px;
+        }
       }
     }
   }
