@@ -239,17 +239,13 @@ export class NowPlaying extends LitElement {
     if (appWindow._source) return appWindow._source;
     if (!appWindow._player) return null;
 
-    const audioContext = new AudioContext();
-    const source = audioContext.createMediaElementSource(appWindow._player);
-    source.connect(audioContext.destination);
-    appWindow._source = source;
-    return source;
+    return null;
   }
   private _getVisualizerOptions() {
     return {
       alphaBars: !this.classicVis,
       bgAlpha: 0,
-      channelLayout: 'single',
+      channelLayout: 'single' as const,
       colorMode: this.classicVis ? 'gradient' : 'bar-level',
       gradient: this.classicVis ? 'classic' : 'steelblue',
       ledBars: this.classicVis,
@@ -263,7 +259,7 @@ export class NowPlaying extends LitElement {
       reflexRatio: this.classicVis ? 0.035 : 0,
       maxFPS: 60,
       maxDecibels: -27,
-    };
+    } as const;
   }
   async _updatePlaylist() {
     const playlist: any = await getCurrentPlaylist();
@@ -292,6 +288,9 @@ export class NowPlaying extends LitElement {
       await this._updatePlaylist();
     }
     this.requestUpdate();
+    if (type === PLAY_PLAYER_START) {
+      void this._visualizeWhenReady();
+    }
   }
   _resetTrack(track: any) {
     const tmp = track;

@@ -2,6 +2,7 @@ declare const MediaMetadata: any;
 
 import { LitElement, html, nothing } from 'lit';
 import { customElement, state, property } from 'lit/decorators.js';
+import { keyed } from 'lit/directives/keyed.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import buttons from '../../styles/buttons';
 import controls from '../../styles/controls';
@@ -103,8 +104,11 @@ export class Album extends LitElement {
   doNavigateToAlbum: boolean;
   @state()
   listenbrainzToken: string;
+  @state()
+  private audioGeneration: number;
 
   private darkModeMediaQuery: MediaQueryList;
+  private audioContext?: AudioContext;
 
   static get styles() {
     return [
@@ -134,6 +138,7 @@ export class Album extends LitElement {
     this.hasErrorWhilePlaying = false;
     this.doNavigateToAlbum = false;
     this.listenbrainzToken = '';
+    this.audioGeneration = 0;
 
     getCurrentPlaylist().then((playlist: any) => {
       this.playlist = playlist;
@@ -240,6 +245,15 @@ export class Album extends LitElement {
   }
   async _play(startPosition = 0, track: any = null) {
     this.track = this._selectTrack(track);
+    if (!this.track) return;
+
+    try {
+      await this._prepareAudioContext(Number(this.track.samplerate));
+    } catch (error) {
+      this._handlePlaybackError(error);
+      return;
+    }
+
     const server = await getServer();
     const jwt = await getJwt();
     const player = this.shadowRoot?.querySelector('audio');
@@ -260,6 +274,46 @@ export class Album extends LitElement {
     window._player = player;
     this._navigateToCurrentAlbum();
     this._scheduleTrackUpdate();
+  }
+  private async _prepareAudioContext(sampleRate: number) {
+    const requestedSampleRate =
+      Number.isFinite(sampleRate) && sampleRate > 0 ? sampleRate : undefined;
+    if (
+      !this.audioContext ||
+      (requestedSampleRate &&
+        this.audioContext.sampleRate !== requestedSampleRate)
+    ) {
+      const previousContext = this.audioContext;
+      const audioContext = requestedSampleRate
+        ? new AudioContext({ sampleRate: requestedSampleRate })
+        : new AudioContext();
+      this.audioContext = audioContext;
+
+      const appWindow = window as Window & {
+        _source?: MediaElementAudioSourceNode;
+      };
+      appWindow._source = undefined;
+
+      if (previousContext) {
+        this.audioGeneration++;
+        await Promise.all([previousContext.close(), this.updateComplete]);
+      }
+    }
+
+    const player = this.shadowRoot?.querySelector('audio');
+    if (!player || !this.audioContext) {
+      throw new Error('Unable to initialize audio playback');
+    }
+
+    const appWindow = window as Window & {
+      _source?: MediaElementAudioSourceNode;
+    };
+    if (!appWindow._source) {
+      const source = this.audioContext.createMediaElementSource(player);
+      source.connect(this.audioContext.destination);
+      appWindow._source = source;
+    }
+    await this.audioContext.resume();
   }
   private _selectTrack(track: any) {
     if (!this.isShuffled) {
@@ -752,26 +806,29 @@ export class Album extends LitElement {
     </div>`;
   }
   private _renderAudioTag() {
-    return html`<audio
-      @ended=${() => {
-        this._onended();
-      }}
-      @timeupdate=${() => {
-        this._ontimeupdate();
-      }}
-      @play=${() => {
-        this._onplay();
-      }}
-      @pause=${() => {
-        this._onpause();
-      }}
-      @progress=${() => {
-        this._onprogress();
-      }}
-      @loadstart=${() => {
-        this._onloadstart();
-      }}
-    ></audio>`;
+    return keyed(
+      this.audioGeneration,
+      html`<audio
+        @ended=${() => {
+          this._onended();
+        }}
+        @timeupdate=${() => {
+          this._ontimeupdate();
+        }}
+        @play=${() => {
+          this._onplay();
+        }}
+        @pause=${() => {
+          this._onpause();
+        }}
+        @progress=${() => {
+          this._onprogress();
+        }}
+        @loadstart=${() => {
+          this._onloadstart();
+        }}
+      ></audio>`,
+    );
   }
   render() {
     return html`
