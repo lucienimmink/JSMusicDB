@@ -119,7 +119,9 @@ export default css`
     }
     app-link {
       --menu-content-justify: flex-start;
-      padding-inline-start: 25px;
+      @media (min-width: 576px) {
+        padding-inline-start: 25px;
+      }
     }
     ul {
       top: 0;

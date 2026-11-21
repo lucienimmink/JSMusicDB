@@ -15,7 +15,7 @@ export default css`
       width: 44px;
       aspect-ratio: 1/1;
       padding: 0;
-      border-radius: 50%;
+      border-radius: var(--radius-small);
       color: var(--text-color);
       background-color: transparent;
       border: 0;
@@ -50,7 +50,7 @@ export default css`
   @media (min-width: 576px) {
     .controls {
       .btn {
-        width: 60px;
+        width: 58px;
         .svg {
           width: 33px;
         }
