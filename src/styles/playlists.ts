@@ -65,6 +65,8 @@ export default css`
         margin-top: -5px;
         pointer-events: none;
         transition: opacity 0.2s ease-in-out;
+        line-height: 1;
+        aspect-ratio: 1/1;
       }
       &.active {
         app-link {
