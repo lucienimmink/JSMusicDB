@@ -1,3 +1,4 @@
 [submodule "spec"]
 	path = spec
 	url = https://github.com/lucienimmink/node-mp3stream-openapi-spec.git
+	branch = main
