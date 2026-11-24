@@ -188,6 +188,7 @@ export default css`
     .now-playing {
       box-sizing: border-box;
       background: var(--background2-seethrough);
+      border-radius: var(--radius-small) var(--radius-small) 0 0;
       margin: 0.75rem 0 0;
       padding: 0.5rem;
       color: var(--text-color);
@@ -249,6 +250,9 @@ export default css`
           color: var(--primary);
         }
       }
+    }
+    .progress {
+      border-radius: 0 0 var(--radius-small) var(--radius-small);
     }
   }
   @media (orientation: landscape) {
