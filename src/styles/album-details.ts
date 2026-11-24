@@ -225,6 +225,20 @@ export default css`
           display: flex;
           justify-content: center;
           align-items: center;
+          &:hover {
+            color: var(--primary);
+            background-color: var(--background3);
+            outline: none;
+          }
+          &:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+          }
+          &:active,
+          &.active {
+            background-color: var(--primary-subtle);
+            color: var(--primary);
+          }
         }
       }
       .time {
