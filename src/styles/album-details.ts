@@ -246,6 +246,7 @@ export default css`
         display: flex;
         align-items: center;
         justify-content: flex-end;
+        padding-inline-end: var(--radius-small);
         .current {
           color: var(--primary);
         }
@@ -277,7 +278,7 @@ export default css`
       }
       .now-playing {
         margin-top: 0.75rem;
-        grid-template-columns: 40px 1fr 90px;
+        grid-template-columns: 40px 1fr 95px;
 
         .title {
           font-size: 1.5rem;
